@@ -17,20 +17,20 @@
 
 package cx.ath.mancel01.dependencyshot.graph;
 
-import cx.ath.mancel01.dependencyshot.api.IBinder;
-import cx.ath.mancel01.dependencyshot.api.IBinding;
+import cx.ath.mancel01.dependencyshot.api.DSBinder;
+import cx.ath.mancel01.dependencyshot.api.DSBinding;
 import java.util.HashMap;
 
 /**
  *
  * @author mathieuancelin
  */
-public abstract class Binder implements IBinder {
+public abstract class Binder implements DSBinder {
 
-    private HashMap<Class, IBinding> bindings;
+    private HashMap<Class, DSBinding> bindings;
 
     public Binder(){
-        bindings = new HashMap<Class, IBinding>();
+        bindings = new HashMap<Class, DSBinding>();
     }
 
     public abstract void configureBindings();
@@ -46,11 +46,11 @@ public abstract class Binder implements IBinder {
         //this.bindings.remove(generic);
     }
 
-    public HashMap<Class, IBinding> getBindings() {
+    public HashMap<Class, DSBinding> getBindings() {
         return bindings;
     }
 
-    public void setBindings(HashMap<Class, IBinding> bindings) {
+    public void setBindings(HashMap<Class, DSBinding> bindings) {
         this.bindings = bindings;
     }
 

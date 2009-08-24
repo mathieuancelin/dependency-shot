@@ -11,8 +11,8 @@ import java.util.HashMap;
  *
  * @author mathieuancelin
  */
-public interface IBinder {
+public interface DSBinder {
 
     void configureBindings();
-    HashMap<Class, IBinding> getBindings();
+    HashMap<Class, DSBinding> getBindings();
 }

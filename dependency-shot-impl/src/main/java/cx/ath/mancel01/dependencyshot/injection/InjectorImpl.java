@@ -17,17 +17,17 @@
 
 package cx.ath.mancel01.dependencyshot.injection;
 
-import cx.ath.mancel01.dependencyshot.api.IBinder;
-import cx.ath.mancel01.dependencyshot.api.Injector;
+import cx.ath.mancel01.dependencyshot.api.DSBinder;
+import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import java.util.Vector;
 
 /**
  *
  * @author mathieuancelin
  */
-public class InjectorImpl implements Injector {
+public class InjectorImpl implements DSInjector {
 
-    private Vector<IBinder> binders;
+    private Vector<DSBinder> binders;
 
     public InjectorImpl() {
         this.binders = new Vector();
@@ -54,12 +54,12 @@ public class InjectorImpl implements Injector {
     }
 
     public void configureBinders(){
-        for(IBinder binder : binders){
+        for(DSBinder binder : binders){
             binder.configureBindings();
         }
     }
 
-    public void addBinder(IBinder binder){
+    public void addBinder(DSBinder binder){
         this.binders.add(binder);
     }
 

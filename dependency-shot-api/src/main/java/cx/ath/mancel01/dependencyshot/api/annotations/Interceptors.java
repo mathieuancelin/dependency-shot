@@ -15,35 +15,19 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.injection.handlers;
+package cx.ath.mancel01.dependencyshot.api.annotations;
 
-import cx.ath.mancel01.dependencyshot.api.DSAnnotationHandler;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  *
  * @author mathieuancelin
  */
-public class SingletonHandler implements DSAnnotationHandler {
-
-    /**
-     * The unique instance of the class
-     **/
-    private static SingletonHandler INSTANCE = null;
-
-    /**
-     * The private constructor of the singleton
-     **/
-    private SingletonHandler() {
-
-    }
-
-    /**
-     * The accessor for the unique instance of the singleton
-     **/
-    public static synchronized SingletonHandler getInstance() {
-        if ( INSTANCE == null ) {
-            INSTANCE = new SingletonHandler();
-        }
-        return INSTANCE;
-    }
-}
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Interceptors {
+    Class[] value();
+ }

@@ -21,7 +21,7 @@ package cx.ath.mancel01.dependencyshot.api;
  *
  * @author mathieuancelin
  */
-public interface Injector {
+public interface DSInjector {
 
     //Object getObjectInstance(Class clazz);
 

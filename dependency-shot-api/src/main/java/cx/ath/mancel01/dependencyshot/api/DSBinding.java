@@ -21,6 +21,11 @@ package cx.ath.mancel01.dependencyshot.api;
  *
  * @author mathieuancelin
  */
-public interface AnnotationHandler {
+public interface DSBinding {
+    Class getGeneric();
+
+    Class getSpecific();
+
+    Object getSpecificInstance();
 
 }

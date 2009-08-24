@@ -14,19 +14,14 @@
  *  limitations under the License.
  *  under the License.
  */
-
 package cx.ath.mancel01.dependencyshot.injection;
 
-import cx.ath.mancel01.dependencyshot.api.IBinder;
-import cx.ath.mancel01.dependencyshot.api.IBinding;
+import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.injection.handlers.InjectHandler;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.inject.Inject;
 
 /**
@@ -44,63 +39,62 @@ public class AnnotationsProcessor {
      * The private constructor of the singleton
      **/
     private AnnotationsProcessor() {
-
     }
 
     /**
      * The accessor for the unique instance of the singleton
      **/
     public static synchronized AnnotationsProcessor getInstance() {
-        if ( INSTANCE == null ) {
+        if (INSTANCE == null) {
             INSTANCE = new AnnotationsProcessor();
         }
         return INSTANCE;
     }
 
-    public Object processClassAnnotations(Class clazz, Vector<IBinder> binders) {
+    public Object processClassAnnotations(Class clazz, Vector<DSBinder> binders) {
         return processMethodsAnnotations(
                 processFieldsAnnotations(
                 processConstructorAnnotations(clazz, binders),
-                binders), 
+                binders),
                 binders);
     }
 
-    public Object processInstanceAnnotations(Object obj, Vector<IBinder> binders) {
+    public Object processInstanceAnnotations(Object obj, Vector<DSBinder> binders) {
         return processMethodsAnnotations(
                 processFieldsAnnotations(obj, binders),
                 binders);
     }
 
-    public Object processInstanceFieldsAnnotations(Object obj, Vector<IBinder> binders) {
+    public Object processInstanceFieldsAnnotations(Object obj, Vector<DSBinder> binders) {
         return processFieldsAnnotations(obj, binders);
     }
 
-    public Object processInstanceMethodAnnotations(Object obj, Vector<IBinder> binders) {
+    public Object processInstanceMethodAnnotations(Object obj, Vector<DSBinder> binders) {
         return processMethodsAnnotations(obj, binders);
     }
 
-    private Object processConstructorAnnotations(Class clazz, Vector<IBinder> binders) {
-        boolean injectFound = false;        
-        Object ret = null;      
+    private Object processConstructorAnnotations(Class clazz, Vector<DSBinder> binders) {
+        boolean injectFound = false;
+        Object ret = null;
         Constructor[] constructors = clazz.getConstructors();
-        for(Constructor constructor : constructors){
-            if(constructor.isAnnotationPresent(Inject.class) && !injectFound){
+        for (Constructor constructor : constructors) {
+            if (constructor.isAnnotationPresent(Inject.class) && !injectFound) {
                 injectFound = true;
                 //System.out.println("Inject on " + constructor.getName());
                 ret = InjectHandler.getInstance().injectConstructor(constructor, binders);
             }
-            if(ret == null){
+            if (ret == null) {
                 injectFound = false;
             }
-        }      
+        }
         return ret;
     }
 
-    private Object processFieldsAnnotations(Object obj, Vector<IBinder> binders) {
+    private Object processFieldsAnnotations(Object obj, Vector<DSBinder> binders) {
         Object ret = null;
         Field[] fields = obj.getClass().getDeclaredFields();
-        for(Field field : fields){
-            if(field.isAnnotationPresent(Inject.class)){
+        for (Field field : fields) {
+            if (field.isAnnotationPresent(Inject.class)) {
                 //System.out.println("Inject on " + field.getName());
                 ret = InjectHandler.getInstance().injectField(obj, field, binders);
             }
@@ -108,15 +102,17 @@ public class AnnotationsProcessor {
         return ret;
     }
 
-    private Object processMethodsAnnotations(Object obj, Vector<IBinder> binders) {
+    private Object processMethodsAnnotations(Object obj, Vector<DSBinder> binders) {
         Object ret = null;
         Method[] methods = obj.getClass().getDeclaredMethods();
-        for(Method method : methods){
-            if(method.isAnnotationPresent(Inject.class)){
+        for (Method method : methods) {
+            if (method.isAnnotationPresent(Inject.class)) {
                 //System.out.println("Inject on " + method.getName());
                 ret = InjectHandler.getInstance().injectMethod(obj, method, binders);
             }
         }
         return ret;
     }
+
+
 }

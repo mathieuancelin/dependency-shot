@@ -17,7 +17,16 @@
 
 package cx.ath.mancel01.dependencyshot.graph;
 
-import cx.ath.mancel01.dependencyshot.api.IBinding;
+import cx.ath.mancel01.dependencyshot.aop.AOPHandler;
+import cx.ath.mancel01.dependencyshot.aop.FinalInterceptor;
+import cx.ath.mancel01.dependencyshot.aop.UserInterceptor;
+import cx.ath.mancel01.dependencyshot.api.DSInterceptor;
+import cx.ath.mancel01.dependencyshot.api.DSBinding;
+import cx.ath.mancel01.dependencyshot.api.annotations.Interceptors;
+import cx.ath.mancel01.dependencyshot.api.annotations.AroundInvoke;
+import cx.ath.mancel01.dependencyshot.injection.AnnotationsProcessor;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,7 +35,7 @@ import java.util.logging.Logger;
  *
  * @author mathieuancelin
  */
-public class Binding implements IBinding{
+public class Binding implements DSBinding{
     
     public enum SCOPE {
         SINGLETON,
@@ -42,6 +51,8 @@ public class Binding implements IBinding{
     private Object uniqueInstance;
 
     private SCOPE scope;
+
+    private Vector<DSInterceptor> managedInterceptors = new Vector();
 
     public Class getGeneric() {
         return generic;
@@ -95,11 +106,42 @@ public class Binding implements IBinding{
     public Object getSpecificInstance(){
         try {
             // verify rules (singleton etc...)
-            return this.specific.newInstance(); // check if injectable ?
+            Object o = this.specific.newInstance();
+            return  processInterceptorsAnnotations(o, this.getGeneric());// check if injectable ?
         } catch (Exception ex) {
             Logger.getLogger(Binding.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         } 
+    }
+
+    private Object processInterceptorsAnnotations(Object obj, Class interfaceClazz) {// ne fonctionne pas avec plusieurs classes intercepteurs
+        Class clazz = obj.getClass();
+        Object ret = obj;     
+        if (clazz.isAnnotationPresent(Interceptors.class)) {
+            Interceptors inter = (Interceptors) clazz.getAnnotation(Interceptors.class);
+            Object interceptorInstance = null;
+            for (Class c : inter.value()) {
+                try {
+                    interceptorInstance = c.newInstance();
+                    for (Method m : c.getDeclaredMethods()) {
+                        if (m.isAnnotationPresent(AroundInvoke.class)) {
+                            managedInterceptors.add(new UserInterceptor(m, interceptorInstance));
+                        }
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(AnnotationsProcessor.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            managedInterceptors.add(new FinalInterceptor());
+            DSInterceptor[] interceptors = new DSInterceptor[managedInterceptors.size()];
+            int i = 0;
+            for(Object o : managedInterceptors){
+                interceptors[i] = (DSInterceptor)o;
+                i++;
+            }
+            ret = AOPHandler.getInstance().weaveObject(interfaceClazz, obj, interceptors);
+        }
+        return ret;
     }
 
 }
