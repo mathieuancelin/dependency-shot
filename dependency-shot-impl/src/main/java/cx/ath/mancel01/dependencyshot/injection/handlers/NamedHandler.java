@@ -17,13 +17,13 @@
 
 package cx.ath.mancel01.dependencyshot.injection.handlers;
 
-import cx.ath.mancel01.dependencyshot.api.AnnotationHandler;
+import cx.ath.mancel01.dependencyshot.api.DSAnnotationHandler;
 
 /**
  *
  * @author mathieuancelin
  */
-public class NamedHandler implements AnnotationHandler{
+public class NamedHandler implements DSAnnotationHandler{
 
     /**
      * The unique instance of the class

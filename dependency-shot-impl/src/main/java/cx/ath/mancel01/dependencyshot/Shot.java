@@ -1,6 +1,6 @@
 package cx.ath.mancel01.dependencyshot;
 
-import cx.ath.mancel01.dependencyshot.api.IBinder;
+import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.injection.DefaultInjector;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.injection.InjectorMaker;
@@ -13,11 +13,11 @@ public class Shot
         return InjectorMaker.makeInjector(xmlBindingFile); // TODO xml configuration
     }
 
-    public static InjectorImpl getInjector(IBinder... injModules) {
+    public static InjectorImpl getInjector(DSBinder... injModules) {
         return getInjector(Arrays.asList(injModules));
     }
 
-    public static InjectorImpl getInjector(Iterable<? extends IBinder> injModules) {
+    public static InjectorImpl getInjector(Iterable<? extends DSBinder> injModules) {
         return InjectorMaker.makeInjector(injModules);
     }
 

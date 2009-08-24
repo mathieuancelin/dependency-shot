@@ -16,13 +16,12 @@
  */
 package cx.ath.mancel01.dependencyshot.injection.handlers;
 
-import cx.ath.mancel01.dependencyshot.api.AnnotationHandler;
-import cx.ath.mancel01.dependencyshot.api.IBinder;
-import cx.ath.mancel01.dependencyshot.api.IBinding;
+import cx.ath.mancel01.dependencyshot.api.DSAnnotationHandler;
+import cx.ath.mancel01.dependencyshot.api.DSBinder;
+import cx.ath.mancel01.dependencyshot.api.DSBinding;
 import cx.ath.mancel01.dependencyshot.graph.GraphHelper;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Vector;
@@ -33,7 +32,7 @@ import java.util.logging.Logger;
  *
  * @author mathieuancelin
  */
-public class InjectHandler implements AnnotationHandler {
+public class InjectHandler implements DSAnnotationHandler {
 
     /**
      * The unique instance of the class
@@ -56,12 +55,12 @@ public class InjectHandler implements AnnotationHandler {
         return INSTANCE;
     }
 
-    public Object injectConstructor(Constructor constructor, Vector<IBinder> binders) {
+    public Object injectConstructor(Constructor constructor, Vector<DSBinder> binders) {
         Object ret = null;
         Constructor injectableConstructor = constructor;
         HashMap<Class, Object> parameters = new HashMap<Class, Object>(); // trouver solution pour plusieur injections de meme type
         for (Class type : constructor.getParameterTypes()) {
-            IBinding bind = GraphHelper.getInstance().findBinding(type, binders);
+            DSBinding bind = GraphHelper.getInstance().findBinding(type, binders);
             if (bind != null) { //injectable type and found in bindings
                 try {
                     //System.out.println("contructor bind " + type.getName() + " to " + bind.getSpecificInstance().getClass().getName());
@@ -81,9 +80,9 @@ public class InjectHandler implements AnnotationHandler {
         return ret;
     }
 
-    public Object injectField(Object obj, Field field, Vector<IBinder> binders) {
+    public Object injectField(Object obj, Field field, Vector<DSBinder> binders) {
         Object ret = obj;
-        IBinding bind = GraphHelper.getInstance().findBinding(field.getType(), binders);
+        DSBinding bind = GraphHelper.getInstance().findBinding(field.getType(), binders);
         if (bind != null) { //injectable type and found in bindings
             try {
                 //System.out.println("field bind " + field.getType().getName() + " to " + bind.getSpecificInstance().getClass().getName());
@@ -97,11 +96,11 @@ public class InjectHandler implements AnnotationHandler {
         return ret;
     }
 
-    public Object injectMethod(Object obj, Method method, Vector<IBinder> binders) {
+    public Object injectMethod(Object obj, Method method, Vector<DSBinder> binders) {
         Object ret = null;
         HashMap<Class, Object> parameters = new HashMap<Class, Object>();
         for(Class type : method.getParameterTypes()){ // check for param annotation
-            IBinding bind = GraphHelper.getInstance().findBinding(type, binders);
+            DSBinding bind = GraphHelper.getInstance().findBinding(type, binders);
             if (bind != null) { //injectable type and found in bindings
                 try {
                     //System.out.println("method bind " + type.getName() + " to " + bind.getSpecificInstance().getClass().getName());
@@ -117,6 +116,8 @@ public class InjectHandler implements AnnotationHandler {
         } catch (Exception ex) {
             Logger.getLogger(InjectHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         return ret;
     }
+
 }

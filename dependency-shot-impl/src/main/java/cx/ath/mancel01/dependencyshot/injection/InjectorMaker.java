@@ -17,7 +17,7 @@
 
 package cx.ath.mancel01.dependencyshot.injection;
 
-import cx.ath.mancel01.dependencyshot.api.IBinder;
+import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.xml.XMLBindingsHelper;
 
 /**
@@ -26,16 +26,16 @@ import cx.ath.mancel01.dependencyshot.xml.XMLBindingsHelper;
  */
 public class InjectorMaker{
     // TODO implements auto binding
-    public static InjectorImpl makeInjector(Iterable<? extends IBinder> binders) {
+    public static InjectorImpl makeInjector(Iterable<? extends DSBinder> binders) {
         InjectorImpl injector = new InjectorImpl();
-        for(IBinder binder : binders){
+        for(DSBinder binder : binders){
             injector.addBinder(binder);
         }
         injector.configureBinders();
         return injector;
     }
 
-    public static InjectorImpl makeInjector(IBinder binder) {
+    public static InjectorImpl makeInjector(DSBinder binder) {
         InjectorImpl injector = new InjectorImpl();
         injector.addBinder(binder);
         injector.configureBinders();

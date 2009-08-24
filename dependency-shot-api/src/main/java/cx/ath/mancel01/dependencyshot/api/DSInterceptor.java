@@ -21,11 +21,6 @@ package cx.ath.mancel01.dependencyshot.api;
  *
  * @author mathieuancelin
  */
-public interface IBinding {
-    Class getGeneric();
-
-    Class getSpecific();
-
-    Object getSpecificInstance();
-
+public interface DSInterceptor {
+    public Object invoke(DSInvocation invocation);
 }

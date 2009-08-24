@@ -15,48 +15,51 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.graph;
+package cx.ath.mancel01.dependencyshot.aop;
 
-import cx.ath.mancel01.dependencyshot.api.DSBinder;
-import cx.ath.mancel01.dependencyshot.api.DSBinding;
-import java.util.Vector;
+import cx.ath.mancel01.dependencyshot.api.DSInterceptor;
+import cx.ath.mancel01.dependencyshot.exceptions.DSException;
+import java.lang.reflect.Proxy;
+
 
 /**
  *
  * @author mathieuancelin
  */
-public class GraphHelper {
+public class AOPHandler {
 
     /**
      * The unique instance of the class
      **/
-    private static GraphHelper INSTANCE = null;
+    private static AOPHandler INSTANCE = null;
+
+    private DSInterceptor defaultInterceptor;
 
     /**
      * The private constructor of the singleton
      **/
-    private GraphHelper() {
+    private AOPHandler() { 
 
     }
 
     /**
      * The accessor for the unique instance of the singleton
      **/
-    public static synchronized GraphHelper getInstance() {
+    public static synchronized AOPHandler getInstance() {
         if ( INSTANCE == null ) {
-            INSTANCE = new GraphHelper();
+            INSTANCE = new AOPHandler();
         }
         return INSTANCE;
     }
 
-    public DSBinding findBinding(Class clazz, Vector<DSBinder> binders){
-        for(DSBinder binder : binders){
-            for(DSBinding binding : binder.getBindings().values()){
-                if(binding.getGeneric().equals(clazz)){
-                    return binding;
-                }
-            }
+    public <T> T weaveObject(Class<T> iface, Object o, DSInterceptor[] interceptors) {
+        try {
+            UserInvocationHandler handler = new UserInvocationHandler(o, interceptors);
+            return (T) Proxy.newProxyInstance(
+                    Thread.currentThread().getContextClassLoader(),
+                    new Class[]{iface}, handler);
+        } catch (Exception e) {
+            throw new DSException(e.getMessage());
         }
-        return null;
     }
 }

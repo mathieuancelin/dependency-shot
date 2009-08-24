@@ -15,35 +15,28 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.injection.handlers;
+package cx.ath.mancel01.dependencyshot.aop;
 
-import cx.ath.mancel01.dependencyshot.api.DSAnnotationHandler;
+import cx.ath.mancel01.dependencyshot.api.DSInterceptor;
+import cx.ath.mancel01.dependencyshot.api.DSInvocation;
+import cx.ath.mancel01.dependencyshot.exceptions.InvocationException;
+import java.lang.reflect.Method;
 
 /**
  *
  * @author mathieuancelin
  */
-public class SingletonHandler implements DSAnnotationHandler {
+public class FinalInterceptor implements DSInterceptor {
 
-    /**
-     * The unique instance of the class
-     **/
-    private static SingletonHandler INSTANCE = null;
-
-    /**
-     * The private constructor of the singleton
-     **/
-    private SingletonHandler() {
-
-    }
-
-    /**
-     * The accessor for the unique instance of the singleton
-     **/
-    public static synchronized SingletonHandler getInstance() {
-        if ( INSTANCE == null ) {
-            INSTANCE = new SingletonHandler();
+    @Override
+    public Object invoke(DSInvocation invocation) {
+        try {
+            Object bean = invocation.getBean();
+            Method method = invocation.getMethod();
+            Object[] args = invocation.getArgs();
+            return method.invoke(bean, args);
+        } catch (Exception e) {
+            throw new InvocationException(e.getMessage());
         }
-        return INSTANCE;
     }
 }
