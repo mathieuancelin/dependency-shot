@@ -20,7 +20,6 @@ package cx.ath.mancel01.dependencyshot.aop;
 import cx.ath.mancel01.dependencyshot.api.DSInterceptor;
 import cx.ath.mancel01.dependencyshot.api.DSInvocation;
 import cx.ath.mancel01.dependencyshot.exceptions.InvocationException;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,18 +30,31 @@ import java.util.logging.Logger;
  */
 public class UserInterceptor implements DSInterceptor {
 
-    private Method interceptMethod;
+    private Method interceptMethod = null;
 
-    private Object interceptedObject;
+    private Method annotedMethod = null;
+
+    private Object interceptedObject = null;
 
     public UserInterceptor(Method method, Object object){
         this.interceptMethod = method;
         this.interceptedObject = object;
     }
 
+    public void setAnnotedMethod(Method annotedMethod) {
+        this.annotedMethod = annotedMethod;
+    }
+
     @Override
     public Object invoke(DSInvocation invocation) {
         try {
+            if(annotedMethod != null){                
+                if(invocation.getMethod().getName().equals(annotedMethod.getName())){
+                    return this.interceptMethod.invoke(interceptedObject, invocation);
+                } else {
+                    return invocation.nextInterceptor();
+                }
+            }
             return this.interceptMethod.invoke(interceptedObject, invocation);
         } catch (Exception ex) {
             Logger.getLogger(UserInterceptor.class.getName()).log(Level.SEVERE, null, ex);

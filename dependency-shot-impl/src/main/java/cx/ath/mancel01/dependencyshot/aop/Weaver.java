@@ -26,28 +26,26 @@ import java.lang.reflect.Proxy;
  *
  * @author mathieuancelin
  */
-public class AOPHandler {
+public class Weaver {
 
     /**
      * The unique instance of the class
      **/
-    private static AOPHandler INSTANCE = null;
-
-    private DSInterceptor defaultInterceptor;
+    private static Weaver INSTANCE = null;
 
     /**
      * The private constructor of the singleton
      **/
-    private AOPHandler() { 
+    private Weaver() {
 
     }
 
     /**
      * The accessor for the unique instance of the singleton
      **/
-    public static synchronized AOPHandler getInstance() {
+    public static synchronized Weaver getInstance() {
         if ( INSTANCE == null ) {
-            INSTANCE = new AOPHandler();
+            INSTANCE = new Weaver();
         }
         return INSTANCE;
     }

@@ -2,7 +2,7 @@ package cx.ath.mancel01.dependencyshot;
 
 import cx.ath.mancel01.dependencyshot.api.annotations.Interceptors;
 
-@Interceptors(value = MyInterceptor.class)
+@Interceptors(value = {MyInterceptor.class, MySecondInterceptor.class})
 public class ServiceImpl implements Service {
 
     private boolean gone = false;
@@ -18,6 +18,7 @@ public class ServiceImpl implements Service {
         return gone;
     }
 
+    @Interceptors(value = MyMethodInterceptor.class)
     @Override
     public String getString() {
         return "the returned String";
