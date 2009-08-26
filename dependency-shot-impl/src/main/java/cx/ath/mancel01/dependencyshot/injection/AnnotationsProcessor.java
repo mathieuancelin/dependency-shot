@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009 mathieuancelin.
+ *  Copyright 2009 Mathieu ANCELIN.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import javax.inject.Inject;
 
 /**
  *
- * @author mathieuancelin
+ * @author Mathieu ANCELIN
  */
 public class AnnotationsProcessor {
 
@@ -80,7 +80,6 @@ public class AnnotationsProcessor {
         for (Constructor constructor : constructors) {
             if (constructor.isAnnotationPresent(Inject.class) && !injectFound) {
                 injectFound = true;
-                //System.out.println("Inject on " + constructor.getName());
                 ret = InjectHandler.getInstance().injectConstructor(constructor, binders);
             }
             if (ret == null) {
@@ -95,7 +94,6 @@ public class AnnotationsProcessor {
         Field[] fields = obj.getClass().getDeclaredFields();
         for (Field field : fields) {
             if (field.isAnnotationPresent(Inject.class)) {
-                //System.out.println("Inject on " + field.getName());
                 ret = InjectHandler.getInstance().injectField(obj, field, binders);
             }
         }
@@ -107,7 +105,6 @@ public class AnnotationsProcessor {
         Method[] methods = obj.getClass().getDeclaredMethods();
         for (Method method : methods) {
             if (method.isAnnotationPresent(Inject.class)) {
-                //System.out.println("Inject on " + method.getName());
                 ret = InjectHandler.getInstance().injectMethod(obj, method, binders);
             }
         }

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009 mathieuancelin.
+ *  Copyright 2009 Mathieu ANCELIN.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25,31 +25,52 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author mathieuancelin
+ * This class is an internal user interceptor. It define a method to call before
+ * and after an intercepted method. It matches a method with @AroundInvoke
+ * annotation present in an @Interceptors value class.
+ * 
+ * @author Mathieu ANCELIN
  */
 public class UserInterceptor implements DSInterceptor {
 
+    /**
+     * The intercepted method.
+     */
     private Method interceptMethod = null;
-
+    /**
+     * The method to call before and after intercepted method.
+     */
     private Method annotedMethod = null;
-
+    /**
+     * The object where annotedMethod is defined.
+     */
     private Object interceptedObject = null;
-
-    public UserInterceptor(Method method, Object object){
+    /**
+     * Constructor.
+     * @param method the targeted method.
+     * @param object from this object.
+     */
+    public UserInterceptor(final Method method, final Object object) {
         this.interceptMethod = method;
         this.interceptedObject = object;
     }
-
-    public void setAnnotedMethod(Method annotedMethod) {
+    /**
+     * Set the annoted (intercept) method.
+     * @param annotedMethod the annoted method.
+     */
+    public void setAnnotedMethod(final Method annotedMethod) {
         this.annotedMethod = annotedMethod;
     }
-
+    /**
+     * Invoke the next interceptor in the interceptor chain.
+     * @param invocation the invocation.
+     * @return the return of the invocation.
+     */
     @Override
-    public Object invoke(DSInvocation invocation) {
+    public Object invoke(final DSInvocation invocation) {
         try {
-            if(annotedMethod != null){                
-                if(invocation.getMethod().getName().equals(annotedMethod.getName())){
+            if (annotedMethod != null) {
+                if (invocation.getMethod().getName().equals(annotedMethod.getName())) {
                     return this.interceptMethod.invoke(interceptedObject, invocation);
                 } else {
                     return invocation.nextInterceptor();

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009 mathieuancelin.
+ *  Copyright 2009 Mathieu ANCELIN.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -23,34 +23,43 @@ import java.lang.reflect.Proxy;
 
 
 /**
- *
- * @author mathieuancelin
+ * This class "weave" an object with its interceptors.
+ * 
+ * @author Mathieu ANCELIN
  */
-public class Weaver {
-
+public final class Weaver {
     /**
-     * The unique instance of the class
+     * The unique instance of the class.
      **/
-    private static Weaver INSTANCE = null;
+    private static Weaver instance = null;
 
     /**
-     * The private constructor of the singleton
+     * The private constructor of the singleton.
      **/
     private Weaver() {
 
     }
-
     /**
-     * The accessor for the unique instance of the singleton
-     **/
+     * The accessor for the unique instance of the singleton.
+     * @return the unique instance.
+     */
     public static synchronized Weaver getInstance() {
-        if ( INSTANCE == null ) {
-            INSTANCE = new Weaver();
+        if (instance == null) {
+            instance = new Weaver();
         }
-        return INSTANCE;
+        return instance;
     }
-
-    public <T> T weaveObject(Class<T> iface, Object o, DSInterceptor[] interceptors) {
+    /**
+     * Create a proxy on an object that handle calls on this object
+     * and execute its interceptors chain.
+     * 
+     * @param <T> the type of the interface.
+     * @param iface the interface class.
+     * @param o the concerned object.
+     * @param interceptors the interceptors chain.
+     * @return a proxy object that handle calls on the concerned object.
+     */
+    public <T> T weaveObject(final Class<T> iface, final Object o, final DSInterceptor[] interceptors) {
         try {
             UserInvocationHandler handler = new UserInvocationHandler(o, interceptors);
             return (T) Proxy.newProxyInstance(

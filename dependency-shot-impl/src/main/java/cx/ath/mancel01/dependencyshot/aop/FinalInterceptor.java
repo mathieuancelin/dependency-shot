@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009 mathieuancelin.
+ *  Copyright 2009 Mathieu ANCELIN.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -23,13 +23,20 @@ import cx.ath.mancel01.dependencyshot.exceptions.InvocationException;
 import java.lang.reflect.Method;
 
 /**
- *
- * @author mathieuancelin
+ * This class define an final interceptor.
+ * This interceptor is the last interceptor invoked and
+ * handle the real invocation of the called method.
+ * 
+ * @author Mathieu ANCELIN
  */
 public class FinalInterceptor implements DSInterceptor {
-
+    /**
+     * Invoke the right method on the intercepted object.
+     * @param invocation the invocation on intercepted method.
+     * @return the return of the invocation.
+     */
     @Override
-    public Object invoke(DSInvocation invocation) {
+    public Object invoke(final DSInvocation invocation) {
         try {
             Object bean = invocation.getBean();
             Method method = invocation.getMethod();

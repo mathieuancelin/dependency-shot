@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009 mathieuancelin.
+ *  Copyright 2009 Mathieu ANCELIN.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,16 +14,18 @@
  *  limitations under the License.
  *  under the License.
  */
-
 package cx.ath.mancel01.dependencyshot.injection;
 
 import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
+import cx.ath.mancel01.dependencyshot.exceptions.DSException;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
- * @author mathieuancelin
+ * @author Mathieu ANCELIN
  */
 public class InjectorImpl implements DSInjector {
 
@@ -39,28 +41,36 @@ public class InjectorImpl implements DSInjector {
     }
 
     @Override
-    public Object injectInstance(Object obj){
+    public Object injectInstance(Object obj) {
         return AnnotationsProcessor.getInstance().processInstanceAnnotations(obj, binders);
     }
 
     @Override
-    public Object injectMembers(Object obj){
+    public Object injectMembers(Object obj) {
         return AnnotationsProcessor.getInstance().processInstanceMethodAnnotations(obj, binders);
     }
 
     @Override
-    public Object injectFiels(Object obj){
+    public Object injectFiels(Object obj) {
         return AnnotationsProcessor.getInstance().processInstanceFieldsAnnotations(obj, binders);
     }
 
-    public void configureBinders(){
-        for(DSBinder binder : binders){
-            binder.configureBindings();
+    public void configureBinders() {
+        if (binders.size() > 0) {
+            for (DSBinder binder : binders) {
+                if (!binder.getBindings().isEmpty()) {
+                    binder.configureBindings();
+                } else {
+                    Logger.getLogger(InjectorImpl.class.getName()).
+                            log(Level.SEVERE, "Ooops, no bindings presents, " 
+                            + "can't inject your apps ...");
+                    throw new DSException("no bindings");
+                }
+            }
         }
     }
 
-    public void addBinder(DSBinder binder){
+    public void addBinder(DSBinder binder) {
         this.binders.add(binder);
     }
-
 }

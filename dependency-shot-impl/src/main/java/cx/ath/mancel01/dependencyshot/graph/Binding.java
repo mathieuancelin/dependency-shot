@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009 mathieuancelin.
+ *  Copyright 2009 Mathieu ANCELIN.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -30,83 +30,173 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author mathieuancelin
+ * Object representation of a binding.
+ * 
+ * @author Mathieu ANCELIN
  */
 public class Binding implements DSBinding {
-
+    /**
+     * The scope of the binding.
+     */
     public enum SCOPE {
-
+        /**
+         * Unique instance.
+         */
         SINGLETON,
+        /**
+         * Normal scope.
+         */
         NORMAL
     };
+    /**
+     * The generic class of the binding (interface).
+     */
     private Class generic;
+    /**
+     * The specific implementation.
+     */
     private Class specific;
+    /**
+     * Managed specific instances.
+     */
     private Vector<Object> specificInstances;
+    /**
+     * The unique instance (if SINGLETON scope).
+     */
     private Object uniqueInstance;
+    /**
+     * The current scope.
+     */
     private SCOPE scope;
+    /**
+     * The binding name (if named injection).
+     */
+    private String name;
+    /**
+     * The managed interceptors.
+     */
     private Vector<DSInterceptor> managedInterceptors = new Vector();
-
+    /**
+     * @return the generic
+     */
+    @Override
     public Class getGeneric() {
         return generic;
     }
 
-    public void setGeneric(Class generic) {
+    /**
+     * @param generic the generic to set
+     */
+    public void setGeneric(final Class generic) {
         this.generic = generic;
     }
 
-    public SCOPE getScope() {
-        return scope;
-    }
-
-    public void setScope(SCOPE scope) {
-        this.scope = scope;
-    }
-
+    /**
+     * @return the specific
+     */
     public Class getSpecific() {
         return specific;
     }
 
-    public void setSpecific(Class specific) {
+    /**
+     * @param specific the specific to set
+     */
+    public void setSpecific(final Class specific) {
         this.specific = specific;
     }
 
+    /**
+     * @return the specificInstances
+     */
     public Vector<Object> getSpecificInstances() {
         return specificInstances;
     }
 
-    public void setSpecificInstances(Vector<Object> specificInstances) {
+    /**
+     * @param specificInstances the specificInstances to set
+     */
+    public void setSpecificInstances(final Vector<Object> specificInstances) {
         this.specificInstances = specificInstances;
     }
 
-    public void addSpecificInstance(Object obj) {
-        this.specificInstances.add(obj);
-    }
-
-    public void remSpecificInstance(Object obj) {
-        this.specificInstances.remove(obj);
-    }
-
+    /**
+     * @return the uniqueInstance
+     */
     public Object getUniqueInstance() {
         return uniqueInstance;
     }
 
-    public void setUniqueInstance(Object uniqueInstance) {
+    /**
+     * @param uniqueInstance the uniqueInstance to set
+     */
+    public void setUniqueInstance(final Object uniqueInstance) {
         this.uniqueInstance = uniqueInstance;
     }
 
+    /**
+     * @return the scope
+     */
+    public SCOPE getScope() {
+        return scope;
+    }
+
+    /**
+     * @param scope the scope to set
+     */
+    public void setScope(final SCOPE scope) {
+        this.scope = scope;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the managedInterceptors
+     */
+    public Vector<DSInterceptor> getManagedInterceptors() {
+        return managedInterceptors;
+    }
+
+    /**
+     * @param managedInterceptors the managedInterceptors to set
+     */
+    public void setManagedInterceptors(final Vector<DSInterceptor> managedInterceptors) {
+        this.managedInterceptors = managedInterceptors;
+    }
+    /**
+     * @return a specific instance of specific class.
+     */
     @Override
     public Object getSpecificInstance() {
         try {
-            Object o = this.specific.newInstance();
-            return processInterceptorsAnnotations(o, this.getGeneric());// check if injectable ?
+            Object o = this.getSpecific().newInstance();
+            this.getSpecificInstances().add(o);
+            return processInterceptorsAnnotations(o, this.getGeneric()); // check if injectable ?
         } catch (Exception ex) {
             Logger.getLogger(Binding.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
-
-    private Object processInterceptorsAnnotations(Object obj, Class interfaceClazz) {// ne fonctionne pas avec plusieurs classes intercepteurs
+    /**
+     * Check if the object is interceptable.
+     * If it is, this method add interceptors chain on it.
+     * 
+     * @param obj the concerned object.
+     * @param interfaceClazz the interface.
+     * @return the object with interceptor handler (if annotations are presents)
+     */
+    private Object processInterceptorsAnnotations(final Object obj, final Class interfaceClazz) {
         Class clazz = obj.getClass();
         Object ret = obj;
         if (interfaceClazz.isAnnotationPresent(Interceptors.class)) {
@@ -125,11 +215,11 @@ public class Binding implements DSBinding {
                 findAroundInvoke(m);
             }
         }
-        if (managedInterceptors.size() > 0) {
-            managedInterceptors.add(new FinalInterceptor());
-            DSInterceptor[] interceptors = new DSInterceptor[managedInterceptors.size()];
+        if (getManagedInterceptors().size() > 0) {
+            getManagedInterceptors().add(new FinalInterceptor());
+            DSInterceptor[] interceptors = new DSInterceptor[getManagedInterceptors().size()];
             int i = 0;
-            for (Object o : managedInterceptors) {
+            for (Object o : getManagedInterceptors()) {
                 interceptors[i] = (DSInterceptor) o;
                 i++;
             }
@@ -137,8 +227,11 @@ public class Binding implements DSBinding {
         }
         return ret;
     }
-
-    private void findAroundInvoke(Class clazz) {
+    /**
+     * Check for @AroundInvoke on a class.
+     * @param clazz the checked class.
+     */
+    private void findAroundInvoke(final Class clazz) {
         Interceptors inter = (Interceptors) clazz.getAnnotation(Interceptors.class);
         Object interceptorInstance = null;
         for (Class c : inter.value()) {
@@ -146,7 +239,7 @@ public class Binding implements DSBinding {
                 interceptorInstance = c.newInstance();
                 for (Method m : c.getDeclaredMethods()) {
                     if (m.isAnnotationPresent(AroundInvoke.class)) {
-                        managedInterceptors.add(new UserInterceptor(m, interceptorInstance));
+                        getManagedInterceptors().add(new UserInterceptor(m, interceptorInstance));
                     }
                 }
             } catch (Exception ex) {
@@ -154,8 +247,11 @@ public class Binding implements DSBinding {
             }
         }
     }
-
-    private void findAroundInvoke(Method method) {
+    /**
+     * Check for @AroundInvoke on a method.
+     * @param method the checked method.
+     */
+    private void findAroundInvoke(final Method method) {
         Interceptors inter = (Interceptors) method.getAnnotation(Interceptors.class);
         Object interceptorInstance = null;
         for (Class c : inter.value()) {
@@ -165,7 +261,7 @@ public class Binding implements DSBinding {
                     if (m.isAnnotationPresent(AroundInvoke.class)) {
                         UserInterceptor interceptorTmp = new UserInterceptor(m, interceptorInstance);
                         interceptorTmp.setAnnotedMethod(method);
-                        managedInterceptors.add(interceptorTmp);
+                        getManagedInterceptors().add(interceptorTmp);
                     }
                 }
             } catch (Exception ex) {
