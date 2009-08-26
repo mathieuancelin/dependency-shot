@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009 mathieuancelin.
+ *  Copyright 2009 Mathieu ANCELIN.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,11 +18,15 @@
 package cx.ath.mancel01.dependencyshot.exceptions;
 
 /**
- *
- * @author mathieu
+ * An invocation exception of dependency-shot.
+ * @author Mathieu ANCELIN
  */
 public class InvocationException extends RuntimeException {
-    public InvocationException(String message) {
+    /**
+     * Constructor.
+     * @param message the error message.
+     */
+    public InvocationException(final String message) {
         super(message);
     }
 }

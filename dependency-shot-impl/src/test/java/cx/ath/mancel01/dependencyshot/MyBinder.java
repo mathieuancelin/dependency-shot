@@ -6,6 +6,6 @@ public class MyBinder extends Binder {
 
     @Override
     public void configureBindings() {
-        bind(Service.class, ServiceImpl.class);
+        bind(Service.class).to(ServiceImpl.class);
     }
 }

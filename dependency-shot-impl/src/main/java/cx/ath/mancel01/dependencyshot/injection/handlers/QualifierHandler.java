@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009 mathieuancelin.
+ *  Copyright 2009 Mathieu ANCELIN.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import cx.ath.mancel01.dependencyshot.api.DSAnnotationHandler;
 
 /**
  *
- * @author mathieuancelin
+ * @author Mathieu ANCELIN
  */
 public class QualifierHandler implements DSAnnotationHandler {
 
