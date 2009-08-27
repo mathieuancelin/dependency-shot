@@ -24,53 +24,98 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * This class represent an injector configured by coded
+ * binders.
+ * 
  * @author Mathieu ANCELIN
  */
 public class InjectorImpl implements DSInjector {
-
+    /**
+     * Binders linked to the project.
+     */
     private Vector<DSBinder> binders;
-
+    /**
+     * The constructor.
+     */
     public InjectorImpl() {
         this.binders = new Vector();
     }
-
+    /**
+     * Return an injected instance of a binded object.
+     * @param clazz the object to instanciate.
+     * @return an injected object.
+     */
     @Override
-    public Object getObjectInstance(Class clazz) {
-        return AnnotationsProcessor.getInstance().processClassAnnotations(clazz, binders);
+    public Object getObjectInstance(final Class clazz) {
+        if (binders.size() > 0) {
+            return AnnotationsProcessor.getInstance().processClassAnnotations(clazz, binders);
+        } else {
+            throw new DSException("No bindings loaded");
+        }
+    }
+    /**
+     * Return a injected object from a non injected object.
+     * @param obj the object to be injected.
+     * @return the injected object.
+     */
+    @Override
+    public Object injectInstance(final Object obj) {
+        if (binders.size() > 0) {
+            return AnnotationsProcessor.getInstance().processInstanceAnnotations(obj, binders);
+        } else {
+            throw new DSException("No bindings loaded");
+        }
+    }
+    /**
+     * Inject members of an object.
+     * @param obj the object to inject.
+     * @return the injected object.
+     */
+    @Override
+    public Object injectMembers(final Object obj) {
+        if (binders.size() > 0) {
+            return AnnotationsProcessor.getInstance().processInstanceMethodAnnotations(obj, binders);
+        } else {
+            throw new DSException("No bindings loaded");
+        }
+    }
+    /**
+     * Inject fields of an object.
+     * @param obj the object to inject.
+     * @return the injected object.
+     */
+    @Override
+    public Object injectFields(final Object obj) {
+        if (binders.size() > 0) {
+            return AnnotationsProcessor.getInstance().processInstanceFieldsAnnotations(obj, binders);
+        } else {
+            throw new DSException("No bindings loaded");
+        }
     }
 
-    @Override
-    public Object injectInstance(Object obj) {
-        return AnnotationsProcessor.getInstance().processInstanceAnnotations(obj, binders);
-    }
-
-    @Override
-    public Object injectMembers(Object obj) {
-        return AnnotationsProcessor.getInstance().processInstanceMethodAnnotations(obj, binders);
-    }
-
-    @Override
-    public Object injectFiels(Object obj) {
-        return AnnotationsProcessor.getInstance().processInstanceFieldsAnnotations(obj, binders);
-    }
-
+    /**
+     * Configure all present binders.
+     */
     public void configureBinders() {
         if (binders.size() > 0) {
             for (DSBinder binder : binders) {
-                if (!binder.getBindings().isEmpty()) {
-                    binder.configureBindings();
-                } else {
+                binder.configureBindings();
+                if (binder.getBindings().isEmpty()) {
                     Logger.getLogger(InjectorImpl.class.getName()).
-                            log(Level.SEVERE, "Ooops, no bindings presents, " 
-                            + "can't inject your apps ...");
-                    throw new DSException("no bindings");
+                            log(Level.SEVERE, "Ooops, no bindings presents, " + "can't inject your apps ...");
+                    throw new DSException("No bindings loaded");
                 }
             }
         }
     }
 
-    public void addBinder(DSBinder binder) {
+    /**
+     * Add a binder in the injector.
+     * @param binder the binder to add.
+     */
+    public void addBinder(final DSBinder binder) {
+        // TODO find multiple similar bindings and point it out
+        // to the user.
         this.binders.add(binder);
     }
 }

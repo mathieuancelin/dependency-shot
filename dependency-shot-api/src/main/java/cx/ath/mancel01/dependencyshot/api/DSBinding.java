@@ -18,14 +18,22 @@
 package cx.ath.mancel01.dependencyshot.api;
 
 /**
- *
+ * Binding between an interface and it's implementation.
+ * 
  * @author Mathieu ANCELIN
  */
 public interface DSBinding {
+    /**
+     * @return get generic interface.
+     */
     Class getGeneric();
-
+    /**
+     * @return get specific class.
+     */
     Class getSpecific();
-
+    /**
+     * @return get specific instance.
+     */
     Object getSpecificInstance();
 
 }

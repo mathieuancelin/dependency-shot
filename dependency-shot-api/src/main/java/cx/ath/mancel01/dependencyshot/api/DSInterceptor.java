@@ -18,9 +18,15 @@
 package cx.ath.mancel01.dependencyshot.api;
 
 /**
- *
+ * Interface for interceptor.
+ * 
  * @author Mathieu ANCELIN
  */
 public interface DSInterceptor {
-    public Object invoke(DSInvocation invocation);
+    /**
+     * Invocation on an interceptor.
+     * @param invocation the invocation.
+     * @return the result of the invocation.
+     */
+    Object invoke(DSInvocation invocation);
 }

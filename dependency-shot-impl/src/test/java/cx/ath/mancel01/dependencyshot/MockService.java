@@ -1,7 +1,14 @@
 package cx.ath.mancel01.dependencyshot;
 
+/**
+ * A mock service.
+ * 
+ * @author Mathieu ANCELIN
+ */
 public class MockService implements Service {
-
+    /**
+     * A boolean.
+     */
     private boolean gone = false;
 
     @Override
@@ -26,7 +33,7 @@ public class MockService implements Service {
     }
 
     @Override
-    public void setString(String str) {
+    public void setString(final String str) {
         System.out.println("set string mock " + str);
     }
 

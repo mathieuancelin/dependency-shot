@@ -3,8 +3,15 @@ package cx.ath.mancel01.dependencyshot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import static junit.framework.Assert.assertTrue;
 
+/**
+ * Tests of dependency-shot.
+ * 
+ * @author Mathieu ANCELIN
+ */
 public class InjectTest {
-
+    /**
+     * Mock test.
+     */
     public void testMockedClient() {
         System.out.println("Test : Mock");
         MockService mock = new MockService();
@@ -19,7 +26,9 @@ public class InjectTest {
         assertTrue(client.getService2().isGone());
         assertTrue(client.getService3().isGone());
     }
-
+    /**
+     * Injection test.
+     */
     public void testInjectedClient() {
         System.out.println("Test : @Inject");
         DSInjector injector = Shot.getInjector(new MyBinder());

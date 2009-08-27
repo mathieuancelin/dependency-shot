@@ -20,30 +20,30 @@ package cx.ath.mancel01.dependencyshot.injection.handlers;
 import cx.ath.mancel01.dependencyshot.api.DSAnnotationHandler;
 
 /**
- *
+ * Handle provider class.
+ * 
  * @author Mathieu ANCELIN
  */
-public class ProviderHandler implements DSAnnotationHandler {
+public final class ProviderHandler implements DSAnnotationHandler {
+    /**
+     * The unique instance of the class.
+     */
+    private static ProviderHandler instance = null;
 
     /**
-     * The unique instance of the class
-     **/
-    private static ProviderHandler INSTANCE = null;
-
-    /**
-     * The private constructor of the singleton
-     **/
+     * The private constructor of the singleton.
+     */
     private ProviderHandler() {
 
     }
-
     /**
-     * The accessor for the unique instance of the singleton
-     **/
+     * The accessor for the unique instance of the singleton.
+     * @return the unique instance of the singleton.
+     */
     public static synchronized ProviderHandler getInstance() {
-        if ( INSTANCE == null ) {
-            INSTANCE = new ProviderHandler();
+        if (instance == null) {
+            instance = new ProviderHandler();
         }
-        return INSTANCE;
+        return instance;
     }
 }
