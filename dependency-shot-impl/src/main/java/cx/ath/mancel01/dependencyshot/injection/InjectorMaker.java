@@ -14,44 +14,62 @@
  *  limitations under the License.
  *  under the License.
  */
-
 package cx.ath.mancel01.dependencyshot.injection;
 
 import cx.ath.mancel01.dependencyshot.api.DSBinder;
-import cx.ath.mancel01.dependencyshot.xml.XMLBindingsHelper;
+import cx.ath.mancel01.dependencyshot.xml.XMLConfigurationHelper;
 
 /**
- *
+ * Utility classthat create injector.
+ * 
  * @author Mathieu ANCELIN
  */
-public class InjectorMaker{
-    // TODO implements auto binding
-    public static InjectorImpl makeInjector(Iterable<? extends DSBinder> binders) {
+public final class InjectorMaker {
+    /**
+     * Private constructor.
+     */
+    private InjectorMaker() {
+        
+    }
+    /**
+     * Return an injector.
+     * @param binders the binders.
+     * @return the configured injector.
+     */
+    public static InjectorImpl makeInjector(final Iterable<? extends DSBinder> binders) {
         InjectorImpl injector = new InjectorImpl();
-        for(DSBinder binder : binders){
+        for (DSBinder binder : binders) {
             injector.addBinder(binder);
         }
         injector.configureBinders();
         return injector;
     }
-
-    public static InjectorImpl makeInjector(DSBinder binder) {
+    /**
+     * Create an injector based on a binder.
+     * @param binder the only binder.
+     * @return the configured injector.
+     */
+    public static InjectorImpl makeInjector(final DSBinder binder) {
         InjectorImpl injector = new InjectorImpl();
         injector.addBinder(binder);
         injector.configureBinders();
         return injector;
     }
-    
-    // TODO implements auto binding
+    /**
+     * Return the default injector.
+     * @return the configured injector.
+     */
     public static InjectorImpl makeInjector() {
         return null;
+        // TODO implements auto binding
     }
-
-    // TODO implements xml binding
-    public static InjectorImpl makeInjector(String configPath) {
-        XMLBindingsHelper.getInstance();
+    /**
+     * Return an xml configured injector.
+     * @param configPath path of the configuration file.
+     * @return the configured injector.
+     */
+    public static InjectorImpl makeInjector(final String configPath) {
+        XMLConfigurationHelper.getInstance();
         return null;
     }
-
-
 }

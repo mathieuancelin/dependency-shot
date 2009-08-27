@@ -25,55 +25,83 @@ import java.util.Vector;
 import javax.inject.Inject;
 
 /**
- *
+ * The goal of this class is to navigate through annotations
+ * and inject depedencies.
+ * 
  * @author Mathieu ANCELIN
  */
-public class AnnotationsProcessor {
+public final class AnnotationsProcessor {
 
     /**
-     * The unique instance of the class
-     **/
-    private static AnnotationsProcessor INSTANCE = null;
+     * The unique InjectHandler of the class.
+     */
+    private static AnnotationsProcessor instance = null;
 
     /**
-     * The private constructor of the singleton
-     **/
+     * The private constructor of the singleton.
+     */
     private AnnotationsProcessor() {
     }
 
     /**
-     * The accessor for the unique instance of the singleton
-     **/
+     * The accessor for the unique InjectHandler of the singleton.
+     * @return the unique InjectHandler of the singleton.
+     */
     public static synchronized AnnotationsProcessor getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new AnnotationsProcessor();
+        if (instance == null) {
+            instance = new AnnotationsProcessor();
         }
-        return INSTANCE;
+        return instance;
     }
-
-    public Object processClassAnnotations(Class clazz, Vector<DSBinder> binders) {
+    /**
+     * Process all annotations on a class.
+     * @param clazz the concerned class.
+     * @param binders concerned binders.
+     * @return the injected object.
+     */
+    public Object processClassAnnotations(final Class clazz, final Vector<DSBinder> binders) {
         return processMethodsAnnotations(
                 processFieldsAnnotations(
                 processConstructorAnnotations(clazz, binders),
                 binders),
                 binders);
     }
-
-    public Object processInstanceAnnotations(Object obj, Vector<DSBinder> binders) {
+    /**
+     * Process all annotations on an object.
+     * @param obj the concerned object.
+     * @param binders concerned binders.
+     * @return the injected object.
+     */
+    public Object processInstanceAnnotations(final Object obj, final Vector<DSBinder> binders) {
         return processMethodsAnnotations(
                 processFieldsAnnotations(obj, binders),
                 binders);
     }
-
-    public Object processInstanceFieldsAnnotations(Object obj, Vector<DSBinder> binders) {
+    /**
+     * Process field annotations on an object.
+     * @param obj the concerned object.
+     * @param binders concerned binders.
+     * @return the injected object.
+     */
+    public Object processInstanceFieldsAnnotations(final Object obj, final Vector<DSBinder> binders) {
         return processFieldsAnnotations(obj, binders);
     }
-
-    public Object processInstanceMethodAnnotations(Object obj, Vector<DSBinder> binders) {
+    /**
+     * Process method annotations on a an object.
+     * @param obj the concerned object.
+     * @param binders concerned binders.
+     * @return the injected object.
+     */
+    public Object processInstanceMethodAnnotations(final Object obj, final Vector<DSBinder> binders) {
         return processMethodsAnnotations(obj, binders);
     }
-
-    private Object processConstructorAnnotations(Class clazz, Vector<DSBinder> binders) {
+    /**
+     * Process constructor annotations on a class.
+     * @param clazz the concerned class.
+     * @param binders concerned binders.
+     * @return the injected object.
+     */
+    private Object processConstructorAnnotations(final Class clazz, final Vector<DSBinder> binders) {
         boolean injectFound = false;
         Object ret = null;
         Constructor[] constructors = clazz.getConstructors();
@@ -88,8 +116,13 @@ public class AnnotationsProcessor {
         }
         return ret;
     }
-
-    private Object processFieldsAnnotations(Object obj, Vector<DSBinder> binders) {
+    /**
+     * Process field annotations on a an object.
+     * @param obj the concerned object.
+     * @param binders concerned binders.
+     * @return the injected object.
+     */
+    private Object processFieldsAnnotations(final Object obj, final Vector<DSBinder> binders) {
         Object ret = null;
         Field[] fields = obj.getClass().getDeclaredFields();
         for (Field field : fields) {
@@ -99,8 +132,13 @@ public class AnnotationsProcessor {
         }
         return ret;
     }
-
-    private Object processMethodsAnnotations(Object obj, Vector<DSBinder> binders) {
+    /**
+     * Process method annotations on a an object.
+     * @param obj the concerned object.
+     * @param binders concerned binders.
+     * @return the injected object.
+     */
+    private Object processMethodsAnnotations(final Object obj, final Vector<DSBinder> binders) {
         Object ret = null;
         Method[] methods = obj.getClass().getDeclaredMethods();
         for (Method method : methods) {
@@ -110,6 +148,4 @@ public class AnnotationsProcessor {
         }
         return ret;
     }
-
-
 }

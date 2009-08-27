@@ -18,19 +18,34 @@
 package cx.ath.mancel01.dependencyshot.api;
 
 /**
- *
+ * Injector interface.
+ * 
  * @author Mathieu ANCELIN
  */
 public interface DSInjector {
-
-    //Object getObjectInstance(Class clazz);
-
+    /**
+     * @param <T> type of the object.
+     * @param type the class to implements.
+     * @return the instance.
+     */
     <T> T getObjectInstance(Class<T> type);
-
-    Object injectFiels(Object obj);
-
+    /**
+     * Injection on fields.
+     * @param obj injectable object.
+     * @return injected object.
+     */
+    Object injectFields(Object obj);
+    /**
+     * injection on an instance.
+     * @param obj injectable object.
+     * @return injected object.
+     */
     Object injectInstance(Object obj);
-
+    /**
+     *
+     * @param obj injectable object.
+     * @return injected object.
+     */
     Object injectMembers(Object obj);
 
 }

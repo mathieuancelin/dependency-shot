@@ -18,7 +18,8 @@
 package cx.ath.mancel01.dependencyshot.api;
 
 /**
- *
+ * Handle some annotation.
+ * 
  * @author Mathieu ANCELIN
  */
 public interface DSAnnotationHandler {

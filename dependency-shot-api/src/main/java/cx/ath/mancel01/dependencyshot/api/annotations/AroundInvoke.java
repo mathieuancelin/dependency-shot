@@ -23,7 +23,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- *
+ * Interceptor annotation around a method.
+ * 
  * @author Mathieu ANCELIN
  */
 @Target(ElementType.METHOD)

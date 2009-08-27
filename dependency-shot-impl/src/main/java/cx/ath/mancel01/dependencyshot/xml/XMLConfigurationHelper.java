@@ -14,34 +14,34 @@
  *  limitations under the License.
  *  under the License.
  */
-
 package cx.ath.mancel01.dependencyshot.xml;
 
 /**
- *
+ * This class handle de processing of configuration files.
+ * 
  * @author Mathieu ANCELIN
  */
-public class XMLBindingsHelper {
+public final class XMLConfigurationHelper {
 
     /**
-     * The unique instance of the class
-     **/
-    private static XMLBindingsHelper INSTANCE = null;
+     * The unique XMLConfigurationHelper of the class.
+     */
+    private static XMLConfigurationHelper instance = null;
 
     /**
-     * The private constructor of the singleton
-     **/
-    private XMLBindingsHelper() {
-
+     * The private constructor of the singleton.
+     */
+    private XMLConfigurationHelper() {
     }
 
     /**
-     * The accessor for the unique instance of the singleton
-     **/
-    public static synchronized XMLBindingsHelper getInstance() {
-        if ( INSTANCE == null ) {
-            INSTANCE = new XMLBindingsHelper();
+     * The accessor for the unique XMLConfigurationHelper of the singleton.
+     * @return the unique XMLConfigurationHelper of the singleton.
+     */
+    public static synchronized XMLConfigurationHelper getInstance() {
+        if (instance == null) {
+            instance = new XMLConfigurationHelper();
         }
-        return INSTANCE;
+        return instance;
     }
 }

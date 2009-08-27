@@ -80,6 +80,9 @@ public abstract class Binder implements DSBinder {
     public DSBinder bind(final Class generic) {
         waitingBinding = new Binding();
         waitingBinding.setGeneric(generic);
+        // theses two lines inject the implementation of the current class.
+        waitingBinding.setSpecific(generic);
+        this.bindings.put(waitingBinding.getGeneric(), waitingBinding);
         genericWaiting = true;
         return this;
     }

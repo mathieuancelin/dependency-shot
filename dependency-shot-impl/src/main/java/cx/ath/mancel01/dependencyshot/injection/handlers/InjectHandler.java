@@ -29,41 +29,45 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Handles inject annotation.
+ * 
  * @author Mathieu ANCELIN
  */
-public class InjectHandler implements DSAnnotationHandler {
+public final class InjectHandler implements DSAnnotationHandler {
+    /**
+     * The unique InjectHandler of the class.
+     */
+    private static InjectHandler instance = null;
 
     /**
-     * The unique instance of the class
-     **/
-    private static InjectHandler INSTANCE = null;
-
-    /**
-     * The private constructor of the singleton
-     **/
+     * The private constructor of the singleton.
+     */
     private InjectHandler() {
     }
-
     /**
-     * The accessor for the unique instance of the singleton
-     **/
+     * The accessor for the unique InjectHandler of the singleton.
+     * @return the unique InjectHandler of the singleton.
+     */
     public static synchronized InjectHandler getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new InjectHandler();
+        if (instance == null) {
+            instance = new InjectHandler();
         }
-        return INSTANCE;
+        return instance;
     }
-
-    public Object injectConstructor(Constructor constructor, Vector<DSBinder> binders) {
+    /**
+     * Injection on constructor.
+     * @param constructor constructor to inject.
+     * @param binders concerned binders.
+     * @return the injected object.
+     */
+    public Object injectConstructor(final Constructor constructor, final Vector<DSBinder> binders) {
         Object ret = null;
         Constructor injectableConstructor = constructor;
-        HashMap<Class, Object> parameters = new HashMap<Class, Object>(); // trouver solution pour plusieur injections de meme type
+        HashMap<Class, Object> parameters = new HashMap<Class, Object>();
         for (Class type : constructor.getParameterTypes()) {
             DSBinding bind = GraphHelper.getInstance().findBinding(type, binders);
             if (bind != null) { //injectable type and found in bindings
                 try {
-                    //System.out.println("contructor bind " + type.getName() + " to " + bind.getSpecificInstance().getClass().getName());
                     parameters.put(type, bind.getSpecificInstance());
                 } catch (Exception ex) {
                     Logger.getLogger(InjectHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -79,13 +83,18 @@ public class InjectHandler implements DSAnnotationHandler {
         }
         return ret;
     }
-
-    public Object injectField(Object obj, Field field, Vector<DSBinder> binders) {
+    /**
+     * Injection on fields.
+     * @param obj injected object.
+     * @param field concerned fields.
+     * @param binders concerned binders.
+     * @return the injected object.
+     */
+    public Object injectField(final Object obj, final Field field, final Vector<DSBinder> binders) {
         Object ret = obj;
         DSBinding bind = GraphHelper.getInstance().findBinding(field.getType(), binders);
         if (bind != null) { //injectable type and found in bindings
             try {
-                //System.out.println("field bind " + field.getType().getName() + " to " + bind.getSpecificInstance().getClass().getName());
                 field.setAccessible(true);
                 field.set(ret, bind.getSpecificInstance());
                 field.setAccessible(false);
@@ -95,15 +104,20 @@ public class InjectHandler implements DSAnnotationHandler {
         }
         return ret;
     }
-
-    public Object injectMethod(Object obj, Method method, Vector<DSBinder> binders) {
+    /**
+     * Injection on methods.
+     * @param obj injected object.
+     * @param method concerned method.
+     * @param binders concerned binders.
+     * @return the injected object.
+     */
+    public Object injectMethod(final Object obj, final Method method, final Vector<DSBinder> binders) {
         Object ret = null;
         HashMap<Class, Object> parameters = new HashMap<Class, Object>();
-        for(Class type : method.getParameterTypes()){ // check for param annotation
+        for (Class type : method.getParameterTypes()) { // check for param annotation
             DSBinding bind = GraphHelper.getInstance().findBinding(type, binders);
             if (bind != null) { //injectable type and found in bindings
                 try {
-                    //System.out.println("method bind " + type.getName() + " to " + bind.getSpecificInstance().getClass().getName());
                     parameters.put(type, bind.getSpecificInstance());
                 } catch (Exception ex) {
                     Logger.getLogger(InjectHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -116,8 +130,6 @@ public class InjectHandler implements DSAnnotationHandler {
         } catch (Exception ex) {
             Logger.getLogger(InjectHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         return ret;
     }
-
 }

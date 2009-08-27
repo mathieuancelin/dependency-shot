@@ -2,9 +2,16 @@ package cx.ath.mancel01.dependencyshot;
 
 import cx.ath.mancel01.dependencyshot.api.annotations.Interceptors;
 
+/**
+ * Implementation of a service.
+ * 
+ * @author Mathieu ANCELIN
+ */
 @Interceptors(value = {MyInterceptor.class, MySecondInterceptor.class})
 public class ServiceImpl implements Service {
-
+    /**
+     * A boolean.
+     */
     private boolean gone = false;
 
     @Override
@@ -30,7 +37,7 @@ public class ServiceImpl implements Service {
     }
 
     @Override
-    public void setString(String str) {
+    public void setString(final String str) {
         System.out.println("set string " + str);
     }
 }

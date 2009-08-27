@@ -14,53 +14,100 @@
  *  limitations under the License.
  *  under the License.
  */
-
 package cx.ath.mancel01.dependencyshot.injection;
 
+import cx.ath.mancel01.dependencyshot.api.DSInjector;
 
 /**
- *
+ * An injector based on the default xml configuration file.
+ * 
  * @author Mathieu ANCELIN
  */
-public class DefaultInjector {
+public final class DefaultInjector implements DSInjector {
 
     /**
-     * The unique instance of the class
-     **/
-    private static DefaultInjector INSTANCE = null;
-
+     * The unique instance of the class.
+     */
+    private static DefaultInjector instance = null;
+    /**
+     * The default name of the default configuration file.
+     */
     private static final String DEFAULT_CONF_FILE_NAME = "bindings.xml";
-
+    /**
+     * The default path of the default configuration file.
+     */
     private static final String DEFAULT_CONF_FILE_PATH = "META-INF";
-    
+
     static {
-        DefaultInjector.class.getResourceAsStream(DEFAULT_CONF_FILE_PATH 
-                + "/"
-                + DEFAULT_CONF_FILE_NAME);
+        // get the default configuration file.
+        DefaultInjector.class.getResourceAsStream(DEFAULT_CONF_FILE_PATH + "/" + DEFAULT_CONF_FILE_NAME);
     }
 
     /**
-     * The private constructor of the singleton
-     **/
+     * The private constructor of the singleton.
+     */
     private DefaultInjector() {
         configureBindings();
     }
 
     /**
-     * The accessor for the unique instance of the singleton
-     **/
+     * The accessor for the unique instance of the singleton.
+     * @return the unique instance of the singleton.
+     */
     public static synchronized DefaultInjector getInstance() {
-        if ( INSTANCE == null ) {
-            INSTANCE = new DefaultInjector();
+        if (instance == null) {
+            instance = new DefaultInjector();
         }
-        return INSTANCE;
+        return instance;
     }
 
-    private void configureBindings(){
-        
+    /**
+     * Configure the bindings of the injector from the configuration file.
+     */
+    private void configureBindings() {
     }
-
-    public void reloadBindingsConfiguration(){
+    
+    /**
+     * reload the configuration file.
+     */
+    public void reloadBindingsConfiguration() {
         configureBindings();
+    }
+    /**
+     * 
+     * @param <T>
+     * @param type
+     * @return
+     */
+    @Override
+    public <T> T getObjectInstance(Class<T> type) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    /**
+     *
+     * @param obj
+     * @return
+     */
+    @Override
+    public Object injectFields(Object obj) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    /**
+     *
+     * @param obj
+     * @return
+     */
+    @Override
+    public Object injectInstance(Object obj) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    /**
+     * 
+     * @param obj
+     * @return
+     */
+    @Override
+    public Object injectMembers(Object obj) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

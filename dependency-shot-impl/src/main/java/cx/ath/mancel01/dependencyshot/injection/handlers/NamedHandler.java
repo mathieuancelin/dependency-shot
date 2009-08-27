@@ -20,30 +20,31 @@ package cx.ath.mancel01.dependencyshot.injection.handlers;
 import cx.ath.mancel01.dependencyshot.api.DSAnnotationHandler;
 
 /**
- *
+ * Handles named annotation.
+ * 
  * @author Mathieu ANCELIN
  */
-public class NamedHandler implements DSAnnotationHandler{
+public final class NamedHandler implements DSAnnotationHandler{
 
     /**
-     * The unique instance of the class
-     **/
-    private static NamedHandler INSTANCE = null;
+     * The unique instance of the class.
+     */
+    private static NamedHandler instance = null;
 
     /**
-     * The private constructor of the singleton
-     **/
+     * The private constructor of the singleton.
+     */
     private NamedHandler() {
 
     }
-
     /**
-     * The accessor for the unique instance of the singleton
-     **/
+     * The accessor for the unique instance of the singleton.
+     * @return the unique instance of the singleton.
+     */
     public static synchronized NamedHandler getInstance() {
-        if ( INSTANCE == null ) {
-            INSTANCE = new NamedHandler();
+        if (instance == null) {
+            instance = new NamedHandler();
         }
-        return INSTANCE;
+        return instance;
     }
 }

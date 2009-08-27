@@ -59,7 +59,7 @@ public class Binding implements DSBinding {
     /**
      * Managed specific instances.
      */
-    private Vector<Object> specificInstances;
+    private Vector<Object> specificInstances = new Vector();
     /**
      * The unique instance (if SINGLETON scope).
      */
@@ -76,6 +76,12 @@ public class Binding implements DSBinding {
      * The managed interceptors.
      */
     private Vector<DSInterceptor> managedInterceptors = new Vector();
+    /**
+     * Default constructor.
+     */
+    public Binding() {
+    }
+    
     /**
      * @return the generic
      */
@@ -181,7 +187,7 @@ public class Binding implements DSBinding {
     public Object getSpecificInstance() {
         try {
             Object o = this.getSpecific().newInstance();
-            this.getSpecificInstances().add(o);
+            this.specificInstances.add(o);
             return processInterceptorsAnnotations(o, this.getGeneric()); // check if injectable ?
         } catch (Exception ex) {
             Logger.getLogger(Binding.class.getName()).log(Level.SEVERE, null, ex);

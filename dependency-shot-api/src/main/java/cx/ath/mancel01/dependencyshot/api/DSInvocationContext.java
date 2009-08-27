@@ -20,17 +20,26 @@ package cx.ath.mancel01.dependencyshot.api;
 import java.lang.reflect.Method;
 
 /**
- *
+ * The context of an invocation.
+ * 
  * @author Mathieu ANCELIN
  */
 public interface DSInvocationContext {
-
+    /**
+     * @return the args of the invocation.
+     */
     Object[] getArgs();
-
+    /**
+     * @return the object of the invocation.
+     */
     Object getBean();
-
+    /**
+     * @return the method of the invocation.
+     */
     Method getMethod();
-
+    /**
+     * @return the result of the invocation.
+     */
     Object proceed();
 
 }

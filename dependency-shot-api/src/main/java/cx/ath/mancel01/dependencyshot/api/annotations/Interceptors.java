@@ -23,11 +23,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- *
+ * Annotation for intercepted classes or method.
+ * 
  * @author Mathieu ANCELIN
  */
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Interceptors {
+    /**
+     * @return interceptor classes.
+     */
     Class[] value();
  }
