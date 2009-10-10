@@ -7,10 +7,10 @@
         <groupId>cx.ath.mancel01</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <groupId>cx.ath.mancel01</groupId>
-    <artifactId>dependency-shot-api</artifactId>
-    <name>Dependency-Shot (JSR-330) :: API</name>
-    <url>http://code.google.com/p/dependency-shot/</url>
+    <groupId>org.atinject</groupId>
+    <artifactId>tck</artifactId>
+    <name>Dependency-Shot (JSR-330) :: JSR TCK</name>
+    <url>http://code.google.com/p/at-inject/</url>
     <dependencies>
         <dependency>
             <groupId>cx.ath.mancel01</groupId>
@@ -21,7 +21,6 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>3.8.1</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

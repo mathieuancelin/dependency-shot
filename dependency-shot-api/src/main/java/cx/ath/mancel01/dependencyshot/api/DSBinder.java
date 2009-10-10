@@ -5,7 +5,9 @@
 
 package cx.ath.mancel01.dependencyshot.api;
 
+import java.lang.annotation.Annotation;
 import java.util.HashMap;
+import javax.inject.Provider;
 
 /**
  * Interface for a binder.
@@ -28,8 +30,41 @@ public interface DSBinder {
      */
     DSBinder bind(final Class generic);
     /**
+     *
+     * @param name
+     * @return
+     */
+    DSBinder bind(final String name);
+    /**
+     *
+     * @param generic
+     * @return
+     */
+    DSBinder from(final Class generic);
+    /**
      * To its implementation.
      * @param specific the implementation class.
      */
-    void to(final Class specific);
+    DSBinder to(final Class specific);
+    /**
+     *
+     * @param qualifier
+     * @return
+     */
+    DSBinder qualifiedBy(final Class<? extends Annotation>  qualifier);
+    /**
+     *
+     * @param <T>
+     * @param provider
+     * @return
+     */
+    <T> DSBinder providedBy(final Provider<T> provider);
+    /**
+     *
+     * @param name
+     * @return
+     */
+    DSBinder namedWith(final String name);
+
+
 }

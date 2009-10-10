@@ -18,7 +18,9 @@ package cx.ath.mancel01.dependencyshot.graph;
 
 import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.api.DSBinding;
+import java.lang.annotation.Annotation;
 import java.util.HashMap;
+import javax.inject.Provider;
 
 /**
  * A binder is a configuration class containing bindings
@@ -34,7 +36,7 @@ import java.util.HashMap;
 public abstract class Binder implements DSBinder {
 
     /**
-     * Map of managed bindings. // TODO handle named bindings too.
+     * Map of managed bindings.
      */
     private HashMap<Class, DSBinding> bindings;
     /**
@@ -60,24 +62,12 @@ public abstract class Binder implements DSBinder {
     public abstract void configureBindings();
 
     /**
-     * Bind an interface to one of its implementation.
-     * @param generic the generic interface.
-     * @param specific the specific implementation.
-     */
-    public void bind(final Class generic, final Class specific) {
-        Binding binding = new Binding();
-        binding.setGeneric(generic);
-        binding.setSpecific(specific);
-        this.bindings.put(generic, binding);
-    }
-
-    /**
      * Natural method to bind an interface to one of its implementation.
      * @param generic the generic interface.
      * @return the current binder object to call the to() method.
      */
     @Override
-    public DSBinder bind(final Class generic) {
+    public final DSBinder bind(final Class generic) {
         waitingBinding = new Binding();
         waitingBinding.setGeneric(generic);
         // theses two lines inject the implementation of the current class.
@@ -88,16 +78,68 @@ public abstract class Binder implements DSBinder {
     }
 
     /**
+     * 
+     * @param name
+     * @return
+     */
+    @Override
+    public final DSBinder bind(final String name) {
+        return this;
+    }
+
+    /**
+     *
+     * @param generic
+     * @return
+     */
+    @Override
+    public final DSBinder from(final Class generic) {
+        return this;
+    }
+
+    /**
      * Bind an interface to one of its implementation.
      * @param specific the specific implementation.
      */
     @Override
-    public void to(final Class specific) {
+    public final DSBinder to(final Class specific) {
         if (genericWaiting) {
             waitingBinding.setSpecific(specific);
             this.bindings.put(waitingBinding.getGeneric(), waitingBinding);
             genericWaiting = false;
         }
+        return this;
+    }
+
+    /**
+     *
+     * @param qualifier
+     * @return
+     */
+    @Override
+    public final DSBinder qualifiedBy(final Class<? extends Annotation>  qualifier) {
+        return this;
+    }
+
+    /**
+     *
+     * @param <T>
+     * @param provider
+     * @return
+     */
+    @Override
+    public final <T> DSBinder providedBy(final Provider<T> provider) {
+        return this;
+    }
+
+    /**
+     *
+     * @param name
+     * @return
+     */
+    @Override
+    public final DSBinder namedWith(final String name) {
+        return this;
     }
 
     /**
@@ -115,5 +157,21 @@ public abstract class Binder implements DSBinder {
      */
     public void setBindings(final HashMap<Class, DSBinding> bindings) {
         this.bindings = bindings;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Binder ");
+        builder.append(this.getClass().getSimpleName());
+        builder.append(" [");
+        builder.append("\n\n");
+        for (DSBinding binding : bindings.values()) {
+            builder.append("   ");
+            builder.append(binding.toString());
+            builder.append("\n");
+        }
+        builder.append("\n]");
+        return builder.toString();
     }
 }

@@ -4,7 +4,7 @@ import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import static junit.framework.Assert.assertTrue;
 
 /**
- * Tests of dependency-shot.
+ * Tests of dependency-shot. 
  * 
  * @author Mathieu ANCELIN
  */
@@ -31,7 +31,7 @@ public class InjectTest {
      */
     public void testInjectedClient() {
         System.out.println("Test : @Inject");
-        DSInjector injector = Shot.getInjector(new MyBinder());
+        DSInjector injector = DependencyShot.getInjector(new MyBinder());
         Client client = injector.getObjectInstance(Client.class);
         client.go();
         client.setString("blabla");
