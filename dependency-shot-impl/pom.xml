@@ -8,7 +8,6 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>dependency-shot-impl</artifactId>
-    <version>1.0-SNAPSHOT</version>
     <name>Dependency-Shot (JSR-330) :: IMPL</name>
     <url>http://code.google.com/p/dependency-shot/</url>
     <build>
@@ -59,14 +58,20 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.atinject</groupId>
+            <artifactId>tck</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>cx.ath.mancel01</groupId>
             <artifactId>at-inject-api</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>cx.ath.mancel01</groupId>
             <artifactId>dependency-shot-api</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
     <properties>

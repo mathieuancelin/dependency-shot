@@ -33,6 +33,7 @@
     <module>at-inject-api</module>
     <module>dependency-shot-impl</module>
     <module>dependency-shot-api</module>
+    <module>tck</module>
   </modules>
   <dependencies>
     <dependency>

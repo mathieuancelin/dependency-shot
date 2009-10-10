@@ -17,8 +17,10 @@
 package cx.ath.mancel01.dependencyshot.injection;
 
 import cx.ath.mancel01.dependencyshot.api.DSBinder;
+import cx.ath.mancel01.dependencyshot.api.DSBinding;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import cx.ath.mancel01.dependencyshot.exceptions.DSException;
+import cx.ath.mancel01.dependencyshot.graph.GraphHelper;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,8 +49,15 @@ public class InjectorImpl implements DSInjector {
      */
     @Override
     public Object getObjectInstance(final Class clazz) {
-        if (binders.size() > 0) {
-            return AnnotationsProcessor.getInstance().processClassAnnotations(clazz, binders);
+        if (binders.size() > 0) { // check first if class is binded. if yes work with the bind class
+            Class injectable = clazz;
+            System.out.println(injectable.getSimpleName());
+            DSBinding binder = GraphHelper.getInstance().findBinding(clazz, binders);
+            if(binder != null){
+               injectable = binder.getSpecific();
+               System.out.println(injectable.getSimpleName());
+            }
+            return AnnotationsProcessor.getInstance().processClassAnnotations(injectable, binders);
         } else {
             throw new DSException("No bindings loaded");
         }
@@ -102,7 +111,8 @@ public class InjectorImpl implements DSInjector {
                 binder.configureBindings();
                 if (binder.getBindings().isEmpty()) {
                     Logger.getLogger(InjectorImpl.class.getName()).
-                            log(Level.SEVERE, "Ooops, no bindings presents, " + "can't inject your apps ...");
+                            log(Level.SEVERE, "Ooops, no bindings presents, "
+                            + "can't inject your apps ...");
                     throw new DSException("No bindings loaded");
                 }
             }

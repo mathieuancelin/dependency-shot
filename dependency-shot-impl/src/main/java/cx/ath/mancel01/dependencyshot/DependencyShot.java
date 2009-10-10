@@ -30,11 +30,11 @@ import java.util.Arrays;
  * 
  * @author mathieuancelin
  */
-public final class Shot {
+public final class DependencyShot {
     /**
      * Private constructor cause it's a utility class.
      */
-    private Shot() {
+    private DependencyShot() {
 
     }
     /**
