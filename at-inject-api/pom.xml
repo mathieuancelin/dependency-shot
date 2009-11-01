@@ -31,7 +31,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>atinject-EDR</finalName>
+        <finalName>javax.inject</finalName>
     </build>
     <dependencies>
         <dependency>

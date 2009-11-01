@@ -104,7 +104,7 @@ public final class AnnotationsProcessor {
     private Object processConstructorAnnotations(final Class clazz, final Vector<DSBinder> binders) {
         boolean injectFound = false;
         Object ret = null;
-        Constructor[] constructors = clazz.getConstructors();
+        Constructor[] constructors = clazz.getDeclaredConstructors();//getConstructors();
         for (Constructor constructor : constructors) {
             if (constructor.isAnnotationPresent(Inject.class) && !injectFound) {
                 injectFound = true;
