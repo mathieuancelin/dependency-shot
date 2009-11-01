@@ -11,6 +11,9 @@
     <artifactId>tck</artifactId>
     <name>Dependency-Shot (JSR-330) :: JSR TCK</name>
     <url>http://code.google.com/p/at-inject/</url>
+    <build>
+        <finalName>javax.inject-tck</finalName>
+    </build>
     <dependencies>
         <dependency>
             <groupId>cx.ath.mancel01</groupId>
