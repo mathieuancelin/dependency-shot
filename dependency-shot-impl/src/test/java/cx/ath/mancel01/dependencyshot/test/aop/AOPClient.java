@@ -1,4 +1,4 @@
-package cx.ath.mancel01.dependencyshot.basic;
+package cx.ath.mancel01.dependencyshot.test.aop;
 
 import javax.inject.Inject;
 
@@ -7,28 +7,28 @@ import javax.inject.Inject;
  * 
  * @author Mathieu ANCELIN
  */
-public class BasicClient {
+public class AOPClient {
 
     /**
      * A service.
      */
-    private final BasicService service;
+    private final AOPService service;
     /**
      * Another service.
      */
     @Inject
-    private BasicService service2;
+    private AOPService service2;
     /**
      * Yet another service.
      */
-    private BasicService service3;
+    private AOPService service3;
 
     /**
      * Injected constructor.
      * @param service injected object.
      */
     @Inject
-    public BasicClient(BasicService service) {
+    public AOPClient(AOPService service) {
         super();
         this.service = service;
     }
@@ -46,7 +46,7 @@ public class BasicClient {
      * Setter.
      * @param service2 a service.
      */
-    public void setService2(BasicService service2) {
+    public void setService2(AOPService service2) {
         this.service2 = service2;
     }
 
@@ -55,7 +55,7 @@ public class BasicClient {
      * @param service3 a service.
      */
     @Inject
-    public void setService3(BasicService service3) {
+    public void setService3(AOPService service3) {
         this.service3 = service3;
     }
 
@@ -63,7 +63,7 @@ public class BasicClient {
      * Getter.
      * @return a service.
      */
-    public BasicService getService() {
+    public AOPService getService() {
         return this.service;
     }
 
@@ -71,7 +71,7 @@ public class BasicClient {
      * Getter.
      * @return a service.
      */
-    public BasicService getService2() {
+    public AOPService getService2() {
         return service2;
     }
 
@@ -79,7 +79,7 @@ public class BasicClient {
      * Getter.
      * @return a service.
      */
-    public BasicService getService3() {
+    public AOPService getService3() {
         return service3;
     }
 

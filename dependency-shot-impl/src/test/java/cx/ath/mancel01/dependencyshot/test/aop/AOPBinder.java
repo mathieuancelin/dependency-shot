@@ -1,4 +1,4 @@
-package cx.ath.mancel01.dependencyshot.aop;
+package cx.ath.mancel01.dependencyshot.test.aop;
 
 import cx.ath.mancel01.dependencyshot.graph.Binder;
 /**

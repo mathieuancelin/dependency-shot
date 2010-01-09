@@ -1,11 +1,14 @@
-package cx.ath.mancel01.dependencyshot.basic;
+package cx.ath.mancel01.dependencyshot.test.aop;
+
+import cx.ath.mancel01.dependencyshot.api.annotations.Interceptors;
 
 /**
  * Implementation of a service.
  * 
  * @author Mathieu ANCELIN
  */
-public class BasicServiceImpl implements BasicService {
+@Interceptors(value = {AOPClassInterceptor.class, AOPSecondClassInterceptor.class})
+public class AOPServiceImpl implements AOPService {
     /**
      * A boolean.
      */
@@ -21,6 +24,7 @@ public class BasicServiceImpl implements BasicService {
         return gone;
     }
 
+    @Interceptors(value = AOPMethodInterceptor.class)
     @Override
     public String getString() {
         return "the returned String";

@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.tck;
+package cx.ath.mancel01.dependencyshot.test.tck;
 
 import cx.ath.mancel01.dependencyshot.graph.Binder;
 import javax.inject.Provider;

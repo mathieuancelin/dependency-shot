@@ -23,9 +23,8 @@ import cx.ath.mancel01.dependencyshot.api.DSBinder;
  * 
  * @author Mathieu ANCELIN
  */
-public final class InjectorBuilder {
-
-    private static InjectorImpl injector = new InjectorImpl(); // TODO really ugly. Change it
+public final class InjectorBuilder { // TODO : manage multiple binder injection
+                                     // with different config in one injector (or container ?)
     /**
      * Private constructor.
      */
@@ -36,6 +35,7 @@ public final class InjectorBuilder {
      * @return the configured injector.
      */
     public static InjectorImpl makeInjector(final Iterable<? extends DSBinder> binders) {
+        InjectorImpl injector = new InjectorImpl();
         injector.resetBinders();
         for (DSBinder binder : binders) {
             injector.addBinder(binder);
@@ -49,6 +49,7 @@ public final class InjectorBuilder {
      * @return the configured injector.
      */
     public static InjectorImpl makeInjector(final DSBinder binder) {
+        InjectorImpl injector = new InjectorImpl();
         injector.resetBinders();
         injector.addBinder(binder);
         injector.configureBinders();

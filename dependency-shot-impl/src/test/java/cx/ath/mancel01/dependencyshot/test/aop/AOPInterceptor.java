@@ -1,4 +1,4 @@
-package cx.ath.mancel01.dependencyshot.aop;
+package cx.ath.mancel01.dependencyshot.test.aop;
 
 import cx.ath.mancel01.dependencyshot.api.DSInvocationContext;
 import cx.ath.mancel01.dependencyshot.api.annotations.AroundInvoke;
@@ -8,7 +8,7 @@ import cx.ath.mancel01.dependencyshot.api.annotations.AroundInvoke;
  *
  * @author Mathieu ANCELIN
  */
-public class AOPClassInterceptor {
+public class AOPInterceptor {
     /**
      * Interception method.
      * @param ctx the invocation context.
@@ -17,13 +17,12 @@ public class AOPClassInterceptor {
      */
     @AroundInvoke
     public Object intercept(final DSInvocationContext ctx) throws Exception {
-        AOPInterceptionResult.getInstance().getPreClass().add("before invocation " + ctx.getBean().getClass().getName()
+        AOPInterceptionResult.getInstance().getPreClass().add("before interface invocation " + ctx.getBean().getClass().getName()
                 + ":" + ctx.getMethod().getName());
         try {
             return ctx.proceed();
         } finally {
-            
-            AOPInterceptionResult.getInstance().getPostClass().add("after  invocation " + ctx.getBean().getClass().getName()
+            AOPInterceptionResult.getInstance().getPostClass().add("after  interface invocation " + ctx.getBean().getClass().getName()
                     + ":" + ctx.getMethod().getName());
         }
     }
