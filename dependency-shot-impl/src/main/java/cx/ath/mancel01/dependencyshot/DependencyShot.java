@@ -30,6 +30,7 @@ import java.util.Arrays;
  * @author Mathieu ANCELIN
  */
 public final class DependencyShot {
+    // TODO : managed directory lookup for a named injection (useful for services injection)
     /**
      * Private constructor cause it's a utility class.
      */

@@ -18,9 +18,6 @@ package cx.ath.mancel01.dependencyshot.graph;
 
 import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
-import cx.ath.mancel01.dependencyshot.injection.fluent.Binded;
-import cx.ath.mancel01.dependencyshot.injection.fluent.BindedFrom;
-import cx.ath.mancel01.dependencyshot.injection.fluent.BindedTo;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,14 +35,17 @@ import javax.inject.Provider;
  * @author Mathieu ANCELIN
  */
 public abstract class Binder implements DSBinder {
-
     /**
      * Context for named injections.
      */
 	private Map<Binding<?>, Binding<?>> bindings = new HashMap<Binding<?>, Binding<?>>();
-
+    /**
+     * The injector that manage the binder instance.
+     */
     private DSInjector binderInjector;
-
+    /**
+     * Constructor.
+     */
 	public Binder() { }
 
     /**
@@ -62,7 +62,7 @@ public abstract class Binder implements DSBinder {
      * @param to Implementation of extends of from
      */
 	public <T> void bind(Class<T> from, Class<? extends T> to) {
-		addBinding(new Binding<T>(from, to));
+        addBindingToBinder(new Binding<T>(null, null, from, to, null));
 	}
 
     /**
@@ -72,7 +72,7 @@ public abstract class Binder implements DSBinder {
      * @param c Binded class
      */
 	public <T> void bind(Class<T> c) {
-		addBinding(new Binding<T>(c, c));
+        addBindingToBinder(new Binding<T>(null, null, c, c, null));
 	}
 
     /**
@@ -84,7 +84,7 @@ public abstract class Binder implements DSBinder {
      * @param to Implementation of extends of from
      */
 	public <T> void bind(Class<? extends Annotation> qualifier, Class<T> from, Class<? extends T> to) {
-		addBinding(new Binding<T>(qualifier, from, to));
+        addBindingToBinder(new Binding<T>(qualifier, null, from, to, null));
 	}
 
     /**
@@ -96,7 +96,19 @@ public abstract class Binder implements DSBinder {
      * @param provider provide object
      */
 	public <T> void bind(String name, Class<T> from, Provider<T> provider) {
-		addBinding(new Binding<T>(name, from, provider));
+        addBindingToBinder(new Binding<T>(null, name, from, from, provider));
+	}
+
+    /**
+     * Binding method
+     *
+     * @param <T> type
+     * @param from Binded class
+     * @param name name of the binding @Named
+     * @param to Implementation of extends of from
+     */
+    public <T> void bind(Class<T> from, String name, Class<? extends T> to) {
+        addBindingToBinder(new Binding<T>(null, name, from, to, null));
 	}
 
     /**
@@ -105,7 +117,7 @@ public abstract class Binder implements DSBinder {
      * @param <T> type
      * @param binding a binding to add.
      */
-	private <T> void addBinding(Binding<T> binding) {
+	private <T> void addBindingToBinder(Binding<T> binding) {
         if(bindings.containsKey(binding))
             return;
 		Binding<?> old = bindings.put(binding, binding);
