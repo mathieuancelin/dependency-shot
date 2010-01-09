@@ -1,4 +1,4 @@
-package cx.ath.mancel01.dependencyshot.basic;
+package cx.ath.mancel01.dependencyshot.test.basic;
 
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;

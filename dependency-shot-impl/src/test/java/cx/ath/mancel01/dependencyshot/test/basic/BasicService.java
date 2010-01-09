@@ -1,14 +1,11 @@
-package cx.ath.mancel01.dependencyshot.aop;
-
-import cx.ath.mancel01.dependencyshot.api.annotations.Interceptors;
+package cx.ath.mancel01.dependencyshot.test.basic;
 
 /**
  * Interceptor on any implementation of this interface.
  *
  * @author Mathieu ANCELIN
  */
-@Interceptors(value = AOPInterceptor.class)
-public interface AOPService {
+public interface BasicService {
     /**
      * Some method.
      */
@@ -25,7 +22,6 @@ public interface AOPService {
     /**
      * @return an int.
      */
-    @Interceptors(value = AOPMethodInterceptor.class)
     int getInt();
     /**
      * @return gone boolean.
