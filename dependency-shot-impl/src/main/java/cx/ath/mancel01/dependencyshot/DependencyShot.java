@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009 Mathieu ANCELIN.
+ *  Copyright 2009-2010 Mathieu ANCELIN
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,9 +18,8 @@
 package cx.ath.mancel01.dependencyshot;
 
 import cx.ath.mancel01.dependencyshot.api.DSBinder;
-import cx.ath.mancel01.dependencyshot.injection.DefaultInjector;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
-import cx.ath.mancel01.dependencyshot.injection.InjectorMaker;
+import cx.ath.mancel01.dependencyshot.injection.InjectorBuilder;
 import java.util.Arrays;
 
 /**
@@ -28,7 +27,7 @@ import java.util.Arrays;
  * It handle configuration binder and return injector
  * for your own apps.
  * 
- * @author mathieuancelin
+ * @author Mathieu ANCELIN
  */
 public final class DependencyShot {
     /**
@@ -36,14 +35,6 @@ public final class DependencyShot {
      */
     private DependencyShot() {
 
-    }
-    /**
-     * Get an injector from a specific configuration file.
-     * @param xmlBindingFile path to the specific configuration file.
-     * @return the injector.
-     */
-    public static InjectorImpl getInjector(final String xmlBindingFile) {
-        return InjectorMaker.makeInjector(xmlBindingFile); // TODO xml configuration
     }
     /**
      * Get an injector from configuration binders.
@@ -59,14 +50,6 @@ public final class DependencyShot {
      * @return the injector.
      */
     public static InjectorImpl getInjector(final Iterable<? extends DSBinder> binders) {
-        return InjectorMaker.makeInjector(binders);
-    }
-    /**
-     * Get the default injector configured with the bindings.xml file
-     * present in the META-INF directory.
-     * @return the injector.
-     */
-    public static DefaultInjector getDefaultInjector() {
-        return DefaultInjector.getInstance();
+        return InjectorBuilder.makeInjector(binders);
     }
 }

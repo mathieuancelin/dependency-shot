@@ -13,9 +13,9 @@
     <url>http://code.google.com/p/dependency-shot/</url>
     <dependencies>
         <dependency>
-            <groupId>cx.ath.mancel01</groupId>
-            <artifactId>at-inject-api</artifactId>
-            <version>${project.version}</version>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>1</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

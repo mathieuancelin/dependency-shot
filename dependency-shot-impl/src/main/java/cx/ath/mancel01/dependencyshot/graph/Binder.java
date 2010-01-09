@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009 Mathieu ANCELIN.
+ *  Copyright 2009-2010 Mathieu ANCELIN
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,9 +17,13 @@
 package cx.ath.mancel01.dependencyshot.graph;
 
 import cx.ath.mancel01.dependencyshot.api.DSBinder;
-import cx.ath.mancel01.dependencyshot.api.DSBinding;
+import cx.ath.mancel01.dependencyshot.api.DSInjector;
+import cx.ath.mancel01.dependencyshot.injection.fluent.Binded;
+import cx.ath.mancel01.dependencyshot.injection.fluent.BindedFrom;
+import cx.ath.mancel01.dependencyshot.injection.fluent.BindedTo;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Provider;
 
 /**
@@ -36,24 +40,13 @@ import javax.inject.Provider;
 public abstract class Binder implements DSBinder {
 
     /**
-     * Map of managed bindings.
+     * Context for named injections.
      */
-    private HashMap<Class, DSBinding> bindings;
-    /**
-     * The waiting binding in case of natural methods use.
-     */
-    private Binding waitingBinding;
-    /**
-     * The flag for natural method use.
-     */
-    private boolean genericWaiting = false;
+	private Map<Binding<?>, Binding<?>> bindings = new HashMap<Binding<?>, Binding<?>>();
 
-    /**
-     * Constructor.
-     */
-    public Binder() {
-        bindings = new HashMap<Class, DSBinding>();
-    }
+    private DSInjector binderInjector;
+
+	public Binder() { }
 
     /**
      * Abstract method to configure the binder with bindings.
@@ -62,116 +55,107 @@ public abstract class Binder implements DSBinder {
     public abstract void configureBindings();
 
     /**
-     * Natural method to bind an interface to one of its implementation.
-     * @param generic the generic interface.
-     * @return the current binder object to call the to() method.
-     */
-    @Override
-    public final DSBinder bind(final Class generic) {
-        waitingBinding = new Binding();
-        waitingBinding.setGeneric(generic);
-        // theses two lines inject the implementation of the current class.
-        waitingBinding.setSpecific(generic);
-        this.bindings.put(waitingBinding.getGeneric(), waitingBinding);
-        genericWaiting = true;
-        return this;
-    }
-
-    /**
+     * Binding method
      * 
-     * @param name
-     * @return
+     * @param <T> type
+     * @param from Binded class
+     * @param to Implementation of extends of from
      */
-    @Override
-    public final DSBinder bind(final String name) {
-        return this;
-    }
+	public <T> void bind(Class<T> from, Class<? extends T> to) {
+		addBinding(new Binding<T>(from, to));
+	}
 
     /**
+     * Binding method
      *
-     * @param generic
-     * @return
+     * @param <T> type
+     * @param c Binded class
      */
-    @Override
-    public final DSBinder from(final Class generic) {
-        return this;
-    }
+	public <T> void bind(Class<T> c) {
+		addBinding(new Binding<T>(c, c));
+	}
 
     /**
-     * Bind an interface to one of its implementation.
-     * @param specific the specific implementation.
-     */
-    @Override
-    public final DSBinder to(final Class specific) {
-        if (genericWaiting) {
-            waitingBinding.setSpecific(specific);
-            this.bindings.put(waitingBinding.getGeneric(), waitingBinding);
-            genericWaiting = false;
-        }
-        return this;
-    }
-
-    /**
+     * Binding method
      *
+     * @param <T> type
      * @param qualifier
-     * @return
+     * @param from Binded class
+     * @param to Implementation of extends of from
      */
-    @Override
-    public final DSBinder qualifiedBy(final Class<? extends Annotation>  qualifier) {
-        return this;
-    }
+	public <T> void bind(Class<? extends Annotation> qualifier, Class<T> from, Class<? extends T> to) {
+		addBinding(new Binding<T>(qualifier, from, to));
+	}
 
     /**
+     * Binding method
+     * 
+     * @param <T> type
+     * @param name name of the binding @Named
+     * @param from Binded class
+     * @param provider provide object
+     */
+	public <T> void bind(String name, Class<T> from, Provider<T> provider) {
+		addBinding(new Binding<T>(name, from, provider));
+	}
+
+    /**
+     * Add a binding to current bindings.
      *
-     * @param <T>
-     * @param provider
-     * @return
+     * @param <T> type
+     * @param binding a binding to add.
      */
-    @Override
-    public final <T> DSBinder providedBy(final Provider<T> provider) {
-        return this;
-    }
+	private <T> void addBinding(Binding<T> binding) {
+        if(bindings.containsKey(binding))
+            return;
+		Binding<?> old = bindings.put(binding, binding);
+		if (old != null) {
+			throw new IllegalArgumentException(binding + " overwrites " + old);
+		}
+	}
 
     /**
-     *
-     * @param name
-     * @return
+     * Fluent API
      */
-    @Override
-    public final DSBinder namedWith(final String name) {
-        return this;
-    }
 
-    /**
-     * Getter on the bindings.
-     * @return the current bindings.
-     */
-    @Override
-    public HashMap<Class, DSBinding> getBindings() {
+//    public <T> BindedTo bind(Class<T> c) { // BindedTo et BindedFrom ?
+//        if (c.isAssignableFrom(Annotation.class)) {
+//
+//        }
+//        return null;
+//    }
+//
+//    public <T> BindedFrom bind(String name) {
+//        return null;
+//    }
+//
+//    public <T> Binded to(Class<? extends T> to) {
+//        return null;
+//    }
+//
+//    public <T> BindedTo from(Class<T> from) { // BindedTo ou BindProvidedBy ?
+//        return null;
+//    }
+//
+//    public <T> Binded providedBy(Provider<T> provider) {
+//        return null;
+//    }
+//
+    public Map<Binding<?>, Binding<?>> getBindings() {
         return bindings;
     }
 
-    /**
-     * Setter on the bindings.
-     * @param bindings the current bindings value.
-     */
-    public void setBindings(final HashMap<Class, DSBinding> bindings) {
-        this.bindings = bindings;
+    @Override
+    public boolean isEmpty() {
+        return bindings.isEmpty();
     }
 
     @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Binder ");
-        builder.append(this.getClass().getSimpleName());
-        builder.append(" [");
-        builder.append("\n\n");
-        for (DSBinding binding : bindings.values()) {
-            builder.append("   ");
-            builder.append(binding.toString());
-            builder.append("\n");
-        }
-        builder.append("\n]");
-        return builder.toString();
+    public void setInjector(DSInjector injector) {
+        binderInjector = injector;
+    }
+
+    public DSInjector getBinderInjector() {
+        return binderInjector;
     }
 }

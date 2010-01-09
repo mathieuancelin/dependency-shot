@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009-2010 Mathieu ANCELIN
+ *  Copyright 2010 mathieuancelin.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,31 +15,18 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.api;
-
-import java.lang.reflect.Method;
+package cx.ath.mancel01.dependencyshot.exceptions;
 
 /**
- * The context of an invocation.
- * 
+ *
  * @author Mathieu ANCELIN
  */
-public interface DSInvocationContext {
+public class DSIllegalStateException extends IllegalStateException {
     /**
-     * @return the args of the invocation.
+     * Constructs an instance of <code>DSIllegalStateException</code> with the specified detail message.
+     * @param msg the detail message.
      */
-    Object[] getArgs();
-    /**
-     * @return the object of the invocation.
-     */
-    Object getBean();
-    /**
-     * @return the method of the invocation.
-     */
-    Method getMethod();
-    /**
-     * @return the result of the invocation.
-     */
-    Object proceed();
-
+    public DSIllegalStateException(String msg) {
+        super(msg);
+    }
 }

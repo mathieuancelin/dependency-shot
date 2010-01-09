@@ -10,6 +10,7 @@ public class BasicBinder extends Binder {
 
     @Override
     public void configureBindings() {
-        bind(BasicService.class).to(BasicServiceImpl.class);
+        bind(BasicService.class, BasicServiceImpl.class);
+        bind(BasicClient.class);
     }
 }

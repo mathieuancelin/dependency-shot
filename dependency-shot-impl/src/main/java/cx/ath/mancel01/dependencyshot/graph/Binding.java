@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009 Mathieu ANCELIN.
+ *  Copyright 2009-2010 Mathieu ANCELIN
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,20 +16,14 @@
  */
 package cx.ath.mancel01.dependencyshot.graph;
 
-import cx.ath.mancel01.dependencyshot.aop.Weaver;
-import cx.ath.mancel01.dependencyshot.aop.FinalInterceptor;
-import cx.ath.mancel01.dependencyshot.aop.UserInterceptor;
-import cx.ath.mancel01.dependencyshot.api.DSInterceptor;
 import cx.ath.mancel01.dependencyshot.api.DSBinding;
-import cx.ath.mancel01.dependencyshot.api.annotations.Interceptors;
-import cx.ath.mancel01.dependencyshot.api.annotations.AroundInvoke;
-import cx.ath.mancel01.dependencyshot.injection.AnnotationsProcessor;
+import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
+import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Named;
 import javax.inject.Provider;
+import javax.inject.Qualifier;
+import javax.inject.Singleton;
 
 /**
  * Object representation of a binding.
@@ -37,219 +31,190 @@ import javax.inject.Provider;
  * @author Mathieu ANCELIN
  */
 public class Binding<T> implements DSBinding {
-    /**
-     * The scope of the binding.
-     */
-    public enum SCOPE {
-        /**
-         * Unique instance.
-         */
-        SINGLETON,
-        /**
-         * Normal scope.
-         */
-        NORMAL
-    };
-    /**
-     * The generic class of the binding (interface).
-     */
-    private Class<T> generic;//private Class generic;
-    /**
-     * The specific implementation.
-     */
-    private Class<? extends T> specific;//private Class specific;
-    /**
-     * The possible qualifier on a binding.
-     */
-	private Class<? extends Annotation> qualifier;
-    /**
-     * JSR 330 provider for a binding;
-     */
-	private Provider<T> provider;
-    /**
-     * Managed specific instances.
-     */
-    private Vector<Object> specificInstances = new Vector();
-    /**
-     * The unique instance (if SINGLETON scope).
-     */
-    private Object uniqueInstance;
-    /**
-     * The current scope.
-     */
-    private SCOPE scope;
-    /**
-     * The binding name (if named injection).
-     */
-    private String name;
-    /**
-     * The managed interceptors.
-     */
-    private Vector<DSInterceptor> managedInterceptors = new Vector();
-    /**
-     * Default constructor.
-     */
-    public Binding() {
-    }
     
     /**
-     * @return the generic
+     * Binded class.
      */
+    private Class<T> from;
+
+    /**
+     * Implementation of extends of @Code from
+     */
+	private Class<? extends T> to;
+
+    /**
+     * Custom qualifier annotation for a binding. 
+     * Useful for specific injection.
+     */
+	private Class<? extends Annotation> qualifier;
+
+    /**
+     * Instance provider for an injection (factory like)
+     */
+	private Provider<T> provider;
+
+    /**
+     * Name of a named binding i.e with @Named("something")
+     */
+	private String name;
+
+    /**
+     * Constructor
+     * @param from Binded class
+     * @param to Implementation of extends of from
+     */
+	public Binding(Class<T> from, Class<? extends T> to) {
+		this(null, null, from, to, null);
+	}
+
+    /**
+     * Constructor
+     * 
+     * @param qualifier qualifier of the binding
+     * @param from basic binded class
+     * @param to implementation or extends of the binded class
+     */
+	public Binding(Class<? extends Annotation> qualifier, Class<T> from, Class<? extends T> to) {
+		this(qualifier, null, from, to, null);
+	}
+
+    /**
+     * Constructor
+     * 
+     * @param name name of the binding @Named
+     * @param from basic binded class
+     * @param provider provider object
+     */
+	public Binding(String name, Class<T> from, Provider<T> provider) {
+		this(null, name, from, from, provider);
+	}
+
+	/**
+     * Create a fake binding to search it in a map.
+     *
+     * @param <T> type of the class
+     * @param c class to bind
+     * @param annotation qualifier
+     * @return a fake binding
+     */
+	public static <T> Binding<T> lookup(Class<T> c, Annotation annotation) {
+		if (annotation instanceof Named) {
+			Named named = (Named) annotation;
+			return new Binding<T>(named.value(), c, null);
+		} else if (annotation != null) {
+			return new Binding<T>(annotation.annotationType(), c, null);
+		} else {
+			return new Binding<T>(c, null);
+		}
+	}
+    
+    /**
+     * Constructor
+     * 
+     * @param qualifier qualifier of the binding
+     * @param name name of the binding @Named
+     * @param from basic binded class
+     * @param to implementation or extends of the binded class
+     * @param provider provider object
+     */
+	private Binding(Class<? extends Annotation> qualifier, String name, Class<T> from, Class<? extends T> to,
+			Provider<T> provider) {
+		if (qualifier != null && !qualifier.isAnnotationPresent(Qualifier.class)) {
+			throw new IllegalArgumentException();
+		}
+		this.from = from;
+		this.qualifier = qualifier;
+		this.to = to;
+		this.name = name;
+		this.provider = provider;
+	}
+
+	Class<T> getFrom() {
+		return from;
+	}
+
+	Class<? extends Annotation> getQualifier() {
+		return qualifier;
+	}
+
+	Class<? extends T> getTo() {
+		return to;
+	}
+    /**
+     * Get an instance of a binded object.
+     *
+     * @param injector the concerned injector
+     * @return binded object
+     */
+	public T getInstance(InjectorImpl injector) {
+		T result = null;
+		if (provider != null) {
+			result = provider.get();
+		} else if (to.isAnnotationPresent(Singleton.class)) {
+			result = injector.getSingleton(to);
+		} else {
+			result = injector.createInstance(to);
+		}
+		if (result == null) {
+			throw new DSIllegalStateException("Could not get a " + to);
+		}
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Binding<?> other = (Binding<?>) obj;
+		if (from == null) {
+			if (other.from != null)
+				return false;
+		} else if (!from.equals(other.from))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (qualifier == null) {
+			if (other.qualifier != null)
+				return false;
+		} else if (!qualifier.equals(other.qualifier))
+			return false;
+		return true;
+	}
+
     @Override
-    public Class<T> getGeneric() {
-        return generic;
-    }
-
-    /**
-     * @param generic the generic to set
-     */
-    public void setGeneric(final Class<T> generic) {
-        this.generic = generic;
-    }
-
-    /**
-     * @return the specific
-     */
-    public Class<? extends T> getSpecific() {
-        return specific;
-    }
-
-    /**
-     * @param specific the specific to set
-     */
-    public void setSpecific(final Class<? extends T> specific) {
-        this.specific = specific;
-    }
-
-    /**
-     * @param qualifier the qualifier of the binding.
-     */
-    public void setQualifier(final Class<? extends Annotation> qualifier) {
-        this.qualifier = qualifier;
-    }
-
-    /**
-     * @param provider the provider of the binding.
-     */
-    public void setProvider(final Provider<T> provider) {
-        this.provider = provider;
-    }
-
-    /**
-     * @return the qualifier of the binding.
-     */
-    public Class<? extends Annotation> getQualifier() {
-        return qualifier;
-    }
-
-    /**
-     * @return the provider of the binding.
-     */
-    public Provider<T> getProvider() {
-        return provider;
-    }
-
-    /**
-     * @return the specificInstances
-     */
-    public Vector<Object> getSpecificInstances() {
-        return specificInstances;
-    }
-
-    /**
-     * @param specificInstances the specificInstances to set
-     */
-    public void setSpecificInstances(final Vector<Object> specificInstances) {
-        this.specificInstances = specificInstances;
-    }
-
-    /**
-     * @return the uniqueInstance
-     */
-    public Object getUniqueInstance() {
-        return uniqueInstance;
-    }
-
-    /**
-     * @param uniqueInstance the uniqueInstance to set
-     */
-    public void setUniqueInstance(final Object uniqueInstance) {
-        this.uniqueInstance = uniqueInstance;
-    }
-
-    /**
-     * @return the scope
-     */
-    public SCOPE getScope() {
-        return scope;
-    }
-
-    /**
-     * @param scope the scope to set
-     */
-    public void setScope(final SCOPE scope) {
-        this.scope = scope;
-    }
-
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    /**
-     * @return the managedInterceptors
-     */
-    public Vector<DSInterceptor> getManagedInterceptors() {
-        return managedInterceptors;
-    }
-
-    /**
-     * @param managedInterceptors the managedInterceptors to set
-     */
-    public void setManagedInterceptors(final Vector<DSInterceptor> managedInterceptors) {
-        this.managedInterceptors = managedInterceptors;
-    }
-    /**
-     * @return a specific instance of specific class.
-     */
-    @Override
-    public Object getSpecificInstance() {
-        try {
-            Object o = this.getSpecific().newInstance();
-            this.specificInstances.add(o);
-            return processInterceptorsAnnotations(o, this.getGeneric()); // check if injectable ?
-        } catch (Exception ex) {
-            Logger.getLogger(Binding.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-    }
+	public int hashCode() {
+		final int prime = 89;
+		int result = 1;
+		result = prime * result + ((from == null) ? 0 : from.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((qualifier == null) ? 0 : qualifier.hashCode());
+		return result;
+	}
 
     @Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(getClass().getSimpleName() + " [");
-		if (generic != null) {
+		if (from != null) {
             builder.append("from=");
-            builder.append(generic.getName());   
+            builder.append(from.getName());
 		}
-		if (specific != null) {
+		if (to != null) {
             builder.append(", ");
             builder.append("to=");
-            builder.append(specific.getName());
+            builder.append(to.getName());
 		}
 		if (qualifier != null) {
             builder.append(", ");
             builder.append("qualifier=");
-            builder.append(qualifier);
+            builder.append(qualifier.getName());
 		}
 		if (provider != null) {
             builder.append(", ");
@@ -264,98 +229,97 @@ public class Binding<T> implements DSBinding {
 		builder.append("]");
 		return builder.toString();
 	}
-
-    /**
-     * Check if the object is interceptable.
-     * If it is, this method add interceptors chain on it.
-     *
-     * @param obj the concerned object.
-     * @param interfaceClazz the interface.
-     * @return the object with interceptor handler (if annotations are presents)
-     */
-    private Object processInterceptorsAnnotations(
-            final Object obj,
-            final Class interfaceClazz) {
-        Class clazz = obj.getClass();
-        Object ret = obj;
-        if (interfaceClazz.isAnnotationPresent(Interceptors.class)) {
-            findAroundInvoke(interfaceClazz);
-        }
-        if (clazz.isAnnotationPresent(Interceptors.class)) {
-            findAroundInvoke(clazz);
-        }
-        for (Method m : interfaceClazz.getDeclaredMethods()) {
-            if (m.isAnnotationPresent(Interceptors.class)) {
-                findAroundInvoke(m);
-            }
-        }
-        for (Method m : clazz.getDeclaredMethods()) {
-            if (m.isAnnotationPresent(Interceptors.class)) {
-                findAroundInvoke(m);
-            }
-        }
-        if (getManagedInterceptors().size() > 0) {
-            getManagedInterceptors().add(new FinalInterceptor());
-            DSInterceptor[] interceptors =
-                    new DSInterceptor[getManagedInterceptors().size()];
-            int i = 0;
-            for (Object o : getManagedInterceptors()) {
-                interceptors[i] = (DSInterceptor) o;
-                i++;
-            }
-            ret = Weaver.getInstance()
-                    .weaveObject(interfaceClazz, obj, interceptors);
-        }
-        return ret;
-    }
-    /**
-     * Check for @AroundInvoke on a class.
-     * @param clazz the checked class.
-     */
-    private void findAroundInvoke(final Class clazz) {
-        Interceptors inter =
-                (Interceptors) clazz.getAnnotation(Interceptors.class);
-        Object interceptorInstance = null;
-        for (Class c : inter.value()) {
-            try {
-                interceptorInstance = c.newInstance();
-                for (Method m : c.getDeclaredMethods()) {
-                    if (m.isAnnotationPresent(AroundInvoke.class)) {
-                        getManagedInterceptors()
-                                .add(
-                                    new UserInterceptor(m, interceptorInstance)
-                                 );
-                    }
-                }
-            } catch (Exception ex) {
-                Logger.getLogger(AnnotationsProcessor.class.getName())
-                        .log(Level.SEVERE, null, ex);
-            }
-        }
-    }
-    /**
-     * Check for @AroundInvoke on a method.
-     * @param method the checked method.
-     */
-    private void findAroundInvoke(final Method method) {
-        Interceptors inter = (Interceptors)
-                method.getAnnotation(Interceptors.class);
-        Object interceptorInstance = null;
-        for (Class c : inter.value()) {
-            try {
-                interceptorInstance = c.newInstance();
-                for (Method m : c.getDeclaredMethods()) {
-                    if (m.isAnnotationPresent(AroundInvoke.class)) {
-                        UserInterceptor interceptorTmp =
-                                new UserInterceptor(m, interceptorInstance);
-                        interceptorTmp.setAnnotedMethod(method);
-                        getManagedInterceptors().add(interceptorTmp);
-                    }
-                }
-            } catch (Exception ex) {
-                Logger.getLogger(AnnotationsProcessor.class.getName())
-                        .log(Level.SEVERE, null, ex);
-            }
-        }
-    }
+//    /**
+//     * Check if the object is interceptable.
+//     * If it is, this method add interceptors chain on it.
+//     *
+//     * @param obj the concerned object.
+//     * @param interfaceClazz the interface.
+//     * @return the object with interceptor handler (if annotations are presents)
+//     */
+//    private Object scannInterceptorsAnnotations(
+//            final Object obj,
+//            final Class interfaceClazz) {
+//        Class clazz = obj.getClass();
+//        Object ret = obj;
+//        if (interfaceClazz.isAnnotationPresent(Interceptors.class)) {
+//            findAroundInvoke(interfaceClazz);
+//        }
+//        if (clazz.isAnnotationPresent(Interceptors.class)) {
+//            findAroundInvoke(clazz);
+//        }
+//        for (Method m : interfaceClazz.getDeclaredMethods()) {
+//            if (m.isAnnotationPresent(Interceptors.class)) {
+//                findAroundInvoke(m);
+//            }
+//        }
+//        for (Method m : clazz.getDeclaredMethods()) {
+//            if (m.isAnnotationPresent(Interceptors.class)) {
+//                findAroundInvoke(m);
+//            }
+//        }
+//        if (getManagedInterceptors().size() > 0) {
+//            getManagedInterceptors().add(new FinalInterceptor());
+//            DSInterceptor[] interceptors =
+//                    new DSInterceptor[getManagedInterceptors().size()];
+//            int i = 0;
+//            for (Object o : getManagedInterceptors()) {
+//                interceptors[i] = (DSInterceptor) o;
+//                i++;
+//            }
+//            ret = Weaver.getInstance()
+//                    .weaveObject(interfaceClazz, obj, interceptors);
+//        }
+//        return ret;
+//    }
+//    /**
+//     * Check for @AroundInvoke on a class.
+//     * @param clazz the checked class.
+//     */
+//    private void findAroundInvoke(final Class clazz) {
+//        Interceptors inter =
+//                (Interceptors) clazz.getAnnotation(Interceptors.class);
+//        Object interceptorInstance = null;
+//        for (Class c : inter.value()) {
+//            try {
+//                interceptorInstance = c.newInstance();
+//                for (Method m : c.getDeclaredMethods()) {
+//                    if (m.isAnnotationPresent(AroundInvoke.class)) {
+//                        getManagedInterceptors()
+//                                .add(
+//                                    new UserInterceptor(m, interceptorInstance)
+//                                 );
+//                    }
+//                }
+//            } catch (Exception ex) {
+//                Logger.getLogger(AnnotationsScanner.class.getName())
+//                        .log(Level.SEVERE, null, ex);
+//            }
+//        }
+//    }
+//    /**
+//     * Check for @AroundInvoke on a method.
+//     * @param method the checked method.
+//     */
+//    private void findAroundInvoke(final Method method) {
+//        Interceptors inter = (Interceptors)
+//                method.getAnnotation(Interceptors.class);
+//        Object interceptorInstance = null;
+//        for (Class c : inter.value()) {
+//            try {
+//                interceptorInstance = c.newInstance();
+//                for (Method m : c.getDeclaredMethods()) {
+//                    if (m.isAnnotationPresent(AroundInvoke.class)) {
+//                        UserInterceptor interceptorTmp =
+//                                new UserInterceptor(m, interceptorInstance);
+//                        interceptorTmp.setAnnotedMethod(method);
+//                        getManagedInterceptors().add(interceptorTmp);
+//                    }
+//                }
+//            } catch (Exception ex) {
+//                Logger.getLogger(AnnotationsScanner.class.getName())
+//                        .log(Level.SEVERE, null, ex);
+//            }
+//        }
+//    }
 }

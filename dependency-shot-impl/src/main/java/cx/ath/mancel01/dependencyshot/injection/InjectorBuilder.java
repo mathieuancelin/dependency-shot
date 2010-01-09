@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009 Mathieu ANCELIN.
+ *  Copyright 2009-2010 Mathieu ANCELIN
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,27 +17,26 @@
 package cx.ath.mancel01.dependencyshot.injection;
 
 import cx.ath.mancel01.dependencyshot.api.DSBinder;
-import cx.ath.mancel01.dependencyshot.xml.XMLConfigurationHelper;
 
 /**
  * Utility classthat create injector.
  * 
  * @author Mathieu ANCELIN
  */
-public final class InjectorMaker {
+public final class InjectorBuilder {
+
+    private static InjectorImpl injector = new InjectorImpl(); // TODO really ugly. Change it
     /**
      * Private constructor.
      */
-    private InjectorMaker() {
-        
-    }
+    private InjectorBuilder() { }
     /**
      * Return an injector.
      * @param binders the binders.
      * @return the configured injector.
      */
     public static InjectorImpl makeInjector(final Iterable<? extends DSBinder> binders) {
-        InjectorImpl injector = new InjectorImpl();
+        injector.resetBinders();
         for (DSBinder binder : binders) {
             injector.addBinder(binder);
         }
@@ -50,26 +49,9 @@ public final class InjectorMaker {
      * @return the configured injector.
      */
     public static InjectorImpl makeInjector(final DSBinder binder) {
-        InjectorImpl injector = new InjectorImpl();
+        injector.resetBinders();
         injector.addBinder(binder);
         injector.configureBinders();
         return injector;
-    }
-    /**
-     * Return the default injector.
-     * @return the configured injector.
-     */
-    public static InjectorImpl makeInjector() {
-        return null;
-        // TODO implements auto binding
-    }
-    /**
-     * Return an xml configured injector.
-     * @param configPath path of the configuration file.
-     * @return the configured injector.
-     */
-    public static InjectorImpl makeInjector(final String configPath) {
-        XMLConfigurationHelper.getInstance();
-        return null;
     }
 }

@@ -17,7 +17,6 @@
 
 package cx.ath.mancel01.dependencyshot.tck;
 
-import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.graph.Binder;
 import javax.inject.Provider;
 import org.atinject.tck.auto.Car;
@@ -40,30 +39,50 @@ public class TCKBinder extends Binder {
 
     @Override 
     public void configureBindings() {
-        bind(Car.class).to(Convertible.class);
-  		bind(Drivers.class).from(Seat.class).to(DriversSeat.class);
-  		bind(Engine.class).to(V8Engine.class);
-  		bind("spare").to(Tire.class).providedBy(new Provider<Tire>() {
+        bind(Car.class, Convertible.class);
+
+        //bind(Car.class).to(Convertible.class);
+
+  		bind(Drivers.class, Seat.class, DriversSeat.class);
+
+        //bind(Drivers.class).from(Seat.class).to(DriversSeat.class);
+
+  		bind(Engine.class, V8Engine.class);
+
+        //bind(Engine.class).to(V8Engine.class);
+
+        bind("spare", Tire.class, new Provider<Tire>() {
   			@Override
   			public Tire get() {
-                return (Tire) DependencyShot
-                        .getInjector(new ProviderBinder())
-                        .getObjectInstance(SpareTire.class);
+                return (Tire) getBinderInjector().getInstance(SpareTire.class);
   			}
   		});
+
+//        bind("spare").from(Tire.class).providedBy(new Provider<Tire>() {
+//  			@Override
+//  			public Tire get() {
+//                return (Tire) getBinderInjector().getInstance(SpareTire.class);
+//  			}
+//  		});
+
   		bind(Tire.class);
+
+        //bind(Tire.class);
+
   		bind(SpareTire.class);
+
+        //bind(SpareTire.class);
+
   		bind(FuelTank.class);
+
+        //bind(FuelTank.class);
+
   		bind(Seat.class);
+
+        //bind(Seat.class);
+
   		bind(Cupholder.class);
-    }
 
-    private class ProviderBinder extends Binder {
-
-        @Override
-        public void configureBindings() {
-            bind(SpareTire.class);
-        }
-
+        //bind(Cupholder.class);
     }
 }
