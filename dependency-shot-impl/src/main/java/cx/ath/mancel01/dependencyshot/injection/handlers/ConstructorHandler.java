@@ -74,7 +74,7 @@ public class ConstructorHandler {
 				}
                 // create new instance with the constructor
 				try {
-					return c.cast(constructor.newInstance(arguments)); // TODO : add AOP stuff here
+					return c.cast(constructor.newInstance(arguments));
 				} finally {
                     // if constructor was private, then put it private back
 					if (!accessible) {

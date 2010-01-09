@@ -51,12 +51,14 @@ public class TCKBinder extends Binder {
 
         //bind(Engine.class).to(V8Engine.class);
 
-        bind("spare", Tire.class, new Provider<Tire>() {
-  			@Override
-  			public Tire get() {
-                return (Tire) getBinderInjector().getInstance(SpareTire.class);
-  			}
-  		});
+        bind(Tire.class, "spare", SpareTire.class);
+
+//        bind("spare", Tire.class, new Provider<Tire>() {
+//  			@Override
+//  			public Tire get() {
+//                return (Tire) getBinderInjector().getInstance(SpareTire.class);
+//  			}
+//  		});
 
 //        bind("spare").from(Tire.class).providedBy(new Provider<Tire>() {
 //  			@Override
