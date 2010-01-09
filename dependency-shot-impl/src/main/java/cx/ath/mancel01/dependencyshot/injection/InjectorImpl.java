@@ -48,14 +48,20 @@ public class InjectorImpl implements DSInjector {
      */
     private Vector<Binder> binders;
     /**
+     * Managed Object instances.
+     */
+    private Vector<Object> managedInstances;
+    /**
      * Singleton scoped object singletonContext.
      */
-    private Map<Class<?>, Object> singletonContext = new HashMap<Class<?>, Object>();
+    private Map<Class<?>, Object> singletonContext;
     /**
      * The constructor.
      */
     public InjectorImpl() {
-        this.binders = new Vector();
+        binders = new Vector();
+        managedInstances = new Vector<Object>();
+        singletonContext = new HashMap<Class<?>, Object>();
     }
     /**
      * Configure all present binders of the injector.
@@ -73,6 +79,23 @@ public class InjectorImpl implements DSInjector {
             }
         }
     }
+
+    public void addManagedInstance(Object o) {
+        this.managedInstances.add(o);
+    }
+
+    public void resetManagedInstances() {
+        this.managedInstances.removeAllElements();
+    }
+
+    public void setManagedInstances(Vector<Object> managedInstances) {
+        this.managedInstances = managedInstances;
+    }
+
+    public Vector<Object> getManagedInstances() {
+        return managedInstances;
+    }
+
     /**
      * Add a binder in the injector.
      *

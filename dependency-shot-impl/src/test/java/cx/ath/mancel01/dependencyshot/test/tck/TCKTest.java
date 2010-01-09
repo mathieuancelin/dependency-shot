@@ -32,7 +32,7 @@ import org.atinject.tck.auto.Car;
 public class TCKTest extends TestSuite {
     
     public static Test suite() {
-        final DSInjector injector = DependencyShot.getInjector(new TCKBinder());
+        final DSInjector injector = DependencyShot.getInjector(new TCKBinder());      
   		Car car = injector.getInstance(Car.class);
   		return Tck.testsFor(car, false, true); // without static injection
         // return Tck.testsFor(car, true, true); // with static injection
