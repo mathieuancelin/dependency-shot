@@ -25,6 +25,7 @@ import cx.ath.mancel01.dependencyshot.api.annotations.AroundInvoke;
 import cx.ath.mancel01.dependencyshot.api.annotations.Interceptors;
 import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
+import cx.ath.mancel01.dependencyshot.injection.handlers.LifecycleHandler;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Vector;
@@ -134,6 +135,7 @@ public class Binding<T> implements DSBinding {
 		if (result == null) {
 			throw new DSIllegalStateException("Could not get a " + to);
 		}
+        LifecycleHandler.invokePostConstruct(result);
         injector.addManagedInstance(result);
 		return result;
 	}

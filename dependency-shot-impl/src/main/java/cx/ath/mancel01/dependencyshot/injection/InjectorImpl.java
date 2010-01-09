@@ -23,6 +23,7 @@ import cx.ath.mancel01.dependencyshot.graph.Binder;
 import cx.ath.mancel01.dependencyshot.graph.Binding;
 import cx.ath.mancel01.dependencyshot.injection.handlers.ClassHandler;
 import cx.ath.mancel01.dependencyshot.injection.handlers.ConstructorHandler;
+import cx.ath.mancel01.dependencyshot.injection.handlers.LifecycleHandler;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -110,7 +111,7 @@ public class InjectorImpl implements DSInjector {
      * 
      * @return current bindings
      */
-    public Map<Binding<?>, Binding<?>> bindings() { // TODO : replace for real multi-binder and better perf
+    public Map<Binding<?>, Binding<?>> bindings() { //TODO : replace for real multi-binder and better perf
         Map<Binding<?>, Binding<?>> bindings = new HashMap<Binding<?>, Binding<?>>();
         for (Binder binder : binders) {
             for (Binding<?> binding : binder.getBindings().keySet()) {
@@ -241,5 +242,19 @@ public class InjectorImpl implements DSInjector {
     public void resetBinders() {
         this.binders = new Vector();
         this.singletonContext = new HashMap<Class<?>, Object>();
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        int i = 0;
+        for(Object o : managedInstances) {
+            LifecycleHandler.invokePreDestroy(o);
+            o = null;
+            i++;
+        }
+        managedInstances.removeAllElements();
+        Logger.getLogger(InjectorImpl.class.getName())
+                        .log(Level.INFO, "Finalization of the injector (" + i + " instances cleaned)");
+        super.finalize();
     }
 }
