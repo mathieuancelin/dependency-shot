@@ -10,6 +10,7 @@ public class AOPBinder extends Binder {
 
     @Override
     public void configureBindings() {
-        bind(AOPService.class).to(AOPServiceImpl.class);
+        bind(AOPService.class, AOPServiceImpl.class);
+        bind(AOPClient.class);
     }
 }

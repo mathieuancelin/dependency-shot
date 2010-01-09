@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009 Mathieu ANCELIN.
+ *  Copyright 2009-2010 Mathieu ANCELIN
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22,18 +22,18 @@ package cx.ath.mancel01.dependencyshot.api;
  * 
  * @author Mathieu ANCELIN
  */
-public interface DSBinding {
-    /**
-     * @return get generic interface.
-     */
-    Class getGeneric();
-    /**
-     * @return get specific class.
-     */
-    Class getSpecific();
-    /**
-     * @return get specific instance.
-     */
-    Object getSpecificInstance();
+public interface DSBinding<T> {
+//    /**
+//     * @return get generic interface.
+//     */
+//    Class getGeneric();
+//    /**
+//     * @return get specific class.
+//     */
+//    Class getSpecific();
+//    /**
+//     * @return get specific instance.
+//     */
+//    Object getSpecificInstance();
 
 }

@@ -15,7 +15,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.0.2</version>
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
@@ -25,7 +24,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>2.2</version>
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
@@ -58,16 +56,16 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.atinject</groupId>
-            <artifactId>tck</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>1</version>
         </dependency>
         <dependency>
-            <groupId>cx.ath.mancel01</groupId>
-            <artifactId>at-inject-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>tck</artifactId>
+            <version>1</version>
+            <scope>test</scope>
+        </dependency>      
         <dependency>
             <groupId>cx.ath.mancel01</groupId>
             <artifactId>dependency-shot-api</artifactId>
