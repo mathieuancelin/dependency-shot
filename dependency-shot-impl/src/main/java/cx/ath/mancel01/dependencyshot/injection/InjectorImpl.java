@@ -29,7 +29,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -195,6 +197,15 @@ public class InjectorImpl implements DSInjector {
 			return result;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
+		}
+	}
+
+    public void injectStaticMembers(Class<?> c) {
+		try {
+			List<Method> emptyList = Collections.emptyList();
+			ClassHandler.classInjection(null, c, emptyList, true, this);
+		} catch (Exception e) {
+			throw new RuntimeException("Could not inject static members for " + c, e);
 		}
 	}
 
