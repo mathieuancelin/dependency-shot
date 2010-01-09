@@ -23,6 +23,8 @@ package cx.ath.mancel01.dependencyshot.util;
  */
 public class LoggingHelper {
 
+    //TODO : Logging helper
+
     private static final boolean DEBUG = false;
 
 }

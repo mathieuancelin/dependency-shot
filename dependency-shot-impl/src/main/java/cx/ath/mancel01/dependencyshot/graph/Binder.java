@@ -127,7 +127,7 @@ public abstract class Binder implements DSBinder {
 	}
 
     /**
-     * Fluent API
+     * TODO : Fluent API (see API proposal on at-inject list)
      */
 
 //    public <T> BindedTo bind(Class<T> c) { // BindedTo et BindedFrom ?

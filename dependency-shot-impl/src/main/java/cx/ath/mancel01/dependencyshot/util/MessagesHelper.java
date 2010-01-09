@@ -22,5 +22,5 @@ package cx.ath.mancel01.dependencyshot.util;
  * @author Mathieu ANCELIN
  */
 public class MessagesHelper {
-
+    //TODO : MessagesHelper
 }
