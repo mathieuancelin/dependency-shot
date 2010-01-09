@@ -120,7 +120,7 @@ public class Binding<T> implements DSBinding {
      * @param injector the concerned injector
      * @return binded object
      */
-	public T getInstance(InjectorImpl injector) { //TODO : AOP stuff here
+	public T getInstance(InjectorImpl injector) { 
 		T result = null;
 		if (provider != null) {
 			result = provider.get();
@@ -134,6 +134,7 @@ public class Binding<T> implements DSBinding {
 		if (result == null) {
 			throw new DSIllegalStateException("Could not get a " + to);
 		}
+        injector.addManagedInstance(result);
 		return result;
 	}
 

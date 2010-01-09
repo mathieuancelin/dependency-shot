@@ -17,6 +17,8 @@
 
 package cx.ath.mancel01.dependencyshot.api;
 
+import java.util.Vector;
+
 /**
  * Injector interface.
  * 
@@ -25,5 +27,7 @@ package cx.ath.mancel01.dependencyshot.api;
 public interface DSInjector {
 
     <T> T getInstance(Class<T> c);
+
+    Vector<Object> getManagedInstances();
 
 }

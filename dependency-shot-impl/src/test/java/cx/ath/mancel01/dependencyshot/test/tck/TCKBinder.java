@@ -18,7 +18,6 @@
 package cx.ath.mancel01.dependencyshot.test.tck;
 
 import cx.ath.mancel01.dependencyshot.graph.Binder;
-import javax.inject.Provider;
 import org.atinject.tck.auto.Car;
 import org.atinject.tck.auto.Convertible;
 import org.atinject.tck.auto.Drivers;
