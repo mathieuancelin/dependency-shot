@@ -23,6 +23,9 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.atinject.tck.Tck;
 import org.atinject.tck.auto.Car;
+import org.atinject.tck.auto.Convertible;
+import org.atinject.tck.auto.Tire;
+import org.atinject.tck.auto.accessories.SpareTire;
 
 /**
  * The test suite with TCK tests.
@@ -34,7 +37,10 @@ public class TCKTest extends TestSuite {
     public static Test suite() {
         final DSInjector injector = DependencyShot.getInjector(new TCKBinder());      
   		Car car = injector.getInstance(Car.class);
-  		return Tck.testsFor(car, false, true); // without static injection
-        // return Tck.testsFor(car, true, true); // with static injection
+        injector.injectStaticMembers(Convertible.class);
+        injector.injectStaticMembers(Tire.class);
+        injector.injectStaticMembers(SpareTire.class);
+  		//return Tck.testsFor(car, false, true); // without static injection
+        return Tck.testsFor(car, true, true); // with static injection
     }
 }
