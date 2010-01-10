@@ -1,0 +1,20 @@
+<assembly>
+  <id>src</id>
+  <formats>
+    <format>tar.gz</format>
+    <format>zip</format>
+  </formats>
+  <fileSets>
+    <fileSet>
+      <includes>
+        <include>**/pom.xml</include>
+        <include>**/src/**</include>
+      </includes>
+      <excludes>
+      	<exclude>**/target*</exclude>
+      	<exclude>target</exclude>
+      </excludes>
+      <useDefaultExcludes>true</useDefaultExcludes>
+    </fileSet>
+ </fileSets>
+</assembly>
