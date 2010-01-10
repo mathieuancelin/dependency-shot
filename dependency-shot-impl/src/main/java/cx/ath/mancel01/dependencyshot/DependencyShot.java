@@ -29,7 +29,7 @@ import java.util.Arrays;
  * 
  * @author Mathieu ANCELIN
  */
-public final class DependencyShot {
+public final class DependencyShot { //TODO : find a way to serve any simple injection
     /**
      * Private constructor cause it's a utility class.
      */
