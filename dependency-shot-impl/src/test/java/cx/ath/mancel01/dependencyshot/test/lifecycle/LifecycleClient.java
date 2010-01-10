@@ -1,9 +1,8 @@
 package cx.ath.mancel01.dependencyshot.test.lifecycle;
 
+import cx.ath.mancel01.dependencyshot.api.annotations.ManagedBean;
 import cx.ath.mancel01.dependencyshot.api.annotations.PostConstruct;
 import cx.ath.mancel01.dependencyshot.api.annotations.PreDestroy;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.inject.Inject;
 
 /**
@@ -11,6 +10,7 @@ import javax.inject.Inject;
  * 
  * @author Mathieu ANCELIN
  */
+@ManagedBean(value="tests/lifecycleclient")
 public class LifecycleClient {
 
     /**
@@ -113,14 +113,12 @@ public class LifecycleClient {
 
     @PostConstruct
     public void load() {
-//        Logger.getLogger(LifecycleClient.class.getName()).
-//                            log(Level.INFO, "Load " + this.getClass().getName());
+        System.out.println("Load LifeCycleClient : " + this.getClass().getName());
         LifecycleCounter.getInstance().incrementLoad();
     }
     @PreDestroy
     public void unload() {
-//        Logger.getLogger(LifecycleClient.class.getName()).
-//                            log(Level.INFO, "Unload " + this.getClass().getName());
+        System.out.println("Unload LifeCycleClient : " + this.getClass().getName());
         LifecycleCounter.getInstance().incrementUnload();
     }
 }

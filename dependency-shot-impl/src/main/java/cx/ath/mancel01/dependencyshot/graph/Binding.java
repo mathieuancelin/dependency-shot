@@ -26,6 +26,7 @@ import cx.ath.mancel01.dependencyshot.api.annotations.Interceptors;
 import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.injection.handlers.LifecycleHandler;
+import cx.ath.mancel01.dependencyshot.injection.handlers.ManagedBeanHandler;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Vector;
@@ -134,9 +135,12 @@ public class Binding<T> implements DSBinding {
 		}
 		if (result == null) {
 			throw new DSIllegalStateException("Could not get a " + to);
-		}
-        LifecycleHandler.invokePostConstruct(result);
-        injector.addManagedInstance(result);
+		}      
+        if (ManagedBeanHandler.isManagedBean(result)) {
+            LifecycleHandler.invokePostConstruct(result);
+            injector.addManagedBeanInstance(result); //TODO : check if singleton already present
+            ManagedBeanHandler.registerManagedBeanJNDI(result);
+        }
 		return result;
 	}
 
@@ -227,7 +231,7 @@ public class Binding<T> implements DSBinding {
             return new Binding<T>(null, null, c, null, null);
 		}
 	}
-    
+
     /**
      * Check if the object is interceptable.
      * If it is, this method add interceptors chain on it.
@@ -239,6 +243,9 @@ public class Binding<T> implements DSBinding {
     private Object scannInterceptorsAnnotations(
             final Object obj,
             final Class interfaceClazz) {
+        if (!ManagedBeanHandler.isManagedBean(obj)) {
+            return obj;
+        }
         Class clazz = obj.getClass();
         Object ret = obj;
         if (interfaceClazz.isAnnotationPresent(Interceptors.class)) {
