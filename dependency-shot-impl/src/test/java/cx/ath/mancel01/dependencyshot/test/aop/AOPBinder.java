@@ -12,5 +12,7 @@ public class AOPBinder extends Binder {
     public void configureBindings() {
         bind(AOPService.class, AOPServiceImpl.class);
         bind(AOPClient.class);
+        bind(AOPMethodInterceptor.class);
+        bind(AOPInjectedInInterceptor.class);
     }
 }

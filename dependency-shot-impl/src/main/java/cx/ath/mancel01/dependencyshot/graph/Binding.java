@@ -128,10 +128,12 @@ public class Binding<T> implements DSBinding {
 			result = provider.get();
 		} else if (to.isAnnotationPresent(Singleton.class)) {
             //result = injector.getSingleton(to);
-			result = (T) scannInterceptorsAnnotations(injector.getSingleton(to), from);
+			result = (T) scannInterceptorsAnnotations(
+                    injector.getSingleton(to), from, injector);
 		} else {
 			//result = injector.createInstance(to);
-            result = (T) scannInterceptorsAnnotations(injector.createInstance(to), from);
+            result = (T) scannInterceptorsAnnotations(
+                    injector.createInstance(to), from, injector);
 		}
 		if (result == null) {
 			throw new DSIllegalStateException("Could not get a " + to);
@@ -242,26 +244,27 @@ public class Binding<T> implements DSBinding {
      */
     private Object scannInterceptorsAnnotations(
             final Object obj,
-            final Class interfaceClazz) {
+            final Class interfaceClazz,
+            InjectorImpl injector) {
         if (!ManagedBeanHandler.isManagedBean(obj)) {
             return obj;
         }
         Class clazz = obj.getClass();
         Object ret = obj;
         if (interfaceClazz.isAnnotationPresent(Interceptors.class)) {
-            findAroundInvoke(interfaceClazz);
+            findAroundInvoke(interfaceClazz, injector);
         }
         if (clazz.isAnnotationPresent(Interceptors.class)) {
-            findAroundInvoke(clazz);
+            findAroundInvoke(clazz, injector);
         }
         for (Method m : interfaceClazz.getDeclaredMethods()) {
             if (m.isAnnotationPresent(Interceptors.class)) {
-                findAroundInvoke(m);
+                findAroundInvoke(m, injector);
             }
         }
         for (Method m : clazz.getDeclaredMethods()) {
             if (m.isAnnotationPresent(Interceptors.class)) {
-                findAroundInvoke(m);
+                findAroundInvoke(m, injector);
             }
         }
         if (getManagedInterceptors().size() > 0) {
@@ -282,13 +285,17 @@ public class Binding<T> implements DSBinding {
      * Check for @AroundInvoke on a class.
      * @param clazz the checked class.
      */
-    private void findAroundInvoke(final Class clazz) {
+    private void findAroundInvoke(final Class clazz, InjectorImpl injector) {
         Interceptors inter =
                 (Interceptors) clazz.getAnnotation(Interceptors.class);
         Object interceptorInstance = null;
         for (Class c : inter.value()) {
             try {
-                interceptorInstance = c.newInstance();
+                try {
+                    interceptorInstance = injector.getInstance(c);//TODO : find better way to do it
+                } catch (Exception e) {
+                    interceptorInstance = c.newInstance();
+                }
                 for (Method m : c.getDeclaredMethods()) {
                     if (m.isAnnotationPresent(AroundInvoke.class)) {
                         getManagedInterceptors()
@@ -307,13 +314,17 @@ public class Binding<T> implements DSBinding {
      * Check for @AroundInvoke on a method.
      * @param method the checked method.
      */
-    private void findAroundInvoke(final Method method) {
+    private void findAroundInvoke(final Method method, InjectorImpl injector) {
         Interceptors inter = (Interceptors)
                 method.getAnnotation(Interceptors.class);
         Object interceptorInstance = null;
         for (Class c : inter.value()) {
             try {
-                interceptorInstance = c.newInstance();
+                try {
+                    interceptorInstance = injector.getInstance(c);//TODO : find better way to do it
+                } catch (Exception e) {
+                    interceptorInstance = c.newInstance();
+                }
                 for (Method m : c.getDeclaredMethods()) {
                     if (m.isAnnotationPresent(AroundInvoke.class)) {
                         UserInterceptor interceptorTmp =
