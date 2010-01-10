@@ -53,7 +53,7 @@ public class InjectorImpl implements DSInjector {
     /**
      * Managed Object instances.
      */
-    private Vector<Object> managedInstances;
+    private Vector<Object> registeredManagedBeans;
     /**
      * Singleton scoped object singletonContext.
      */
@@ -63,8 +63,8 @@ public class InjectorImpl implements DSInjector {
      */
     public InjectorImpl() {
         binders = new Vector();
-        managedInstances = new Vector<Object>();
         singletonContext = new HashMap<Class<?>, Object>();
+        registeredManagedBeans = new Vector<Object>();
     }
     /**
      * Configure all present binders of the injector.
@@ -83,20 +83,35 @@ public class InjectorImpl implements DSInjector {
         }
     }
 
-    public void addManagedInstance(Object o) {
-        this.managedInstances.add(o);
+    /**
+     *
+     * @param o
+     */
+    public void addManagedBeanInstance(Object o) {
+        this.registeredManagedBeans.add(o); //TODO : object pointer only
     }
 
-    public void resetManagedInstances() {
-        this.managedInstances.removeAllElements();
+    /**
+     *
+     */
+    public void resetManagedBeanInstances() {
+        this.registeredManagedBeans.removeAllElements();
     }
 
-    public void setManagedInstances(Vector<Object> managedInstances) {
-        this.managedInstances = managedInstances;
+    /**
+     *
+     * @param registeredManagedBeans
+     */
+    public void setRegisteredManagedBeans(Vector<Object> registeredManagedBeans) {
+        this.registeredManagedBeans = registeredManagedBeans;
     }
 
-    public Vector<Object> getManagedInstances() {
-        return managedInstances;
+    /**
+     * 
+     * @return
+     */
+    public Vector<Object> getRegisteredManagedBeans() {
+        return registeredManagedBeans;
     }
 
     /**
@@ -200,6 +215,11 @@ public class InjectorImpl implements DSInjector {
 		}
 	}
 
+    /**
+     *
+     * @param c
+     */
+    @Override
     public void injectStaticMembers(Class<?> c) {
 		try {
 			List<Method> emptyList = Collections.emptyList();
@@ -255,15 +275,19 @@ public class InjectorImpl implements DSInjector {
         this.singletonContext = new HashMap<Class<?>, Object>();
     }
 
+    /**
+     *
+     * @throws Throwable
+     */
     @Override
     protected void finalize() throws Throwable {
         int i = 0;
-        for(Object o : managedInstances) {
+        for(Object o : registeredManagedBeans) {
             LifecycleHandler.invokePreDestroy(o);
             o = null;
             i++;
         }
-        managedInstances.removeAllElements();
+        registeredManagedBeans.removeAllElements();
         Logger.getLogger(InjectorImpl.class.getName())
                         .log(Level.INFO, "Finalization of the injector (" + i + " instances cleaned)");
         super.finalize();

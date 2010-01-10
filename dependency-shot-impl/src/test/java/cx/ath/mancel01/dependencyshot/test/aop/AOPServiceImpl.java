@@ -1,12 +1,14 @@
 package cx.ath.mancel01.dependencyshot.test.aop;
 
 import cx.ath.mancel01.dependencyshot.api.annotations.Interceptors;
+import cx.ath.mancel01.dependencyshot.api.annotations.ManagedBean;
 
 /**
  * Implementation of a service.
  * 
  * @author Mathieu ANCELIN
  */
+@ManagedBean
 @Interceptors(value = {AOPClassInterceptor.class, AOPSecondClassInterceptor.class})
 public class AOPServiceImpl implements AOPService {
     /**

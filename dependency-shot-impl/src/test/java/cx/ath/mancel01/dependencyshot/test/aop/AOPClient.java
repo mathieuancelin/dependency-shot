@@ -1,5 +1,6 @@
 package cx.ath.mancel01.dependencyshot.test.aop;
 
+import cx.ath.mancel01.dependencyshot.api.annotations.ManagedBean;
 import javax.inject.Inject;
 
 /**
@@ -7,6 +8,7 @@ import javax.inject.Inject;
  * 
  * @author Mathieu ANCELIN
  */
+@ManagedBean
 public class AOPClient {
 
     /**
