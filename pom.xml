@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>cx.ath.mancel01</groupId>
-  <artifactId>dependency-shot</artifactId>
-  <packaging>pom</packaging>
-  <version>1.0-SNAPSHOT</version>
-  <name>Dependency-Shot (JSR-330)</name>
-  <url>http://code.google.com/p/dependency-shot/</url>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>cx.ath.mancel01</groupId>
+    <artifactId>dependency-shot</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <name>Dependency-Shot (JSR-330)</name>
+    <url>http://code.google.com/p/dependency-shot/</url>
     <build>
         <plugins>
             <plugin>
@@ -25,22 +25,54 @@
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptors>
+                        <descriptor>distribution/source-distribution.xml</descriptor>
+                        <!--<descriptor>distribution/binaries-distribution.xml</descriptor>-->
+                    </descriptors>
+                </configuration>
+            </plugin>
         </plugins>
+        <extensions>
+            <extension>
+                <groupId>org.jvnet.wagon-svn</groupId>
+                <artifactId>wagon-svn</artifactId>
+                <version>1.9</version>
+            </extension>
+        </extensions>
     </build>
     <modules>
         <module>dependency-shot-impl</module>
         <module>dependency-shot-api</module>
         <module>tck</module>
-  </modules>
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
-  <licenses>
+    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <distributionManagement>
+        <repository>
+            <uniqueVersion>false</uniqueVersion>
+            <id>googlecode</id>
+            <name>Dependency-Shot Repository</name>
+            <url>svn:https://dependency-shot.googlecode.com/svn/maven-repository</url>
+            <layout>default</layout>
+        </repository>
+        <snapshotRepository>
+            <uniqueVersion>true</uniqueVersion>
+            <id>googlecode.snapshot</id>
+            <name>Dependency-Shot Repository (Snapshots)</name>
+            <url>svn:https://dependency-shot.googlecode.com/svn/maven-repository</url>
+            <layout>default</layout>
+        </snapshotRepository>
+    </distributionManagement>
+    <licenses>
         <license>
             <name>Apache 2</name>
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>

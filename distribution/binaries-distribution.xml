@@ -1,0 +1,36 @@
+<assembly>
+	<id>bin</id>
+	<formats>
+		<format>tar.gz</format>
+		<format>zip</format>
+	</formats>
+	<fileSets>
+		<fileSet>
+            <includes>
+               <include>**/LICENSE*</include>
+            </includes>
+            <useDefaultExcludes>true</useDefaultExcludes>
+        </fileSet>
+		<fileSet> 
+			<directory>dependency-shot-api/target</directory>
+			<includes>
+				<include>*.jar</include>
+			</includes>
+			<outputDirectory>api</outputDirectory>
+		</fileSet>
+		<fileSet> 
+			<directory>dependency-shot-impl/target</directory>
+			<includes>
+				<include>*.jar</include>
+			</includes>
+			<outputDirectory>core</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>tck/target</directory>
+			<includes>
+				<include>*.jar</include>
+			</includes>
+			<outputDirectory>tck</outputDirectory>
+		</fileSet>
+	</fileSets>
+</assembly>
