@@ -113,12 +113,12 @@ public class LifecycleClient {
 
     @PostConstruct
     public void load() {
-        System.out.println("Load LifeCycleClient : " + this.getClass().getName());
+        //System.out.println("Load LifeCycleClient : " + this.getClass().getName());
         LifecycleCounter.getInstance().incrementLoad();
     }
     @PreDestroy
     public void unload() {
-        System.out.println("Unload LifeCycleClient : " + this.getClass().getName());
+        //System.out.println("Unload LifeCycleClient : " + this.getClass().getName());
         LifecycleCounter.getInstance().incrementUnload();
     }
 }

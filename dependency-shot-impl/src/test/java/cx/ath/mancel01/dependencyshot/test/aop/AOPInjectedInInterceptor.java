@@ -23,7 +23,7 @@ package cx.ath.mancel01.dependencyshot.test.aop;
  */
 public class AOPInjectedInInterceptor {
 
-    public void printIntercepted() {
-        System.out.println("Intercepted !");
+    public String printIntercepted() {
+        return "Intercepted !";
     }
 }

@@ -20,4 +20,6 @@ public interface DSBinder {
 
     void setInjector(DSInjector injector);
 
+    void configureLastBinding();
+
 }

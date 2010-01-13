@@ -23,17 +23,24 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.atinject.tck.Tck;
 import org.atinject.tck.auto.Car;
+import org.atinject.tck.auto.Convertible;
+import org.atinject.tck.auto.Tire;
+import org.atinject.tck.auto.accessories.SpareTire;
 
 /**
  * The test suite with TCK tests.
  * 
  * @author mathieuancelin
  */
-public class TCKTest extends TestSuite {
+public class TCKStaticTest extends TestSuite {
     
     public static Test suite() {
-        final DSInjector injector = DependencyShot.getInjector(new TCKBinder());      
-  		Car car = injector.getInstance(Car.class);
-  		return Tck.testsFor(car, false, true);
+        final DSInjector injector = DependencyShot.getInjector(new TCKBinder());
+        // JUnit bug workaround, static attributes in classes aren't reset on each test suite
+//        injector.injectStaticMembers(Convertible.class);
+//        injector.injectStaticMembers(Tire.class);
+//        injector.injectStaticMembers(SpareTire.class);
+        Car car = injector.getInstance(Car.class);
+        return Tck.testsFor(car, true, true);
     }
 }

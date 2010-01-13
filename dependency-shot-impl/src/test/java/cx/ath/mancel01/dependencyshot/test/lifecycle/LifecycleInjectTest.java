@@ -19,4 +19,11 @@ public class LifecycleInjectTest {
         client.go();
         assertTrue(LifecycleCounter.getInstance().getLoadCounter() == 4);
     }
+
+    public void testFluentInjectedClient() {
+        DSInjector injector = DependencyShot.getInjector(new LifecycleFluentBinder());
+        LifecycleClient client = injector.getInstance(LifecycleClient.class);
+        client.go();
+        assertTrue(LifecycleCounter.getInstance().getLoadCounter() == 8);
+    }
 }

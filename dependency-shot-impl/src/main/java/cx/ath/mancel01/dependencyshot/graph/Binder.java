@@ -43,6 +43,13 @@ public abstract class Binder implements DSBinder {
      * The injector that manage the binder instance.
      */
     private DSInjector binderInjector;
+
+    private Class from = null;
+    private Class to = null;
+    private String named = null;
+    private Class<? extends Annotation> annotation = null;
+    private Provider provider = null;
+
     /**
      * Constructor.
      */
@@ -126,34 +133,62 @@ public abstract class Binder implements DSBinder {
 		}
 	}
 
-    /**
-     * TODO : Fluent API (see API proposal on at-inject list)
-     */
-
-//    public <T> BindedTo bind(Class<T> c) { // BindedTo et BindedFrom ?
-//        if (c.isAssignableFrom(Annotation.class)) {
-//
+    public void configureLastBinding() {
+//        if ((this.from != null)
+//                && (this.to != null)
+//                && (this.named != null)
+//                && (this.annotation != null)
+//                && (this.provider != null)) {
+                addBindingToBinder(
+                        new Binding(this.annotation, this.named,
+                        this.from, this.to, this.provider));
 //        }
-//        return null;
-//    }
-//
-//    public <T> BindedFrom bind(String name) {
-//        return null;
-//    }
-//
-//    public <T> Binded to(Class<? extends T> to) {
-//        return null;
-//    }
-//
-//    public <T> BindedTo from(Class<T> from) { // BindedTo ou BindProvidedBy ?
-//        return null;
-//    }
-//
-//    public <T> Binded providedBy(Provider<T> provider) {
-//        return null;
-//    }
-//
-    public Map<Binding<?>, Binding<?>> getBindings() {
+        this.from = null;
+        this.to = null;
+        this.named = null;
+        this.annotation = null;
+        this.provider = null;
+    }
+
+    public <T> Binder fbind(Class<T> from) {
+//        if ((this.from != null)
+//                && (this.to != null)
+//                && (this.named != null)
+//                && (this.annotation != null)
+//                && (this.provider != null)) {
+                addBindingToBinder(
+                        new Binding<T>(this.annotation, this.named,
+                        this.from, this.to, this.provider));
+//        }
+        this.from = from;
+        this.to = from;
+        this.named = null;
+        this.annotation = null;
+        this.provider = null;
+        return this;
+    }
+
+    public <T> Binder to(Class<T> to) {
+        this.to = to;
+        return this;
+    }
+
+    public <T> Binder named(String named) {
+        this.named = named;
+        return this;
+    }
+
+    public <T> Binder annotedWith(Class<? extends Annotation> annotation) {
+        this.annotation = annotation;
+        return this;
+    }
+
+    public <T> Binder providedBy(Provider<T> provider) {
+        this.provider = provider;
+        return null;
+    }
+
+    public Map<Binding<?>, Binding<?>> getBindings() {     
         return bindings;
     }
 
