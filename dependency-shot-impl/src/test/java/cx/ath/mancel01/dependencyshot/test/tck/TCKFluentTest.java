@@ -29,10 +29,10 @@ import org.atinject.tck.auto.Car;
  * 
  * @author mathieuancelin
  */
-public class TCKTest extends TestSuite {
+public class TCKFluentTest extends TestSuite {
     
     public static Test suite() {
-        final DSInjector injector = DependencyShot.getInjector(new TCKBinder());      
+        final DSInjector injector = DependencyShot.getInjector(new TCKFluentBinder());
   		Car car = injector.getInstance(Car.class);
   		return Tck.testsFor(car, false, true);
     }

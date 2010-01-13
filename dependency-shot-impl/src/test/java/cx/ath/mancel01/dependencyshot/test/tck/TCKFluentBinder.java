@@ -34,24 +34,18 @@ import org.atinject.tck.auto.accessories.SpareTire;
  *
  * @author Mathieu ANCELIN
  */
-public class TCKBinder extends Binder {
+public class TCKFluentBinder extends Binder {
 
     @Override 
     public void configureBindings() {
-        bind(Car.class, Convertible.class);
-  		bind(Drivers.class, Seat.class, DriversSeat.class);
-  		bind(Engine.class, V8Engine.class);
-        bind(Tire.class, "spare", SpareTire.class);
-//        bind("spare", Tire.class, new Provider<Tire>() {
-//  			@Override
-//  			public Tire get() {
-//                return (Tire) getBinderInjector().getInstance(SpareTire.class);
-//  			}
-//  		});
-  		bind(Tire.class);
-  		bind(SpareTire.class);
-  		bind(FuelTank.class);
-  		bind(Seat.class);
-  		bind(Cupholder.class);
+        fbind(Car.class).to(Convertible.class);
+        fbind(Seat.class).annotedWith(Drivers.class).to(DriversSeat.class);
+        fbind(Engine.class).to(V8Engine.class);
+        fbind(Tire.class).named("spare").to(SpareTire.class);
+        fbind(Tire.class);
+        fbind(SpareTire.class);
+        fbind(FuelTank.class);
+        fbind(Seat.class);
+        fbind(Cupholder.class);
     }
 }

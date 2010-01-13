@@ -73,6 +73,7 @@ public class InjectorImpl implements DSInjector {
         if (binders.size() > 0) {
             for (DSBinder binder : binders) {
                 binder.configureBindings();
+                binder.configureLastBinding();
                 if (binder.isEmpty()) {
                     Logger.getLogger(InjectorImpl.class.getName()).
                             log(Level.SEVERE, "Ooops, no bindings presents, "
@@ -288,8 +289,8 @@ public class InjectorImpl implements DSInjector {
             i++;
         }
         registeredManagedBeans.removeAllElements();
-        Logger.getLogger(InjectorImpl.class.getName())
-                        .log(Level.INFO, "Finalization of the injector (" + i + " instances cleaned)");
+//        Logger.getLogger(InjectorImpl.class.getName())
+//                        .log(Level.INFO, "Finalization of the injector (" + i + " instances cleaned)");
         super.finalize();
     }
 }

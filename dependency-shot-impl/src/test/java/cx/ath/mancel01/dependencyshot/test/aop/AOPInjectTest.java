@@ -14,8 +14,21 @@ public class AOPInjectTest {
      * Injection test.
      */
     public void testInjectedClient() {
-        System.out.println("Test AOP IMPL");
+        //System.out.println("Test AOP IMPL");
         DSInjector injector = DependencyShot.getInjector(new AOPBinder());
+        AOPClient client = injector.getInstance(AOPClient.class);
+        client.go();
+        client.getInt();
+        assertTrue(AOPInterceptionResult.getInstance().getPreMethod().size() == 1);
+        assertTrue(AOPInterceptionResult.getInstance().getPostMethod().size() == 1);
+        assertTrue(AOPInterceptionResult.getInstance().getPreClass().size() == 12);
+        assertTrue(AOPInterceptionResult.getInstance().getPostClass().size() == 12);
+        AOPInterceptionResult.getInstance().reset();
+    }
+
+    public void testFluentInjectedClient() {
+        //System.out.println("Test AOP IMPL Fluent");
+        DSInjector injector = DependencyShot.getInjector(new AOPFluentBinder());
         AOPClient client = injector.getInstance(AOPClient.class);
         client.go();
         client.getInt();
