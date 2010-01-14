@@ -18,6 +18,7 @@ package cx.ath.mancel01.dependencyshot.graph;
 
 import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
+import cx.ath.mancel01.dependencyshot.injection.fluent.FluentBinder;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +35,7 @@ import javax.inject.Provider;
  * 
  * @author Mathieu ANCELIN
  */
-public abstract class Binder implements DSBinder {
+public abstract class Binder implements DSBinder, FluentBinder {
     /**
      * Context for named injections.
      */
@@ -150,7 +151,8 @@ public abstract class Binder implements DSBinder {
         this.provider = null;
     }
 
-    public <T> Binder fbind(Class<T> from) {
+    //TODO : binding validation in fluent API
+    public <T> FluentBinder fbind(Class<T> from) {
 //        if ((this.from != null)
 //                && (this.to != null)
 //                && (this.named != null)
@@ -168,22 +170,26 @@ public abstract class Binder implements DSBinder {
         return this;
     }
 
-    public <T> Binder to(Class<T> to) {
+    @Override
+    public <T> FluentBinder to(Class<T> to) {
         this.to = to;
         return this;
     }
 
-    public <T> Binder named(String named) {
+    @Override
+    public <T> FluentBinder named(String named) {
         this.named = named;
         return this;
     }
 
-    public <T> Binder annotedWith(Class<? extends Annotation> annotation) {
+    @Override
+    public <T> FluentBinder annotedWith(Class<? extends Annotation> annotation) {
         this.annotation = annotation;
         return this;
     }
 
-    public <T> Binder providedBy(Provider<T> provider) {
+    @Override
+    public <T> FluentBinder providedBy(Provider<T> provider) {
         this.provider = provider;
         return null;
     }
