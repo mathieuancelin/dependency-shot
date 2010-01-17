@@ -127,11 +127,9 @@ public class Binding<T> implements DSBinding {
 		if (provider != null) {
 			result = provider.get();
 		} else if (to.isAnnotationPresent(Singleton.class)) {
-            //result = injector.getSingleton(to);
 			result = (T) scannInterceptorsAnnotations(
                     injector.getSingleton(to), from, injector);
 		} else {
-			//result = injector.createInstance(to);
             result = (T) scannInterceptorsAnnotations(
                     injector.createInstance(to), from, injector);
 		}
@@ -140,7 +138,8 @@ public class Binding<T> implements DSBinding {
 		}      
         if (ManagedBeanHandler.isManagedBean(result)) {
             LifecycleHandler.invokePostConstruct(result);
-            injector.addManagedBeanInstance(result); //TODO : check if singleton already present
+            if (!injector.getRegisteredManagedBeans().contains(result))
+                injector.addManagedBeanInstance(result);
             ManagedBeanHandler.registerManagedBeanJNDI(result);
         }
 		return result;
