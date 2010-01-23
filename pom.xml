@@ -30,7 +30,7 @@
                 <configuration>
                     <descriptors>
                         <descriptor>distribution/source-distribution.xml</descriptor>
-                        <!--<descriptor>distribution/binaries-distribution.xml</descriptor>-->
+                        <descriptor>distribution/binaries-distribution.xml</descriptor>
                     </descriptors>
                 </configuration>
             </plugin>

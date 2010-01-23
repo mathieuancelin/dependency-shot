@@ -4,33 +4,26 @@
         <format>tar.gz</format>
         <format>zip</format>
     </formats>
-    <fileSets>
-        <fileSet>
+    <files>
+        <file>
+            <source>../resources/LICENSE</source>
+        </file>
+    </files>
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory></outputDirectory>
             <includes>
-                <include>**/LICENSE*</include>
+                <include>cx.ath.mancel01:dependency-shot-api</include>
+                <include>cx.ath.mancel01:dependency-shot-impl</include>
+                <include>javax.inject:tck</include>
+                <include>javax.inject:javax.inject</include>
             </includes>
-            <useDefaultExcludes>true</useDefaultExcludes>
-        </fileSet>
-        <fileSet>
-            <directory>dependency-shot-api/target</directory>
-            <includes>
-                <include>*.jar</include>
-            </includes>
-            <outputDirectory>api</outputDirectory>
-        </fileSet>
-        <fileSet>
-            <directory>dependency-shot-impl/target</directory>
-            <includes>
-                <include>*.jar</include>
-            </includes>
-            <outputDirectory>core</outputDirectory>
-        </fileSet>
-        <fileSet>
-            <directory>tck/target</directory>
-            <includes>
-                <include>*.jar</include>
-            </includes>
-            <outputDirectory>tck</outputDirectory>
-        </fileSet>
-    </fileSets>
+	    <excludes>
+			<exclude>cx.ath.mancel01:dependency-shot-api:jar:sources</exclude>
+			<exclude>cx.ath.mancel01:dependency-shot-impl:jar:sources</exclude>
+			<exclude>javax.inject:tck:jar:sources</exclude>
+			<exclude>javax.inject:javax.inject:jar:sources</exclude>
+	    </excludes>
+     </dependencySet>
+    </dependencySets>   
 </assembly>
