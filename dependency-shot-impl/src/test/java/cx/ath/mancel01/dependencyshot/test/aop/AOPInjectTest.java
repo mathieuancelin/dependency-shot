@@ -16,7 +16,6 @@ public class AOPInjectTest {
      */
     @Test
     public void testInjectedClient() {
-        //System.out.println("Test AOP IMPL");
         DSInjector injector = DependencyShot.getInjector(new AOPBinder());
         AOPClient client = injector.getInstance(AOPClient.class);
         client.go();
@@ -29,7 +28,6 @@ public class AOPInjectTest {
     }
     @Test
     public void testFluentInjectedClient() {
-        //System.out.println("Test AOP IMPL Fluent");
         DSInjector injector = DependencyShot.getInjector(new AOPFluentBinder());
         AOPClient client = injector.getInstance(AOPClient.class);
         client.go();
