@@ -2,6 +2,7 @@ package cx.ath.mancel01.dependencyshot.test.cyclic;
 
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
+import org.junit.Test;
 import static junit.framework.Assert.assertTrue;
 
 /**
@@ -11,6 +12,7 @@ import static junit.framework.Assert.assertTrue;
  */
 public class CyclicTest {
 
+    @Test
     public void testCyclicDependency() {
         DSInjector injector = DependencyShot.getInjector(new CyclicBinder());
         BillingService service = injector.getInstance(BillingService.class);

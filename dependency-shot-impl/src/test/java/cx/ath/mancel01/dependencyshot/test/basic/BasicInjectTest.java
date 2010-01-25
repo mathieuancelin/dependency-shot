@@ -2,6 +2,7 @@ package cx.ath.mancel01.dependencyshot.test.basic;
 
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
+import org.junit.Test;
 import static junit.framework.Assert.assertTrue;
 
 /**
@@ -13,6 +14,7 @@ public class BasicInjectTest {
     /**
      * Mock test.
      */
+    @Test
     public void testMockedClient() {
         //System.out.println("Test : Mock");
         BasicMockService mock = new BasicMockService();
@@ -27,6 +29,7 @@ public class BasicInjectTest {
     /**
      * Injection test.
      */
+    @Test
     public void testInjectedClient() {
         //System.out.println("Test : @Inject");
         DSInjector injector = DependencyShot.getInjector(new BasicBinder());

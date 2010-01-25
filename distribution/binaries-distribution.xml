@@ -18,12 +18,6 @@
                 <include>javax.inject:tck</include>
                 <include>javax.inject:javax.inject</include>
             </includes>
-	    <excludes>
-			<exclude>cx.ath.mancel01:dependency-shot-api:jar:sources</exclude>
-			<exclude>cx.ath.mancel01:dependency-shot-impl:jar:sources</exclude>
-			<exclude>javax.inject:tck:jar:sources</exclude>
-			<exclude>javax.inject:javax.inject:jar:sources</exclude>
-	    </excludes>
      </dependencySet>
     </dependencySets>   
 </assembly>

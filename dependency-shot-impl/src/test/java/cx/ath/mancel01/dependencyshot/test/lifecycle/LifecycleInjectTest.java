@@ -2,6 +2,7 @@ package cx.ath.mancel01.dependencyshot.test.lifecycle;
 
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
+import org.junit.Test;
 import static junit.framework.Assert.assertTrue;
 
 /**
@@ -13,6 +14,7 @@ public class LifecycleInjectTest {
     /**
      * Injection test.
      */
+    @Test
     public void testInjectedClient() {
         DSInjector injector = DependencyShot.getInjector(new LifecycleBinder());
         LifecycleClient client = injector.getInstance(LifecycleClient.class);
@@ -20,6 +22,7 @@ public class LifecycleInjectTest {
         assertTrue(LifecycleCounter.getInstance().getLoadCounter() == 4);
     }
 
+    @Test
     public void testFluentInjectedClient() {
         DSInjector injector = DependencyShot.getInjector(new LifecycleFluentBinder());
         LifecycleClient client = injector.getInstance(LifecycleClient.class);
