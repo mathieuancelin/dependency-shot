@@ -2,6 +2,7 @@ package cx.ath.mancel01.dependencyshot.test.aop;
 
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
+import org.junit.Test;
 import static junit.framework.Assert.assertTrue;
 
 /**
@@ -13,6 +14,7 @@ public class AOPInjectTest {
     /**
      * Injection test.
      */
+    @Test
     public void testInjectedClient() {
         //System.out.println("Test AOP IMPL");
         DSInjector injector = DependencyShot.getInjector(new AOPBinder());
@@ -25,7 +27,7 @@ public class AOPInjectTest {
         assertTrue(AOPInterceptionResult.getInstance().getPostClass().size() == 12);
         AOPInterceptionResult.getInstance().reset();
     }
-
+    @Test
     public void testFluentInjectedClient() {
         //System.out.println("Test AOP IMPL Fluent");
         DSInjector injector = DependencyShot.getInjector(new AOPFluentBinder());
