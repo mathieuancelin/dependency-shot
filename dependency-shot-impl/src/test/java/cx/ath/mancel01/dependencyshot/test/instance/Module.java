@@ -15,28 +15,16 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.cyclic;
-
-import javax.inject.Inject;
+package cx.ath.mancel01.dependencyshot.test.instance;
 
 /**
- * Warning, this class is supposed to fail test and throwing exception
- * because of cyclic dependency with logger.
  *
  * @author Mathieu ANCELIN
  */
-public class WhichLoggerToChooseService {
+public interface Module {
 
-    @Inject
-    private LoggerService logger;
+    String getName();
 
-    public int which(){
-        int which = (int) ((Math.random() * 3) + 1);
-        //logger.log("chosing logging framework number " + which);
-        return which;
-    }
+    void start();
 
-    public void setLogger(LoggerService logger) {
-        this.logger = logger;
-    }
 }

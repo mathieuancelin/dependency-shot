@@ -15,28 +15,14 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.cyclic;
+package cx.ath.mancel01.dependencyshot.test.instance;
 
-import javax.inject.Inject;
+import javax.inject.Qualifier;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-/**
- * Warning, this class is supposed to fail test and throwing exception
- * because of cyclic dependency with logger.
- *
- * @author Mathieu ANCELIN
- */
-public class WhichLoggerToChooseService {
+@Retention(RetentionPolicy.RUNTIME)
+@Qualifier
+public @interface MyModule {
 
-    @Inject
-    private LoggerService logger;
-
-    public int which(){
-        int which = (int) ((Math.random() * 3) + 1);
-        //logger.log("chosing logging framework number " + which);
-        return which;
-    }
-
-    public void setLogger(LoggerService logger) {
-        this.logger = logger;
-    }
 }
