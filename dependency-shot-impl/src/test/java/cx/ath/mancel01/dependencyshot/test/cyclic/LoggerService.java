@@ -31,4 +31,8 @@ public class LoggerService {
     public void log(String log){
         System.out.println("Framework n°" + which.which() + " : " + log);
     }
+
+    public void setWhich(WhichLoggerToChooseService which) {
+        this.which = which;
+    }
 }
