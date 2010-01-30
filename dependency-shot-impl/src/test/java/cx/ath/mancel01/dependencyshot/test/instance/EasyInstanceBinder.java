@@ -17,8 +17,5 @@ public class EasyInstanceBinder extends Binder {
         fbind(String.class).annotedWith(MyModule.class).toInstance(MY_MODULE);
         fbind(String.class).annotedWith(MyOtherModule.class).toInstance(MY_OTHER_MODULE);
         fbind(String.class).named("yam").toInstance(YAM);
-        fbind(InstanceModule.class);
-        fbind(InstanceModule2.class);
-        fbind(InstanceModule3.class);
     }
 }

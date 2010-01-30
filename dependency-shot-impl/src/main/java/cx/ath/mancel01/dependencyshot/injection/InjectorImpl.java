@@ -50,6 +50,8 @@ public class InjectorImpl implements DSInjector {
      * Binders linked to the project.
      */
     private Vector<Binder> binders;
+
+    private HashMap<Binding<?>, Binding<?>> bindings = null;
     /**
      * Managed Object instances.
      */
@@ -130,10 +132,12 @@ public class InjectorImpl implements DSInjector {
      * @return current bindings
      */
     public Map<Binding<?>, Binding<?>> bindings() { //TODO : replace for real multi-binder and better perf
-        Map<Binding<?>, Binding<?>> bindings = new HashMap<Binding<?>, Binding<?>>();
-        for (Binder binder : binders) {
-            for (Binding<?> binding : binder.getBindings().keySet()) {
-                bindings.put(binding, binder.getBindings().get(binding));
+        if (bindings == null) {
+            bindings = new HashMap<Binding<?>, Binding<?>>();
+            for (Binder binder : binders) {
+                for (Binding<?> binding : binder.getBindings().keySet()) {
+                    bindings.put(binding, binder.getBindings().get(binding));
+                }
             }
         }
         return bindings;
@@ -175,8 +179,17 @@ public class InjectorImpl implements DSInjector {
 		Binding<T> b = (Binding<T>) bindings().get(Binding.lookup(c, annotation));
 		if (b != null) {
 			return b;
-		}
-		throw new IllegalStateException("No binding for " + c + " and " + annotation);
+		} else {
+            this.bindings.put(new Binding<T>(null, null,
+                c, c, null), new Binding<T>(null, null,
+                c, c, null));
+            b = getBinding(c, annotation);
+            if (b != null) {
+                return b;
+            }
+            throw new IllegalStateException("No binding for " + c + " and " + annotation);
+        }
+        //throw new IllegalStateException("No binding for " + c + " and " + annotation);
 	}
 
     /**
@@ -292,5 +305,15 @@ public class InjectorImpl implements DSInjector {
 //        Logger.getLogger(InjectorImpl.class.getName())
 //                        .log(Level.INFO, "Finalization of the injector (" + i + " instances cleaned)");
         super.finalize();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        for (Binding b : bindings.values()) {
+            builder.append(b);
+            builder.append("\n");
+        }
+        return builder.toString();
     }
 }
