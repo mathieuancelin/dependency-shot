@@ -15,25 +15,26 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.injection.fluent;
+package cx.ath.mancel01.dependencyshot.util;
 
-import java.lang.annotation.Annotation;
 import javax.inject.Provider;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
-public interface FluentBinder {
+public class InstanceProvider implements Provider {
 
-    <T> FluentBinder annotedWith(Class<? extends Annotation> annotation);
+    private Object providedInstance;
 
-    <T> FluentBinder named(String named);
+    private InstanceProvider() {}
 
-    <T> FluentBinder providedBy(Provider<T> provider);
+    public InstanceProvider(Object instance) {
+        this.providedInstance = instance;
+    }
 
-    <T> FluentBinder to(Class<T> to);
-
-    <T> FluentBinder toInstance(Object instance);
-
+    @Override
+    public Object get() {
+        return providedInstance;
+    }
 }

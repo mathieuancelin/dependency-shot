@@ -30,7 +30,7 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <descriptors>
-                        <!--<descriptor>distribution/source-distribution.xml</descriptor>-->
+                        <descriptor>distribution/source-distribution.xml</descriptor>
                         <descriptor>distribution/binaries-distribution.xml</descriptor>
                     </descriptors>
                 </configuration>
