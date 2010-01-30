@@ -16,6 +16,7 @@
  */
 package cx.ath.mancel01.dependencyshot.graph;
 
+import cx.ath.mancel01.dependencyshot.util.InstanceProvider;
 import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import cx.ath.mancel01.dependencyshot.injection.fluent.FluentBinder;
@@ -36,15 +37,15 @@ import javax.inject.Provider;
  * @author Mathieu ANCELIN
  */
 public abstract class Binder implements DSBinder, FluentBinder {
+
     /**
      * Context for named injections.
      */
-	private Map<Binding<?>, Binding<?>> bindings = new HashMap<Binding<?>, Binding<?>>();
+    private Map<Binding<?>, Binding<?>> bindings = new HashMap<Binding<?>, Binding<?>>();
     /**
      * The injector that manage the binder instance.
      */
     private DSInjector binderInjector;
-
     private Class from = null;
     private Class to = null;
     private String named = null;
@@ -54,7 +55,8 @@ public abstract class Binder implements DSBinder, FluentBinder {
     /**
      * Constructor.
      */
-	public Binder() { }
+    public Binder() {
+    }
 
     /**
      * Abstract method to configure the binder with bindings.
@@ -69,9 +71,10 @@ public abstract class Binder implements DSBinder, FluentBinder {
      * @param from Binded class
      * @param to Implementation of extends of from
      */
-	public <T> void bind(Class<T> from, Class<? extends T> to) {
+    @Deprecated
+    public <T> void bind(Class<T> from, Class<? extends T> to) {
         addBindingToBinder(new Binding<T>(null, null, from, to, null));
-	}
+    }
 
     /**
      * Binding method
@@ -79,9 +82,10 @@ public abstract class Binder implements DSBinder, FluentBinder {
      * @param <T> type
      * @param c Binded class
      */
-	public <T> void bind(Class<T> c) {
+    @Deprecated
+    public <T> void bind(Class<T> c) {
         addBindingToBinder(new Binding<T>(null, null, c, c, null));
-	}
+    }
 
     /**
      * Binding method
@@ -91,9 +95,10 @@ public abstract class Binder implements DSBinder, FluentBinder {
      * @param from Binded class
      * @param to Implementation of extends of from
      */
-	public <T> void bind(Class<? extends Annotation> qualifier, Class<T> from, Class<? extends T> to) {
+    @Deprecated
+    public <T> void bind(Class<? extends Annotation> qualifier, Class<T> from, Class<? extends T> to) {
         addBindingToBinder(new Binding<T>(qualifier, null, from, to, null));
-	}
+    }
 
     /**
      * Binding method
@@ -103,9 +108,10 @@ public abstract class Binder implements DSBinder, FluentBinder {
      * @param from Binded class
      * @param provider provide object
      */
-	public <T> void bind(String name, Class<T> from, Provider<T> provider) {
+    @Deprecated
+    public <T> void bind(String name, Class<T> from, Provider<T> provider) {
         addBindingToBinder(new Binding<T>(null, name, from, from, provider));
-	}
+    }
 
     /**
      * Binding method
@@ -115,9 +121,10 @@ public abstract class Binder implements DSBinder, FluentBinder {
      * @param name name of the binding @Named
      * @param to Implementation of extends of from
      */
+    @Deprecated
     public <T> void bind(Class<T> from, String name, Class<? extends T> to) {
         addBindingToBinder(new Binding<T>(null, name, from, to, null));
-	}
+    }
 
     /**
      * Add a binding to current bindings.
@@ -125,25 +132,21 @@ public abstract class Binder implements DSBinder, FluentBinder {
      * @param <T> type
      * @param binding a binding to add.
      */
-	private <T> void addBindingToBinder(Binding<T> binding) {
-        if(bindings.containsKey(binding))
+    private <T> void addBindingToBinder(Binding<T> binding) {
+        if (bindings.containsKey(binding)) {
             return;
-		Binding<?> old = bindings.put(binding, binding);
-		if (old != null) {
-			throw new IllegalArgumentException(binding + " overwrites " + old);
-		}
-	}
+        }
+        Binding<?> old = bindings.put(binding, binding);
+        if (old != null) {
+            throw new IllegalArgumentException(binding + " overwrites " + old);
+        }
+    }
 
+    @Override
     public void configureLastBinding() {
-//        if ((this.from != null)
-//                && (this.to != null)
-//                && (this.named != null)
-//                && (this.annotation != null)
-//                && (this.provider != null)) {
-                addBindingToBinder(
-                        new Binding(this.annotation, this.named,
-                        this.from, this.to, this.provider));
-//        }
+        addBindingToBinder(
+                new Binding(this.annotation, this.named,
+                this.from, this.to, this.provider));
         this.from = null;
         this.to = null;
         this.named = null;
@@ -153,15 +156,9 @@ public abstract class Binder implements DSBinder, FluentBinder {
 
     //TODO : binding validation in fluent API
     public <T> FluentBinder fbind(Class<T> from) {
-//        if ((this.from != null)
-//                && (this.to != null)
-//                && (this.named != null)
-//                && (this.annotation != null)
-//                && (this.provider != null)) {
-                addBindingToBinder(
-                        new Binding<T>(this.annotation, this.named,
-                        this.from, this.to, this.provider));
-//        }
+        addBindingToBinder(
+                new Binding<T>(this.annotation, this.named,
+                this.from, this.to, this.provider));
         this.from = from;
         this.to = from;
         this.named = null;
@@ -191,10 +188,16 @@ public abstract class Binder implements DSBinder, FluentBinder {
     @Override
     public <T> FluentBinder providedBy(Provider<T> provider) {
         this.provider = provider;
-        return null;
+        return this;
     }
 
-    public Map<Binding<?>, Binding<?>> getBindings() {     
+    @Override
+    public <T> FluentBinder toInstance(Object instance) {
+        this.provider = new InstanceProvider(instance);
+        return this;
+    }
+
+    public Map<Binding<?>, Binding<?>> getBindings() {
         return bindings;
     }
 

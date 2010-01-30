@@ -16,7 +16,7 @@ public class InstanceTest {
      */
     @Test
     public void testSpecificInstancesInjection() {
-        DSInjector injector = DependencyShot.getInjector(new InstanceFluentBinder());
+        DSInjector injector = DependencyShot.getInjector(new InstanceBinder());
         Module module1 = injector.getInstance(InstanceModule.class);
         Module module2 = injector.getInstance(InstanceModule2.class);
         Module module3 = injector.getInstance(InstanceModule3.class);
@@ -24,10 +24,27 @@ public class InstanceTest {
         module2.start();
         module3.start();
         assertTrue(module1.getName()
-                .equals(InstanceFluentBinder.MY_MODULE));
+                .equals(InstanceBinder.MY_MODULE));
         assertTrue(module2.getName()
-                .equals(InstanceFluentBinder.MY_OTHER_MODULE));
+                .equals(InstanceBinder.MY_OTHER_MODULE));
         assertTrue(module3.getName()
-                .equals(InstanceFluentBinder.YAM));
+                .equals(InstanceBinder.YAM));
+    }
+
+    @Test
+    public void testEasySpecificInstancesInjection() {
+        DSInjector injector = DependencyShot.getInjector(new EasyInstanceBinder());
+        Module module1 = injector.getInstance(InstanceModule.class);
+        Module module2 = injector.getInstance(InstanceModule2.class);
+        Module module3 = injector.getInstance(InstanceModule3.class);
+        module1.start();
+        module2.start();
+        module3.start();
+        assertTrue(module1.getName()
+                .equals(EasyInstanceBinder.MY_MODULE));
+        assertTrue(module2.getName()
+                .equals(EasyInstanceBinder.MY_OTHER_MODULE));
+        assertTrue(module3.getName()
+                .equals(EasyInstanceBinder.YAM));
     }
 }

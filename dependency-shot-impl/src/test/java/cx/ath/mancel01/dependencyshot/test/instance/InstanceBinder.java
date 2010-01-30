@@ -7,7 +7,7 @@ import javax.inject.Provider;
  * 
  * @author Mathieu ANCELIN
  */
-public class InstanceFluentBinder extends Binder {
+public class InstanceBinder extends Binder {
 
     public static final String MY_MODULE = "MyModule";
     public static final String MY_OTHER_MODULE = "MyOtherModule";
@@ -20,7 +20,7 @@ public class InstanceFluentBinder extends Binder {
             public Object get() {
                 return MY_MODULE;
             }
-        }); // TODO : heavy stuff to configure -> fbind(T).toInstance(? extends T)
+        });
         fbind(String.class).annotedWith(MyOtherModule.class).providedBy(new Provider(){
             @Override
             public Object get() {
