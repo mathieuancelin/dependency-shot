@@ -173,14 +173,13 @@ public class Binding<T> implements DSBinding {
 	}
 
     @Override
-	public int hashCode() {
-		final int prime = 89;
-		int result = 1;
-		result = prime * result + ((from == null) ? 0 : from.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((qualifier == null) ? 0 : qualifier.hashCode());
-		return result;
-	}
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + (this.from != null ? this.from.hashCode() : 0);
+        hash = 79 * hash + (this.qualifier != null ? this.qualifier.hashCode() : 0);
+        hash = 79 * hash + (this.name != null ? this.name.hashCode() : 0);
+        return hash;
+    }    
 
     @Override
 	public String toString() {
