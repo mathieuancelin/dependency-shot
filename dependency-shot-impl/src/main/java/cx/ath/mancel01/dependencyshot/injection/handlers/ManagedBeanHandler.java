@@ -38,21 +38,21 @@ public final class ManagedBeanHandler {
     }
 
     public static void registerManagedBeanJNDI(Object instance) {
-        try {
-            Class clazz = instance.getClass();
-            if (clazz.isAnnotationPresent(ManagedBean.class)) {
+//        try {
+//            Class clazz = instance.getClass();
+//            if (clazz.isAnnotationPresent(ManagedBean.class)) {
 //                ManagedBean annotation = (ManagedBean) clazz.getAnnotation(ManagedBean.class);
 //                if (!annotation.value().equals("")) {
-////                    Hashtable<Object, Object> env = new Hashtable<Object, Object>();
-////                    env.put(Context.INITIAL_CONTEXT_FACTORY,
-////                            "com.sun.jndi.fscontext.RefFSContextFactory");
-////                    env.put(Context.PROVIDER_URL, "file:/");
-////                    Context context = new javax.naming.InitialContext(env);
-////                    context.bind(annotation.value(), instance);
+//                    Hashtable<Object, Object> env = new Hashtable<Object, Object>();
+//                    env.put(Context.INITIAL_CONTEXT_FACTORY,
+//                            "com.sun.jndi.fscontext.RefFSContextFactory");
+//                    env.put(Context.PROVIDER_URL, "file:/");
+//                    Context context = new javax.naming.InitialContext(env);
+//                    context.bind(annotation.value(), instance);
 //                }
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(ManagedBeanHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//            }
+//        } catch (Exception ex) {
+//            Logger.getLogger(ManagedBeanHandler.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 }
