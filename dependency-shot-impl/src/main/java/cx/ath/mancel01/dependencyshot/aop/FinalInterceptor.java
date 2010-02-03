@@ -43,7 +43,7 @@ public class FinalInterceptor implements DSInterceptor {
             Object[] args = invocation.getArgs();
             return method.invoke(bean, args);
         } catch (Exception e) {
-            throw new InvocationException(e.getMessage());
+            throw new InvocationException(e);
         }
     }
 }

@@ -66,7 +66,7 @@ public final class Weaver {
                     Thread.currentThread().getContextClassLoader(),
                     new Class[]{iface}, handler);
         } catch (Exception e) {
-            throw new DSException(e.getMessage());
+            throw new DSException(e);
         }
     }
 }

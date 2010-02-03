@@ -29,5 +29,13 @@ public class DSException extends RuntimeException {
     public DSException(final String message) {
         super(message);
     }
+
+    public DSException(final Exception message) {
+        super(message);
+    }
+
+    public DSException(final String message, final Exception ex) {
+        super(message, ex);
+    }
 }
 
