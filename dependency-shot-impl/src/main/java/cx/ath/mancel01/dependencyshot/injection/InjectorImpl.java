@@ -33,7 +33,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Provider;
@@ -64,9 +63,9 @@ public class InjectorImpl implements DSInjector {
      * The constructor.
      */
     public InjectorImpl() {
-        binders = new Vector();
+        binders = new ArrayList();
         singletonContext = new HashMap<Class<?>, Object>();
-        registeredManagedBeans = new Vector<Object>();
+        registeredManagedBeans = new ArrayList<Object>();
     }
     /**
      * Configure all present binders of the injector.
@@ -286,7 +285,7 @@ public class InjectorImpl implements DSInjector {
      * Reset all the binders of an injector.
      */
     public final void resetBinders() {
-        this.binders = new Vector();
+        this.binders = new ArrayList();
         this.singletonContext = new HashMap<Class<?>, Object>();
     }
 

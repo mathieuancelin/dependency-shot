@@ -29,6 +29,7 @@ import cx.ath.mancel01.dependencyshot.injection.handlers.LifecycleHandler;
 import cx.ath.mancel01.dependencyshot.injection.handlers.ManagedBeanHandler;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -76,7 +77,7 @@ public class Binding<T> implements DSBinding {
     /**
      * The managed interceptors.
      */
-    private List<DSInterceptor> managedInterceptors = new Vector();
+    private List<DSInterceptor> managedInterceptors = new ArrayList();
     
     /**
      * Constructor
