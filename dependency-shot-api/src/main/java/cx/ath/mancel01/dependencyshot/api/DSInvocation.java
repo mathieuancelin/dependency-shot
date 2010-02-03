@@ -52,8 +52,8 @@ public class DSInvocation implements DSInvocationContext {
      * @param method the invocation's method.
      * @param args the invocation's args.
      */
-    public DSInvocation(final Object bean, final DSInterceptor[] interceptors,
-            final Method method, final Object[] args) {
+    public DSInvocation(final Object bean, DSInterceptor[] interceptors,
+            final Method method, Object[] args) {
         this.bean = bean;
         this.interceptors = interceptors;
         this.method = method;
@@ -63,27 +63,27 @@ public class DSInvocation implements DSInvocationContext {
      * @return the invocation's bean.
      */
     @Override
-    public Object getBean() {
+    public final Object getBean() {
         return bean;
     }
     /**
      * @return the invocation's method.
      */
     @Override
-    public Method getMethod() {
+    public final Method getMethod() {
         return method;
     }
     /**
      * @return the invocation's args.
      */
     @Override
-    public Object[] getArgs() {
+    public final Object[] getArgs() {
         return args;
     }
     /**
      * @return the invocation of the next interceptor.
      */
-    public Object nextInterceptor() {
+    public final Object nextInterceptor() {
         try {
             return interceptors[index++].invoke(this);
         } finally {
@@ -94,7 +94,7 @@ public class DSInvocation implements DSInvocationContext {
      * @return the invocation of the next interceptor.
      */
     @Override
-    public Object proceed() {
+    public final Object proceed() {
         try {
             return interceptors[index++].invoke(this);
         } finally {

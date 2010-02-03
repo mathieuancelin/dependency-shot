@@ -18,17 +18,16 @@
 package cx.ath.mancel01.dependencyshot.injection.handlers;
 
 import cx.ath.mancel01.dependencyshot.api.annotations.ManagedBean;
-import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.naming.Context;
-import javax.naming.NamingException;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
 public class ManagedBeanHandler {
+
+    private ManagedBeanHandler() {}
 
     public static boolean isManagedBean(Object o) {
         return isManagedBean(o.getClass());
@@ -43,14 +42,14 @@ public class ManagedBeanHandler {
             Class clazz = instance.getClass();
             if (clazz.isAnnotationPresent(ManagedBean.class)) {
                 ManagedBean annotation = (ManagedBean) clazz.getAnnotation(ManagedBean.class);
-                if (!annotation.value().equals("")) {
-//                    Hashtable<Object, Object> env = new Hashtable<Object, Object>();
-//                    env.put(Context.INITIAL_CONTEXT_FACTORY,
-//                            "com.sun.jndi.fscontext.RefFSContextFactory");
-//                    env.put(Context.PROVIDER_URL, "file:/");
-//                    Context context = new javax.naming.InitialContext(env);
-//                    context.bind(annotation.value(), instance);
-                }
+//                if (!annotation.value().equals("")) {
+////                    Hashtable<Object, Object> env = new Hashtable<Object, Object>();
+////                    env.put(Context.INITIAL_CONTEXT_FACTORY,
+////                            "com.sun.jndi.fscontext.RefFSContextFactory");
+////                    env.put(Context.PROVIDER_URL, "file:/");
+////                    Context context = new javax.naming.InitialContext(env);
+////                    context.bind(annotation.value(), instance);
+//                }
             }
         } catch (Exception ex) {
             Logger.getLogger(ManagedBeanHandler.class.getName()).log(Level.SEVERE, null, ex);

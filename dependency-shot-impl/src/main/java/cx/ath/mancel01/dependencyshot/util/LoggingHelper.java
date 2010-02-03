@@ -27,4 +27,6 @@ public class LoggingHelper {
 
     private static final boolean DEBUG = false;
 
+    private LoggingHelper() {}
+
 }

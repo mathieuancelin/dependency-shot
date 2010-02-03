@@ -40,7 +40,7 @@ public class UserInvocationHandler implements InvocationHandler {
      * @param bean The concerned object.
      * @param interceptors The chain of interceptors.
      */
-    public UserInvocationHandler(final Object bean, final DSInterceptor[] interceptors) {
+    public UserInvocationHandler(final Object bean, DSInterceptor[] interceptors) {
         this.bean = bean;
         this.interceptors = interceptors;
     }
@@ -53,7 +53,7 @@ public class UserInvocationHandler implements InvocationHandler {
      * @throws Throwable exceptions launched by the interceptors chain.
      */
     @Override
-    public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
+    public final Object invoke(final Object proxy, final Method method, Object[] args) throws Throwable {
         DSInvocation invocation = new DSInvocation(bean, interceptors, method, args);
         return invocation.nextInterceptor();
     }

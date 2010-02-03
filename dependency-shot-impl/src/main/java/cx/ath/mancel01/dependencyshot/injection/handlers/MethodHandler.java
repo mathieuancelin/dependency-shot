@@ -31,6 +31,8 @@ import javax.inject.Inject;
  * @author Mathieu ANCELIN
  */
 public class MethodHandler {
+
+    private MethodHandler() {}
     /**
      * Inject all injectable methods of an object.
      * 
@@ -48,7 +50,6 @@ public class MethodHandler {
             List<Method> maybeOverrides,
             boolean staticInjection,
             InjectorImpl injector) throws IllegalAccessException,
-                                          IllegalArgumentException,
                                           InvocationTargetException {
         
         Method[] methodsOfTheClass = c.getDeclaredMethods();

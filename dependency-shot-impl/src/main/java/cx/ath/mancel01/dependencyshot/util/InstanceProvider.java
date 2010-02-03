@@ -34,7 +34,7 @@ public class InstanceProvider implements Provider {
     }
 
     @Override
-    public Object get() {
+    public final Object get() {
         return providedInstance;
     }
 }

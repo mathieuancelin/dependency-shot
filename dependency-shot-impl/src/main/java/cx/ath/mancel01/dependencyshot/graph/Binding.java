@@ -43,7 +43,10 @@ import javax.inject.Singleton;
  * @author Mathieu ANCELIN
  */
 public class Binding<T> implements DSBinding {
-    
+
+    private static final int HASH = 7;
+    private static final int HASH_KEY = 79;
+
     /**
      * Binded class.
      */
@@ -99,19 +102,19 @@ public class Binding<T> implements DSBinding {
 		this.provider = provider;
 	}
 
-	Class<T> getFrom() {
+	public final Class<T> getFrom() {
 		return from;
 	}
 
-	Class<? extends Annotation> getQualifier() {
+	public final Class<? extends Annotation> getQualifier() {
 		return qualifier;
 	}
 
-	Class<? extends T> getTo() {
+	public final Class<? extends T> getTo() {
 		return to;
 	}
 
-    public Vector<DSInterceptor> getManagedInterceptors() {
+    public final Vector<DSInterceptor> getManagedInterceptors() {
         return managedInterceptors;
     }
 
@@ -122,7 +125,7 @@ public class Binding<T> implements DSBinding {
      * @param injector the concerned injector
      * @return binded object
      */
-	public T getInstance(InjectorImpl injector) { 
+	public final T getInstance(InjectorImpl injector) {
 		T result = null;
 		if (provider != null) {
 			result = provider.get();
@@ -138,51 +141,61 @@ public class Binding<T> implements DSBinding {
 		}      
         if (ManagedBeanHandler.isManagedBean(result)) {
             LifecycleHandler.invokePostConstruct(result);
-            if (!injector.getRegisteredManagedBeans().contains(result))
+            if (!injector.getRegisteredManagedBeans().contains(result)) {
                 injector.addManagedBeanInstance(result);
+            }
             ManagedBeanHandler.registerManagedBeanJNDI(result);
         }
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public final boolean equals(Object obj) {
+		if (this == obj) {
 			return true;
-		if (obj == null)
+        }
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+        }
+		if (getClass() != obj.getClass()) {
 			return false;
+        }
 		Binding<?> other = (Binding<?>) obj;
 		if (from == null) {
-			if (other.from != null)
+			if (other.from != null) {
 				return false;
-		} else if (!from.equals(other.from))
+            }
+		} else if (!from.equals(other.from)) {
 			return false;
+        }
 		if (name == null) {
-			if (other.name != null)
+			if (other.name != null) {
 				return false;
-		} else if (!name.equals(other.name))
+            }
+		} else if (!name.equals(other.name)) {
 			return false;
+        }
 		if (qualifier == null) {
-			if (other.qualifier != null)
+			if (other.qualifier != null) {
 				return false;
-		} else if (!qualifier.equals(other.qualifier))
+            }
+		} else if (!qualifier.equals(other.qualifier)) {
 			return false;
+        }
 		return true;
 	}
 
     @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 79 * hash + (this.from != null ? this.from.hashCode() : 0);
-        hash = 79 * hash + (this.qualifier != null ? this.qualifier.hashCode() : 0);
-        hash = 79 * hash + (this.name != null ? this.name.hashCode() : 0);
+    public final int hashCode() {
+        int hash = HASH;
+        hash = HASH_KEY * hash + (this.from != null ? this.from.hashCode() : 0);
+        hash = HASH_KEY * hash + (this.qualifier != null ? this.qualifier.hashCode() : 0);
+        hash = HASH_KEY * hash + (this.name != null ? this.name.hashCode() : 0);
         return hash;
     }    
 
     @Override
-	public String toString() {
+	public final String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(getClass().getSimpleName() + " [");
 		if (from != null) {

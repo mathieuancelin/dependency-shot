@@ -30,6 +30,8 @@ import javax.inject.Inject;
  * @author Mathieu ANCELIN
  */
 public class FieldsHandler {
+
+    private FieldsHandler() {}
     /**
      * Inject every fields of an object.
      * 
