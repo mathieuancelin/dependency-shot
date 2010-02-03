@@ -225,7 +225,7 @@ public class InjectorImpl implements DSInjector {
 			ClassHandler.classInjection(result, c, new ArrayList<Method>(), false, this);
 			return result;
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new DSException(e);
 		}
 	}
 
@@ -239,7 +239,7 @@ public class InjectorImpl implements DSInjector {
 			List<Method> emptyList = Collections.emptyList();
 			ClassHandler.classInjection(null, c, emptyList, true, this);
 		} catch (Exception e) {
-			throw new RuntimeException("Could not inject static members for " + c, e);
+			throw new DSException("Could not inject static members for " + c, e);
 		}
 	}
 

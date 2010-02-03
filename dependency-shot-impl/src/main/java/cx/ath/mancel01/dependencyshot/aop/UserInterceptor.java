@@ -79,7 +79,7 @@ public class UserInterceptor implements DSInterceptor {
             return this.interceptMethod.invoke(interceptedObject, invocation);
         } catch (Exception ex) {
             Logger.getLogger(UserInterceptor.class.getName()).log(Level.SEVERE, null, ex);
-            throw new InvocationException(ex.getMessage());
+            throw new InvocationException(ex);
         } 
     }
 
