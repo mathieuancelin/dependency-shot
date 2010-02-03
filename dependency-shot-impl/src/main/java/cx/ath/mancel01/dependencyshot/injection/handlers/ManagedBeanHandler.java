@@ -18,8 +18,6 @@
 package cx.ath.mancel01.dependencyshot.injection.handlers;
 
 import cx.ath.mancel01.dependencyshot.api.annotations.ManagedBean;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
