@@ -30,11 +30,14 @@ import java.util.List;
  * @author Mathieu ANCELIN
  */
 public class ClassHandler {
+
+    public ClassHandler() {}
+
     /**
      * Perform a complete injection on an object instance.
      *
      * @param <T> type of the object instance.
-     * @param instance instance of the object.
+     * @param instance instance of the object. 
      * @param c class of the object
      * @param maybeOverrides possible overridden methods
      * @param staticInjection can we inject static stuff
@@ -48,8 +51,7 @@ public class ClassHandler {
             Class<?> c,
             List<Method> maybeOverrides,
             boolean staticInjection,
-            InjectorImpl injector) throws IllegalArgumentException,
-                                          IllegalAccessException,
+            InjectorImpl injector) throws IllegalAccessException,
                                           InvocationTargetException {
 		Class<?> superclass = c.getSuperclass();
         // check if c has a superclass and if we can inject static stuff

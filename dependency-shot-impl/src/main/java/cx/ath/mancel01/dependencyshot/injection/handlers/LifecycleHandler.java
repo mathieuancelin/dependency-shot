@@ -29,6 +29,8 @@ import java.util.logging.Logger;
  * @author Mathieu ANCELIN
  */
 public class LifecycleHandler {
+
+    private LifecycleHandler() {}
     /**
      * Method that handle PostConstrut annotated methods.
      *

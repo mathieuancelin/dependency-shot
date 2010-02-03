@@ -36,7 +36,7 @@ public class FinalInterceptor implements DSInterceptor {
      * @return the return of the invocation.
      */
     @Override
-    public Object invoke(final DSInvocation invocation) {
+    public final Object invoke(final DSInvocation invocation) {
         try {
             Object bean = invocation.getBean();
             Method method = invocation.getMethod();

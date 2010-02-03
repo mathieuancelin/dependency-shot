@@ -186,6 +186,7 @@
       <module fileurl="file://$PROJECT_DIR$/dependency-shot.iml" filepath="$PROJECT_DIR$/dependency-shot.iml" />
       <module fileurl="file://$PROJECT_DIR$/dependency-shot-api/dependency-shot-api.iml" filepath="$PROJECT_DIR$/dependency-shot-api/dependency-shot-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/dependency-shot-impl/dependency-shot-impl.iml" filepath="$PROJECT_DIR$/dependency-shot-impl/dependency-shot-impl.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dependency-shot-samples/dependency-shot-samples.iml" filepath="$PROJECT_DIR$/dependency-shot-samples/dependency-shot-samples.iml" />
       <module fileurl="file://$PROJECT_DIR$/tck/tck.iml" filepath="$PROJECT_DIR$/tck/tck.iml" />
     </modules>
   </component>

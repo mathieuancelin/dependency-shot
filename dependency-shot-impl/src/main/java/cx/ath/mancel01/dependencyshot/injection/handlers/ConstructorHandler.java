@@ -32,6 +32,9 @@ import javax.inject.Inject;
  * @author Mathieu ANCELIN
  */
 public class ConstructorHandler {
+
+    public ConstructorHandler() {}
+
     /**
      * Return an instance of an object by constructor invocation.
      *

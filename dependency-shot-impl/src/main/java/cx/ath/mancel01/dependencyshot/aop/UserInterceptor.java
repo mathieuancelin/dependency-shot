@@ -58,7 +58,7 @@ public class UserInterceptor implements DSInterceptor {
      * Set the annoted (intercept) method.
      * @param annotedMethod the annoted method.
      */
-    public void setAnnotedMethod(final Method annotedMethod) {
+    public final void setAnnotedMethod(final Method annotedMethod) {
         this.annotedMethod = annotedMethod;
     }
     /**
@@ -67,7 +67,7 @@ public class UserInterceptor implements DSInterceptor {
      * @return the return of the invocation.
      */
     @Override
-    public Object invoke(final DSInvocation invocation) {
+    public final Object invoke(final DSInvocation invocation) {
         try {
             if (annotedMethod != null) {
                 if (invocation.getMethod().getName().equals(annotedMethod.getName())) {

@@ -49,13 +49,13 @@ public class InjectorImpl implements DSInjector {
     /**
      * Binders linked to the project.
      */
-    private Vector<Binder> binders;
+    private List<Binder> binders;
 
-    private HashMap<Binding<?>, Binding<?>> bindings = null;
+    private Map<Binding<?>, Binding<?>> bindings = null;
     /**
      * Managed Object instances.
      */
-    private Vector<Object> registeredManagedBeans;
+    private List<Object> registeredManagedBeans;
     /**
      * Singleton scoped object singletonContext.
      */
@@ -71,7 +71,7 @@ public class InjectorImpl implements DSInjector {
     /**
      * Configure all present binders of the injector.
      */
-    public void configureBinders() {
+    public final void configureBinders() {
         if (binders.size() > 0) {
             for (DSBinder binder : binders) {
                 binder.configureBindings();
@@ -90,22 +90,23 @@ public class InjectorImpl implements DSInjector {
      *
      * @param o
      */
-    public void addManagedBeanInstance(Object o) {
+    public final void addManagedBeanInstance(Object o) {
         this.registeredManagedBeans.add(o); //TODO : object pointer only
     }
 
     /**
      *
      */
-    public void resetManagedBeanInstances() {
-        this.registeredManagedBeans.removeAllElements();
+    public final void resetManagedBeanInstances() {
+        //this.registeredManagedBeans.removeAllElements();
+        this.registeredManagedBeans.clear();
     }
 
     /**
      *
      * @param registeredManagedBeans
      */
-    public void setRegisteredManagedBeans(Vector<Object> registeredManagedBeans) {
+    public final void setRegisteredManagedBeans(List<Object> registeredManagedBeans) {
         this.registeredManagedBeans = registeredManagedBeans;
     }
 
@@ -113,7 +114,7 @@ public class InjectorImpl implements DSInjector {
      * 
      * @return
      */
-    public Vector<Object> getRegisteredManagedBeans() {
+    public final List<Object> getRegisteredManagedBeans() {
         return registeredManagedBeans;
     }
 
@@ -122,7 +123,7 @@ public class InjectorImpl implements DSInjector {
      *
      * @param binder the binder to add.
      */
-    public void addBinder(final DSBinder binder) {
+    public final void addBinder(final DSBinder binder) {
         binder.setInjector(this);
         binders.add((Binder) binder);
     }
@@ -131,7 +132,7 @@ public class InjectorImpl implements DSInjector {
      * 
      * @return current bindings
      */
-    public Map<Binding<?>, Binding<?>> bindings() { //TODO : replace for real multi-binder and better perf
+    public final Map<Binding<?>, Binding<?>> bindings() { //TODO : replace for real multi-binder and better perf
         if (bindings == null) {
             bindings = new HashMap<Binding<?>, Binding<?>>();
             for (Binder binder : binders) {
@@ -151,7 +152,7 @@ public class InjectorImpl implements DSInjector {
      * @return instance of c
      */
     @Override
-    public <T> T getInstance(Class<T> c) {
+    public final <T> T getInstance(Class<T> c) {
 		return getInstance(c, null);
 	}
 
@@ -199,7 +200,7 @@ public class InjectorImpl implements DSInjector {
      * @param c class of the new instance
      * @return singleton instance of c
      */
-	public <T> T getSingleton(Class<T> c) {
+	public final <T> T getSingleton(Class<T> c) {
         // check if the singleton is present in the singleton context
 		T result = c.cast(singletonContext.get(c));
         // if not, create one
@@ -217,7 +218,7 @@ public class InjectorImpl implements DSInjector {
      * @param c class of the new instance
      * @return new instance of c
      */
-	public <T> T createInstance(Class<T> c) {
+	public final <T> T createInstance(Class<T> c) {
 		try {
             // create a new instance of a class
 			T result = ConstructorHandler.getConstructedInstance(c, this);
@@ -234,7 +235,7 @@ public class InjectorImpl implements DSInjector {
      * @param c
      */
     @Override
-    public void injectStaticMembers(Class<?> c) {
+    public final void injectStaticMembers(Class<?> c) {
 		try {
 			List<Method> emptyList = Collections.emptyList();
 			ClassHandler.classInjection(null, c, emptyList, true, this);
@@ -252,7 +253,7 @@ public class InjectorImpl implements DSInjector {
      * @param annotations annotations present on the field or the method
      * @return
      */
-	public Object getProviderOrInstance(Class<?> type, Type genericType, Annotation[] annotations) {
+	public final Object getProviderOrInstance(Class<?> type, Type genericType, Annotation[] annotations) {
 		Object value;
 		Annotation qualifier = null;
         // search in custom annotations wich one is a qualifier
@@ -284,7 +285,7 @@ public class InjectorImpl implements DSInjector {
     /**
      * Reset all the binders of an injector.
      */
-    public void resetBinders() {
+    public final void resetBinders() {
         this.binders = new Vector();
         this.singletonContext = new HashMap<Class<?>, Object>();
     }
@@ -294,21 +295,20 @@ public class InjectorImpl implements DSInjector {
      * @throws Throwable
      */
     @Override
-    protected void finalize() throws Throwable {
+    protected final void finalize() throws Throwable {
         int i = 0;
         for(Object o : registeredManagedBeans) {
             LifecycleHandler.invokePreDestroy(o);
             o = null;
             i++;
         }
-        registeredManagedBeans.removeAllElements();
-//        Logger.getLogger(InjectorImpl.class.getName())
-//                        .log(Level.INFO, "Finalization of the injector (" + i + " instances cleaned)");
+        //registeredManagedBeans.removeAllElements();
+        registeredManagedBeans.clear();
         super.finalize();
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         StringBuilder builder = new StringBuilder();
         for (Binding b : bindings.values()) {
             builder.append(b);

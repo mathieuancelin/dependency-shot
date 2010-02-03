@@ -72,7 +72,7 @@ public abstract class Binder implements DSBinder, FluentBinder {
      * @param to Implementation of extends of from
      */
     @Deprecated
-    public <T> void bind(Class<T> from, Class<? extends T> to) {
+    public final <T> void bind(Class<T> from, Class<? extends T> to) {
         addBindingToBinder(new Binding<T>(null, null, from, to, null));
     }
 
@@ -83,7 +83,7 @@ public abstract class Binder implements DSBinder, FluentBinder {
      * @param c Binded class
      */
     @Deprecated
-    public <T> void bind(Class<T> c) {
+    public final <T> void bind(Class<T> c) {
         addBindingToBinder(new Binding<T>(null, null, c, c, null));
     }
 
@@ -96,7 +96,7 @@ public abstract class Binder implements DSBinder, FluentBinder {
      * @param to Implementation of extends of from
      */
     @Deprecated
-    public <T> void bind(Class<? extends Annotation> qualifier, Class<T> from, Class<? extends T> to) {
+    public final <T> void bind(Class<? extends Annotation> qualifier, Class<T> from, Class<? extends T> to) {
         addBindingToBinder(new Binding<T>(qualifier, null, from, to, null));
     }
 
@@ -109,7 +109,7 @@ public abstract class Binder implements DSBinder, FluentBinder {
      * @param provider provide object
      */
     @Deprecated
-    public <T> void bind(String name, Class<T> from, Provider<T> provider) {
+    public final <T> void bind(String name, Class<T> from, Provider<T> provider) {
         addBindingToBinder(new Binding<T>(null, name, from, from, provider));
     }
 
@@ -122,7 +122,7 @@ public abstract class Binder implements DSBinder, FluentBinder {
      * @param to Implementation of extends of from
      */
     @Deprecated
-    public <T> void bind(Class<T> from, String name, Class<? extends T> to) {
+    public final <T> void bind(Class<T> from, String name, Class<? extends T> to) {
         addBindingToBinder(new Binding<T>(null, name, from, to, null));
     }
 
@@ -143,7 +143,7 @@ public abstract class Binder implements DSBinder, FluentBinder {
     }
 
     @Override
-    public void configureLastBinding() {
+    public final void configureLastBinding() {
         addBindingToBinder(
                 new Binding(this.annotation, this.named,
                 this.from, this.to, this.provider));
@@ -155,7 +155,7 @@ public abstract class Binder implements DSBinder, FluentBinder {
     }
 
     //TODO : binding validation in fluent API
-    public <T> FluentBinder fbind(Class<T> from) {
+    public final <T> FluentBinder fbind(Class<T> from) {
         addBindingToBinder(
                 new Binding<T>(this.annotation, this.named,
                 this.from, this.to, this.provider));
@@ -168,50 +168,50 @@ public abstract class Binder implements DSBinder, FluentBinder {
     }
 
     @Override
-    public <T> FluentBinder to(Class<T> to) {
+    public final <T> FluentBinder to(Class<T> to) {
         this.to = to;
         return this;
     }
 
     @Override
-    public <T> FluentBinder named(String named) {
+    public final <T> FluentBinder named(String named) {
         this.named = named;
         return this;
     }
 
     @Override
-    public <T> FluentBinder annotedWith(Class<? extends Annotation> annotation) {
+    public final <T> FluentBinder annotedWith(Class<? extends Annotation> annotation) {
         this.annotation = annotation;
         return this;
     }
 
     @Override
-    public <T> FluentBinder providedBy(Provider<T> provider) {
+    public final <T> FluentBinder providedBy(Provider<T> provider) {
         this.provider = provider;
         return this;
     }
 
     @Override
-    public <T> FluentBinder toInstance(Object instance) {
+    public final <T> FluentBinder toInstance(Object instance) {
         this.provider = new InstanceProvider(instance);
         return this;
     }
 
-    public Map<Binding<?>, Binding<?>> getBindings() {
+    public final Map<Binding<?>, Binding<?>> getBindings() {
         return bindings;
     }
 
     @Override
-    public boolean isEmpty() {
+    public final boolean isEmpty() {
         return bindings.isEmpty();
     }
 
     @Override
-    public void setInjector(DSInjector injector) {
+    public final void setInjector(DSInjector injector) {
         binderInjector = injector;
     }
 
-    public DSInjector getBinderInjector() {
+    public final DSInjector getBinderInjector() {
         return binderInjector;
     }
 }
