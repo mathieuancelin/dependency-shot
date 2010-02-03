@@ -29,7 +29,7 @@ import javax.inject.Inject;
  *
  * @author Mathieu ANCELIN
  */
-public class FieldsHandler {
+public final class FieldsHandler {
 
     private FieldsHandler() {}
     /**

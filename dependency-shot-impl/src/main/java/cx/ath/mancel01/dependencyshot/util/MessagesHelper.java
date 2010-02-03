@@ -21,8 +21,17 @@ package cx.ath.mancel01.dependencyshot.util;
  *
  * @author Mathieu ANCELIN
  */
-public class MessagesHelper {
+public final class MessagesHelper {
+
+    private static MessagesHelper instance = null;
 
     private MessagesHelper() {}
     //TODO : MessagesHelper
+
+    public static MessagesHelper getInstance() {
+        if (instance == null) {
+            instance = new MessagesHelper();
+        }
+        return instance;
+    }
 }

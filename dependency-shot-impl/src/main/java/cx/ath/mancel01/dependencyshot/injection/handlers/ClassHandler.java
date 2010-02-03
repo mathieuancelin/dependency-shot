@@ -29,9 +29,9 @@ import java.util.List;
  *
  * @author Mathieu ANCELIN
  */
-public class ClassHandler {
+public final class ClassHandler {
 
-    public ClassHandler() {}
+    private ClassHandler() {}
 
     /**
      * Perform a complete injection on an object instance.

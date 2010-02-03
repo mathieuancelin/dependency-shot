@@ -25,7 +25,7 @@ import java.util.logging.Logger;
  *
  * @author Mathieu ANCELIN
  */
-public class ManagedBeanHandler {
+public final class ManagedBeanHandler {
 
     private ManagedBeanHandler() {}
 
@@ -41,7 +41,7 @@ public class ManagedBeanHandler {
         try {
             Class clazz = instance.getClass();
             if (clazz.isAnnotationPresent(ManagedBean.class)) {
-                ManagedBean annotation = (ManagedBean) clazz.getAnnotation(ManagedBean.class);
+//                ManagedBean annotation = (ManagedBean) clazz.getAnnotation(ManagedBean.class);
 //                if (!annotation.value().equals("")) {
 ////                    Hashtable<Object, Object> env = new Hashtable<Object, Object>();
 ////                    env.put(Context.INITIAL_CONTEXT_FACTORY,

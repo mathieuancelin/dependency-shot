@@ -28,7 +28,7 @@ import java.util.logging.Logger;
  *
  * @author Mathieu ANCELIN
  */
-public class LifecycleHandler {
+public final class LifecycleHandler {
 
     private LifecycleHandler() {}
     /**
