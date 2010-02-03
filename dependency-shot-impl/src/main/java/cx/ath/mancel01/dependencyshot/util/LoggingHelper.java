@@ -25,7 +25,7 @@ public final class LoggingHelper {
 
     //TODO : Logging helper
 
-    private static final boolean DEBUG = false;
+    //private static final boolean DEBUG = false;
 
     private static LoggingHelper instance = null;
 
