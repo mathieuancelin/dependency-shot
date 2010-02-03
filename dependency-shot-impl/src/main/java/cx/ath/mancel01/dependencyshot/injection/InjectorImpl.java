@@ -296,11 +296,9 @@ public class InjectorImpl implements DSInjector {
      */
     @Override
     protected final void finalize() throws Throwable {
-        int i = 0;
         for(Object o : registeredManagedBeans) {
             LifecycleHandler.invokePreDestroy(o);
             o = null;
-            i++;
         }
         //registeredManagedBeans.removeAllElements();
         registeredManagedBeans.clear();

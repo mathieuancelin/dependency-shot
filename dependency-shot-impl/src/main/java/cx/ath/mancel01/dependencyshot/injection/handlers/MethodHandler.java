@@ -30,7 +30,7 @@ import javax.inject.Inject;
  *
  * @author Mathieu ANCELIN
  */
-public class MethodHandler {
+public final class MethodHandler {
 
     private MethodHandler() {}
     /**

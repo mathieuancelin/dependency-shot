@@ -21,12 +21,21 @@ package cx.ath.mancel01.dependencyshot.util;
  *
  * @author Mathieu ANCELIN
  */
-public class LoggingHelper {
+public final class LoggingHelper {
 
     //TODO : Logging helper
 
     private static final boolean DEBUG = false;
 
+    private static LoggingHelper instance = null;
+
     private LoggingHelper() {}
+
+    public static LoggingHelper getInstance() {
+        if (instance == null) {
+            instance = new LoggingHelper();
+        }
+        return instance;
+    }
 
 }
