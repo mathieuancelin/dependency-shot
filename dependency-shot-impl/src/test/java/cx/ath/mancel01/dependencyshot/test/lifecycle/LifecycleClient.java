@@ -1,8 +1,8 @@
 package cx.ath.mancel01.dependencyshot.test.lifecycle;
 
-import cx.ath.mancel01.dependencyshot.api.annotations.ManagedBean;
-import cx.ath.mancel01.dependencyshot.api.annotations.PostConstruct;
-import cx.ath.mancel01.dependencyshot.api.annotations.PreDestroy;
+import javax.annotation.ManagedBean;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 /**
