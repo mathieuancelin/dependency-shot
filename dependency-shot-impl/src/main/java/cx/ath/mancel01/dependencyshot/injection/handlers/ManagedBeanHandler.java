@@ -17,7 +17,7 @@
 
 package cx.ath.mancel01.dependencyshot.injection.handlers;
 
-import cx.ath.mancel01.dependencyshot.api.annotations.ManagedBean;
+import javax.annotation.ManagedBean;
 
 /**
  *

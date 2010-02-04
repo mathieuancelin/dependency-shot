@@ -97,7 +97,6 @@ public class InjectorImpl implements DSInjector {
      *
      */
     public final void resetManagedBeanInstances() {
-        //this.registeredManagedBeans.removeAllElements();
         this.registeredManagedBeans.clear();
     }
 
@@ -299,7 +298,6 @@ public class InjectorImpl implements DSInjector {
             LifecycleHandler.invokePreDestroy(o);
             o = null;
         }
-        //registeredManagedBeans.removeAllElements();
         registeredManagedBeans.clear();
         super.finalize();
     }

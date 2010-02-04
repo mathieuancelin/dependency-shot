@@ -1,7 +1,8 @@
 package cx.ath.mancel01.dependencyshot.test.aop;
 
-import cx.ath.mancel01.dependencyshot.api.annotations.Interceptors;
-import cx.ath.mancel01.dependencyshot.api.annotations.ManagedBean;
+import javax.annotation.ManagedBean;
+import javax.interceptor.Interceptors;
+
 
 /**
  * Implementation of a service.

@@ -1,6 +1,6 @@
 package cx.ath.mancel01.dependencyshot.test.aop;
 
-import cx.ath.mancel01.dependencyshot.api.annotations.Interceptors;
+import javax.interceptor.Interceptors;
 
 /**
  * Interceptor on any implementation of this interface.

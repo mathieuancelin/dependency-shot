@@ -17,11 +17,11 @@
 
 package cx.ath.mancel01.dependencyshot.injection.handlers;
 
-import cx.ath.mancel01.dependencyshot.api.annotations.PostConstruct;
-import cx.ath.mancel01.dependencyshot.api.annotations.PreDestroy;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 /**
  *  Utility class that handle lifecycle management.

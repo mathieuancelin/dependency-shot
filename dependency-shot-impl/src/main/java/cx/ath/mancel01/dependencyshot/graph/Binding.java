@@ -21,8 +21,6 @@ import cx.ath.mancel01.dependencyshot.aop.UserInterceptor;
 import cx.ath.mancel01.dependencyshot.aop.Weaver;
 import cx.ath.mancel01.dependencyshot.api.DSBinding;
 import cx.ath.mancel01.dependencyshot.api.DSInterceptor;
-import cx.ath.mancel01.dependencyshot.api.annotations.AroundInvoke;
-import cx.ath.mancel01.dependencyshot.api.annotations.Interceptors;
 import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.injection.handlers.LifecycleHandler;
@@ -37,6 +35,8 @@ import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Qualifier;
 import javax.inject.Singleton;
+import javax.interceptor.AroundInvoke;
+import javax.interceptor.Interceptors;
 
 /**
  * Object representation of a binding.

@@ -1,7 +1,7 @@
 package cx.ath.mancel01.dependencyshot.test.aop;
 
 import cx.ath.mancel01.dependencyshot.api.DSInvocationContext;
-import cx.ath.mancel01.dependencyshot.api.annotations.AroundInvoke;
+import javax.interceptor.AroundInvoke;
 
 /**
  * An interceptor class.

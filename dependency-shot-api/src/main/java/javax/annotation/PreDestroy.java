@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.api.annotations;
+package javax.annotation;
 
 import java.lang.annotation.*;
 import static java.lang.annotation.ElementType.*;
@@ -24,8 +24,8 @@ import static java.lang.annotation.RetentionPolicy.*;
 /**
  * @author Mathieu ANCELIN
  */
-@Target(TYPE)
-@Retention(RUNTIME)
-public @interface ManagedBean {
-    String value() default "";
+@Documented
+@Retention (RUNTIME)
+@Target(METHOD)
+public @interface PreDestroy {
 }
