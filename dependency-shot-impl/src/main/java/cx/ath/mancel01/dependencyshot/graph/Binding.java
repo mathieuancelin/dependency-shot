@@ -19,8 +19,7 @@ package cx.ath.mancel01.dependencyshot.graph;
 import cx.ath.mancel01.dependencyshot.aop.FinalInterceptor;
 import cx.ath.mancel01.dependencyshot.aop.UserInterceptor;
 import cx.ath.mancel01.dependencyshot.aop.Weaver;
-import cx.ath.mancel01.dependencyshot.api.DSBinding;
-import cx.ath.mancel01.dependencyshot.api.DSInterceptor;
+import cx.ath.mancel01.dependencyshot.aop.DSInterceptor;
 import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.injection.handlers.LifecycleHandler;
@@ -43,7 +42,7 @@ import javax.interceptor.Interceptors;
  * 
  * @author Mathieu ANCELIN
  */
-public class Binding<T> implements DSBinding {
+public class Binding<T> {
 
     private static final int HASH = 7;
     private static final int HASH_KEY = 79;

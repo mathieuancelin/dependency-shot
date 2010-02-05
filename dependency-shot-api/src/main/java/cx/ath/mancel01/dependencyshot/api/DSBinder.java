@@ -15,11 +15,18 @@ public interface DSBinder {
      * configure the binder's bindings.
      */
     void configureBindings();
-    
+    /**
+     * @return if a binder contains no binding.
+     */
     boolean isEmpty();
-
+    /**
+     * Set the injector of a binder.
+     *
+     * @param injector the injector of the binder.
+     */
     void setInjector(DSInjector injector);
-
+    /**
+     * Configuration of the last binding (workaround for fluent chained binding API)
+     */
     void configureLastBinding();
-
 }
