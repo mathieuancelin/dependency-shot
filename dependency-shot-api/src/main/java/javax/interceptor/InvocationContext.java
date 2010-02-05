@@ -50,7 +50,7 @@ public interface InvocationContext {
      *
      * @return the target instance
      */
-    public Object getTarget();
+    Object getTarget();
     /**
      * Returns the timer object associated with a timeout
      * method invocation on the target class, or a null value for method
@@ -59,7 +59,7 @@ public interface InvocationContext {
      *
      * @return the timer object or a null value
      */
-    public Object getTimer();
+    Object getTimer();
     /**
      * Returns the method of the target class for which the interceptor
      * was invoked.  For method interceptors, the method of the
@@ -68,7 +68,7 @@ public interface InvocationContext {
      *
      * @return the method, or a null value
      */
-    public Method getMethod();
+    Method getMethod();
     /**
      * Returns the parameter values that will be passed to the method of
      * the target class. If {@code setParameters()} has been called,
@@ -80,7 +80,7 @@ public interface InvocationContext {
      * @exception java.lang.IllegalStateException if invoked within
      * a lifecycle callback method.
      */
-    public Object[] getParameters();
+    Object[] getParameters();
     /**
      * Sets the parameter values that will be passed to the method of the
      * target class.
@@ -95,7 +95,7 @@ public interface InvocationContext {
      *
      * @param params the parameter values, as an array
      */
-    public void setParameters(Object[] params);
+    void setParameters(Object[] params);
     /**
      * Returns the context data associated with this invocation or
      * lifecycle callback.  If there is no context data, an
@@ -103,7 +103,7 @@ public interface InvocationContext {
      *
      * @return the context data, as a map
      */
-    public Map<String, Object> getContextData();
+    Map<String, Object> getContextData();
     /**
      * Proceed to the next interceptor in the interceptor chain.
      * Return the result of the next method invoked, or a null
@@ -111,5 +111,5 @@ public interface InvocationContext {
      *
      * @return the return value of the next method in the chain
      */
-    public Object proceed() throws Exception;
+    Object proceed() throws Exception;
 } 
