@@ -16,7 +16,6 @@ public class BasicInjectTest {
      */
     @Test
     public void testMockedClient() {
-        //System.out.println("Test : Mock");
         BasicMockService mock = new BasicMockService();
         BasicClient client = new BasicClient(mock);
         client.setService2(mock);
@@ -26,23 +25,8 @@ public class BasicInjectTest {
         assertTrue(client.getService2().isGone());
         assertTrue(client.getService3().isGone());
     }
-    /**
-     * Injection test.
-     */
-    @Test
-    public void testInjectedClient() {
-        //System.out.println("Test : @Inject");
-        DSInjector injector = DependencyShot.getInjector(new BasicBinder());
-        BasicClient client = injector.getInstance(BasicClient.class);
-        client.go();
-        assertTrue(!client.getService().isGone());
-        assertTrue(!client.getService3().isGone());
-        assertTrue(!client.getService2().isGone());
-        
-    }
 
     public void testFluentInjectedClient() {
-        //System.out.println("Test : @Inject");
         DSInjector injector = DependencyShot.getInjector(new BasicFluentBinder());
         BasicClient client = injector.getInstance(BasicClient.class);
         client.go();

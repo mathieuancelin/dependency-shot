@@ -10,7 +10,10 @@ public class LifecycleFluentBinder extends Binder {
 
     @Override
     public void configureBindings() {
-        fbind(LifecycleService.class).to(LifecycleServiceImpl.class);
-        fbind(LifecycleClient.class);
+        bind(LifecycleService.class).to(LifecycleServiceImpl.class);
+        /**
+         * Not needed since single bindings are automatically detected.
+         * bind(LifecycleClient.class);
+         **/
     }
 }

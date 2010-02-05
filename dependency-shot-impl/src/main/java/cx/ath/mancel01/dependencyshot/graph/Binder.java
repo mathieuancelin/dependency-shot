@@ -64,67 +64,67 @@ public abstract class Binder implements DSBinder, FluentBinder {
     @Override
     public abstract void configureBindings();
 
-    /**
-     * Binding method
-     * 
-     * @param <T> type
-     * @param from Binded class
-     * @param to Implementation of extends of from
-     */
-    @Deprecated
-    public final <T> void bind(Class<T> from, Class<? extends T> to) {
-        addBindingToBinder(new Binding<T>(null, null, from, to, null));
-    }
-
-    /**
-     * Binding method
-     *
-     * @param <T> type
-     * @param c Binded class
-     */
-    @Deprecated
-    public final <T> void bind(Class<T> c) {
-        addBindingToBinder(new Binding<T>(null, null, c, c, null));
-    }
-
-    /**
-     * Binding method
-     *
-     * @param <T> type
-     * @param qualifier
-     * @param from Binded class
-     * @param to Implementation of extends of from
-     */
-    @Deprecated
-    public final <T> void bind(Class<? extends Annotation> qualifier, Class<T> from, Class<? extends T> to) {
-        addBindingToBinder(new Binding<T>(qualifier, null, from, to, null));
-    }
-
-    /**
-     * Binding method
-     * 
-     * @param <T> type
-     * @param name name of the binding @Named
-     * @param from Binded class
-     * @param provider provide object
-     */
-    @Deprecated
-    public final <T> void bind(String name, Class<T> from, Provider<T> provider) {
-        addBindingToBinder(new Binding<T>(null, name, from, from, provider));
-    }
-
-    /**
-     * Binding method
-     *
-     * @param <T> type
-     * @param from Binded class
-     * @param name name of the binding @Named
-     * @param to Implementation of extends of from
-     */
-    @Deprecated
-    public final <T> void bind(Class<T> from, String name, Class<? extends T> to) {
-        addBindingToBinder(new Binding<T>(null, name, from, to, null));
-    }
+//    /**
+//     * Binding method
+//     *
+//     * @param <T> type
+//     * @param from Binded class
+//     * @param to Implementation of extends of from
+//     */
+//    @Deprecated
+//    public final <T> void bind(Class<T> from, Class<? extends T> to) {
+//        addBindingToBinder(new Binding<T>(null, null, from, to, null));
+//    }
+//
+//    /**
+//     * Binding method
+//     *
+//     * @param <T> type
+//     * @param c Binded class
+//     */
+//    @Deprecated
+//    public final <T> void bind(Class<T> c) {
+//        addBindingToBinder(new Binding<T>(null, null, c, c, null));
+//    }
+//
+//    /**
+//     * Binding method
+//     *
+//     * @param <T> type
+//     * @param qualifier
+//     * @param from Binded class
+//     * @param to Implementation of extends of from
+//     */
+//    @Deprecated
+//    public final <T> void bind(Class<? extends Annotation> qualifier, Class<T> from, Class<? extends T> to) {
+//        addBindingToBinder(new Binding<T>(qualifier, null, from, to, null));
+//    }
+//
+//    /**
+//     * Binding method
+//     *
+//     * @param <T> type
+//     * @param name name of the binding @Named
+//     * @param from Binded class
+//     * @param provider provide object
+//     */
+//    @Deprecated
+//    public final <T> void bind(String name, Class<T> from, Provider<T> provider) {
+//        addBindingToBinder(new Binding<T>(null, name, from, from, provider));
+//    }
+//
+//    /**
+//     * Binding method
+//     *
+//     * @param <T> type
+//     * @param from Binded class
+//     * @param name name of the binding @Named
+//     * @param to Implementation of extends of from
+//     */
+//    @Deprecated
+//    public final <T> void bind(Class<T> from, String name, Class<? extends T> to) {
+//        addBindingToBinder(new Binding<T>(null, name, from, to, null));
+//    }
 
     /**
      * Add a binding to current bindings.
@@ -155,7 +155,7 @@ public abstract class Binder implements DSBinder, FluentBinder {
     }
 
     //TODO : binding validation in fluent API
-    public final <T> FluentBinder fbind(Class<T> from) {
+    public final <T> FluentBinder bind(Class<T> from) {
         addBindingToBinder(
                 new Binding<T>(this.annotation, this.named,
                 this.from, this.to, this.provider));

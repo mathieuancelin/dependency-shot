@@ -94,29 +94,29 @@ public class DSInvocation implements InvocationContext {
      * @return the invocation's bean.
      */
     @Override
-    public Object getTarget() {
+    public final Object getTarget() {
         return bean;
     }
 
     @Override
-    public Object getTimer() {
+    public final Object getTimer() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     /**
      * @return the invocation's parameters.
      */
     @Override
-    public Object[] getParameters() {
+    public final Object[] getParameters() {
         return args;
     }
 
     @Override
-    public void setParameters(Object[] params) {
+    public final void setParameters(Object[] params) {
         this.args = params;
     }
 
     @Override
-    public Map<String, Object> getContextData() {
+    public final Map<String, Object> getContextData() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

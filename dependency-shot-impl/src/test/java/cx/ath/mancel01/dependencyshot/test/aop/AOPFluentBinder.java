@@ -10,9 +10,12 @@ public class AOPFluentBinder extends Binder {
 
     @Override
     public void configureBindings() {
-        fbind(AOPService.class).to(AOPServiceImpl.class);
-        fbind(AOPClient.class);
-        fbind(AOPMethodInterceptor.class);
-        fbind(AOPInjectedInInterceptor.class);
+        bind(AOPService.class).to(AOPServiceImpl.class);
+        /**
+         * Not needed since single bindings are automatically detected.
+        bind(AOPClient.class);
+        bind(AOPMethodInterceptor.class);
+        bind(AOPInjectedInInterceptor.class);
+        **/
     }
 }

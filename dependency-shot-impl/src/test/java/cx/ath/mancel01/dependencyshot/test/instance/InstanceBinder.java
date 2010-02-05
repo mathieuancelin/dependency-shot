@@ -15,26 +15,27 @@ public class InstanceBinder extends Binder {
 
     @Override
     public void configureBindings() {
-        fbind(String.class).annotedWith(MyModule.class).providedBy(new Provider(){
+        bind(String.class).annotedWith(MyModule.class).providedBy(new Provider(){
             @Override
             public Object get() {
                 return MY_MODULE;
             }
         });
-        fbind(String.class).annotedWith(MyOtherModule.class).providedBy(new Provider(){
+        bind(String.class).annotedWith(MyOtherModule.class).providedBy(new Provider(){
             @Override
             public Object get() {
                 return MY_OTHER_MODULE;
             }
         });
-        fbind(String.class).named("yam").providedBy(new Provider(){
+        bind(String.class).named("yam").providedBy(new Provider(){
             @Override
             public Object get() {
                 return YAM;
             }
         });
-        fbind(InstanceModule.class);
-        fbind(InstanceModule2.class);
-        fbind(InstanceModule3.class);
+        
+        bind(InstanceModule.class);
+        bind(InstanceModule2.class);
+        bind(InstanceModule3.class);
     }
 }
