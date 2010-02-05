@@ -12,11 +12,14 @@ public class CyclicBinder extends Binder {
 
     @Override
     public void configureBindings() {
-        fbind(BillingService.class);
-        fbind(LoggerService.class);
-        fbind(Account.class);
-        //fbind(WhichLoggerToChooseService.class);
-        fbind(WhichLoggerToChooseService.class).providedBy(new Provider() {
+        /**
+         * Not needed since single bindings are automatically detected.
+         * bind(BillingService.class);
+         * bind(LoggerService.class);
+         * bind(Account.class);
+         **/
+        //bind(WhichLoggerToChooseService.class);
+        bind(WhichLoggerToChooseService.class).providedBy(new Provider() {
             @Override
             public Object get() {
                 WhichLoggerToChooseService service = new WhichLoggerToChooseService();

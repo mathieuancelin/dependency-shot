@@ -10,7 +10,10 @@ public class BasicFluentBinder extends Binder {
 
     @Override
     public void configureBindings() {
-        fbind(BasicService.class).to(BasicServiceImpl.class);
-        fbind(BasicClient.class);
+        bind(BasicService.class).to(BasicServiceImpl.class);
+        /**
+         * Not needed since single bindings are automatically detected.
+         * bind(BasicClient.class);
+         **/
     }
 }

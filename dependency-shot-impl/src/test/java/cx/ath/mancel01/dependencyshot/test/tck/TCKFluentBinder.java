@@ -39,19 +39,22 @@ public class TCKFluentBinder extends Binder {
 
     @Override 
     public void configureBindings() {
-        fbind(Car.class).to(Convertible.class);
-        fbind(Seat.class).annotedWith(Drivers.class).to(DriversSeat.class);
-        fbind(Engine.class).to(V8Engine.class);
-        fbind(Tire.class).named("spare").providedBy(new Provider<Tire>() {
+        bind(Car.class).to(Convertible.class);
+        bind(Seat.class).annotedWith(Drivers.class).to(DriversSeat.class);
+        bind(Engine.class).to(V8Engine.class);
+        bind(Tire.class).named("spare").providedBy(new Provider<Tire>() {
   			@Override
   			public Tire get() {
                 return (Tire) getBinderInjector().getInstance(SpareTire.class);
   			}
   		});
-        fbind(Tire.class);
-        fbind(SpareTire.class);
-        fbind(FuelTank.class);
-        fbind(Seat.class);
-        fbind(Cupholder.class);
+        /**
+         * Not needed since single bindings are automatically detected.
+         * bind(Tire.class);
+         * bind(SpareTire.class);
+         * bind(FuelTank.class);
+         * bind(Seat.class);
+         * bind(Cupholder.class);
+         **/
     }
 }

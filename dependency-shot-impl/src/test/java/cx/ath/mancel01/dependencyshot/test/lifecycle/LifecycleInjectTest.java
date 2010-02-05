@@ -11,22 +11,11 @@ import static junit.framework.Assert.assertTrue;
  * @author Mathieu ANCELIN
  */
 public class LifecycleInjectTest {
-    /**
-     * Injection test.
-     */
-    @Test
-    public void testInjectedClient() {
-        DSInjector injector = DependencyShot.getInjector(new LifecycleBinder());
-        LifecycleClient client = injector.getInstance(LifecycleClient.class);
-        client.go();
-        assertTrue(LifecycleCounter.getInstance().getLoadCounter() == 4);
-    }
-
     @Test
     public void testFluentInjectedClient() {
         DSInjector injector = DependencyShot.getInjector(new LifecycleFluentBinder());
         LifecycleClient client = injector.getInstance(LifecycleClient.class);
         client.go();
-        assertTrue(LifecycleCounter.getInstance().getLoadCounter() == 8);
+        assertTrue(LifecycleCounter.getInstance().getLoadCounter() == 4);
     }
 }
