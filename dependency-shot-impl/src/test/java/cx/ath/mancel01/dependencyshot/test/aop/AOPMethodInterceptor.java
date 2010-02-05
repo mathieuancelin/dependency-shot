@@ -1,8 +1,8 @@
 package cx.ath.mancel01.dependencyshot.test.aop;
 
-import cx.ath.mancel01.dependencyshot.api.DSInvocationContext;
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
+import javax.interceptor.InvocationContext;
 
 /**
  * An interceptor class.
@@ -19,14 +19,16 @@ public class AOPMethodInterceptor {
      * @throws Exception invocation exception
      */
     @AroundInvoke
-    public Object intercept(final DSInvocationContext ctx) throws Exception {
-        AOPInterceptionResult.getInstance().getPreMethod().add("before method invocation " + ctx.getBean().getClass().getName() + ":"
+    public Object intercept(final InvocationContext ctx) throws Exception {
+        AOPInterceptionResult.getInstance().getPreMethod().add("before method invocation " 
+                + ctx.getTarget().getClass().getName() + ":"
                 + ctx.getMethod().getName());
         printer.printIntercepted();
         try {
             return ctx.proceed();
         } finally {
-            AOPInterceptionResult.getInstance().getPostMethod().add("after  method invocation " + ctx.getBean().getClass().getName()
+            AOPInterceptionResult.getInstance().getPostMethod().add("after  method invocation " 
+                    + ctx.getTarget().getClass().getName()
                     + ":" + ctx.getMethod().getName());
         }
     }

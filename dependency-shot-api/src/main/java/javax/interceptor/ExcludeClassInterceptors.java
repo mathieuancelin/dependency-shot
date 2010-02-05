@@ -21,7 +21,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
 import java.lang.annotation.Retention;
-
+/**
+ * <p>Used to exclude class-level interceptors for a business method
+ * or timeout method of a target class.</p>
+ *
+ * <pre>
+ * &#064;ExcludeClassInterceptors
+ * public void updateOrder(Order order) { ... }
+ * </pre>
+ *
+ * @see javax.interceptor.ExcludeClassInterceptors
+ */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExcludeClassInterceptors {}

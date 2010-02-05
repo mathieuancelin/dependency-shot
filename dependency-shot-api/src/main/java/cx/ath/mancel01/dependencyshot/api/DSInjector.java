@@ -23,9 +23,19 @@ package cx.ath.mancel01.dependencyshot.api;
  * @author Mathieu ANCELIN
  */
 public interface DSInjector {
-
+    /**
+     * Get a instance of c.
+     *
+     * @param <T> type of the instance.
+     * @param c the class to instanciate.
+     * @return an instance of c.
+     */
     <T> T getInstance(Class<T> c);
-
+    /**
+     * Inject the static members of c.
+     * 
+     * @param c the class to inject.
+     */
     void injectStaticMembers(Class<?> c);
 
 }

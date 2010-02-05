@@ -17,8 +17,6 @@
 
 package cx.ath.mancel01.dependencyshot.aop;
 
-import cx.ath.mancel01.dependencyshot.api.DSInterceptor;
-import cx.ath.mancel01.dependencyshot.api.DSInvocation;
 import cx.ath.mancel01.dependencyshot.exceptions.InvocationException;
 import java.lang.reflect.Method;
 
@@ -38,9 +36,9 @@ public class FinalInterceptor implements DSInterceptor {
     @Override
     public final Object invoke(final DSInvocation invocation) {
         try {
-            Object bean = invocation.getBean();
+            Object bean = invocation.getTarget();
             Method method = invocation.getMethod();
-            Object[] args = invocation.getArgs();
+            Object[] args = invocation.getParameters();
             return method.invoke(bean, args);
         } catch (Exception e) {
             throw new InvocationException(e);

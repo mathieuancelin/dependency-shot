@@ -17,8 +17,6 @@
 
 package cx.ath.mancel01.dependencyshot.aop;
 
-import cx.ath.mancel01.dependencyshot.api.DSInterceptor;
-import cx.ath.mancel01.dependencyshot.api.DSInvocation;
 import cx.ath.mancel01.dependencyshot.exceptions.InvocationException;
 import java.lang.reflect.Method;
 import java.util.logging.Level;

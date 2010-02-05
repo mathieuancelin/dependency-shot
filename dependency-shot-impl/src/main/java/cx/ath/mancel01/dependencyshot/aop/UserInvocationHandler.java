@@ -16,8 +16,6 @@
  */
 package cx.ath.mancel01.dependencyshot.aop;
 
-import cx.ath.mancel01.dependencyshot.api.DSInterceptor;
-import cx.ath.mancel01.dependencyshot.api.DSInvocation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 

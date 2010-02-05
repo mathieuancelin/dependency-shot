@@ -1,7 +1,7 @@
 package cx.ath.mancel01.dependencyshot.test.aop;
 
-import cx.ath.mancel01.dependencyshot.api.DSInvocationContext;
 import javax.interceptor.AroundInvoke;
+import javax.interceptor.InvocationContext;
 
 /**
  * An interceptor class.
@@ -16,13 +16,15 @@ public class AOPSecondClassInterceptor {
      * @throws Exception invocation exception
      */
     @AroundInvoke
-    public Object intercept(final DSInvocationContext ctx) throws Exception {
-       AOPInterceptionResult.getInstance().getPreClass().add("before invocation 2 " + ctx.getBean().getClass().getName()
+    public Object intercept(final InvocationContext ctx) throws Exception {
+       AOPInterceptionResult.getInstance().getPreClass().add("before invocation 2 " 
+               + ctx.getTarget().getClass().getName()
                 + ":" + ctx.getMethod().getName());
         try {
             return ctx.proceed();
         } finally {
-            AOPInterceptionResult.getInstance().getPostClass().add("after  invocation 2 " + ctx.getBean().getClass().getName()
+            AOPInterceptionResult.getInstance().getPostClass().add("after  invocation 2 " 
+                    + ctx.getTarget().getClass().getName()
                     + ":" + ctx.getMethod().getName());
         }
     }

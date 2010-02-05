@@ -15,16 +15,18 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.api;
+package cx.ath.mancel01.dependencyshot.aop;
 
 import java.lang.reflect.Method;
+import java.util.Map;
+import javax.interceptor.InvocationContext;
 
 /**
  * Invocation for interceptors.
  * 
  * @author Mathieu ANCELIN
  */
-public class DSInvocation implements DSInvocationContext {
+public class DSInvocation implements InvocationContext {
     /**
      * The invocation's bean.
      */
@@ -60,25 +62,11 @@ public class DSInvocation implements DSInvocationContext {
         this.args = args;
     }
     /**
-     * @return the invocation's bean.
-     */
-    @Override
-    public final Object getBean() {
-        return bean;
-    }
-    /**
      * @return the invocation's method.
      */
     @Override
     public final Method getMethod() {
         return method;
-    }
-    /**
-     * @return the invocation's args.
-     */
-    @Override
-    public final Object[] getArgs() {
-        return args;
     }
     /**
      * @return the invocation of the next interceptor.
@@ -100,5 +88,35 @@ public class DSInvocation implements DSInvocationContext {
         } finally {
             index--;
         }
+    }
+
+    /**
+     * @return the invocation's bean.
+     */
+    @Override
+    public Object getTarget() {
+        return bean;
+    }
+
+    @Override
+    public Object getTimer() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    /**
+     * @return the invocation's parameters.
+     */
+    @Override
+    public Object[] getParameters() {
+        return args;
+    }
+
+    @Override
+    public void setParameters(Object[] params) {
+        this.args = params;
+    }
+
+    @Override
+    public Map<String, Object> getContextData() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

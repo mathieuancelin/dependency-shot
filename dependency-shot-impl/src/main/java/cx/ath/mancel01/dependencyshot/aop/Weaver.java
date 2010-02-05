@@ -17,7 +17,6 @@
 
 package cx.ath.mancel01.dependencyshot.aop;
 
-import cx.ath.mancel01.dependencyshot.api.DSInterceptor;
 import cx.ath.mancel01.dependencyshot.exceptions.DSException;
 import java.lang.reflect.Proxy;
 

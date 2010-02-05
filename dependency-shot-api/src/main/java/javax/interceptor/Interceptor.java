@@ -22,7 +22,23 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-
+/**
+ * <p>Specifies that a class is an interceptor.</p>
+ *
+ * <pre>
+ * &#064;Interceptor
+ * public class ValidationInterceptor { ... }
+ * </pre>
+ *
+ * <p>This annotation is optional if
+ * {@link javax.interceptor.Interceptors &#064;Interceptors} or
+ * the EJB deployment descriptor are used to associate the
+ * interceptor with the target class. It is required when an
+ * {@linkplain javax.interceptor.InterceptorBinding interceptor binding}
+ * is used.</p>
+ *
+ * @see javax.interceptor.Interceptors
+ */
 @Retention(RUNTIME)
 @Target(TYPE)
 @Documented

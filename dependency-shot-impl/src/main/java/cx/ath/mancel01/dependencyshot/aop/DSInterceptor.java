@@ -15,31 +15,18 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.api;
-
-import java.lang.reflect.Method;
+package cx.ath.mancel01.dependencyshot.aop;
 
 /**
- * The context of an invocation.
+ * Interface for interceptor.
  * 
  * @author Mathieu ANCELIN
  */
-public interface DSInvocationContext {
+public interface DSInterceptor {
     /**
-     * @return the args of the invocation.
-     */
-    Object[] getArgs();
-    /**
-     * @return the object of the invocation.
-     */
-    Object getBean();
-    /**
-     * @return the method of the invocation.
-     */
-    Method getMethod();
-    /**
+     * Invocation on an interceptor.
+     * @param invocation the invocation.
      * @return the result of the invocation.
      */
-    Object proceed();
-
+    Object invoke(DSInvocation invocation);
 }

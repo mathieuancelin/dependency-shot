@@ -23,9 +23,24 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation for intercepted classes or method.
- * 
- * @author Mathieu ANCELIN
+ * <p>Declares an ordered list of interceptors for a target class or
+ * method of a target class.</p>
+ *
+ * <pre>
+ * &#064;Interceptors(ValidationInterceptor.class)
+ * public class Order { ... }
+ * </pre>
+ *
+ * <pre>
+ * &#064;Interceptors({ValidationInterceptor.class, SecurityInterceptor.class})
+ * public void updateOrder(Order order) { ... }
+ * </pre>
+ *
+ * <p>Only method interception or timeout method interception may be specified
+ * by a method-level <tt>&#064;Interceptors</tt> declaration.</p>
+ *
+ * @see javax.interceptor.ExcludeClassInterceptors
+ * @see javax.interceptor.ExcludeDefaultInterceptors
  */
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
