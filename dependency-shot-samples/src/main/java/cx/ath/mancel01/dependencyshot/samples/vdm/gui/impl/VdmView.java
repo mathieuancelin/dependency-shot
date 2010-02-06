@@ -20,6 +20,8 @@ package cx.ath.mancel01.dependencyshot.samples.vdm.gui.impl;
 import cx.ath.mancel01.dependencyshot.samples.vdm.gui.Controller;
 import cx.ath.mancel01.dependencyshot.samples.vdm.gui.View;
 import java.util.Observable;
+import javax.annotation.ManagedBean;
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -30,6 +32,7 @@ import javax.swing.JTextPane;
  *
  * @author Mathieu ANCELIN
  */
+@ManagedBean
 public class VdmView extends JFrame implements View {
 
     /**
@@ -112,8 +115,10 @@ public class VdmView extends JFrame implements View {
      * Configuration of the view.
      * The view link itself with the controller
      */
+    @PostConstruct
     private void config() {
         controller.addViewObserver(this);
+        start();
     }
 
     /**
@@ -121,7 +126,6 @@ public class VdmView extends JFrame implements View {
      */
     @Override
     public final void start() {
-        config();
         setVisible(true);
     }
 }
