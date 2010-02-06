@@ -55,28 +55,28 @@ public class Random {
      * @return get the activeKey
      */
     @XmlElement(name="active_key")
-    public String getActiveKey() {
+    public final String getActiveKey() {
         return activeKey;
     }
 
     /**
      * @param activeKey set the activeKey
      */
-    public void setActiveKey(String activeKey) {
+    public final void setActiveKey(String activeKey) {
         this.activeKey = activeKey;
     }
 
     /**
      * @return get code.
      */
-    public Long getCode() {
+    public final Long getCode() {
         return code;
     }
 
     /**
      * @param code set code.
      */
-    public void setCode(Long code) {
+    public final void setCode(Long code) {
         this.code = code;
     }
 
@@ -85,28 +85,28 @@ public class Random {
      */
     @XmlElementWrapper(name = "erreurs")
     @XmlElement(name="erreur")
-    public Collection<String> getErrors() {
+    public final Collection<String> getErrors() {
         return errors;
     }
 
     /**
      * @param errors set errors.
      */
-    public void setErrors(Collection<String> errors) {
+    public final void setErrors(Collection<String> errors) {
         this.errors = errors;
     }
 
     /**
      * @return get publication date.
      */
-    public Date getPubdate() {
+    public final Date getPubdate() {
         return pubdate;
     }
 
     /**
      * @param pubdate set publication date.
      */
-    public void setPubdate(Date pubdate) {
+    public final void setPubdate(Date pubdate) {
         this.pubdate = pubdate;
     }
 
@@ -115,14 +115,14 @@ public class Random {
      */
     @XmlElementWrapper(name = "vdms")
     @XmlElement(name="vdm")
-    public Collection<Vdm> getVdms() {
+    public final Collection<Vdm> getVdms() {
         return vdms;
     }
 
     /**
      * @param vdms set the vdms.
      */
-    public void setVdms(Collection<Vdm> vdms) {
+    public final void setVdms(Collection<Vdm> vdms) {
         this.vdms = vdms;
     }
 }

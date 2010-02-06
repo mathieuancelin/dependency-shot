@@ -43,7 +43,7 @@ public class RandomServiceImpl implements RandomService {
      * @param restServerUrl the URL of the service.
      */
     @Inject
-    public void setRestServerUrl(@VdmUrl String restServerUrl) {
+    public final void setRestServerUrl(@VdmUrl String restServerUrl) {
         this.restResource = Client.create().resource(restServerUrl);
     }
 
@@ -51,7 +51,7 @@ public class RandomServiceImpl implements RandomService {
      * @{@inheritDoc }
      */
     @Override
-    public Vdm getRandomVdm() {
+    public final Vdm getRandomVdm() {
         Vdm model = null;
         try {
             model = (Vdm) restResource.path("view").path("random")

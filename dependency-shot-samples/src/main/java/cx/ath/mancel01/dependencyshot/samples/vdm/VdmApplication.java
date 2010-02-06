@@ -53,7 +53,7 @@ public class VdmApplication {
     /**
      * Application startup.
      */
-    protected void startup() {
+    protected final void startup() {
         view1.start();
         view2.start();
         controller.startApplication();

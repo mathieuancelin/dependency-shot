@@ -62,7 +62,7 @@ public class VdmController extends Observable implements Controller {
      * {@inheritDoc}
      */
     @Override
-    public void addViewObserver(View obs) {
+    public final void addViewObserver(View obs) {
         this.addObserver(obs);
         this.views.add(obs);
     }
@@ -71,7 +71,7 @@ public class VdmController extends Observable implements Controller {
      * {@inheritDoc}
      */
     @Override
-    public void deleteViewObserver(View obs) {
+    public final void deleteViewObserver(View obs) {
         this.deleteObserver(obs);
         this.views.remove(obs);
     }
@@ -79,7 +79,7 @@ public class VdmController extends Observable implements Controller {
     /**
      * Start the app.
      */
-    public void startApplication() {
+    public final void startApplication() {
         for(View view : views) {
             view.start();
         }
@@ -89,7 +89,7 @@ public class VdmController extends Observable implements Controller {
      * {@inheritDoc}
      */
     @Override
-    public Vdm getModel() {
+    public final Vdm getModel() {
         return model;
     }
 
@@ -97,7 +97,7 @@ public class VdmController extends Observable implements Controller {
      * {@inheritDoc}
      */
     @Override
-    public void updateModel() {
+    public final void updateModel() {
         this.model = this.service.getRandomVdm();
         this.setChanged();
         this.notifyObservers();
