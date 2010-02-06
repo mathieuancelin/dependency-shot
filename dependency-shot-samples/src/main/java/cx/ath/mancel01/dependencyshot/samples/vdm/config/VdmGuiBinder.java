@@ -15,28 +15,27 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.cyclic;
+package cx.ath.mancel01.dependencyshot.samples.vdm.config;
 
-import javax.inject.Inject;
+import cx.ath.mancel01.dependencyshot.graph.Binder;
+import cx.ath.mancel01.dependencyshot.samples.vdm.gui.Controller;
+import cx.ath.mancel01.dependencyshot.samples.vdm.gui.VdmController;
+import cx.ath.mancel01.dependencyshot.samples.vdm.gui.VdmView;
+import cx.ath.mancel01.dependencyshot.samples.vdm.gui.View;
 
 /**
- * Warning, this class is supposed to fail test and throwing exception
- * because of cyclic dependency with logger.
+ * Binder for the UI part of the app.
  *
  * @author Mathieu ANCELIN
  */
-public class WhichLoggerToChooseService {
+public class VdmGuiBinder extends Binder {
 
-    @Inject
-    private LoggerService logger;
-
-    public int which(){
-        int which = (int) ((Math.random() * 3) + 1);
-        //logger.log("chosing logging framework number " + which);
-        return which;
-    }
-
-    public void setLogger(LoggerService logger) {
-        this.logger = logger;
+    /**
+     * Configuration of the UI module.
+     */
+    @Override
+    public void configureBindings() {
+        bind(Controller.class).to(VdmController.class);
+        bind(View.class).to(VdmView.class);
     }
 }

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2010 mathieuancelin.
+ *  Copyright 2010 Mathieu ANCELIN.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -43,8 +43,8 @@ public final class ManagedBeanHandler {
 //                if (!annotation.value().equals("")) {
 //                    Hashtable<Object, Object> env = new Hashtable<Object, Object>();
 //                    env.put(Context.INITIAL_CONTEXT_FACTORY,
-//                            "com.sun.jndi.fscontext.RefFSContextFactory");
-//                    env.put(Context.PROVIDER_URL, "file:/");
+//                            "com.sun.jndi.rmi.registry.RegistryContextFactory");
+//                    env.put(Context.PROVIDER_URL, "rmi://localhost:1099");
 //                    Context context = new javax.naming.InitialContext(env);
 //                    context.bind(annotation.value(), instance);
 //                }

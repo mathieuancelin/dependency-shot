@@ -15,13 +15,18 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.instance;
+package cx.ath.mancel01.dependencyshot.samples.vdm.gui;
 
-import javax.inject.Qualifier;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import java.util.Observer;
 
-@Retention(RetentionPolicy.RUNTIME) @Qualifier
-public @interface MyOtherModule {
-
+/**
+ * Interface for an app view.
+ *
+ * @author Mathieu ANCELIN
+ */
+public interface View extends Observer {
+    /**
+     * Config and start of the view.
+     */
+    void start();
 }

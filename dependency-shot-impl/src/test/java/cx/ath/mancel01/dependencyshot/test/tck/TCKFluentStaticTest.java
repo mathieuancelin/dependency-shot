@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009 mathieuancelin.
+ *  Copyright 2009 Mathieu ANCELIN.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import org.atinject.tck.auto.accessories.SpareTire;
 /**
  * The test suite with TCK tests.
  * 
- * @author mathieuancelin
+ * @author Mathieu ANCELIN
  */
 public class TCKFluentStaticTest extends TestSuite {
     

@@ -15,13 +15,17 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.instance;
+package cx.ath.mancel01.dependencyshot.samples.vdm.config;
 
-import javax.inject.Qualifier;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import javax.inject.Qualifier;
 
-@Retention(RetentionPolicy.RUNTIME) @Qualifier
-public @interface MyOtherModule {
-
-}
+/**
+ * Special qualifier to inject specific string in the modules.
+ *
+ * @author Mathieu ANCELIN
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Qualifier
+public @interface VdmUrl {}

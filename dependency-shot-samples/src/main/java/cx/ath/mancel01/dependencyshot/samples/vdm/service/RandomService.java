@@ -15,13 +15,21 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.instance;
+package cx.ath.mancel01.dependencyshot.samples.vdm.service;
 
-import javax.inject.Qualifier;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import cx.ath.mancel01.dependencyshot.samples.vdm.model.Vdm;
 
-@Retention(RetentionPolicy.RUNTIME) @Qualifier
-public @interface MyOtherModule {
+/**
+ * An interface for the random service.
+ *
+ * @author Mathieu ANCELIN
+ */
+public interface RandomService {
+    /**
+     * Gets a random VDM.
+     *
+     * @return a random vdm.
+     */
+    Vdm getRandomVdm();
 
 }

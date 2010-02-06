@@ -15,28 +15,25 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.cyclic;
+package cx.ath.mancel01.dependencyshot.samples.vdm.config;
 
-import javax.inject.Inject;
+import cx.ath.mancel01.dependencyshot.graph.Binder;
+import cx.ath.mancel01.dependencyshot.samples.vdm.service.RandomService;
+import cx.ath.mancel01.dependencyshot.samples.vdm.service.impl.RandomServiceImpl;
 
 /**
- * Warning, this class is supposed to fail test and throwing exception
- * because of cyclic dependency with logger.
+ * Binder for the services part of the app.
  *
  * @author Mathieu ANCELIN
  */
-public class WhichLoggerToChooseService {
+public class VdmServiceBinder extends Binder {
 
-    @Inject
-    private LoggerService logger;
-
-    public int which(){
-        int which = (int) ((Math.random() * 3) + 1);
-        //logger.log("chosing logging framework number " + which);
-        return which;
-    }
-
-    public void setLogger(LoggerService logger) {
-        this.logger = logger;
+    /**
+     * Configuration of the services module.
+     */
+    @Override
+    public void configureBindings() {
+        bind(String.class).annotedWith(VdmUrl.class).toInstance("http://api.viedemerde.fr/1.0/");
+        bind(RandomService.class).to(RandomServiceImpl.class);
     }
 }
