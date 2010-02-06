@@ -15,8 +15,10 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.samples.vdm.gui;
+package cx.ath.mancel01.dependencyshot.samples.vdm.gui.impl;
 
+import cx.ath.mancel01.dependencyshot.samples.vdm.gui.Controller;
+import cx.ath.mancel01.dependencyshot.samples.vdm.gui.View;
 import java.awt.event.MouseEvent;
 import java.util.Observable;
 import javax.inject.Inject;
