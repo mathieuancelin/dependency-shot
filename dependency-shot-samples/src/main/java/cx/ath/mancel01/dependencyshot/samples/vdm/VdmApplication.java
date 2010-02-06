@@ -21,7 +21,7 @@ import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import cx.ath.mancel01.dependencyshot.samples.vdm.config.VdmGuiBinder;
 import cx.ath.mancel01.dependencyshot.samples.vdm.config.VdmServiceBinder;
-import cx.ath.mancel01.dependencyshot.samples.vdm.gui.VdmController;
+import cx.ath.mancel01.dependencyshot.samples.vdm.gui.impl.VdmController;
 import cx.ath.mancel01.dependencyshot.samples.vdm.gui.View;
 import javax.inject.Inject;
 

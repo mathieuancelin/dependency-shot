@@ -19,8 +19,8 @@ package cx.ath.mancel01.dependencyshot.samples.vdm.config;
 
 import cx.ath.mancel01.dependencyshot.graph.Binder;
 import cx.ath.mancel01.dependencyshot.samples.vdm.gui.Controller;
-import cx.ath.mancel01.dependencyshot.samples.vdm.gui.VdmController;
-import cx.ath.mancel01.dependencyshot.samples.vdm.gui.VdmView;
+import cx.ath.mancel01.dependencyshot.samples.vdm.gui.impl.VdmController;
+import cx.ath.mancel01.dependencyshot.samples.vdm.gui.impl.VdmView;
 import cx.ath.mancel01.dependencyshot.samples.vdm.gui.View;
 
 /**
