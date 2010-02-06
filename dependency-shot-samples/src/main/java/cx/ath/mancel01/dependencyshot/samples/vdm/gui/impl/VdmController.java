@@ -80,9 +80,9 @@ public class VdmController extends Observable implements Controller {
      * Start the app.
      */
     public final void startApplication() {
-        for(View view : views) {
-            view.start();
-        }
+//        for(View view : views) {
+//            view.start();
+//        }
     }
     
     /**
