@@ -70,13 +70,13 @@ public class Vdm {
      * @return get the author.
      */
     @XmlElement(name="auteur")
-    public String getAuthor() {
+    public final String getAuthor() {
         return author;
     }
     /**
      * @param author set the author.
      */
-    public void setAuthor(String author) {
+    public final void setAuthor(String author) {
         this.author = author;
     }
 
@@ -84,14 +84,14 @@ public class Vdm {
      * @return get commentable.
      */
     @XmlElement(name="commentable")
-    public Long getCommentable() {
+    public final Long getCommentable() {
         return commentable;
     }
 
     /**
      * @param commentable set commentable.
      */
-    public void setCommentable(Long commentable) {
+    public final void setCommentable(Long commentable) {
         this.commentable = commentable;
     }
 
@@ -99,14 +99,14 @@ public class Vdm {
      * @return get comments.
      */
     @XmlElement(name="commentaires")
-    public Long getComments() {
+    public final Long getComments() {
         return comments;
     }
 
     /**
      * @param comments set comments.
      */
-    public void setComments(Long comments) {
+    public final void setComments(Long comments) {
         this.comments = comments;
     }
 
@@ -114,14 +114,14 @@ public class Vdm {
      * @return get date.
      */
     @XmlElement(name="date")
-    public Date getDate() {
+    public final Date getDate() {
         return date;
     }
 
     /**
      * @param date set dates.
      */
-    public void setDate(Date date) {
+    public final void setDate(Date date) {
         this.date = date;
     }
 
@@ -129,14 +129,14 @@ public class Vdm {
      * @return get validate.
      */
     @XmlElement(name="je_valide")
-    public Long getiValidate() {
+    public final Long getiValidate() {
         return iValidate;
     }
 
     /**
      * @param iValidate set validate.
      */
-    public void setiValidate(Long iValidate) {
+    public final void setiValidate(Long iValidate) {
         this.iValidate = iValidate;
     }
 
@@ -144,14 +144,14 @@ public class Vdm {
      * @return get ID.
      */
     @XmlAttribute(name="id")
-    public Long getId() {
+    public final Long getId() {
         return id;
     }
 
     /**
      * @param id set id.
      */
-    public void setId(Long id) {
+    public final void setId(Long id) {
         this.id = id;
     }
 
@@ -159,14 +159,14 @@ public class Vdm {
      * @return get text.
      */
     @XmlElement(name="texte")
-    public String getText() {
+    public final String getText() {
         return text;
     }
 
     /**
      * @param text set text.
      */
-    public void setText(String text) {
+    public final void setText(String text) {
         this.text = text;
     }
 
@@ -174,14 +174,14 @@ public class Vdm {
      * @return get deserve.
      */
     @XmlElement(name="bien_merite")
-    public Long getYouDeserveIt() {
+    public final Long getYouDeserveIt() {
         return youDeserveIt;
     }
 
     /**
      * @param youDeserveIt set deserve.
      */
-    public void setYouDeserveIt(Long youDeserveIt) {
+    public final void setYouDeserveIt(Long youDeserveIt) {
         this.youDeserveIt = youDeserveIt;
     }
 
@@ -189,14 +189,14 @@ public class Vdm {
      * @return get categ.
      */
     @XmlElement(name="categorie")
-    public String getCateg() {
+    public final String getCateg() {
         return categ;
     }
 
     /**
      * @param categ set categ.
      */
-    public void setCateg(String categ) {
+    public final void setCateg(String categ) {
         this.categ = categ;
     }
 
@@ -206,7 +206,7 @@ public class Vdm {
      * @return the string representation of a VDM.
      */
     @Override
-    public String toString() {
+    public final String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("id : " + this.id + "\n");
         builder.append("author : " + this.author + "\n");

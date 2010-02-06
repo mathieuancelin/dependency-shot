@@ -19,7 +19,6 @@ package cx.ath.mancel01.dependencyshot.samples.vdm.gui.impl;
 
 import cx.ath.mancel01.dependencyshot.samples.vdm.gui.Controller;
 import cx.ath.mancel01.dependencyshot.samples.vdm.gui.View;
-import java.awt.event.MouseEvent;
 import java.util.Observable;
 import javax.inject.Inject;
 import javax.swing.JFrame;
@@ -34,9 +33,13 @@ import javax.swing.JTextPane;
 public class VdmView extends JFrame implements View {
 
     /**
-     * A JScrollPanel for the JTextPanel.
+     * Start width of the app.
      */
-	private JScrollPane jScrollPane1;
+    private static final int APP_WIDTH = 400;
+    /**
+     * Start height of the app.
+     */
+    private static final int APP_HEIGHT = 300;
 
     /**
      * The panel to show the VDM.
@@ -62,7 +65,7 @@ public class VdmView extends JFrame implements View {
      */
     private void initComponents() {
         this.setTitle("Random VDM : Click on the text to update it ");
-        jScrollPane1 = new javax.swing.JScrollPane();
+        JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         jScrollPane1.setName("jScrollPane1");
@@ -72,18 +75,18 @@ public class VdmView extends JFrame implements View {
         jTextPane1.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                vdmClicked(evt);
+                vdmClicked();
             }
         });
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, APP_WIDTH, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, APP_HEIGHT, Short.MAX_VALUE)
         );
         pack();
     }
@@ -93,7 +96,7 @@ public class VdmView extends JFrame implements View {
      * 
      * @param evt the mouse event.
      */
-    private void vdmClicked(MouseEvent evt) {
+    private void vdmClicked() {
         this.controller.updateModel();
     }
 
@@ -101,7 +104,7 @@ public class VdmView extends JFrame implements View {
      * @{@inheritDoc}
      */
     @Override
-    public void update(Observable o, Object o1) {
+    public final void update(Observable o, Object o1) {
         this.jTextPane1.setText(controller.getModel().toString());
     }
     
@@ -117,7 +120,7 @@ public class VdmView extends JFrame implements View {
      * @{@inheritDoc}
      */
     @Override
-    public void start() {
+    public final void start() {
         config();
         setVisible(true);
     }

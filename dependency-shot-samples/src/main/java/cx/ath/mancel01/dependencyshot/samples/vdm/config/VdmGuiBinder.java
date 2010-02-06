@@ -34,7 +34,7 @@ public class VdmGuiBinder extends Binder {
      * Configuration of the UI module.
      */
     @Override
-    public void configureBindings() {
+    public final void configureBindings() {
         bind(Controller.class).to(VdmController.class);
         bind(View.class).to(VdmView.class);
     }
