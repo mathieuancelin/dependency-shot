@@ -17,6 +17,7 @@
 
 package cx.ath.mancel01.dependencyshot.injection.handlers;
 
+import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -32,6 +33,7 @@ import java.util.List;
 public final class ClassHandler {
 
     private static Class currentlyInjected;
+    private static DSInjector currentInjector;
 
     private ClassHandler() {}
 
@@ -39,6 +41,9 @@ public final class ClassHandler {
         return currentlyInjected;
     }
 
+    public static DSInjector getCurrentInjector() {
+        return currentInjector;
+    }
 
     /**
      * Perform a complete injection on an object instance.
@@ -61,6 +66,7 @@ public final class ClassHandler {
             InjectorImpl injector) throws IllegalAccessException,
                                           InvocationTargetException {
         currentlyInjected = c;
+        currentInjector = injector;
 		Class<?> superclass = c.getSuperclass();
         // check if c has a superclass and if we can inject static stuff
 		if (superclass != null && !staticInjection) {

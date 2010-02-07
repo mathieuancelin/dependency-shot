@@ -145,7 +145,15 @@ public class InjectorImpl implements DSInjector {
                     return Logger.getLogger(ClassHandler.getCurrentlyInjected().getName());
                 }
             });
+            Binding injectorBinding = new Binding(null, null, DSInjector.class,
+                    DSInjector.class, new Provider(){
+                @Override
+                public Object get() {
+                    return ClassHandler.getCurrentInjector();
+                }
+            });
             bindings.put(loggerBinding, loggerBinding);
+            bindings.put(injectorBinding, injectorBinding);
         }
         return bindings;
     }
