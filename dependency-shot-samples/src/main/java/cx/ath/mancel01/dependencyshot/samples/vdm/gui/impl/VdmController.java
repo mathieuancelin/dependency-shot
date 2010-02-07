@@ -17,8 +17,6 @@
 
 package cx.ath.mancel01.dependencyshot.samples.vdm.gui.impl;
 
-import cx.ath.mancel01.dependencyshot.api.DSInjector;
-import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.samples.vdm.gui.Controller;
 import cx.ath.mancel01.dependencyshot.samples.vdm.gui.View;
 import cx.ath.mancel01.dependencyshot.samples.vdm.model.Vdm;
