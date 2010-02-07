@@ -20,6 +20,7 @@ package cx.ath.mancel01.dependencyshot.samples.vdm.gui.impl;
 import cx.ath.mancel01.dependencyshot.samples.vdm.gui.Controller;
 import cx.ath.mancel01.dependencyshot.samples.vdm.gui.View;
 import java.util.Observable;
+import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -54,6 +55,12 @@ public class VdmView extends JFrame implements View {
      */
     @Inject
     private Controller controller;
+
+    /**
+     * The logger of the view;
+     */
+    @Inject
+    private Logger logger;
 
     /**
      * The constructor of the view.
@@ -100,7 +107,8 @@ public class VdmView extends JFrame implements View {
      * @param evt the mouse event.
      */
     private void vdmClicked() {
-        this.controller.updateModel();
+        logger.info("Need new VDM");
+        this.controller.updateModel(); 
     }
 
     /**
@@ -108,6 +116,7 @@ public class VdmView extends JFrame implements View {
      */
     @Override
     public final void update(Observable o, Object o1) {
+        logger.info("Model was updated, updating view");
         this.jTextPane1.setText(controller.getModel().toString());
     }
     
@@ -116,9 +125,10 @@ public class VdmView extends JFrame implements View {
      * The view link itself with the controller
      */
     @PostConstruct
-    private void config() {
+    private void viewConfig() {
         controller.addViewObserver(this);
         start();
+        logger.info("View is now launched");
     }
 
     /**

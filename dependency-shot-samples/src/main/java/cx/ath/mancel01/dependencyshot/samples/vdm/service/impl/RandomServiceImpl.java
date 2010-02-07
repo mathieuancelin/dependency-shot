@@ -24,18 +24,26 @@ import cx.ath.mancel01.dependencyshot.samples.vdm.model.Vdm;
 import cx.ath.mancel01.dependencyshot.samples.vdm.service.RandomService;
 import java.util.logging.Logger;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * The implementation of the random service.
  *
  * @author Mathieu ANCELIN
  */
+@Singleton
 public class RandomServiceImpl implements RandomService {
 
     /**
      * Jersey REST resource.
      */
     private WebResource restResource;
+
+    /**
+     * The logger of the service;
+     */
+    @Inject
+    private Logger logger;
 
     /**
      * Creation of the jersey client.
@@ -52,12 +60,13 @@ public class RandomServiceImpl implements RandomService {
      */
     @Override
     public final Vdm getRandomVdm() {
+        logger.info("Get a new VDM from VDM REST service");
         Vdm model = null;
         try {
             model = (Vdm) restResource.path("view").path("random")
                     .get(Random.class).getVdms().toArray()[0];
         } catch (Exception e) {
-            Logger.getLogger(this.getClass().getName()).warning(e.getMessage());
+            logger.warning(e.getMessage());
         }
         return model;
     }

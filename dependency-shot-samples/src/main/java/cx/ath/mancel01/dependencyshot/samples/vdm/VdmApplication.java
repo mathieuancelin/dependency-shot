@@ -45,17 +45,9 @@ public class VdmApplication {
     private View view1;
 
     /**
-     * Another view for fun.
-     */
-    @Inject
-    private View view2;
-
-    /**
      * Application startup.
      */
     protected final void startup() {
-        view1.start();
-        view2.start();
         controller.startApplication();
     }
 

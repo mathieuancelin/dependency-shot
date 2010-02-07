@@ -31,7 +31,14 @@ import java.util.List;
  */
 public final class ClassHandler {
 
+    private static Class currentlyInjected;
+
     private ClassHandler() {}
+
+    public static Class getCurrentlyInjected() {
+        return currentlyInjected;
+    }
+
 
     /**
      * Perform a complete injection on an object instance.
@@ -53,6 +60,7 @@ public final class ClassHandler {
             boolean staticInjection,
             InjectorImpl injector) throws IllegalAccessException,
                                           InvocationTargetException {
+        currentlyInjected = c;
 		Class<?> superclass = c.getSuperclass();
         // check if c has a superclass and if we can inject static stuff
 		if (superclass != null && !staticInjection) {

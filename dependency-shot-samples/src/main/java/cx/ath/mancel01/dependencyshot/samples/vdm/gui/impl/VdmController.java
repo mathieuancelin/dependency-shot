@@ -17,6 +17,8 @@
 
 package cx.ath.mancel01.dependencyshot.samples.vdm.gui.impl;
 
+import cx.ath.mancel01.dependencyshot.api.DSInjector;
+import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.samples.vdm.gui.Controller;
 import cx.ath.mancel01.dependencyshot.samples.vdm.gui.View;
 import cx.ath.mancel01.dependencyshot.samples.vdm.model.Vdm;
@@ -24,6 +26,7 @@ import cx.ath.mancel01.dependencyshot.samples.vdm.service.RandomService;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Observable;
+import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -45,6 +48,12 @@ public class VdmController extends Observable implements Controller {
      */
     @Inject
     private RandomService service;
+
+    /**
+     * The logger of the controller;
+     */
+    @Inject
+    private Logger logger;
 
     /**
      * The viewd attached to this controller
@@ -81,7 +90,7 @@ public class VdmController extends Observable implements Controller {
      */
     public final void startApplication() {
         updateModel();
-        System.out.println("Application now started ...");
+        logger.info("Application now started ...");
     }
     
     /**
@@ -98,7 +107,8 @@ public class VdmController extends Observable implements Controller {
     @Override
     public final void updateModel() {
         this.model = this.service.getRandomVdm();
+        logger.info("Model updated");
         this.setChanged();
-        this.notifyObservers();
+        this.notifyObservers();  
     }
 }
