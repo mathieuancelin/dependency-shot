@@ -138,6 +138,14 @@ public class InjectorImpl implements DSInjector {
                     bindings.put(binding, binder.getBindings().get(binding));
                 }
             }
+            Binding loggerBinding = new Binding(null, null, Logger.class,
+                    Logger.class, new Provider(){
+                @Override
+                public Object get() {
+                    return Logger.getLogger(ClassHandler.getCurrentlyInjected().getName());
+                }
+            });
+            bindings.put(loggerBinding, loggerBinding);
         }
         return bindings;
     }
