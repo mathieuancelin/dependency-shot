@@ -25,7 +25,7 @@ import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.injection.handlers.LifecycleHandler;
 import cx.ath.mancel01.dependencyshot.injection.handlers.ManagedBeanHandler;
-import cx.ath.mancel01.dependencyshot.util.EnhancedProvider;
+import cx.ath.mancel01.dependencyshot.injection.util.EnhancedProvider;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;

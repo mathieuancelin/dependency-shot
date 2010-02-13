@@ -1,5 +1,5 @@
 /*
- *  Copyright 2010 mathieuancelin.
+ *  Copyright 2010 Mathieu ANCELIN.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,26 +15,26 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.util;
+package cx.ath.mancel01.dependencyshot.injection.util;
 
-import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
-import cx.ath.mancel01.dependencyshot.injection.handlers.ClassHandler;
-import java.util.logging.Logger;
+import javax.inject.Provider;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
-public class LoggerProvider implements EnhancedProvider {
+public class InstanceProvider implements Provider {
 
-    @Override
-    public Object enhancedGet(InjectionPoint p) {
-        return Logger.getLogger(p.getBeanClass().getName());
+    private Object providedInstance;
+
+    private InstanceProvider() {}
+
+    public InstanceProvider(Object instance) {
+        this.providedInstance = instance;
     }
 
     @Override
-    public Object get() {
-        return Logger.getLogger(ClassHandler.getCurrentlyInjected().getName());
+    public final Object get() {
+        return providedInstance;
     }
-
 }
