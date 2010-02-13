@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.util;
+package cx.ath.mancel01.dependencyshot.injection.util;
 
 import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
 import javax.inject.Provider;

@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.util;
+package cx.ath.mancel01.dependencyshot.injection.util;
 
 import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
 import cx.ath.mancel01.dependencyshot.api.annotations.Property;
@@ -25,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Built-in provider for properties injection.
  *
  * @author Mathieu ANCELIN
  */
@@ -54,7 +55,8 @@ public class PropertiesProvider implements EnhancedProvider {
 
     @Override
     public Object get() {
-        throw new UnsupportedOperationException("This operation isn't supported.");
+        throw new UnsupportedOperationException(
+                "This operation isn't supported on EnhancedProvider.");
     }
 
     private String getProperty(
@@ -64,11 +66,22 @@ public class PropertiesProvider implements EnhancedProvider {
             Properties props = new Properties();
             props.load(clazz.getClassLoader()
                     .getResourceAsStream(createPath(name, clazz)));
+            String ret = NOT_INJECTED;
             if (defaultValue.equals("")) {
-                return props.getProperty(key);
+                ret = props.getProperty(key);
             } else {
-                return props.getProperty(key, defaultValue);
+                ret = props.getProperty(key, defaultValue);
             }
+            if (ret == null) {
+                Logger.getLogger(PropertiesProvider.class.getName())
+                        .log(Level.WARNING, "Can't find property with key \""
+                        + key
+                        + "\". The value \""
+                        + NOT_INJECTED
+                        + "\" is injected instead.");
+                return NOT_INJECTED;
+            }
+            return ret;
         } catch (Exception ex) {
             Logger.getLogger(PropertiesProvider.class.getName())
                     .log(Level.SEVERE, null, ex);

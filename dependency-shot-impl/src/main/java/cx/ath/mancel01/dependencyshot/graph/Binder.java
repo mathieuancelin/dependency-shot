@@ -16,7 +16,7 @@
  */
 package cx.ath.mancel01.dependencyshot.graph;
 
-import cx.ath.mancel01.dependencyshot.util.InstanceProvider;
+import cx.ath.mancel01.dependencyshot.injection.util.InstanceProvider;
 import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import cx.ath.mancel01.dependencyshot.injection.fluent.FluentBinder;
