@@ -65,8 +65,10 @@ public final class MethodHandler {
                 Object[] parameters = new Object[parameterTypes.length];
                 for (int j = 0; j < parameterTypes.length; j++) {
                     // inject parameters instance (simple instances or provided)
-                    parameters[j] = injector.getProviderOrInstance(parameterTypes[j], genericParameterTypes[j],
-                            parameterAnnotations[j]);
+                    parameters[j] = injector.getProviderOrInstance(parameterTypes[j],
+                            genericParameterTypes[j],
+                            parameterAnnotations[j],
+                            method);
                 }
                 boolean accessible = method.isAccessible();
                 // set a private method as public method to invoke it
