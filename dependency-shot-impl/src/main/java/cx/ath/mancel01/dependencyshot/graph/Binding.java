@@ -20,12 +20,15 @@ import cx.ath.mancel01.dependencyshot.aop.FinalInterceptor;
 import cx.ath.mancel01.dependencyshot.aop.UserInterceptor;
 import cx.ath.mancel01.dependencyshot.aop.Weaver;
 import cx.ath.mancel01.dependencyshot.aop.DSInterceptor;
+import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
 import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.injection.handlers.LifecycleHandler;
 import cx.ath.mancel01.dependencyshot.injection.handlers.ManagedBeanHandler;
+import cx.ath.mancel01.dependencyshot.util.EnhancedProvider;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -44,7 +47,14 @@ import javax.interceptor.Interceptors;
  */
 public class Binding<T> {
 
+    /**
+     *
+     */
     private static final int HASH = 7;
+
+    /**
+     *
+     */
     private static final int HASH_KEY = 79;
 
     /**
@@ -102,22 +112,37 @@ public class Binding<T> {
 		this.provider = provider;
 	}
 
+    /**
+     *
+     * @return
+     */
 	public final Class<T> getFrom() {
 		return from;
 	}
 
+    /**
+     *
+     * @return
+     */
 	public final Class<? extends Annotation> getQualifier() {
 		return qualifier;
 	}
 
+    /**
+     *
+     * @return
+     */
 	public final Class<? extends T> getTo() {
 		return to;
 	}
 
+    /**
+     *
+     * @return
+     */
     public final List<DSInterceptor> getManagedInterceptors() {
         return managedInterceptors;
     }
-
 
     /**
      * Get an instance of a binded object.
@@ -125,10 +150,14 @@ public class Binding<T> {
      * @param injector the concerned injector
      * @return binded object
      */
-	public final T getInstance(InjectorImpl injector) {
+	public final T getInstance(InjectorImpl injector, InjectionPoint point) {
 		T result = null;
 		if (provider != null) {
-			result = provider.get();
+            if (isImplementingEnhancedProvider(provider.getClass().getGenericInterfaces())) {
+                result = (T)((EnhancedProvider) provider).enhancedGet(point);
+            } else {
+                result = provider.get();
+            }
 		} else if (to.isAnnotationPresent(Singleton.class)) {
 			result = (T) scannInterceptorsAnnotations(
                     injector.getSingleton(to), from, injector);
@@ -149,6 +178,19 @@ public class Binding<T> {
 		return result;
 	}
 
+    private boolean isImplementingEnhancedProvider(Type[] interfaces) {
+        boolean ret = false;
+        for (Type t : interfaces) {
+            if (t.equals(EnhancedProvider.class)) {
+                ret = true;
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * @{@inheritDoc }
+     */
 	@Override
 	public final boolean equals(Object obj) {
 		if (this == obj) {
@@ -185,6 +227,9 @@ public class Binding<T> {
 		return true;
 	}
 
+    /**
+     * @{@inheritDoc }
+     */
     @Override
     public final int hashCode() {
         int hash = HASH;
@@ -194,6 +239,9 @@ public class Binding<T> {
         return hash;
     }    
 
+    /**
+     * @{@inheritDoc }
+     */
     @Override
 	public final String toString() {
 		StringBuilder builder = new StringBuilder();

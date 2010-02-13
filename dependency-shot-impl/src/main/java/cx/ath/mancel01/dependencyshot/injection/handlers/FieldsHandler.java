@@ -59,7 +59,8 @@ public final class FieldsHandler {
 				Class<?> type = field.getType();
 				Type genericType = field.getGenericType();
                 // get an instance of the field (simple instance or provided one
-				Object injectedObject = injector.getProviderOrInstance(type, genericType, field.getAnnotations());
+				Object injectedObject = injector.getProviderOrInstance(type, genericType, 
+                        field.getAnnotations(), field);
 				boolean accessible = field.isAccessible();
                 // if field is private then put it private for injectedObject setting
 				if (!accessible) {

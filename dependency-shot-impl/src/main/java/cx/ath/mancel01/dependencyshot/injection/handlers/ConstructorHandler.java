@@ -68,7 +68,7 @@ public final class ConstructorHandler {
                 // inject each parameters with a simple instance or a provided one
 				for (int j = 0; j < parameterTypes.length; j++) {
 					arguments[j] = injector.getProviderOrInstance((Class<?>) parameterTypes[j], genericParameterTypes[j],
-							parameterAnnotations[j]);
+							parameterAnnotations[j], constructor);
 				}
 				boolean accessible = constructor.isAccessible();
                 // if the constructor is private, then put it public for newinstance creation
