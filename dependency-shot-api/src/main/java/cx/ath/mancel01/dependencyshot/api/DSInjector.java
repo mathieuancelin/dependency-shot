@@ -38,4 +38,15 @@ public interface DSInjector {
      */
     void injectStaticMembers(Class<?> c);
 
+    /**
+     * Injection on an instance.
+     * WARNING : Constructor injection doesn't work
+     * with this kind of injection.
+     *
+     * @param <T> type
+     * @param instance of T
+     * @return injected instance
+     */
+    <T> T injectInstance(T instance);
+
 }

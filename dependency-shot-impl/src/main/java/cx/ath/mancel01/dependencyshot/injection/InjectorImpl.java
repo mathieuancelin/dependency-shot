@@ -256,6 +256,29 @@ public class InjectorImpl implements DSInjector {
 	}
 
     /**
+     * Injection on an instance.
+     * WARNING : Constructor injection doesn't work
+     * with this kind of injection.
+     *
+     * @param <T> type
+     * @param instance of T
+     * @return injected instance
+     */
+    @Override
+	public final <T> T injectInstance(T instance) {
+		try {
+			T result = instance;
+            // and inject it !!
+			ClassHandler.classInjection(result,
+                    instance.getClass(), new ArrayList<Method>(), false, this);
+			return result;
+		} catch (Exception e) {
+			throw new DSException(e);
+		}
+	}
+
+
+    /**
      *
      * @param c
      */
