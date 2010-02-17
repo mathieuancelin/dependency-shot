@@ -19,6 +19,7 @@ package cx.ath.mancel01.dependencyshot.graph;
 import cx.ath.mancel01.dependencyshot.injection.util.InstanceProvider;
 import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
+import cx.ath.mancel01.dependencyshot.api.Stages;
 import cx.ath.mancel01.dependencyshot.injection.fluent.FluentBinder;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
@@ -51,6 +52,7 @@ public abstract class Binder implements DSBinder, FluentBinder {
     private String named = null;
     private Class<? extends Annotation> annotation = null;
     private Provider provider = null;
+    private Stages stage = null;
 
     /**
      * Constructor.
@@ -84,24 +86,44 @@ public abstract class Binder implements DSBinder, FluentBinder {
     public final void configureLastBinding() {
         addBindingToBinder(
                 new Binding(this.annotation, this.named,
-                this.from, this.to, this.provider));
+                this.from, this.to, this.provider, this.stage));if (binderInjector.getStage() != null) {
+            if (binderInjector.getStage().equals(this.stage)) {
+                addBindingToBinder(
+                        new Binding(this.annotation, this.named,
+                        this.from, this.to, this.provider, this.stage));
+            }
+        } else {
+            addBindingToBinder(
+                    new Binding(this.annotation, this.named,
+                    this.from, this.to, this.provider, this.stage));
+        }
         this.from = null;
         this.to = null;
         this.named = null;
         this.annotation = null;
         this.provider = null;
+        this.stage = null;
     }
 
     //TODO : binding validation in fluent API
     public final <T> FluentBinder bind(Class<T> from) {
-        addBindingToBinder(
-                new Binding<T>(this.annotation, this.named,
-                this.from, this.to, this.provider));
+        if (binderInjector.getStage() != null) {
+            if (binderInjector.getStage().equals(this.stage)) {
+                addBindingToBinder(
+                        new Binding<T>(this.annotation, this.named,
+                        this.from, this.to, this.provider, this.stage));
+            }
+        } else {
+            addBindingToBinder(
+                    new Binding<T>(this.annotation, this.named,
+                    this.from, this.to, this.provider, this.stage));
+        }
         this.from = from;
         this.to = from;
         this.named = null;
         this.annotation = null;
         this.provider = null;
+        this.stage = null;
         return this;
     }
 
@@ -132,6 +154,12 @@ public abstract class Binder implements DSBinder, FluentBinder {
     @Override
     public final <T> FluentBinder toInstance(Object instance) {
         this.provider = new InstanceProvider(instance);
+        return this;
+    }
+
+    @Override
+    public final <T> FluentBinder onStage(Stages stage) {
+        this.stage = stage;
         return this;
     }
 

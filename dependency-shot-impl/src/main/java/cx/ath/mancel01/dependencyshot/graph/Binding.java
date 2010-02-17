@@ -21,6 +21,7 @@ import cx.ath.mancel01.dependencyshot.aop.UserInterceptor;
 import cx.ath.mancel01.dependencyshot.aop.Weaver;
 import cx.ath.mancel01.dependencyshot.aop.DSInterceptor;
 import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
+import cx.ath.mancel01.dependencyshot.api.Stages;
 import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.injection.handlers.LifecycleHandler;
@@ -51,42 +52,38 @@ public class Binding<T> {
      *
      */
     private static final int HASH = 7;
-
     /**
      *
      */
     private static final int HASH_KEY = 79;
-
     /**
      * Binded class.
      */
     private Class<T> from;
-
     /**
      * Implementation of extends of @Code from
      */
-	private Class<? extends T> to;
-
+    private Class<? extends T> to;
     /**
      * Custom qualifier annotation for a binding. 
      * Useful for specific injection.
      */
-	private Class<? extends Annotation> qualifier;
-
+    private Class<? extends Annotation> qualifier;
     /**
      * Instance provider for an injection (factory like)
      */
-	private Provider<T> provider;
-
+    private Provider<T> provider;
     /**
      * Name of a named binding i.e with @Named("something")
      */
-	private String name;
+    private String name;
+
+    private Stages stage;
     /**
      * The managed interceptors.
      */
     private List<DSInterceptor> managedInterceptors = new ArrayList();
-    
+
     /**
      * Constructor
      * 
@@ -96,45 +93,55 @@ public class Binding<T> {
      * @param to implementation or extends of the binded class
      * @param provider provider object
      */
-	public Binding(
+    public Binding(
             Class<? extends Annotation> qualifier,
             String name,
             Class<T> from,
             Class<? extends T> to,
-			Provider<T> provider) {
-		if (qualifier != null && !qualifier.isAnnotationPresent(Qualifier.class)) {
-			throw new IllegalArgumentException();
-		}
-		this.from = from;
-		this.qualifier = qualifier;
-		this.to = to;
-		this.name = name;
-		this.provider = provider;
-	}
+            Provider<T> provider,
+            Stages stage) {
+        if (qualifier != null && !qualifier.isAnnotationPresent(Qualifier.class)) {
+            throw new IllegalArgumentException();
+        }
+        this.from = from;
+        this.qualifier = qualifier;
+        this.to = to;
+        this.name = name;
+        this.provider = provider;
+        this.stage = stage;
+    }
 
     /**
      *
      * @return
      */
-	public final Class<T> getFrom() {
-		return from;
-	}
+    public final Class<T> getFrom() {
+        return from;
+    }
 
     /**
      *
      * @return
      */
-	public final Class<? extends Annotation> getQualifier() {
-		return qualifier;
-	}
+    public final Class<? extends Annotation> getQualifier() {
+        return qualifier;
+    }
 
     /**
      *
      * @return
      */
-	public final Class<? extends T> getTo() {
-		return to;
-	}
+    public final Class<? extends T> getTo() {
+        return to;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public Stages getStage() {
+        return stage;
+    }
 
     /**
      *
@@ -150,24 +157,24 @@ public class Binding<T> {
      * @param injector the concerned injector
      * @return binded object
      */
-	public final T getInstance(InjectorImpl injector, InjectionPoint point) {
-		T result = null;
-		if (provider != null) {
+    public final T getInstance(InjectorImpl injector, InjectionPoint point) {
+        T result = null;
+        if (provider != null) {
             if (isImplementingEnhancedProvider(provider.getClass().getGenericInterfaces())) {
-                result = (T)((EnhancedProvider) provider).enhancedGet(point);
+                result = (T) ((EnhancedProvider) provider).enhancedGet(point);
             } else {
                 result = provider.get();
             }
-		} else if (to.isAnnotationPresent(Singleton.class)) {
-			result = (T) scannInterceptorsAnnotations(
+        } else if (to.isAnnotationPresent(Singleton.class)) {
+            result = (T) scannInterceptorsAnnotations(
                     injector.getSingleton(to), from, injector);
-		} else {
+        } else {
             result = (T) scannInterceptorsAnnotations(
                     injector.createInstance(to), from, injector);
-		}
-		if (result == null) {
-			throw new DSIllegalStateException("Could not get a " + to);
-		}      
+        }
+        if (result == null) {
+            throw new DSIllegalStateException("Could not get a " + to);
+        }
         if (ManagedBeanHandler.isManagedBean(result)) {
             LifecycleHandler.invokePostConstruct(result);
             if (!injector.getRegisteredManagedBeans().contains(result)) {
@@ -175,8 +182,8 @@ public class Binding<T> {
             }
             ManagedBeanHandler.registerManagedBeanJNDI(result);
         }
-		return result;
-	}
+        return result;
+    }
 
     private boolean isImplementingEnhancedProvider(Type[] interfaces) {
         boolean ret = false;
@@ -191,41 +198,41 @@ public class Binding<T> {
     /**
      * @{@inheritDoc }
      */
-	@Override
-	public final boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
+    @Override
+    public final boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
         }
-		if (obj == null) {
-			return false;
+        if (obj == null) {
+            return false;
         }
-		if (getClass() != obj.getClass()) {
-			return false;
+        if (getClass() != obj.getClass()) {
+            return false;
         }
-		Binding<?> other = (Binding<?>) obj;
-		if (from == null) {
-			if (other.from != null) {
-				return false;
+        Binding<?> other = (Binding<?>) obj;
+        if (from == null) {
+            if (other.from != null) {
+                return false;
             }
-		} else if (!from.equals(other.from)) {
-			return false;
+        } else if (!from.equals(other.from)) {
+            return false;
         }
-		if (name == null) {
-			if (other.name != null) {
-				return false;
+        if (name == null) {
+            if (other.name != null) {
+                return false;
             }
-		} else if (!name.equals(other.name)) {
-			return false;
+        } else if (!name.equals(other.name)) {
+            return false;
         }
-		if (qualifier == null) {
-			if (other.qualifier != null) {
-				return false;
+        if (qualifier == null) {
+            if (other.qualifier != null) {
+                return false;
             }
-		} else if (!qualifier.equals(other.qualifier)) {
-			return false;
+        } else if (!qualifier.equals(other.qualifier)) {
+            return false;
         }
-		return true;
-	}
+        return true;
+    }
 
     /**
      * @{@inheritDoc }
@@ -237,42 +244,42 @@ public class Binding<T> {
         hash = HASH_KEY * hash + (this.qualifier != null ? this.qualifier.hashCode() : 0);
         hash = HASH_KEY * hash + (this.name != null ? this.name.hashCode() : 0);
         return hash;
-    }    
+    }
 
     /**
      * @{@inheritDoc }
      */
     @Override
-	public final String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append(getClass().getSimpleName() + " [");
-		if (from != null) {
+    public final String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(getClass().getSimpleName() + " [");
+        if (from != null) {
             builder.append("from=");
             builder.append(from.getName());
-		}
-		if (to != null) {
+        }
+        if (to != null) {
             builder.append(", ");
             builder.append("to=");
             builder.append(to.getName());
-		}
-		if (qualifier != null) {
+        }
+        if (qualifier != null) {
             builder.append(", ");
             builder.append("qualifier=");
             builder.append(qualifier.getName());
-		}
-		if (provider != null) {
+        }
+        if (provider != null) {
             builder.append(", ");
             builder.append("provider=");
             builder.append(provider);
-		}
-		if (name != null) {
+        }
+        if (name != null) {
             builder.append(", ");
             builder.append("name=");
             builder.append(name);
-		}
-		builder.append("]");
-		return builder.toString();
-	}
+        }
+        builder.append("]");
+        return builder.toString();
+    }
 
     /**
      * Create a fake binding to search it in a map.
@@ -282,16 +289,16 @@ public class Binding<T> {
      * @param annotation qualifier
      * @return a fake binding
      */
-	public static <T> Binding<T> lookup(Class<T> c, Annotation annotation) {
-		if (annotation instanceof Named) {
-			Named named = (Named) annotation;
-            return new Binding<T>(null, named.value(), c, c, null);
-		} else if (annotation != null) {
-            return new Binding<T>(annotation.annotationType(), null, c, null, null);
-		} else {
-            return new Binding<T>(null, null, c, null, null);
-		}
-	}
+    public static <T> Binding<T> lookup(Class<T> c, Annotation annotation) {
+        if (annotation instanceof Named) {
+            Named named = (Named) annotation;
+            return new Binding<T>(null, named.value(), c, c, null, null);
+        } else if (annotation != null) {
+            return new Binding<T>(annotation.annotationType(), null, c, null, null, null);
+        } else {
+            return new Binding<T>(null, null, c, null, null, null);
+        }
+    }
 
     /**
      * Check if the object is interceptable.
@@ -335,11 +342,11 @@ public class Binding<T> {
                 interceptors[i] = (DSInterceptor) o;
                 i++;
             }
-            ret = Weaver.getInstance()
-                    .weaveObject(interfaceClazz, obj, interceptors);
+            ret = Weaver.getInstance().weaveObject(interfaceClazz, obj, interceptors);
         }
         return ret;
     }
+
     /**
      * Check for @AroundInvoke on a class.
      * @param clazz the checked class.
@@ -357,25 +364,22 @@ public class Binding<T> {
                 }
                 for (Method m : c.getDeclaredMethods()) {
                     if (m.isAnnotationPresent(AroundInvoke.class)) {
-                        getManagedInterceptors()
-                                .add(
-                                    new UserInterceptor(m, interceptorInstance)
-                                 );
+                        getManagedInterceptors().add(
+                                new UserInterceptor(m, interceptorInstance));
                     }
                 }
             } catch (Exception ex) {
-                Logger.getLogger(Binding.class.getName())
-                        .log(Level.SEVERE, null, ex);
+                Logger.getLogger(Binding.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
+
     /**
      * Check for @AroundInvoke on a method.
      * @param method the checked method.
      */
     private void findAroundInvoke(final Method method, InjectorImpl injector) {
-        Interceptors inter = (Interceptors)
-                method.getAnnotation(Interceptors.class);
+        Interceptors inter = (Interceptors) method.getAnnotation(Interceptors.class);
         Object interceptorInstance = null;
         for (Class c : inter.value()) {
             try {
@@ -393,8 +397,7 @@ public class Binding<T> {
                     }
                 }
             } catch (Exception ex) {
-                Logger.getLogger(Binding.class.getName())
-                        .log(Level.SEVERE, null, ex);
+                Logger.getLogger(Binding.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

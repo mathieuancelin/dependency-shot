@@ -1,5 +1,5 @@
 /*
- *  Copyright 2010 Mathieu ANCELIN.
+ *  Copyright 2010 mathieuancelin.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,28 +15,17 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.injection.fluent;
-
-import cx.ath.mancel01.dependencyshot.api.Stages;
-import java.lang.annotation.Annotation;
-import javax.inject.Provider;
+package cx.ath.mancel01.dependencyshot.test.staging;
 
 /**
  *
- * @author Mathieu ANCELIN
+ * @author mathieuancelin
  */
-public interface FluentBinder {
-
-    <T> FluentBinder annotedWith(Class<? extends Annotation> annotation);
-
-    <T> FluentBinder named(String named);
-
-    <T> FluentBinder providedBy(Provider<T> provider);
-
-    <T> FluentBinder to(Class<T> to);
-
-    <T> FluentBinder toInstance(Object instance);
-
-    <T> FluentBinder onStage(Stages stage);
-
+public interface Service {
+    public static final String MOCK = "MOCK";
+    public static final String IMPL = "IMPL";
+    public static final String DEV = "DEV";
+    public static final String CUSTOM = "CUSTOM";
+    
+    String doService();
 }
