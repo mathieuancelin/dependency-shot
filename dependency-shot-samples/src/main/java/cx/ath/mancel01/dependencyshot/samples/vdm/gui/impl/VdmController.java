@@ -17,6 +17,7 @@
 
 package cx.ath.mancel01.dependencyshot.samples.vdm.gui.impl;
 
+import cx.ath.mancel01.dependencyshot.api.annotations.InjectLogger;
 import cx.ath.mancel01.dependencyshot.samples.vdm.gui.Controller;
 import cx.ath.mancel01.dependencyshot.samples.vdm.gui.View;
 import cx.ath.mancel01.dependencyshot.samples.vdm.model.Vdm;
@@ -50,7 +51,7 @@ public class VdmController extends Observable implements Controller {
     /**
      * The logger of the controller;
      */
-    @Inject
+    @Inject @InjectLogger
     private Logger logger;
 
     /**

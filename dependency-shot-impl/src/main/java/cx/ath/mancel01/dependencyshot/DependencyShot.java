@@ -26,7 +26,7 @@ import java.util.Arrays;
  * This class is the entry point of the framework.
  * It handle configuration binder and return injector
  * for your own apps.
- * 
+ *
  * @author Mathieu ANCELIN
  */
 public final class DependencyShot {
