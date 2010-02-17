@@ -19,6 +19,7 @@ package cx.ath.mancel01.dependencyshot.injection;
 import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
+import cx.ath.mancel01.dependencyshot.api.Stages;
 import cx.ath.mancel01.dependencyshot.api.annotations.InjectLogger;
 import cx.ath.mancel01.dependencyshot.api.annotations.Property;
 import cx.ath.mancel01.dependencyshot.exceptions.DSException;
@@ -53,6 +54,7 @@ import javax.inject.Qualifier;
  * @author Mathieu ANCELIN
  */
 public class InjectorImpl implements DSInjector {
+
     /**
      * Binders linked to the project.
      */
@@ -69,6 +71,9 @@ public class InjectorImpl implements DSInjector {
      * Singleton scoped object singletonContext.
      */
     private Map<Class<?>, Object> singletonContext;
+
+    private Stages stage = null;
+
     /**
      * The constructor.
      */
@@ -77,6 +82,14 @@ public class InjectorImpl implements DSInjector {
         singletonContext = new HashMap<Class<?>, Object>();
         registeredManagedBeans = new ArrayList<Object>();
     }
+
+    public InjectorImpl(Stages stage) {
+        binders = new ArrayList();
+        singletonContext = new HashMap<Class<?>, Object>();
+        registeredManagedBeans = new ArrayList<Object>();
+        this.stage = stage;
+    }
+
     /**
      * Configure all present binders of the injector.
      */
@@ -135,6 +148,7 @@ public class InjectorImpl implements DSInjector {
         binder.setInjector(this);
         binders.add((Binder) binder);
     }
+
     /**
      * Get the defined bindings in all binders of the injector.
      * 
@@ -150,18 +164,19 @@ public class InjectorImpl implements DSInjector {
             }
 
             Binding loggerBinding = new Binding(InjectLogger.class, null, Logger.class,
-                    Logger.class, new LoggerProvider());
+                    Logger.class, new LoggerProvider(), null);
 
             Binding propertiesBinding = new Binding(Property.class, null, String.class,
-                    String.class, new PropertiesProvider());
-            
+                    String.class, new PropertiesProvider(), null);
+
             Binding injectorBinding = new Binding(null, null, DSInjector.class,
-                    DSInjector.class, new Provider(){
+                    DSInjector.class, new Provider() {
+
                 @Override
                 public Object get() {
                     return ClassHandler.getCurrentInjector();
                 }
-            });
+            }, null);
             bindings.put(loggerBinding, loggerBinding);
             bindings.put(propertiesBinding, propertiesBinding);
             bindings.put(injectorBinding, injectorBinding);
@@ -178,8 +193,8 @@ public class InjectorImpl implements DSInjector {
      */
     @Override
     public final <T> T getInstance(Class<T> c) {
-		return getInstance(c, null, null);
-	}
+        return getInstance(c, null, null);
+    }
 
     /**
      * Get an injected qualified instance of c
@@ -189,9 +204,10 @@ public class InjectorImpl implements DSInjector {
      * @param qualifier instance qualifier
      * @return instance of c
      */
-	private <T> T getInstance(Class<T> c, Annotation qualifier, InjectionPoint point) {
-		return getBinding(c, qualifier).getInstance(this, point);
-	}
+    private <T> T getInstance(Class<T> c, Annotation qualifier, InjectionPoint point) {
+        Binding<T> binding = getBinding(c, qualifier);
+        return binding.getInstance(this, point);
+    }
 
     /**
      * Get an existing binding in current bindings.
@@ -201,15 +217,15 @@ public class InjectorImpl implements DSInjector {
      * @param annotation annotation of the binding
      * @return exsiting binding
      */
-	private <T> Binding<T> getBinding(Class<T> c, Annotation annotation) {
-		Binding<T> b = (Binding<T>) bindings().get(Binding.lookup(c, annotation));
-		if (b != null) {
-			return b;
-		} else {
+    private <T> Binding<T> getBinding(Class<T> c, Annotation annotation) {
+        Binding<T> b = (Binding<T>) bindings().get(Binding.lookup(c, annotation));
+        if (b != null) {
+            return b;
+        } else {
             // add binding for single bindings
             this.bindings.put(new Binding<T>(null, null,
-                c, c, null), new Binding<T>(null, null,
-                c, c, null));
+                    c, c, null, null), new Binding<T>(null, null,
+                    c, c, null, null));
             b = getBinding(c, annotation);
             if (b != null) {
                 return b;
@@ -217,7 +233,7 @@ public class InjectorImpl implements DSInjector {
             throw new IllegalStateException("No binding for " + c + " and " + annotation);
         }
         //throw new IllegalStateException("No binding for " + c + " and " + annotation);
-	}
+    }
 
     /**
      * Get a singleton instance of a class @Singleton
@@ -226,16 +242,16 @@ public class InjectorImpl implements DSInjector {
      * @param c class of the new instance
      * @return singleton instance of c
      */
-	public final <T> T getSingleton(Class<T> c) {
+    public final <T> T getSingleton(Class<T> c) {
         // check if the singleton is present in the singleton context
-		T result = c.cast(singletonContext.get(c));
+        T result = c.cast(singletonContext.get(c));
         // if not, create one
-		if (result == null) {
-			result = createInstance(c);
-			singletonContext.put(c, result);
-		}
-		return result;
-	}
+        if (result == null) {
+            result = createInstance(c);
+            singletonContext.put(c, result);
+        }
+        return result;
+    }
 
     /**
      * Create a new instance of a class
@@ -244,17 +260,17 @@ public class InjectorImpl implements DSInjector {
      * @param c class of the new instance
      * @return new instance of c
      */
-	public final <T> T createInstance(Class<T> c) {
-		try {
+    public final <T> T createInstance(Class<T> c) {
+        try {
             // create a new instance of a class
-			T result = ConstructorHandler.getConstructedInstance(c, this);
+            T result = ConstructorHandler.getConstructedInstance(c, this);
             // and inject it !!
-			ClassHandler.classInjection(result, c, new ArrayList<Method>(), false, this);
-			return result;
-		} catch (Exception e) {
-			throw new DSException(e);
-		}
-	}
+            ClassHandler.classInjection(result, c, new ArrayList<Method>(), false, this);
+            return result;
+        } catch (Exception e) {
+            throw new DSException(e);
+        }
+    }
 
     /**
      * Injection on an instance.
@@ -266,18 +282,17 @@ public class InjectorImpl implements DSInjector {
      * @return injected instance
      */
     @Override
-	public final <T> T injectInstance(T instance) {
-		try {
-			T result = instance;
+    public final <T> T injectInstance(T instance) {
+        try {
+            T result = instance;
             // and inject it !!
-			ClassHandler.classInjection(result,
+            ClassHandler.classInjection(result,
                     instance.getClass(), new ArrayList<Method>(), false, this);
-			return result;
-		} catch (Exception e) {
-			throw new DSException(e);
-		}
-	}
-
+            return result;
+        } catch (Exception e) {
+            throw new DSException(e);
+        }
+    }
 
     /**
      *
@@ -285,13 +300,13 @@ public class InjectorImpl implements DSInjector {
      */
     @Override
     public final void injectStaticMembers(Class<?> c) {
-		try {
-			List<Method> emptyList = Collections.emptyList();
-			ClassHandler.classInjection(null, c, emptyList, true, this);
-		} catch (Exception e) {
-			throw new DSException("Could not inject static members for " + c, e);
-		}
-	}
+        try {
+            List<Method> emptyList = Collections.emptyList();
+            ClassHandler.classInjection(null, c, emptyList, true, this);
+        } catch (Exception e) {
+            throw new DSException("Could not inject static members for " + c, e);
+        }
+    }
 
     /**
      * Get an object instance of a qualified injection from a normal binding or
@@ -302,37 +317,38 @@ public class InjectorImpl implements DSInjector {
      * @param annotations annotations present on the field or the method
      * @return
      */
-	public final Object getProviderOrInstance(Class<?> type, Type genericType, Annotation[] annotations, Member m) {
-		Object value;
-		Annotation qualifier = null;
+    public final Object getProviderOrInstance(Class<?> type, Type genericType, Annotation[] annotations, Member m) {
+        Object value;
+        Annotation qualifier = null;
         // search in custom annotations wich one is a qualifier
-		for (int i = 0; i < annotations.length; i++) {
-			Annotation annotation = annotations[i];
-			if (annotation.annotationType().isAnnotationPresent(Qualifier.class)) {
+        for (int i = 0; i < annotations.length; i++) {
+            Annotation annotation = annotations[i];
+            if (annotation.annotationType().isAnnotationPresent(Qualifier.class)) {
                 // when found, do the rest
-				qualifier = annotation;
-				break;
-			}
-		}
+                qualifier = annotation;
+                break;
+            }
+        }
         // if provided, then return an injected provider
-		if (Provider.class.isAssignableFrom(type) && genericType instanceof ParameterizedType) {
-			ParameterizedType providerType = (ParameterizedType) genericType;
-			final Class<?> providedType = (Class<?>) providerType.getActualTypeArguments()[0];
-			final Annotation finalQualifier = qualifier;
-            final InjectionPoint point = new InjectionPointImpl(providerType, 
+        if (Provider.class.isAssignableFrom(type) && genericType instanceof ParameterizedType) {
+            ParameterizedType providerType = (ParameterizedType) genericType;
+            final Class<?> providedType = (Class<?>) providerType.getActualTypeArguments()[0];
+            final Annotation finalQualifier = qualifier;
+            final InjectionPoint point = new InjectionPointImpl(providerType,
                     new HashSet(Arrays.asList(annotations)), m, type);
-			value = new Provider() {
+            value = new Provider() {
+
                 @Override
-				public Object get() {
-					return getInstance(providedType, finalQualifier, point);
-				}
-			};
-		} else { // or get a simple instance
-			value = getInstance(type, qualifier, new InjectionPointImpl(genericType, 
+                public Object get() {
+                    return getInstance(providedType, finalQualifier, point);
+                }
+            };
+        } else { // or get a simple instance
+            value = getInstance(type, qualifier, new InjectionPointImpl(genericType,
                     new HashSet(Arrays.asList(annotations)), m, type));
-		}
-		return value;
-	}
+        }
+        return value;
+    }
 
     /**
      * Reset all the binders of an injector.
@@ -348,7 +364,7 @@ public class InjectorImpl implements DSInjector {
      */
     @Override
     protected final void finalize() throws Throwable {
-        for(Object o : registeredManagedBeans) {
+        for (Object o : registeredManagedBeans) {
             LifecycleHandler.invokePreDestroy(o);
             o = null;
         }
@@ -364,5 +380,10 @@ public class InjectorImpl implements DSInjector {
             builder.append("\n");
         }
         return builder.toString();
+    }
+
+    @Override
+    public Stages getStage() {
+        return stage;
     }
 }

@@ -1,12 +1,12 @@
 /*
- *  Copyright 2010 Mathieu ANCELIN.
- * 
+ *  Copyright 2010 mathieuancelin.
+ *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,28 +15,11 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.injection.fluent;
-
-import cx.ath.mancel01.dependencyshot.api.Stages;
-import java.lang.annotation.Annotation;
-import javax.inject.Provider;
+package cx.ath.mancel01.dependencyshot.api;
 
 /**
- *
  * @author Mathieu ANCELIN
  */
-public interface FluentBinder {
-
-    <T> FluentBinder annotedWith(Class<? extends Annotation> annotation);
-
-    <T> FluentBinder named(String named);
-
-    <T> FluentBinder providedBy(Provider<T> provider);
-
-    <T> FluentBinder to(Class<T> to);
-
-    <T> FluentBinder toInstance(Object instance);
-
-    <T> FluentBinder onStage(Stages stage);
-
+public enum Stages {
+    TEST, DEVELOPPEMENT, PRODUCTION
 }
