@@ -19,6 +19,7 @@ package cx.ath.mancel01.dependencyshot.injection;
 import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
+import cx.ath.mancel01.dependencyshot.api.annotations.InjectLogger;
 import cx.ath.mancel01.dependencyshot.api.annotations.Property;
 import cx.ath.mancel01.dependencyshot.exceptions.DSException;
 import cx.ath.mancel01.dependencyshot.graph.Binder;
@@ -148,7 +149,7 @@ public class InjectorImpl implements DSInjector {
                 }
             }
 
-            Binding loggerBinding = new Binding(null, null, Logger.class,
+            Binding loggerBinding = new Binding(InjectLogger.class, null, Logger.class,
                     Logger.class, new LoggerProvider());
 
             Binding propertiesBinding = new Binding(Property.class, null, String.class,

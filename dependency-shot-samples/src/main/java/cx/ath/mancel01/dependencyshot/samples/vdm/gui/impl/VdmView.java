@@ -17,6 +17,7 @@
 
 package cx.ath.mancel01.dependencyshot.samples.vdm.gui.impl;
 
+import cx.ath.mancel01.dependencyshot.api.annotations.InjectLogger;
 import cx.ath.mancel01.dependencyshot.samples.vdm.gui.Controller;
 import cx.ath.mancel01.dependencyshot.samples.vdm.gui.View;
 import java.util.Observable;
@@ -59,7 +60,7 @@ public class VdmView extends JFrame implements View {
     /**
      * The logger of the view;
      */
-    @Inject
+    @Inject @InjectLogger
     private Logger logger;
 
     /**
@@ -103,8 +104,6 @@ public class VdmView extends JFrame implements View {
 
     /**
      * Action for a click on the JTextPanel
-     * 
-     * @param evt the mouse event.
      */
     private void vdmClicked() {
         logger.info("Need new VDM");
