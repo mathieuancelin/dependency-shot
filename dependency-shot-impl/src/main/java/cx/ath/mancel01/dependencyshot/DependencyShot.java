@@ -18,7 +18,7 @@
 package cx.ath.mancel01.dependencyshot;
 
 import cx.ath.mancel01.dependencyshot.api.DSBinder;
-import cx.ath.mancel01.dependencyshot.api.Stages;
+import cx.ath.mancel01.dependencyshot.api.Stage;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.injection.InjectorBuilder;
 import java.util.Arrays;
@@ -50,7 +50,7 @@ public final class DependencyShot {
      * @param binders configuration binders.
      * @return the injector.
      */
-    public static InjectorImpl getInjector(Stages stage, final DSBinder... binders) {
+    public static InjectorImpl getInjector(Stage stage, final DSBinder... binders) {
         return getInjector(Arrays.asList(binders), stage);
     }
     /**
@@ -58,7 +58,7 @@ public final class DependencyShot {
      * @param binders binders configuration binders
      * @return the injector.
      */
-    public static InjectorImpl getInjector(final Iterable<? extends DSBinder> binders, Stages stage) {
+    public static InjectorImpl getInjector(final Iterable<? extends DSBinder> binders, Stage stage) {
         return InjectorBuilder.makeInjector(binders, stage);
     }
 }

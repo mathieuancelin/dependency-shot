@@ -17,10 +17,12 @@
 
 package cx.ath.mancel01.dependencyshot.injection.fluent;
 
+import cx.ath.mancel01.dependencyshot.api.Stage;
+
 /**
  *
  * @author Mathieu ANCELIN
  */
-public interface Binded {
-
+public interface StagingBinding {
+    void onStage(Stage stage);
 }

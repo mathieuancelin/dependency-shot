@@ -19,7 +19,7 @@ package cx.ath.mancel01.dependencyshot.test.staging;
 
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
-import cx.ath.mancel01.dependencyshot.api.Stages;
+import cx.ath.mancel01.dependencyshot.api.Stage;
 import org.junit.Test;
 import static junit.framework.Assert.assertTrue;
 
@@ -31,21 +31,21 @@ public class StagingTest {
     
     @Test
     public void testStagingMock() {
-        DSInjector injector = DependencyShot.getInjector(Stages.TEST, new ServiceBinder());
+        DSInjector injector = DependencyShot.getInjector(Stage.TEST, new ServiceBinder());
         Module client = injector.getInstance(Module.class);
         assertTrue(client.getServiceResult().equals(Service.MOCK));
     }
 
     @Test
     public void testStagingDev() {
-        DSInjector injector = DependencyShot.getInjector(Stages.DEVELOPPEMENT, new ServiceBinder());
+        DSInjector injector = DependencyShot.getInjector(Stage.DEVELOPPEMENT, new ServiceBinder());
         Module client = injector.getInstance(Module.class);
         assertTrue(client.getServiceResult().equals(Service.DEV));
     }
 
     @Test
     public void testStagingImpl() {
-        DSInjector injector = DependencyShot.getInjector(Stages.PRODUCTION, new ServiceBinder());
+        DSInjector injector = DependencyShot.getInjector(Stage.PRODUCTION, new ServiceBinder());
         Module client = injector.getInstance(Module.class);
         assertTrue(client.getServiceResult().equals(Service.IMPL));
     }

@@ -17,7 +17,7 @@
 
 package cx.ath.mancel01.dependencyshot.injection.fluent;
 
-import cx.ath.mancel01.dependencyshot.api.Stages;
+import cx.ath.mancel01.dependencyshot.api.Stage;
 import java.lang.annotation.Annotation;
 import javax.inject.Provider;
 
@@ -27,16 +27,16 @@ import javax.inject.Provider;
  */
 public interface FluentBinder {
 
-    <T> FluentBinder annotedWith(Class<? extends Annotation> annotation);
+    <T> QualifiedBinding annotedWith(Class<? extends Annotation> annotation);
 
-    <T> FluentBinder named(String named);
+    <T> QualifiedBinding named(String named);
 
-    <T> FluentBinder providedBy(Provider<T> provider);
+    <T> StagingBinding providedBy(Provider<T> provider);
 
-    <T> FluentBinder to(Class<T> to);
+    <T> StagingBinding to(Class<? extends T> to);
 
-    <T> FluentBinder toInstance(Object instance);
+    <T> StagingBinding toInstance(Object instance);
 
-    <T> FluentBinder onStage(Stages stage);
+    void onStage(Stage stage);
 
 }
