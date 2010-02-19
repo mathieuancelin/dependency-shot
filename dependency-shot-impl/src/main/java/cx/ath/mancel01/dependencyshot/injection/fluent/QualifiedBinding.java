@@ -1,12 +1,12 @@
 /*
- *  Copyright 2010 mathieuancelin.
- *
+ *  Copyright 2010 Mathieu ANCELIN.
+ * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- *
+ * 
  *       http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,11 +15,16 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.api;
+package cx.ath.mancel01.dependencyshot.injection.fluent;
+
+import javax.inject.Provider;
 
 /**
+ *
  * @author Mathieu ANCELIN
  */
-public enum Stages {
-    TEST, DEVELOPPEMENT, PRODUCTION
+public interface QualifiedBinding {
+    <T> StagingBinding to(Class<? extends T> to);
+    <T> StagingBinding toInstance(Object instance);
+    <T> StagingBinding providedBy(Provider<T> provider);
 }

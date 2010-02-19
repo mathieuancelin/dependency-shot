@@ -19,7 +19,7 @@ package cx.ath.mancel01.dependencyshot.injection;
 import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
-import cx.ath.mancel01.dependencyshot.api.Stages;
+import cx.ath.mancel01.dependencyshot.api.Stage;
 import cx.ath.mancel01.dependencyshot.api.annotations.InjectLogger;
 import cx.ath.mancel01.dependencyshot.api.annotations.Property;
 import cx.ath.mancel01.dependencyshot.exceptions.DSException;
@@ -72,7 +72,7 @@ public class InjectorImpl implements DSInjector {
      */
     private Map<Class<?>, Object> singletonContext;
 
-    private Stages stage = null;
+    private Stage stage = null;
 
     /**
      * The constructor.
@@ -83,7 +83,7 @@ public class InjectorImpl implements DSInjector {
         registeredManagedBeans = new ArrayList<Object>();
     }
 
-    public InjectorImpl(Stages stage) {
+    public InjectorImpl(Stage stage) {
         binders = new ArrayList();
         singletonContext = new HashMap<Class<?>, Object>();
         registeredManagedBeans = new ArrayList<Object>();
@@ -383,7 +383,7 @@ public class InjectorImpl implements DSInjector {
     }
 
     @Override
-    public Stages getStage() {
+    public Stage getStage() {
         return stage;
     }
 }

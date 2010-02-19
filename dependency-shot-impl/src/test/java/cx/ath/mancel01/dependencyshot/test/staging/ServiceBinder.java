@@ -17,7 +17,7 @@
 
 package cx.ath.mancel01.dependencyshot.test.staging;
 
-import cx.ath.mancel01.dependencyshot.api.Stages;
+import cx.ath.mancel01.dependencyshot.api.Stage;
 import cx.ath.mancel01.dependencyshot.graph.Binder;
 
 /**
@@ -28,8 +28,8 @@ public class ServiceBinder extends Binder {
 
     @Override
     public void configureBindings() {
-        bind(Service.class).to(ServiceDev.class).onStage(Stages.DEVELOPPEMENT);
-        bind(Service.class).to(ServiceMock.class).onStage(Stages.TEST);
-        bind(Service.class).to(ServiceImpl.class).onStage(Stages.PRODUCTION);
+        bind(Service.class).to(ServiceDev.class).onStage(Stage.DEVELOPPEMENT);
+        bind(Service.class).to(ServiceMock.class).onStage(Stage.TEST);
+        bind(Service.class).to(ServiceImpl.class).onStage(Stage.PRODUCTION);
     }
 }

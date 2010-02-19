@@ -19,8 +19,10 @@ package cx.ath.mancel01.dependencyshot.graph;
 import cx.ath.mancel01.dependencyshot.injection.util.InstanceProvider;
 import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
-import cx.ath.mancel01.dependencyshot.api.Stages;
+import cx.ath.mancel01.dependencyshot.api.Stage;
 import cx.ath.mancel01.dependencyshot.injection.fluent.FluentBinder;
+import cx.ath.mancel01.dependencyshot.injection.fluent.QualifiedBinding;
+import cx.ath.mancel01.dependencyshot.injection.fluent.StagingBinding;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,10 +36,35 @@ import javax.inject.Provider;
  * To use a binder, define your own binder class extending this one
  * and define your own configureBindings method with your personnal
  * bindings.
+ *
+ * The fluent api of a binder can be used this way :
+ * 
+ * bind() -> to()
+ *	  -> named()
+ *	  -> annotedWith()
+ *	  -> providedBy()
+ *	  -> toInstance()
+ *	  -> onStage()
+ *
+ * to() -> onStage()
+ *
+ * named() -> to()
+ *	   -> providedBy()
+ *	   -> toInstance()
+ *
+ * annotedWith() -> to()
+ *             -> providedBy()
+ *	       -> toInstance()
+ *
+ * providedBy() -> onStage()
+ *
+ * toInstance() -> onStage()
+ *
+ * onStage()
  * 
  * @author Mathieu ANCELIN
  */
-public abstract class Binder implements DSBinder, FluentBinder {
+public abstract class Binder implements DSBinder, FluentBinder, QualifiedBinding, StagingBinding {
 
     /**
      * Context for named injections.
@@ -52,7 +79,7 @@ public abstract class Binder implements DSBinder, FluentBinder {
     private String named = null;
     private Class<? extends Annotation> annotation = null;
     private Provider provider = null;
-    private Stages stage = null;
+    private Stage stage = null;
 
     /**
      * Constructor.
@@ -128,39 +155,38 @@ public abstract class Binder implements DSBinder, FluentBinder {
     }
 
     @Override
-    public final <T> FluentBinder to(Class<T> to) {
+    public final <T> StagingBinding to(Class<? extends T> to) {
         this.to = to;
         return this;
     }
 
     @Override
-    public final <T> FluentBinder named(String named) {
+    public final <T> QualifiedBinding named(String named) {
         this.named = named;
         return this;
     }
 
     @Override
-    public final <T> FluentBinder annotedWith(Class<? extends Annotation> annotation) {
+    public final <T> QualifiedBinding annotedWith(Class<? extends Annotation> annotation) {
         this.annotation = annotation;
         return this;
     }
 
     @Override
-    public final <T> FluentBinder providedBy(Provider<T> provider) {
+    public final <T> StagingBinding providedBy(Provider<T> provider) {
         this.provider = provider;
         return this;
     }
 
     @Override
-    public final <T> FluentBinder toInstance(Object instance) {
+    public final <T> StagingBinding toInstance(Object instance) {
         this.provider = new InstanceProvider(instance);
         return this;
     }
 
     @Override
-    public final <T> FluentBinder onStage(Stages stage) {
+    public final void onStage(Stage stage) {
         this.stage = stage;
-        return this;
     }
 
     public final Map<Binding<?>, Binding<?>> getBindings() {
@@ -178,6 +204,6 @@ public abstract class Binder implements DSBinder, FluentBinder {
     }
 
     public final DSInjector getBinderInjector() {
-        return binderInjector;
+        return binderInjector; 
     }
 }

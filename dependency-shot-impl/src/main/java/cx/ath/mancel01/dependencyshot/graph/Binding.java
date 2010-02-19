@@ -21,7 +21,7 @@ import cx.ath.mancel01.dependencyshot.aop.UserInterceptor;
 import cx.ath.mancel01.dependencyshot.aop.Weaver;
 import cx.ath.mancel01.dependencyshot.aop.DSInterceptor;
 import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
-import cx.ath.mancel01.dependencyshot.api.Stages;
+import cx.ath.mancel01.dependencyshot.api.Stage;
 import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.injection.handlers.LifecycleHandler;
@@ -78,7 +78,7 @@ public class Binding<T> {
      */
     private String name;
 
-    private Stages stage;
+    private Stage stage;
     /**
      * The managed interceptors.
      */
@@ -99,7 +99,7 @@ public class Binding<T> {
             Class<T> from,
             Class<? extends T> to,
             Provider<T> provider,
-            Stages stage) {
+            Stage stage) {
         if (qualifier != null && !qualifier.isAnnotationPresent(Qualifier.class)) {
             throw new IllegalArgumentException();
         }
@@ -139,7 +139,7 @@ public class Binding<T> {
      * 
      * @return
      */
-    public Stages getStage() {
+    public Stage getStage() {
         return stage;
     }
 

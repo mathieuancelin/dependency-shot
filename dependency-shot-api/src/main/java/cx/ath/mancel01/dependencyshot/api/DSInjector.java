@@ -49,6 +49,6 @@ public interface DSInjector {
      */
     <T> T injectInstance(T instance);
 
-    Stages getStage();
+    Stage getStage();
 
 }
