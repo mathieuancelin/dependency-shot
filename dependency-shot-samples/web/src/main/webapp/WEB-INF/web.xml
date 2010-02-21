@@ -10,11 +10,11 @@
         <param-value>cx.ath.mancel01.dependencyshot.samples.vdm.config.VdmServiceBinder</param-value>
     </context-param>
     <servlet>
-        <servlet-name>ControllerServlet</servlet-name>
-        <servlet-class>cx.ath.mancel01.dependencyshot.samples.vdm.web.ControllerServlet</servlet-class>
+        <servlet-name>VdmController</servlet-name>
+        <servlet-class>cx.ath.mancel01.dependencyshot.samples.vdm.web.VdmController</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>ControllerServlet</servlet-name>
+        <servlet-name>VdmController</servlet-name>
         <url-pattern>/randomvdm</url-pattern>
     </servlet-mapping>
 </web-app>

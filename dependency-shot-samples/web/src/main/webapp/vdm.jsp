@@ -19,9 +19,9 @@
                     <td width="400px" height="200px">
                         <p align="justify"
                             <b>author</b> : 
-                            <c:out value="${vdmauthor}"/>
+                            <c:out value="${vdm.author}"/>
                             <br/><br/>
-                            <c:out value="${vdmtext}" default="Click on the button below"/>
+                            <c:out value="${vdm.text}" default="Click on the button below"/>
                         </p>
                     </td>
                 </tr>
