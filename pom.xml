@@ -44,10 +44,11 @@
         </extensions>
     </build>
     <modules>
-        <module>dependency-shot-impl</module>
-        <module>dependency-shot-api</module>
-        <module>tck</module>
+    	<module>dependency-shot-api</module>
+        <module>dependency-shot-impl</module>     
+        <module>dependency-shot-web</module>
         <module>dependency-shot-samples</module>
+        <module>tck</module>        
     </modules>
     <dependencyManagement>
         <dependencies>
