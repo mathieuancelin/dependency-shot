@@ -110,7 +110,7 @@ public abstract class ControllerServlet extends HttpServlet {
         for (Method method : clazz.getDeclaredMethods()) {     
             if (method.isAnnotationPresent(Attribute.class)) {
                 Object ret = null;
-                String name = method.getAnnotation(Attribute.class).name();
+                String name = method.getAnnotation(Attribute.class).value();
                 Class<?>[] parameterTypes = method.getParameterTypes();
                 Object[] parameters = new Object[parameterTypes.length];
                 for (int j = 0; j < parameterTypes.length; j++) {
