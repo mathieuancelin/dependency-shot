@@ -60,7 +60,7 @@ public class VdmController extends ControllerServlet {
      * 
      * @return the new model.
      */
-    @Attribute(name="vdm")
+    @Attribute("vdm")
     public Vdm getRandomVdm() {
         updateModel();
         return model;
