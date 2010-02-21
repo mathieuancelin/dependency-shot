@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.samples.vdm.web;
+package cx.ath.mancel01.dependecyshot.web.listeners;
 
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
@@ -23,15 +23,21 @@ import cx.ath.mancel01.dependencyshot.graph.Binder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletContextAttributeEvent;
+import javax.servlet.ServletContextAttributeListener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.http.HttpSessionAttributeListener;
+import javax.servlet.http.HttpSessionBindingEvent;
+import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
 
 /**
  * Web application lifecycle listener to bootstrap the framework.
  * 
  * @author Mathieu ANCELIN
  */
-public class DependencyShotListener implements ServletContextListener {
+public class DependencyShotListener implements ServletContextListener, ServletContextAttributeListener, HttpSessionListener, HttpSessionAttributeListener{
     /**
      * Name of the injector in the servlet context.
      */
@@ -54,7 +60,6 @@ public class DependencyShotListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext context = sce.getServletContext();
-        
         if (binder != null) {
             injector = DependencyShot.getInjector(binder);
         } else {
@@ -81,4 +86,44 @@ public class DependencyShotListener implements ServletContextListener {
      */
     @Override
     public void contextDestroyed(ServletContextEvent sce) {}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void attributeAdded(ServletContextAttributeEvent scab) {}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void attributeRemoved(ServletContextAttributeEvent scab) {}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void attributeReplaced(ServletContextAttributeEvent scab) {}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void sessionCreated(HttpSessionEvent se) {}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void sessionDestroyed(HttpSessionEvent se) {}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void attributeAdded(HttpSessionBindingEvent se) {}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void attributeRemoved(HttpSessionBindingEvent se) {}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void attributeReplaced(HttpSessionBindingEvent se) {}
 }

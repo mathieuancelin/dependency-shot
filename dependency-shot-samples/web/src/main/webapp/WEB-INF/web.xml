@@ -3,13 +3,18 @@
     <display-name>VDM</display-name>
     <listener>
         <description>ServletContextListener</description>
-        <listener-class>cx.ath.mancel01.dependencyshot.samples.vdm.web.DependencyShotListener</listener-class>
+        <listener-class>cx.ath.mancel01.dependecyshot.web.listeners.DependencyShotListener</listener-class>
     </listener>
     <context-param>
         <param-name>DependencyShotConfig</param-name>
         <param-value>cx.ath.mancel01.dependencyshot.samples.vdm.config.VdmServiceBinder</param-value>
     </context-param>
-    <welcome-file-list>
-        <welcome-file>vdm.jsp</welcome-file>
-    </welcome-file-list>
+    <servlet>
+        <servlet-name>ControllerServlet</servlet-name>
+        <servlet-class>cx.ath.mancel01.dependencyshot.samples.vdm.web.ControllerServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ControllerServlet</servlet-name>
+        <url-pattern>/randomvdm</url-pattern>
+    </servlet-mapping>
 </web-app>
