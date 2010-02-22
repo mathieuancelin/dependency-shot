@@ -14,16 +14,25 @@
  *  limitations under the License.
  *  under the License.
  */
-
 package cx.ath.mancel01.dependecyshot.web.controller;
 
 import cx.ath.mancel01.dependecyshot.web.annotations.Attribute;
+import cx.ath.mancel01.dependecyshot.web.handlers.ELMethodHandler;
 import cx.ath.mancel01.dependecyshot.web.listeners.DependencyShotListener;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import cx.ath.mancel01.dependencyshot.api.annotations.InjectLogger;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import javassist.ClassClassPath;
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.CtMethod;
+import javassist.CtNewMethod;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -37,12 +46,20 @@ import javax.servlet.http.HttpSession;
  * @author Mathieu ANCELIN
  */
 public abstract class ControllerServlet extends HttpServlet {
+    private static final String DS_PREFIX = "cx.ath.mancel01.depshot.generated.Model";
+    private static final String OBJECT = "java.lang.Object";
     /**
      * The logger of the controller;
      */
     @Inject
     @InjectLogger
     protected Logger logger;
+
+    /**
+     * Collection of the managed gnerated interfaces for models.
+     */
+    private Map<String, Class> managedItfClasses = new HashMap<String, Class>();
+
     /**
      * {@inheritDoc }
      */
@@ -51,22 +68,25 @@ public abstract class ControllerServlet extends HttpServlet {
         DSInjector injector = (DSInjector) getServletContext()
                 .getAttribute(DependencyShotListener.INJECTOR_NAME);
         injector.injectInstance(this);
-        logger.info("The controller is now weaved");
+        
     }
+
     /**
      * {@inheritDoc }
      */
     @Override
     public void destroy() {
+        
         super.destroy();
-        logger.info("Destruction of the controller");
     }
+
     /**
      * Getter on the controller's view.
      *
      * @return the controller's view.
      */
     public abstract String view();
+
     /**
      * Dispatch the input request to the right view.
      *
@@ -80,6 +100,7 @@ public abstract class ControllerServlet extends HttpServlet {
             throws ServletException, IOException {
         getServletContext().getRequestDispatcher(view).forward(request, response);
     }
+
     /**
      * {@inheritDoc }
      */
@@ -89,6 +110,7 @@ public abstract class ControllerServlet extends HttpServlet {
         registerAttributes(request, response);
         goToView(view(), request, response);
     }
+
     /**
      * {@inheritDoc }
      */
@@ -98,6 +120,7 @@ public abstract class ControllerServlet extends HttpServlet {
         registerAttributes(request, response);
         goToView(view(), request, response);
     }
+
     /**
      * This method invoke each @Attribute method in the controller
      * so they can register models values in the request.
@@ -107,9 +130,8 @@ public abstract class ControllerServlet extends HttpServlet {
      */
     private void registerAttributes(HttpServletRequest request, HttpServletResponse response) {
         Class clazz = this.getClass();
-        for (Method method : clazz.getDeclaredMethods()) {     
+        for (Method method : clazz.getDeclaredMethods()) {
             if (method.isAnnotationPresent(Attribute.class)) {
-                Object ret = null;
                 String name = method.getAnnotation(Attribute.class).value();
                 Class<?>[] parameterTypes = method.getParameterTypes();
                 Object[] parameters = new Object[parameterTypes.length];
@@ -124,22 +146,49 @@ public abstract class ControllerServlet extends HttpServlet {
                         parameters[j] = null;
                     }
                 }
-                boolean accessible = method.isAccessible();
-                if (!accessible) {
-                    method.setAccessible(true);
-                }
                 try {
-                    ret = method.invoke(this, parameters);
-                } catch(Exception e) {
-                    logger.severe(e.toString());
-                } finally {
-                    if (!accessible) {
-                        method.setAccessible(accessible);
-                    }
+                    request.setAttribute(name, getProxy(method, parameters));
+                } catch (Exception ex) {
+                    Logger.getLogger(ControllerServlet.class.getName())
+                            .log(Level.SEVERE, null, ex);
                 }
-                // TODO : add a proxy here or something like that to lazyload
-                request.setAttribute(name, ret);
             }
         }
+    }
+
+    /**
+     * 
+     * @param method
+     * @param parameters
+     * @return
+     * @throws Exception
+     */
+    private Object getProxy(Method method, Object[] parameters) throws Exception {
+        ELMethodHandler handler = new ELMethodHandler(method, this, parameters);
+        ClassPool pool = ClassPool.getDefault();
+        pool.insertClassPath(new ClassClassPath(this.getClass()));
+        CtClass modelInterface = null;
+        String itfKey = DS_PREFIX + method.getReturnType().getSimpleName();
+        if (!managedItfClasses.containsKey(itfKey)) {
+            modelInterface = pool.makeInterface(itfKey);
+            CtClass modelClass = pool.get(method.getReturnType().getName());
+            for (CtMethod meth : modelClass.getDeclaredMethods()) {
+                if (meth.visibleFrom(pool.get(OBJECT))) {
+                    CtMethod newMethod = CtNewMethod.abstractMethod(
+                            meth.getReturnType(),
+                            meth.getName(),
+                            meth.getParameterTypes(),
+                            meth.getExceptionTypes(),
+                            modelInterface);
+                    modelInterface.addMethod(newMethod);
+                }
+            }
+            managedItfClasses.put(itfKey,
+                    modelInterface.toClass());
+        }
+        return Proxy.newProxyInstance(
+                Thread.currentThread().getContextClassLoader(),
+                new Class[]{managedItfClasses.get(itfKey)},
+                handler);
     }
 }

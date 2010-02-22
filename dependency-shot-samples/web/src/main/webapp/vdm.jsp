@@ -12,23 +12,23 @@
             <table align="center" border="0px">
                 <tr>
                     <td align="center">
-                        <h2>Random VDM</h2>
+                        <h2><c:out value="${title}"/></h2>
                     </td>
                 </tr>
                 <tr>
                     <td width="400px" height="200px">
                         <p align="justify"
-                            <b>author</b> : 
+                            <b><c:out value="${author}"/></b> :
                             <c:out value="${vdm.author}"/>
                             <br/><br/>
-                            <c:out value="${vdm.text}" default="Click on the button below"/>
+                            <c:out value="${vdm.text}" default="${defaultText}"/>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td align="center">
                         <form METHOD="POST" ACTION="randomvdm">
-                            <input type="submit" value="Get new random VDM">
+                            <input type="submit" value="${button}">
                         </form>
                     </td>
                 </tr>
