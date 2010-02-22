@@ -17,7 +17,10 @@
 package cx.ath.mancel01.dependencyshot.samples.vdm.web;
 
 import cx.ath.mancel01.dependecyshot.web.annotations.Attribute;
+import cx.ath.mancel01.dependecyshot.web.annotations.Destroy;
+import cx.ath.mancel01.dependecyshot.web.annotations.Init;
 import cx.ath.mancel01.dependecyshot.web.controller.ControllerServlet;
+import cx.ath.mancel01.dependencyshot.api.annotations.Property;
 import cx.ath.mancel01.dependencyshot.samples.vdm.model.Vdm;
 import cx.ath.mancel01.dependencyshot.samples.vdm.service.RandomService;
 import javax.inject.Inject;
@@ -29,18 +32,33 @@ import javax.inject.Inject;
  */
 public class VdmController extends ControllerServlet {
     /**
-     * The random VDM service.
-     */
-    @Inject
-    private RandomService service;
-    /**
      * Current model of the servlet.
      */
     private Vdm model;
     /**
+     * The random VDM service.
+     */
+    @Inject private RandomService service;
+    /**
      * The view of the controller
      */
-    private static final String VIEW = "/vdm.jsp";
+    @Inject @Property private String view;
+    /**
+     * The title of the webapp.
+     */
+    @Inject @Property private String title;
+    /**
+     * The author of the vdm.
+     */
+    @Inject @Property private String author;
+    /**
+     * The label on the button.
+     */
+    @Inject @Property private String button;
+    /**
+     * The default text of the webapp.
+     */
+    @Inject @Property private String defaultText;
     /**
      * Update the current model.
      */
@@ -53,7 +71,7 @@ public class VdmController extends ControllerServlet {
      */
     @Override
     public String view() {
-        return VIEW;
+        return view;
     }
     /**
      * Update the model.
@@ -64,5 +82,35 @@ public class VdmController extends ControllerServlet {
     public Vdm getRandomVdm() {
         updateModel();
         return model;
+    }
+
+    @Attribute("title")
+    public String getTitle() {
+        return title;
+    }
+
+    @Attribute("author")
+    public String getAuthor() {
+        return author;
+    }
+
+    @Attribute("button")
+    public String getButton() {
+        return button;
+    }
+
+    @Attribute("defaultText")
+    public String getDefaultText() {
+        return defaultText;
+    }
+
+    @Init
+    private void postConstruct() {
+        System.out.println("post construct");
+    }
+
+    @Destroy
+    private void preDestroy() {
+        System.out.println("pre destroy");
     }
 }
