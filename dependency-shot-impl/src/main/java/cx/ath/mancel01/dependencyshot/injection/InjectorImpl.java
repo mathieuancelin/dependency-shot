@@ -22,6 +22,7 @@ import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
 import cx.ath.mancel01.dependencyshot.api.Stage;
 import cx.ath.mancel01.dependencyshot.api.annotations.InjectLogger;
 import cx.ath.mancel01.dependencyshot.api.annotations.Property;
+import cx.ath.mancel01.dependencyshot.exceptions.DSCyclicDependencyDetectedException;
 import cx.ath.mancel01.dependencyshot.exceptions.DSException;
 import cx.ath.mancel01.dependencyshot.graph.Binder;
 import cx.ath.mancel01.dependencyshot.graph.Binding;
@@ -71,7 +72,14 @@ public class InjectorImpl implements DSInjector {
      * Singleton scoped object singletonContext.
      */
     private Map<Class<?>, Object> singletonContext;
-
+    /**
+     * Marked classes for circular dependencies checking.
+     * Will be used for circular deps. issues resolving.
+     */
+    private Map<Class<?>, Object> instanciatedClasses;
+    /**
+     * Stage of the injector.
+     */
     private Stage stage = null;
 
     /**
@@ -81,12 +89,14 @@ public class InjectorImpl implements DSInjector {
         binders = new ArrayList();
         singletonContext = new HashMap<Class<?>, Object>();
         registeredManagedBeans = new ArrayList<Object>();
+        instanciatedClasses = new HashMap<Class<?>, Object>();
     }
 
     public InjectorImpl(Stage stage) {
         binders = new ArrayList();
         singletonContext = new HashMap<Class<?>, Object>();
         registeredManagedBeans = new ArrayList<Object>();
+        instanciatedClasses = new HashMap<Class<?>, Object>();
         this.stage = stage;
     }
 
@@ -261,14 +271,22 @@ public class InjectorImpl implements DSInjector {
      * @return new instance of c
      */
     public final <T> T createInstance(Class<T> c) {
-        try {
-            // create a new instance of a class
-            T result = ConstructorHandler.getConstructedInstance(c, this);
-            // and inject it !!
-            ClassHandler.classInjection(result, c, new ArrayList<Method>(), false, this);
-            return result;
-        } catch (Exception e) {
-            throw new DSException(e);
+        // manage circular dependencies
+        if (!instanciatedClasses.containsKey(c)) { 
+            try {
+                instanciatedClasses.put(c, null);
+                // create a new instance of a class
+                T result = ConstructorHandler.getConstructedInstance(c, this);
+                // and inject it !!
+                ClassHandler.classInjection(result, c, new ArrayList<Method>(), false, this);
+                instanciatedClasses.remove(c);
+                return result;
+            } catch (Exception e) {
+                throw new DSException(e);
+            }
+        } else {
+            throw new DSCyclicDependencyDetectedException(
+                    "Circular dependency detected on " + c.getName());
         }
     }
 

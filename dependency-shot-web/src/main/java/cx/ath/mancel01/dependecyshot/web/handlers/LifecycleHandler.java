@@ -14,8 +14,14 @@
  *  limitations under the License.
  *  under the License.
  */
-
 package cx.ath.mancel01.dependecyshot.web.handlers;
+
+import cx.ath.mancel01.dependecyshot.web.annotations.Destroy;
+import cx.ath.mancel01.dependecyshot.web.annotations.Init;
+import java.lang.reflect.Method;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.ServletConfig;
 
 /**
  *
@@ -23,4 +29,57 @@ package cx.ath.mancel01.dependecyshot.web.handlers;
  */
 public class LifecycleHandler {
 
+    public void fireInits(Object caller, ServletConfig cfg) {
+        for (Method method : caller.getClass().getDeclaredMethods()) {
+            if (method.isAnnotationPresent(Init.class)) {
+                Class<?>[] parameterTypes = method.getParameterTypes();
+                Object[] parameters = new Object[parameterTypes.length];
+                for (int j = 0; j < parameterTypes.length; j++) {
+                    if (parameterTypes[j].equals(ServletConfig.class)) {
+                        parameters[j] = cfg;
+                    } else {
+                        parameters[j] = null;
+                    }
+                }
+                boolean accessible = method.isAccessible();
+                if (!accessible) {
+                    method.setAccessible(true);
+                }
+                try {
+                    method.invoke(caller, parameters);
+                } catch (Exception ex) {
+                    Logger.getLogger(LifecycleHandler.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    if (!accessible) {
+                        method.setAccessible(accessible);
+                    }
+                }
+            }
+        }
+    }
+
+    public void fireDestroys(Object caller) {
+        for (Method method : caller.getClass().getDeclaredMethods()) {
+            if (method.isAnnotationPresent(Destroy.class)) {
+                Class<?>[] parameterTypes = method.getParameterTypes();
+                Object[] parameters = new Object[parameterTypes.length];
+                for (int j = 0; j < parameterTypes.length; j++) {
+                    parameters[j] = null;
+                }
+                boolean accessible = method.isAccessible();
+                if (!accessible) {
+                    method.setAccessible(true);
+                }
+                try {
+                    method.invoke(caller, parameters);
+                } catch (Exception ex) {
+                    Logger.getLogger(LifecycleHandler.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    if (!accessible) {
+                        method.setAccessible(accessible);
+                    }
+                }
+            }
+        }
+    }
 }

@@ -24,6 +24,7 @@ import cx.ath.mancel01.dependencyshot.api.annotations.Property;
 import cx.ath.mancel01.dependencyshot.samples.vdm.model.Vdm;
 import cx.ath.mancel01.dependencyshot.samples.vdm.service.RandomService;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Controller servlet for the VDM webapp.
@@ -79,7 +80,8 @@ public class VdmController extends ControllerServlet {
      * @return the new model.
      */
     @Attribute("vdm")
-    public Vdm getRandomVdm() {
+    public Vdm getRandomVdm(HttpServletRequest request) {
+        System.out.println(request.getRequestURI());
         updateModel();
         return model;
     }

@@ -14,7 +14,7 @@
  *  limitations under the License.
  *  under the License.
  */
-package cx.ath.mancel01.dependecyshot.web.handlers;
+package cx.ath.mancel01.dependecyshot.web.el;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
  *
  * @author Mathieu ANCELIN
  */
-public class ELMethodHandler implements InvocationHandler {
+public class ELLazyInvocationHandler implements InvocationHandler {
 
     /**
      * The concerned object.
@@ -33,7 +33,7 @@ public class ELMethodHandler implements InvocationHandler {
     private Object caller;
     private Object[] parameters;
 
-    public ELMethodHandler(Method method,
+    public ELLazyInvocationHandler(Method method,
             Object caller, Object[] parameters) {
         this.methodFromController = method;
         this.caller = caller;
