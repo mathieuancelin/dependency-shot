@@ -8,17 +8,10 @@ import javax.inject.Provider;
  * 
  * @author Mathieu ANCELIN
  */
-public class CyclicBinder extends Binder {
+public class NonCyclicBinder extends Binder {
 
     @Override
     public void configureBindings() {
-        /**
-         * Not needed since single bindings are automatically detected.
-         * bind(BillingService.class);
-         * bind(LoggerService.class);
-         * bind(Account.class);
-         **/
-        //bind(WhichLoggerToChooseService.class);
         bind(WhichLoggerToChooseService.class).providedBy(new Provider() {
             @Override
             public Object get() {

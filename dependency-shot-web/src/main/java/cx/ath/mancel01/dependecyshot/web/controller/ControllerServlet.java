@@ -16,29 +16,20 @@
  */
 package cx.ath.mancel01.dependecyshot.web.controller;
 
-import cx.ath.mancel01.dependecyshot.web.annotations.Attribute;
-import cx.ath.mancel01.dependecyshot.web.handlers.ELMethodHandler;
+import cx.ath.mancel01.dependecyshot.web.annotations.Requests;
+import cx.ath.mancel01.dependecyshot.web.handlers.AttributeHandler;
+import cx.ath.mancel01.dependecyshot.web.handlers.LifecycleHandler;
+import cx.ath.mancel01.dependecyshot.web.handlers.RequestHandler;
 import cx.ath.mancel01.dependecyshot.web.listeners.DependencyShotListener;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import cx.ath.mancel01.dependencyshot.api.annotations.InjectLogger;
 import java.io.IOException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import javassist.ClassClassPath;
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMethod;
-import javassist.CtNewMethod;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  * Abstract controller to write less code in your webapps :)
@@ -46,8 +37,7 @@ import javax.servlet.http.HttpSession;
  * @author Mathieu ANCELIN
  */
 public abstract class ControllerServlet extends HttpServlet {
-    private static final String DS_PREFIX = "cx.ath.mancel01.depshot.generated.Model";
-    private static final String OBJECT = "java.lang.Object";
+
     /**
      * The logger of the controller;
      */
@@ -56,19 +46,31 @@ public abstract class ControllerServlet extends HttpServlet {
     protected Logger logger;
 
     /**
-     * Collection of the managed gnerated interfaces for models.
+     *
      */
-    private Map<String, Class> managedItfClasses = new HashMap<String, Class>();
+    private AttributeHandler attributeHandler;
 
+    /**
+     * 
+     */
+    private LifecycleHandler lifecycleHandler;
+
+    /**
+     * 
+     */
+    private RequestHandler requestHandler;
     /**
      * {@inheritDoc }
      */
     @Override
     public void init() throws ServletException {
+        attributeHandler = new AttributeHandler();
+        lifecycleHandler = new LifecycleHandler();
+        requestHandler = new RequestHandler();
         DSInjector injector = (DSInjector) getServletContext()
                 .getAttribute(DependencyShotListener.INJECTOR_NAME);
         injector.injectInstance(this);
-        
+        lifecycleHandler.fireInits(this, getServletConfig());
     }
 
     /**
@@ -76,7 +78,7 @@ public abstract class ControllerServlet extends HttpServlet {
      */
     @Override
     public void destroy() {
-        
+        lifecycleHandler.fireDestroys(this);
         super.destroy();
     }
 
@@ -107,6 +109,7 @@ public abstract class ControllerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        requestHandler.fireRequests(Requests.GET, this, request, response);
         registerAttributes(request, response);
         goToView(view(), request, response);
     }
@@ -117,6 +120,29 @@ public abstract class ControllerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        requestHandler.fireRequests(Requests.POST, this, request, response);
+        registerAttributes(request, response);
+        goToView(view(), request, response);
+    }
+
+    /**
+     * {@inheritDoc }
+     */
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        requestHandler.fireRequests(Requests.DELETE, this, request, response);
+        registerAttributes(request, response);
+        goToView(view(), request, response);
+    }
+    
+    /**
+     * {@inheritDoc }
+     */
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        requestHandler.fireRequests(Requests.PUT, this, request, response);
         registerAttributes(request, response);
         goToView(view(), request, response);
     }
@@ -129,66 +155,6 @@ public abstract class ControllerServlet extends HttpServlet {
      * @param response web response.
      */
     private void registerAttributes(HttpServletRequest request, HttpServletResponse response) {
-        Class clazz = this.getClass();
-        for (Method method : clazz.getDeclaredMethods()) {
-            if (method.isAnnotationPresent(Attribute.class)) {
-                String name = method.getAnnotation(Attribute.class).value();
-                Class<?>[] parameterTypes = method.getParameterTypes();
-                Object[] parameters = new Object[parameterTypes.length];
-                for (int j = 0; j < parameterTypes.length; j++) {
-                    if (parameterTypes[j].equals(HttpServletRequest.class)) {
-                        parameters[j] = request;
-                    } else if (parameterTypes[j].equals(HttpServletResponse.class)) {
-                        parameters[j] = response;
-                    } else if (parameterTypes[j].equals(HttpSession.class)) {
-                        parameters[j] = request.getSession();
-                    } else {
-                        parameters[j] = null;
-                    }
-                }
-                try {
-                    request.setAttribute(name, getProxy(method, parameters));
-                } catch (Exception ex) {
-                    Logger.getLogger(ControllerServlet.class.getName())
-                            .log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-    }
-
-    /**
-     * 
-     * @param method
-     * @param parameters
-     * @return
-     * @throws Exception
-     */
-    private Object getProxy(Method method, Object[] parameters) throws Exception {
-        ELMethodHandler handler = new ELMethodHandler(method, this, parameters);
-        ClassPool pool = ClassPool.getDefault();
-        pool.insertClassPath(new ClassClassPath(this.getClass()));
-        CtClass modelInterface = null;
-        String itfKey = DS_PREFIX + method.getReturnType().getSimpleName();
-        if (!managedItfClasses.containsKey(itfKey)) {
-            modelInterface = pool.makeInterface(itfKey);
-            CtClass modelClass = pool.get(method.getReturnType().getName());
-            for (CtMethod meth : modelClass.getDeclaredMethods()) {
-                if (meth.visibleFrom(pool.get(OBJECT))) {
-                    CtMethod newMethod = CtNewMethod.abstractMethod(
-                            meth.getReturnType(),
-                            meth.getName(),
-                            meth.getParameterTypes(),
-                            meth.getExceptionTypes(),
-                            modelInterface);
-                    modelInterface.addMethod(newMethod);
-                }
-            }
-            managedItfClasses.put(itfKey,
-                    modelInterface.toClass());
-        }
-        return Proxy.newProxyInstance(
-                Thread.currentThread().getContextClassLoader(),
-                new Class[]{managedItfClasses.get(itfKey)},
-                handler);
+        attributeHandler.registerAttributes(this.getClass(), this, request, response);
     }
 }
