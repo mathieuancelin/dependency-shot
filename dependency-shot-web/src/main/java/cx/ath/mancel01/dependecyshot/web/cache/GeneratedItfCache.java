@@ -24,7 +24,7 @@ import java.util.Map;
  *
  * @author Mathieu ANCELIN
  */
-public class GeneratedItfCache {
+public final class GeneratedItfCache {
 
     private static GeneratedItfCache instance = null;
 

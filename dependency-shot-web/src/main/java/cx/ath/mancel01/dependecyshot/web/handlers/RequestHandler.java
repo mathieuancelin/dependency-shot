@@ -33,7 +33,7 @@ import javax.servlet.http.HttpSession;
  */
 public class RequestHandler {
 
-    public void fireRequests(Requests req, Object caller, HttpServletRequest request, HttpServletResponse response) {
+    public final void fireRequests(Requests req, Object caller, HttpServletRequest request, HttpServletResponse response) {
         for (Method method : caller.getClass().getDeclaredMethods()) {
             if (method.isAnnotationPresent(OnRequest.class)) {
                 Requests definedRequest = method.getAnnotation(OnRequest.class).value();

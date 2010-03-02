@@ -29,7 +29,7 @@ import javax.servlet.ServletConfig;
  */
 public class LifecycleHandler {
 
-    public void fireInits(Object caller, ServletConfig cfg) {
+    public final void fireInits(Object caller, ServletConfig cfg) {
         for (Method method : caller.getClass().getDeclaredMethods()) {
             if (method.isAnnotationPresent(Init.class)) {
                 Class<?>[] parameterTypes = method.getParameterTypes();
@@ -58,7 +58,7 @@ public class LifecycleHandler {
         }
     }
 
-    public void fireDestroys(Object caller) {
+    public final void fireDestroys(Object caller) {
         for (Method method : caller.getClass().getDeclaredMethods()) {
             if (method.isAnnotationPresent(Destroy.class)) {
                 Class<?>[] parameterTypes = method.getParameterTypes();

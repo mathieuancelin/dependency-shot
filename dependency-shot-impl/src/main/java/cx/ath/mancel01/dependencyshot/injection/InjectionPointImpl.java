@@ -46,22 +46,22 @@ public class InjectionPointImpl implements InjectionPoint {
 
 
     @Override
-    public Type getType() {
+    public final Type getType() {
         return this.type;
     }
 
     @Override
-    public Set<Annotation> getAnnotations() {
+    public final Set<Annotation> getAnnotations() {
         return this.annotations;
     }
 
     @Override
-    public Member getMember() {
+    public final Member getMember() {
         return this.member;
     }
 
     @Override
-    public Class getBeanClass() {
+    public final Class getBeanClass() {
         return this.member.getDeclaringClass();
     }
 }

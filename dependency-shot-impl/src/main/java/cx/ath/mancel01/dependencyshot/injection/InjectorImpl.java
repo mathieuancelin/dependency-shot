@@ -401,7 +401,7 @@ public class InjectorImpl implements DSInjector {
     }
 
     @Override
-    public Stage getStage() {
+    public final Stage getStage() {
         return stage;
     }
 }

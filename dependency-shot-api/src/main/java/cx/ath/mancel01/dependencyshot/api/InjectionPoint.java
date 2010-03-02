@@ -33,14 +33,14 @@ public interface InjectionPoint {
     *
     * @return the required type
     */
-   public Type getType();
+   Type getType();
 
    /**
     * Get the required qualifiers of the injection point.
     *
     * @return the required qualifiers
     */
-   public Set<Annotation> getAnnotations();
+   Set<Annotation> getAnnotations();
 
    /**
     * Get the {@link java.lang.reflect.Field} object in the case of field
@@ -51,13 +51,13 @@ public interface InjectionPoint {
     *
     * @return the member
     */
-   public Member getMember();
+   Member getMember();
 
    /**
     * Class on witch injection is performed.
     *
     * @return class on witch injection is performed.
     */
-   public Class getBeanClass();
+   Class getBeanClass();
 
 }

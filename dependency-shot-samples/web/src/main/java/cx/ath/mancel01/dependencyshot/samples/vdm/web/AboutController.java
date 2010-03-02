@@ -41,22 +41,22 @@ public class AboutController extends ControllerServlet {
     @Inject @Property private String vdm;
 
     @Override
-    public String view() {
+    public final String view() {
         return "/about.jsp";
     }
 
     @Attribute("about")
-    private String getAboutText() {
+    private final String getAboutText() {
         return aboutText;
     }
 
     @Attribute("vdm")
-    private String getVdm() {
+    private final String getVdm() {
         return vdm;
     }
 
     @OnRequest(Requests.GET)
-    private void htmlGet() {
-        System.out.println("GET");
+    private final void htmlGet() {
+        logger.info("GET");
     }
 }

@@ -31,7 +31,7 @@ import javax.inject.Qualifier;
 @Retention(RetentionPolicy.RUNTIME)
 @Qualifier
 public @interface Property {
-    public String name() default "";
-    public String value() default "";
-    public String bundle() default "";
+    String name() default "";
+    String value() default "";
+    String bundle() default "";
 }
