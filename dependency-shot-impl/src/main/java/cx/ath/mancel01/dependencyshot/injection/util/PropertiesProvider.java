@@ -36,7 +36,7 @@ public class PropertiesProvider implements EnhancedProvider {
     private static final String NOT_INJECTED = "NOT INJECTED";
 
     @Override
-    public Object enhancedGet(InjectionPoint p) {
+    public final Object enhancedGet(InjectionPoint p) {
         String value = NOT_INJECTED;
         for (Annotation qualifier : p.getAnnotations()) {
             if (qualifier instanceof Property) {
@@ -54,7 +54,7 @@ public class PropertiesProvider implements EnhancedProvider {
     }
 
     @Override
-    public Object get() {
+    public final Object get() {
         throw new UnsupportedOperationException(
                 "This operation isn't supported on EnhancedProvider.");
     }

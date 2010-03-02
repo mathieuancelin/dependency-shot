@@ -71,7 +71,7 @@ public class VdmController extends ControllerServlet {
      * @return the view of this controller.
      */
     @Override
-    public String view() {
+    public final String view() {
         return view;
     }
     /**
@@ -80,39 +80,39 @@ public class VdmController extends ControllerServlet {
      * @return the new model.
      */
     @Attribute("vdm")
-    public Vdm getRandomVdm(HttpServletRequest request) {
-        System.out.println(request.getRequestURI());
+    public final Vdm getRandomVdm(HttpServletRequest request) {
+        logger.info(request.getRequestURI());
         updateModel();
         return model;
     }
 
     @Attribute("title")
-    public String getTitle() {
+    public final String getTitle() {
         return title;
     }
 
     @Attribute("author")
-    public String getAuthor() {
+    public final String getAuthor() {
         return author;
     }
 
     @Attribute("button")
-    public String getButton() {
+    public final String getButton() {
         return button;
     }
 
     @Attribute("defaultText")
-    public String getDefaultText() {
+    public final String getDefaultText() {
         return defaultText;
     }
 
     @Init
     private void postConstruct() {
-        System.out.println("post construct");
+        logger.info("post construct");
     }
 
     @Destroy
     private void preDestroy() {
-        System.out.println("pre destroy");
+        logger.info("pre destroy");
     }
 }

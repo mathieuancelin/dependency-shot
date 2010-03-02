@@ -24,12 +24,12 @@ package cx.ath.mancel01.dependencyshot.reflect;
 public class ReflectionServiceImpl implements ReflectionService {
 
     @Override
-    public Class getInterface(Class c) {
+    public final Class getInterface(Class c) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public ReflectionClass getClassModel(Class c) {
+    public final ReflectionClass getClassModel(Class c) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

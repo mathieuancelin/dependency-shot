@@ -59,7 +59,7 @@ public class AttributeHandler {
      * @param request web request.
      * @param response web response.
      */
-    public void registerAttributes(Class clazz, Object caller, HttpServletRequest request, HttpServletResponse response) {
+    public final void registerAttributes(Class clazz, Object caller, HttpServletRequest request, HttpServletResponse response) {
         for (Method method : clazz.getDeclaredMethods()) {
             if (method.isAnnotationPresent(Attribute.class)) {
                 String name = method.getAnnotation(Attribute.class).value();

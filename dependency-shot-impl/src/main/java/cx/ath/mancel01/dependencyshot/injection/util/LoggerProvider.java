@@ -28,12 +28,12 @@ import java.util.logging.Logger;
 public class LoggerProvider implements EnhancedProvider {
 
     @Override
-    public Object enhancedGet(InjectionPoint p) {
+    public final Object enhancedGet(InjectionPoint p) {
         return Logger.getLogger(p.getBeanClass().getName());
     }
 
     @Override
-    public Object get() {
+    public final Object get() {
         return Logger.getLogger(ClassHandler.getCurrentlyInjected().getName());
     }
 

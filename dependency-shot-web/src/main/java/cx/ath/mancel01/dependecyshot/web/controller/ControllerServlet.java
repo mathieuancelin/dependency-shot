@@ -63,7 +63,7 @@ public abstract class ControllerServlet extends HttpServlet {
      * {@inheritDoc }
      */
     @Override
-    public void init() throws ServletException {
+    public final void init() throws ServletException {
         attributeHandler = new AttributeHandler();
         lifecycleHandler = new LifecycleHandler();
         requestHandler = new RequestHandler();
@@ -77,7 +77,7 @@ public abstract class ControllerServlet extends HttpServlet {
      * {@inheritDoc }
      */
     @Override
-    public void destroy() {
+    public final void destroy() {
         lifecycleHandler.fireDestroys(this);
         super.destroy();
     }
@@ -107,7 +107,7 @@ public abstract class ControllerServlet extends HttpServlet {
      * {@inheritDoc }
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    public final void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         requestHandler.fireRequests(Requests.GET, this, request, response);
         registerAttributes(request, response);
@@ -118,7 +118,7 @@ public abstract class ControllerServlet extends HttpServlet {
      * {@inheritDoc }
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    public final void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         requestHandler.fireRequests(Requests.POST, this, request, response);
         registerAttributes(request, response);
@@ -129,7 +129,7 @@ public abstract class ControllerServlet extends HttpServlet {
      * {@inheritDoc }
      */
     @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+    public final void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         requestHandler.fireRequests(Requests.DELETE, this, request, response);
         registerAttributes(request, response);
@@ -140,7 +140,7 @@ public abstract class ControllerServlet extends HttpServlet {
      * {@inheritDoc }
      */
     @Override
-    protected void doPut(HttpServletRequest request, HttpServletResponse response)
+    public final void doPut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         requestHandler.fireRequests(Requests.PUT, this, request, response);
         registerAttributes(request, response);

@@ -139,7 +139,7 @@ public class Binding<T> {
      * 
      * @return
      */
-    public Stage getStage() {
+    public final Stage getStage() {
         return stage;
     }
 
