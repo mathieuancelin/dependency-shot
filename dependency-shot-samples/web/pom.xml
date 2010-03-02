@@ -23,16 +23,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <build>
-        <resources>
-            <resource>
-                <targetPath>META-INF</targetPath>
-                <filtering>false</filtering>
-                <directory>${basedir}/src/main/resources</directory>
-                <includes>
-                    <include>*.*</include>
-                </includes>
-            </resource>
-        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

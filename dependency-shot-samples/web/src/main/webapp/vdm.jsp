@@ -32,6 +32,11 @@
                         </form>
                     </td>
                 </tr>
+                <tr>
+                    <td align="center">
+                        <a href="about">About VDM Webapp</a>
+                    </td>
+                </tr>
             </table>
         </div>
     </body>
