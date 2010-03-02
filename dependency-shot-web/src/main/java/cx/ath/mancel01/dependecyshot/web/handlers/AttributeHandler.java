@@ -18,12 +18,11 @@
 package cx.ath.mancel01.dependecyshot.web.handlers;
 
 import cx.ath.mancel01.dependecyshot.web.annotations.Attribute;
+import cx.ath.mancel01.dependecyshot.web.cache.GeneratedItfCache;
 import cx.ath.mancel01.dependecyshot.web.controller.ControllerServlet;
 import cx.ath.mancel01.dependecyshot.web.el.ELLazyInvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javassist.ClassClassPath;
@@ -52,11 +51,6 @@ public class AttributeHandler {
      * Regular java object.
      */
     private static final String OBJECT = "java.lang.Object";
-
-    /**
-     * Collection of the managed gnerated interfaces for models.
-     */
-    private Map<String, Class> managedItfClasses = new HashMap<String, Class>();
 
     /**
      * This method invoke each @Attribute method in the controller
@@ -106,7 +100,8 @@ public class AttributeHandler {
         pool.insertClassPath(new ClassClassPath(caller.getClass()));
         CtClass modelInterface = null;
         String itfKey = DS_PREFIX + method.getReturnType().getSimpleName();
-        if (!managedItfClasses.containsKey(itfKey)) {
+        if (!GeneratedItfCache.getInstance().getManagedItfClasses()
+                .containsKey(itfKey)) {
             modelInterface = pool.makeInterface(itfKey);
             CtClass modelClass = pool.get(method.getReturnType().getName());
             for (CtMethod meth : modelClass.getDeclaredMethods()) {
@@ -120,12 +115,16 @@ public class AttributeHandler {
                     modelInterface.addMethod(newMethod);
                 }
             }
-            managedItfClasses.put(itfKey,
-                    modelInterface.toClass());
+            GeneratedItfCache.getInstance()
+                    .getManagedItfClasses()
+                    .put(itfKey, modelInterface.toClass());
         }
         return Proxy.newProxyInstance(
                 Thread.currentThread().getContextClassLoader(),
-                new Class[]{managedItfClasses.get(itfKey)},
+                new Class[]{GeneratedItfCache
+                        .getInstance()
+                        .getManagedItfClasses()
+                        .get(itfKey)},
                 handler);
     }
 

@@ -13,8 +13,16 @@
         <servlet-name>VdmController</servlet-name>
         <servlet-class>cx.ath.mancel01.dependencyshot.samples.vdm.web.VdmController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AboutController</servlet-name>
+        <servlet-class>cx.ath.mancel01.dependencyshot.samples.vdm.web.AboutController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>VdmController</servlet-name>
         <url-pattern>/randomvdm</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AboutController</servlet-name>
+        <url-pattern>/about</url-pattern>
     </servlet-mapping>
 </web-app>
