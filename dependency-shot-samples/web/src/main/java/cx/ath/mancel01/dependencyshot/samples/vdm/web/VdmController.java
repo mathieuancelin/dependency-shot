@@ -19,8 +19,8 @@ package cx.ath.mancel01.dependencyshot.samples.vdm.web;
 import cx.ath.mancel01.dependecyshot.web.annotations.Attribute;
 import cx.ath.mancel01.dependecyshot.web.annotations.Destroy;
 import cx.ath.mancel01.dependecyshot.web.annotations.Init;
+import cx.ath.mancel01.dependecyshot.web.annotations.WebProperty;
 import cx.ath.mancel01.dependecyshot.web.controller.ControllerServlet;
-import cx.ath.mancel01.dependencyshot.api.annotations.Property;
 import cx.ath.mancel01.dependencyshot.samples.vdm.model.Vdm;
 import cx.ath.mancel01.dependencyshot.samples.vdm.service.RandomService;
 import javax.inject.Inject;
@@ -43,23 +43,23 @@ public class VdmController extends ControllerServlet {
     /**
      * The view of the controller
      */
-    @Inject @Property private String view;
+    @Inject @WebProperty private String view;
     /**
      * The title of the webapp.
      */
-    @Inject @Property private String title;
+    @Inject @WebProperty private String title;
     /**
      * The author of the vdm.
      */
-    @Inject @Property private String author;
+    @Inject @WebProperty private String author;
     /**
      * The label on the button.
      */
-    @Inject @Property private String button;
+    @Inject @WebProperty private String button;
     /**
      * The default text of the webapp.
      */
-    @Inject @Property private String defaultText;
+    @Inject @WebProperty private String defaultText;
     /**
      * Update the current model.
      */

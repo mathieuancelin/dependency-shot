@@ -20,8 +20,8 @@ package cx.ath.mancel01.dependencyshot.samples.vdm.web;
 import cx.ath.mancel01.dependecyshot.web.annotations.Attribute;
 import cx.ath.mancel01.dependecyshot.web.annotations.OnRequest;
 import cx.ath.mancel01.dependecyshot.web.annotations.Requests;
+import cx.ath.mancel01.dependecyshot.web.annotations.WebProperty;
 import cx.ath.mancel01.dependecyshot.web.controller.ControllerServlet;
-import cx.ath.mancel01.dependencyshot.api.annotations.Property;
 import javax.inject.Inject;
 
 /**
@@ -33,12 +33,12 @@ public class AboutController extends ControllerServlet {
     /**
      * The default text of the about page.
      */
-    @Inject @Property private String aboutText;
+    @Inject @WebProperty private String aboutText;
 
     /**
      * The default text of the button.
      */
-    @Inject @Property private String vdm;
+    @Inject @WebProperty private String vdm;
 
     @Override
     public final String view() {

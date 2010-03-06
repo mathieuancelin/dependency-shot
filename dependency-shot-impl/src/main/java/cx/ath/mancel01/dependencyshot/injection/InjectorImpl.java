@@ -177,7 +177,7 @@ public class InjectorImpl implements DSInjector {
                     Logger.class, new LoggerProvider(), null);
 
             Binding propertiesBinding = new Binding(Property.class, null, String.class,
-                    String.class, new PropertiesProvider(), null);
+                    String.class, new PropertiesProvider(this), null);
 
             Binding injectorBinding = new Binding(null, null, DSInjector.class,
                     DSInjector.class, new Provider() {
