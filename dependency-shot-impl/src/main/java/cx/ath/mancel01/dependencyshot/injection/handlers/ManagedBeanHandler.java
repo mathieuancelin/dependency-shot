@@ -14,10 +14,13 @@
  *  limitations under the License.
  *  under the License.
  */
-
 package cx.ath.mancel01.dependencyshot.injection.handlers;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
+import javax.naming.Context;
+import javax.naming.InitialContext;
 
 /**
  *
@@ -25,7 +28,8 @@ import javax.annotation.ManagedBean;
  */
 public final class ManagedBeanHandler {
 
-    private ManagedBeanHandler() {}
+    private ManagedBeanHandler() {
+    }
 
     public static boolean isManagedBean(Object o) {
         return isManagedBean(o.getClass());
@@ -36,21 +40,25 @@ public final class ManagedBeanHandler {
     }
 
     public static void registerManagedBeanJNDI(Object instance) {
-//        try {
-//            Class clazz = instance.getClass();
-//            if (clazz.isAnnotationPresent(ManagedBean.class)) {
-//                ManagedBean annotation = (ManagedBean) clazz.getAnnotation(ManagedBean.class);
-//                if (!annotation.value().equals("")) {
-//                    Hashtable<Object, Object> env = new Hashtable<Object, Object>();
-//                    env.put(Context.INITIAL_CONTEXT_FACTORY,
-//                            "com.sun.jndi.rmi.registry.RegistryContextFactory");
-//                    env.put(Context.PROVIDER_URL, "rmi://localhost:1099");
-//                    Context context = new javax.naming.InitialContext(env);
-//                    context.bind(annotation.value(), instance);
-//                }
-//            }
-//        } catch (Exception ex) {
-//            Logger.getLogger(ManagedBeanHandler.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        if (System.getProperty(Context.INITIAL_CONTEXT_FACTORY) != null) {
+            try {
+                Class clazz = instance.getClass();
+                if (clazz.isAnnotationPresent(ManagedBean.class)) {
+                    ManagedBean annotation = (ManagedBean) clazz.getAnnotation(ManagedBean.class);
+                    String name = clazz.getName();
+                    if (!annotation.value().equals("")) {
+                        name = annotation.value();
+                    }
+                    name += "_" + instance.hashCode(); // Remove that
+                    Context context = new InitialContext();
+                    if (context.lookup(name) != null) {
+                        context.bind(name, instance);
+                    }
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(ManagedBeanHandler.class.getName())
+                        .log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }

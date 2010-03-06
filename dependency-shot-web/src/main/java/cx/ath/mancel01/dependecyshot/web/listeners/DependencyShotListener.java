@@ -17,6 +17,7 @@
 
 package cx.ath.mancel01.dependecyshot.web.listeners;
 
+import cx.ath.mancel01.dependecyshot.web.binders.WebBinder;
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import cx.ath.mancel01.dependencyshot.graph.Binder;
@@ -61,7 +62,7 @@ public class DependencyShotListener implements ServletContextListener, ServletCo
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext context = sce.getServletContext();
         if (binder != null) {
-            injector = DependencyShot.getInjector(binder);
+            injector = DependencyShot.getInjector(binder, new WebBinder());
         } else {
             try {
             binder = (Binder) DependencyShotListener.class
@@ -74,9 +75,9 @@ public class DependencyShotListener implements ServletContextListener, ServletCo
                 Logger.getLogger(DependencyShotListener.class.getName()).log(Level.SEVERE, null, ex);
             }
             if (binder != null) {
-                injector = DependencyShot.getInjector(binder);
+                injector = DependencyShot.getInjector(binder, new WebBinder());
             } else {
-                injector = DependencyShot.getInjector();
+                injector = DependencyShot.getInjector(new WebBinder());
             }
         }
         context.setAttribute(INJECTOR_NAME, injector);
