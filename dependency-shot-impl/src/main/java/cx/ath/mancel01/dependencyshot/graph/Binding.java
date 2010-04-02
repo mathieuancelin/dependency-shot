@@ -144,6 +144,15 @@ public class Binding<T> {
     }
 
     /**
+     * 
+     * @param to
+     */
+    public void setTo(Class<? extends T> to) {
+        this.to = to;
+    }
+
+
+    /**
      *
      * @return
      */
