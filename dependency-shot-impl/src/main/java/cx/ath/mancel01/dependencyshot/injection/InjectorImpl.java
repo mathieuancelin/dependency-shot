@@ -82,6 +82,8 @@ public class InjectorImpl implements DSInjector {
      */
     private Stage stage = null;
 
+    private boolean bindingsChanged = false;
+
     /**
      * The constructor.
      */
@@ -117,6 +119,15 @@ public class InjectorImpl implements DSInjector {
             }
         }
     }
+
+    public boolean getBindingsChanged() {
+        return bindingsChanged;
+    }
+
+    public void setBindingsChanged(boolean bindingsChanged) {
+        this.bindingsChanged = bindingsChanged;
+    }
+
 
     /**
      *
@@ -165,7 +176,7 @@ public class InjectorImpl implements DSInjector {
      * @return current bindings
      */
     public final Map<Binding<?>, Binding<?>> bindings() { //TODO : replace for real multi-binder and better perf
-        if (bindings == null) {
+        if (bindings == null  || bindingsChanged) {
             bindings = new HashMap<Binding<?>, Binding<?>>();
             for (Binder binder : binders) {
                 for (Binding<?> binding : binder.getBindings().keySet()) {
@@ -190,6 +201,7 @@ public class InjectorImpl implements DSInjector {
             bindings.put(loggerBinding, loggerBinding);
             bindings.put(propertiesBinding, propertiesBinding);
             bindings.put(injectorBinding, injectorBinding);
+            bindingsChanged = false;
         }
         return bindings;
     }

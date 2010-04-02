@@ -56,5 +56,9 @@
             <artifactId>javassist</artifactId>
             <version>3.8.0.GA</version>
         </dependency>
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+        </dependency>
     </dependencies>
 </project>
