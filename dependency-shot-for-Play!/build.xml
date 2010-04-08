@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Dependency-Shot plugin for Play!" default="build" basedir=".">
+    <property name="play.path" value="/home/mathieu/tools/play-1.0.2" />
+    <path id="project.classpath">
+        <pathelement path="${play.path}/framework/classes"/>
+        <fileset dir="${play.path}/framework/lib">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${play.path}/framework">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="lib">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="build" depends="compile">
+
+        <copy todir="tmp/classes">
+            <fileset dir="src">
+                <include name="**/*.properties"/>
+                <include name="**/*.xml"/>
+                <include name="**/play.plugins"/>
+                <include name="**/play.static"/>
+            </fileset>
+        </copy>
+        <jar destfile="lib/dependency-shot-for-play.jar" basedir="tmp/classes">
+            <manifest>
+                <section name="Play-module">
+                    <attribute name="Specification-Title" value="Dependency-Shot plugin"/>
+                </section>
+            </manifest>
+        </jar>
+        <delete file="dependencyshot.zip" />
+        <delete dir="tmp" />
+        <zip destfile="dependencyshot.zip" basedir="." >
+            <exclude name="*/.svn/**"/>
+            <exclude name="build.xml"/>
+            <exclude name="nbproject/**"/>
+            <exclude name="tmp/**"/>
+        </zip>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="tmp/classes" />
+        <javac srcdir="src" destdir="tmp/classes" target="1.5" debug="true">
+            <classpath refid="project.classpath" />
+        </javac>
+    </target>
+
+</project>
