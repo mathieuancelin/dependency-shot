@@ -1,14 +1,14 @@
-Dependency-Shot module
+dependency-shot module
 
-The Dependency-Shot module helps you to inject Dependency-Shot managed components into your Play! application. The injection points are defined by the  @javax.inject.Inject annotation. 
+The dependency-shot module helps you to inject dependency-shot managed components into your Play! application. The injection points are defined by the  @javax.inject.Inject annotation. 
 
-Enable the Dependency-Shot  module for the application
+Enable the dependency-shot  module for the application
 
-You can enable the Dependency-Shot module by adding the following line to your application's **/conf/application.conf** file:
+You can enable the dependency-shot module by adding the following line to your application's **/conf/application.conf** file:
 
 module.dependencyshot=${play.path}/modules/dependencyshot
 
-Defining a Dependency-Shot binder :
+Defining a dependency-shot binder :
 
 just add in your code a class extending cx.ath.mancel01.dependencyshot.graph.Binder and write your bindings in the configureBindings method.
 
