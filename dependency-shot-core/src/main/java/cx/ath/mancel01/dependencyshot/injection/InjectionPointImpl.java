@@ -64,11 +64,11 @@ public class InjectionPointImpl implements InjectionPoint {
         return this.member.getDeclaringClass();
     }
 
-    public Class getInjectedClass() {
+    public final Class getInjectedClass() {
         return injectedClass;
     }
 
-    public void setInjectedClass(Class injectedClass) {
+    public final void setInjectedClass(Class injectedClass) {
         this.injectedClass = injectedClass;
     }
 }
