@@ -66,10 +66,6 @@ public class Binding<T> {
     private String name;
 
     private Stage stage;
-//    /**
-//     * The managed interceptors.
-//     */
-//    private List<DSInterceptor> managedInterceptors = new ArrayList();
 
     /**
      * Constructor
@@ -138,15 +134,6 @@ public class Binding<T> {
         this.to = to;
     }
 
-
-//    /**
-//     *
-//     * @return
-//     */
-//    public final List<DSInterceptor> getManagedInterceptors() {
-//        return managedInterceptors;
-//    }
-
     /**
      * Get an instance of a binded object.
      *
@@ -165,24 +152,13 @@ public class Binding<T> {
                 result = provider.get();
             }
         } else if (to.isAnnotationPresent(Singleton.class)) {
-//            result = (T) scannInterceptorsAnnotations(
-//                    injector.getSingleton(to), from, injector);
             result = (T) injector.getSingleton(to);
         } else {
-//            result = (T) scannInterceptorsAnnotations(
-//                    injector.createInstance(to), from, injector);
             result = (T) injector.createInstance(to);
         }
         if (result == null) {
             throw new DSIllegalStateException("Could not get a " + to);
         }
-//        if (ManagedBeanHandler.isManagedBean(result)) {
-//            LifecycleHandler.invokePostConstruct(result);
-//            if (!injector.getRegisteredManagedBeans().contains(result)) {
-//                injector.addManagedBeanInstance(result);
-//            }
-//            ManagedBeanHandler.registerManagedBeanJNDI(result);
-//        }
         // TODO : extension point -> call for lifecycle
         return result;
     }
@@ -301,106 +277,4 @@ public class Binding<T> {
             return new Binding<T>(null, null, c, null, null, null);
         }
     }
-
-//    /**
-//     * Check if the object is interceptable.
-//     * If it is, this method add interceptors chain on it.
-//     *
-//     * @param obj the concerned object.
-//     * @param interfaceClazz the interface.
-//     * @return the object with interceptor handler (if annotations are presents)
-//     */
-//    private Object scannInterceptorsAnnotations(
-//            final Object obj,
-//            final Class interfaceClazz,
-//            InjectorImpl injector) {
-//        if (!ManagedBeanHandler.isManagedBean(obj)) {
-//            return obj;
-//        }
-//        Class clazz = obj.getClass();
-//        Object ret = obj;
-//        if (interfaceClazz.isAnnotationPresent(Interceptors.class)) {
-//            findAroundInvoke(interfaceClazz, injector);
-//        }
-//        if (clazz.isAnnotationPresent(Interceptors.class)) {
-//            findAroundInvoke(clazz, injector);
-//        }
-//        for (Method m : interfaceClazz.getDeclaredMethods()) {
-//            if (m.isAnnotationPresent(Interceptors.class)) {
-//                findAroundInvoke(m, injector);
-//            }
-//        }
-//        for (Method m : clazz.getDeclaredMethods()) {
-//            if (m.isAnnotationPresent(Interceptors.class)) {
-//                findAroundInvoke(m, injector);
-//            }
-//        }
-//        if (getManagedInterceptors().size() > 0) {
-//            getManagedInterceptors().add(new FinalInterceptor());
-//            DSInterceptor[] interceptors =
-//                    new DSInterceptor[getManagedInterceptors().size()];
-//            int i = 0;
-//            for (Object o : getManagedInterceptors()) {
-//                interceptors[i] = (DSInterceptor) o;
-//                i++;
-//            }
-//            ret = Weaver.getInstance().weaveObject(interfaceClazz, obj, interceptors);
-//        }
-//        return ret;
-//    }
-//
-//    /**
-//     * Check for @AroundInvoke on a class.
-//     * @param clazz the checked class.
-//     */
-//    private void findAroundInvoke(final Class clazz, InjectorImpl injector) {
-//        Interceptors inter =
-//                (Interceptors) clazz.getAnnotation(Interceptors.class);
-//        Object interceptorInstance = null;
-//        for (Class c : inter.value()) {
-//            try {
-//                try {
-//                    interceptorInstance = injector.getInstance(c);//TODO : find better way to do it
-//                } catch (Exception e) {
-//                    interceptorInstance = c.newInstance();
-//                }
-//                for (Method m : c.getDeclaredMethods()) {
-//                    if (m.isAnnotationPresent(AroundInvoke.class)) {
-//                        getManagedInterceptors().add(
-//                                new UserInterceptor(m, interceptorInstance));
-//                    }
-//                }
-//            } catch (Exception ex) {
-//                Logger.getLogger(Binding.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
-//    }
-//
-//    /**
-//     * Check for @AroundInvoke on a method.
-//     * @param method the checked method.
-//     */
-//    private void findAroundInvoke(final Method method, InjectorImpl injector) {
-//        Interceptors inter = (Interceptors) method.getAnnotation(Interceptors.class);
-//        Object interceptorInstance = null;
-//        for (Class c : inter.value()) {
-//            try {
-//                try {
-//                    interceptorInstance = injector.getInstance(c);//TODO : find better way to do it
-//                } catch (Exception e) {
-//                    interceptorInstance = c.newInstance();
-//                }
-//                for (Method m : c.getDeclaredMethods()) {
-//                    if (m.isAnnotationPresent(AroundInvoke.class)) {
-//                        UserInterceptor interceptorTmp =
-//                                new UserInterceptor(m, interceptorInstance);
-//                        interceptorTmp.setAnnotedMethod(method);
-//                        getManagedInterceptors().add(interceptorTmp);
-//                    }
-//                }
-//            } catch (Exception ex) {
-//                Logger.getLogger(Binding.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
-//    }
 }
