@@ -26,6 +26,7 @@ import cx.ath.mancel01.dependencyshot.graph.Binder;
 import cx.ath.mancel01.dependencyshot.graph.Binding;
 import cx.ath.mancel01.dependencyshot.injection.handlers.ClassHandler;
 import cx.ath.mancel01.dependencyshot.injection.handlers.ConstructorHandler;
+import cx.ath.mancel01.dependencyshot.spi.PluginsLoader;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
@@ -82,6 +83,7 @@ public class InjectorImpl implements DSInjector {
         binders = new ArrayList();
         singletonContext = new HashMap<Class<?>, Object>();
         instanciatedClasses = new HashMap<Class<?>, Object>();
+        PluginsLoader.getInstance().reload(this);
     }
 
     public InjectorImpl(Stage stage) {
@@ -89,6 +91,7 @@ public class InjectorImpl implements DSInjector {
         singletonContext = new HashMap<Class<?>, Object>();
         instanciatedClasses = new HashMap<Class<?>, Object>();
         this.stage = stage;
+        PluginsLoader.getInstance().reload(this);
     }
 
     /**
@@ -140,8 +143,10 @@ public class InjectorImpl implements DSInjector {
                     bindings.put(binding, binder.getBindings().get(binding));
                 }
             }
-
-            // TODO : extension point -> provided bindings
+            // extension point -> provided bindings
+            for (Binding binding : PluginsLoader.getInstance().getProvidedBindings()) {
+                bindings.put(binding, binding);
+            }
 
             Binding injectorBinding = new Binding(null, null, DSInjector.class,
                     DSInjector.class, new Provider() {

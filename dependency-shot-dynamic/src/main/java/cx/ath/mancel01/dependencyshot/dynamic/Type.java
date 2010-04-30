@@ -1,5 +1,5 @@
 /*
- *  Copyright 2010 mathieuancelin.
+ *  Copyright 2010 mathieu.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,34 +15,12 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.spi;
+package cx.ath.mancel01.dependencyshot.dynamic;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
-public final class ServiceLoader {
-
-    /**
-     * The unique instance of the class.
-     */
-    private static ServiceLoader instance = null;
-
-    /**
-     * The private constructor of the singleton.
-     */
-    private ServiceLoader() {
-
-    }
-
-    /**
-     * The accessor for the unique instance of the singleton.
-     * @return the unique instance of the singleton.
-     */
-    public static synchronized ServiceLoader getInstance() {
-        if (instance == null) {
-            instance = new ServiceLoader();
-        }
-        return instance;
-    }
+public enum Type {
+    IMPL_CHANGED
 }
