@@ -60,10 +60,6 @@ public class InjectorImpl implements DSInjector {
      */
     private Map<Binding<?>, Binding<?>> bindings = null;
     /**
-     * Managed Object instances.
-     */
-    private List<Object> registeredManagedBeans;
-    /**
      * Singleton scoped object singletonContext.
      */
     private Map<Class<?>, Object> singletonContext;
@@ -85,14 +81,12 @@ public class InjectorImpl implements DSInjector {
     public InjectorImpl() {
         binders = new ArrayList();
         singletonContext = new HashMap<Class<?>, Object>();
-        registeredManagedBeans = new ArrayList<Object>();
         instanciatedClasses = new HashMap<Class<?>, Object>();
     }
 
     public InjectorImpl(Stage stage) {
         binders = new ArrayList();
         singletonContext = new HashMap<Class<?>, Object>();
-        registeredManagedBeans = new ArrayList<Object>();
         instanciatedClasses = new HashMap<Class<?>, Object>();
         this.stage = stage;
     }
@@ -115,44 +109,12 @@ public class InjectorImpl implements DSInjector {
         }
     }
 
-    public boolean getBindingsChanged() {
+    public final boolean getBindingsChanged() {
         return bindingsChanged;
     }
 
-    public void setBindingsChanged(boolean bindingsChanged) {
+    public final void setBindingsChanged(boolean bindingsChanged) {
         this.bindingsChanged = bindingsChanged;
-    }
-
-
-    /**
-     *
-     * @param o
-     */
-    public final void addManagedBeanInstance(Object o) {
-        this.registeredManagedBeans.add(o); //TODO : object pointer only
-    }
-
-    /**
-     *
-     */
-    public final void resetManagedBeanInstances() {
-        this.registeredManagedBeans.clear();
-    }
-
-    /**
-     *
-     * @param registeredManagedBeans
-     */
-    public final void setRegisteredManagedBeans(List<Object> registeredManagedBeans) {
-        this.registeredManagedBeans = registeredManagedBeans;
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public final List<Object> getRegisteredManagedBeans() {
-        return registeredManagedBeans;
     }
 
     /**
@@ -384,11 +346,6 @@ public class InjectorImpl implements DSInjector {
     @Override
     protected final void finalize() throws Throwable {
         // TODO : extension point -> call for lifecycle
-//        for (Object o : registeredManagedBeans) {
-//            LifecycleHandler.invokePreDestroy(o);
-//            o = null;
-//        }
-        registeredManagedBeans.clear();
         super.finalize();
     }
 

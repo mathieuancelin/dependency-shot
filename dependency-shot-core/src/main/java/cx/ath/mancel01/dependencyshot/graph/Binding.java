@@ -130,7 +130,7 @@ public class Binding<T> {
      * 
      * @param to
      */
-    public void setTo(Class<? extends T> to) {
+    public final void setTo(Class<? extends T> to) {
         this.to = to;
     }
 
