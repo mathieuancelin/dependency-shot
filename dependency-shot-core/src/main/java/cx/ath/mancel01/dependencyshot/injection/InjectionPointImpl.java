@@ -44,7 +44,6 @@ public class InjectionPointImpl implements InjectionPoint {
         this.injectedClass = injectedClass;
     }
 
-
     @Override
     public final Type getType() {
         return this.type;
@@ -63,5 +62,13 @@ public class InjectionPointImpl implements InjectionPoint {
     @Override
     public final Class getBeanClass() {
         return this.member.getDeclaringClass();
+    }
+
+    public Class getInjectedClass() {
+        return injectedClass;
+    }
+
+    public void setInjectedClass(Class injectedClass) {
+        this.injectedClass = injectedClass;
     }
 }
