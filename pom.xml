@@ -45,15 +45,14 @@
     </build>
     <modules>
     	<module>dependency-shot-api</module>
-        <module>dependency-shot-impl</module>     
-        <module>dependency-shot-web</module>
-        <module>dependency-shot-samples</module>      
+        <module>dependency-shot-aop</module>
         <module>dependency-shot-core</module>
-        <module>dependency-shot-reflect</module>
-        <!--<module>dependency-shot-aop</module>
-        <module>dependency-shot-lifecycle</module>-->
-        <module>dependency-shot-utils</module>
         <module>dependency-shot-dynamic</module>
+        <module>dependency-shot-lifecycle</module>
+        <module>dependency-shot-reflect</module>
+        <module>dependency-shot-samples</module>
+        <module>dependency-shot-utils</module>
+        <module>dependency-shot-web</module>
         <module>tck</module>
   </modules>
     <dependencyManagement>
