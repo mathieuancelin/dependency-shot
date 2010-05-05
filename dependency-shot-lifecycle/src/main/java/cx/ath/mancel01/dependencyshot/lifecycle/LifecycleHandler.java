@@ -17,7 +17,11 @@
 
 package cx.ath.mancel01.dependencyshot.lifecycle;
 
+import cx.ath.mancel01.dependencyshot.spi.ImplementationValidator;
+import cx.ath.mancel01.dependencyshot.spi.InstanceLifecycleHandler;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -28,15 +32,42 @@ import javax.annotation.PreDestroy;
  *
  * @author Mathieu ANCELIN
  */
-public final class LifecycleHandler {
+public final class LifecycleHandler  extends InstanceLifecycleHandler {
 
-    private LifecycleHandler() {}
+    private Collection<Object> managedInstances = new ArrayList<Object>();
+
+    @Override
+    public boolean isInstanceValid(Object instance) {
+        return new LifecycleValidator().isValid(instance);
+    }
+
+    @Override
+    public <T extends ImplementationValidator> T getValidator() {
+        return (T) new LifecycleValidator();
+    }
+
+    @Override
+    public void postConstruct(Object o) {
+        invokePostConstruct(o);
+    }
+
+    @Override
+    public void preDestroy(Object o) {
+        invokePreDestroy(o);
+    }
+
+    @Override
+    public Collection<Object> getManagedInstances() {
+        return managedInstances;
+    }
+
     /**
      * Method that handle PostConstrut annotated methods.
      *
      * @param o manipulated object.
      */
-    public static void invokePostConstruct(Object o) {
+    private void invokePostConstruct(Object o) {
+        managedInstances.add(o);
         Class clazz = o.getClass();
         for (Method method : clazz.getDeclaredMethods()) {
             if (method.isAnnotationPresent(PostConstruct.class)) {
@@ -67,7 +98,7 @@ public final class LifecycleHandler {
      *
      * @param o manipulated object.
      */
-    public static void invokePreDestroy(Object o) {
+    private void invokePreDestroy(Object o) {
         Class clazz = o.getClass();
         for (Method method : clazz.getDeclaredMethods()) {
             if (method.isAnnotationPresent(PreDestroy.class)) {

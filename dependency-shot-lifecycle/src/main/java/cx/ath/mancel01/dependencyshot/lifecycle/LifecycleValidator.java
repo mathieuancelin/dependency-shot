@@ -17,20 +17,17 @@
 
 package cx.ath.mancel01.dependencyshot.lifecycle;
 
-import javax.annotation.ManagedBean;
+import cx.ath.mancel01.dependencyshot.spi.ImplementationValidator;
 
 /**
+ * ManagedBean validator for lifecycle handling
  *
  * @author Mathieu ANCELIN
  */
-public class LifecycleValidator {
+public class LifecycleValidator extends ImplementationValidator {
 
-    private boolean isManagedBean(Object o) {
-        return isManagedBean(o.getClass());
+    @Override
+    public boolean isValid(Object o) {
+        return ManagedBeanHandler.isManagedBean(o);
     }
-
-    private boolean isManagedBean(Class clazz) {
-        return clazz.isAnnotationPresent(ManagedBean.class);
-    }
-    
 }
