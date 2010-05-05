@@ -16,6 +16,7 @@
  */
 package cx.ath.mancel01.dependencyshot.spi;
 
+import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.graph.Binding;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import java.util.ArrayList;
@@ -29,8 +30,6 @@ import java.util.logging.Logger;
  * @author Mathieu ANCELIN
  */
 public final class PluginsLoader {
-    
-    private static final boolean DEBUG = false;
 
     private static Logger logger = Logger.getLogger(PluginsLoader.class.getName());
     /**
@@ -83,7 +82,7 @@ public final class PluginsLoader {
         sb.append("Reflector plugins loaded : ");
         sb.append(reflectors.size());
         sb.append("\n\n==================================\n");
-        if (DEBUG) {
+        if (DependencyShot.DEBUG) {
             logger.info(sb.toString());
         }
     }

@@ -17,6 +17,7 @@
 
 package cx.ath.mancel01.dependencyshot.spi;
 
+import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import java.util.logging.Logger;
 
@@ -25,8 +26,6 @@ import java.util.logging.Logger;
  * @author Mathieu ANCELIN
  */
 public abstract class InstanceHandler {
-
-    private static final boolean DEBUG = false;
 
     private static Logger logger = Logger.getLogger(InstanceHandler.class.getName());
 
@@ -38,12 +37,12 @@ public abstract class InstanceHandler {
 
     public Object handleInstance(Object instance, Class interf, InjectorImpl injector) {
         if (isInstanceValid(instance)) {
-            if (DEBUG) {
+            if (DependencyShot.DEBUG) {
                 logger.info("Instance '" + instance.toString() + "' handled by " + this.getClass().getSimpleName());
             }
             return manipulateInstance(instance, interf, injector);
         } else {
-            if (DEBUG) {
+            if (DependencyShot.DEBUG) {
                 logger.info("Instance '" + instance.toString() + "' can't be handled by " + this.getClass().getSimpleName());
             }
             return instance;

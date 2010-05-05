@@ -16,6 +16,7 @@
  */
 package cx.ath.mancel01.dependencyshot.injection;
 
+import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
@@ -52,8 +53,6 @@ import javax.inject.Qualifier;
  * @author Mathieu ANCELIN
  */
 public class InjectorImpl implements DSInjector {
-
-    private static final boolean DEBUG = false;
 
     private Logger logger = Logger.getLogger(InjectorImpl.class.getSimpleName());
     /**
@@ -179,7 +178,7 @@ public class InjectorImpl implements DSInjector {
         try {
             return getInstance(c, null, null);
         } finally {
-            if (DEBUG) {
+            if (DependencyShot.DEBUG) {
                 logger.info("Time elapsed for injection : " + (System.currentTimeMillis() - start) + " ms.");
             }
         }
