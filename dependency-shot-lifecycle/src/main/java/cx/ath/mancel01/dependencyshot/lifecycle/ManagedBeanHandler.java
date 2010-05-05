@@ -16,6 +16,9 @@
  */
 package cx.ath.mancel01.dependencyshot.lifecycle;
 
+import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
+import cx.ath.mancel01.dependencyshot.spi.ImplementationValidator;
+import cx.ath.mancel01.dependencyshot.spi.InstanceHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
@@ -23,13 +26,11 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 
 /**
+ * Handler for managedbean management.
  *
  * @author Mathieu ANCELIN
  */
-public final class ManagedBeanHandler {
-
-    private ManagedBeanHandler() {
-    }
+public final class ManagedBeanHandler extends InstanceHandler {
 
     public static boolean isManagedBean(Object o) {
         return isManagedBean(o.getClass());
@@ -39,7 +40,23 @@ public final class ManagedBeanHandler {
         return clazz.isAnnotationPresent(ManagedBean.class);
     }
 
-    public static void registerManagedBeanJNDI(Object instance) {
+    @Override
+    public boolean isInstanceValid(Object instance) {
+        return new LifecycleValidator().isValid(instance);
+    }
+
+    @Override
+    public <T extends ImplementationValidator> T getValidator() {
+        return (T) new LifecycleValidator();
+    }
+
+    @Override
+    public Object manipulateInstance(Object instance, Class interf, InjectorImpl injector) {
+        registerManagedBeanJNDI(instance);
+        return instance;
+    }
+
+    private void registerManagedBeanJNDI(Object instance) {
         if (System.getProperty(Context.INITIAL_CONTEXT_FACTORY) != null) {
             try {
                 Class clazz = instance.getClass();
