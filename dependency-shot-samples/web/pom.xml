@@ -73,12 +73,27 @@
         </dependency>
         <dependency>
             <groupId>cx.ath.mancel01</groupId>
-            <artifactId>dependency-shot-impl</artifactId>
+            <artifactId>dependency-shot-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>cx.ath.mancel01</groupId>
-            <artifactId>dependency-shot-api</artifactId>
+            <artifactId>dependency-shot-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cx.ath.mancel01</groupId>
+            <artifactId>dependency-shot-aop</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cx.ath.mancel01</groupId>
+            <artifactId>dependency-shot-lifecycle</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cx.ath.mancel01</groupId>
+            <artifactId>dependency-shot-utils</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
