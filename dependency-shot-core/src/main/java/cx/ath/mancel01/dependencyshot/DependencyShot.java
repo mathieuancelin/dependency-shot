@@ -33,7 +33,7 @@ import java.util.logging.Logger;
  */
 public final class DependencyShot {
 
-    private static final boolean DEBUG = false;
+    public static final boolean DEBUG = false;
     
     private static Logger logger = Logger.getLogger(DependencyShot.class.getSimpleName());
     /**
