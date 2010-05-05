@@ -22,6 +22,7 @@ import cx.ath.mancel01.dependencyshot.api.Stage;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.injection.InjectorBuilder;
 import java.util.Arrays;
+import java.util.logging.Logger;
 
 /**
  * This class is the entry point of the framework.
@@ -31,6 +32,10 @@ import java.util.Arrays;
  * @author Mathieu ANCELIN
  */
 public final class DependencyShot {
+
+    private static final boolean DEBUG = false;
+    
+    private static Logger logger = Logger.getLogger(DependencyShot.class.getSimpleName());
     /**
      * Private constructor cause it's a utility class.
      */
@@ -59,6 +64,13 @@ public final class DependencyShot {
      * @return the injector.
      */
     public static InjectorImpl getInjector(final Iterable<? extends DSBinder> binders, Stage stage) {
-        return InjectorBuilder.makeInjector(binders, stage);
+        long start = System.currentTimeMillis();
+        try {
+            return InjectorBuilder.makeInjector(binders, stage);
+        } finally {
+            if (DEBUG) {
+                logger.info("Time elapsed for bootstrapping : " + (System.currentTimeMillis() - start) + " ms.");
+            }
+        }
     }
 }

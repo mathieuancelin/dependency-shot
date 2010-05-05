@@ -26,6 +26,7 @@ import cx.ath.mancel01.dependencyshot.graph.Binder;
 import cx.ath.mancel01.dependencyshot.graph.Binding;
 import cx.ath.mancel01.dependencyshot.injection.handlers.ClassHandler;
 import cx.ath.mancel01.dependencyshot.injection.handlers.ConstructorHandler;
+import cx.ath.mancel01.dependencyshot.spi.InstanceLifecycleHandler;
 import cx.ath.mancel01.dependencyshot.spi.PluginsLoader;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Member;
@@ -52,6 +53,9 @@ import javax.inject.Qualifier;
  */
 public class InjectorImpl implements DSInjector {
 
+    private static final boolean DEBUG = false;
+
+    private Logger logger = Logger.getLogger(InjectorImpl.class.getSimpleName());
     /**
      * Binders linked to the project.
      */
@@ -83,7 +87,7 @@ public class InjectorImpl implements DSInjector {
         binders = new ArrayList();
         singletonContext = new HashMap<Class<?>, Object>();
         instanciatedClasses = new HashMap<Class<?>, Object>();
-        PluginsLoader.getInstance().reload(this);
+        PluginsLoader.getInstance().loadPlugins(this);
     }
 
     public InjectorImpl(Stage stage) {
@@ -91,7 +95,7 @@ public class InjectorImpl implements DSInjector {
         singletonContext = new HashMap<Class<?>, Object>();
         instanciatedClasses = new HashMap<Class<?>, Object>();
         this.stage = stage;
-        PluginsLoader.getInstance().reload(this);
+        PluginsLoader.getInstance().loadPlugins(this);
     }
 
     /**
@@ -171,7 +175,14 @@ public class InjectorImpl implements DSInjector {
      */
     @Override
     public final <T> T getInstance(Class<T> c) {
-        return getInstance(c, null, null);
+        long start = System.currentTimeMillis();
+        try {
+            return getInstance(c, null, null);
+        } finally {
+            if (DEBUG) {
+                logger.info("Time elapsed for injection : " + (System.currentTimeMillis() - start) + " ms.");
+            }
+        }
     }
 
     /**
@@ -350,7 +361,11 @@ public class InjectorImpl implements DSInjector {
      */
     @Override
     protected final void finalize() throws Throwable {
-        // TODO : extension point -> call for lifecycle
+        for (InstanceLifecycleHandler handler : PluginsLoader.getInstance().getLifecycleHandlers()) {
+            for (Object o : handler.getManagedInstances()) {
+                handler.handlePreDestroy(null);
+            }
+        }
         super.finalize();
     }
 

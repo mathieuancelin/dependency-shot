@@ -21,6 +21,9 @@ import cx.ath.mancel01.dependencyshot.api.Stage;
 import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.injection.util.EnhancedProvider;
+import cx.ath.mancel01.dependencyshot.spi.InstanceHandler;
+import cx.ath.mancel01.dependencyshot.spi.InstanceLifecycleHandler;
+import cx.ath.mancel01.dependencyshot.spi.PluginsLoader;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import javax.inject.Named;
@@ -141,9 +144,7 @@ public class Binding<T> {
      * @return binded object
      */
     public final T getInstance(InjectorImpl injector, InjectionPoint point) {
-        // TODO : extension point : inject interceptors
         // TODO : extension point : inject dynamic
-        // TODO : extension point : creation logic (lifecycle)
         T result = null;
         if (provider != null) {
             if (isImplementingEnhancedProvider(provider.getClass().getGenericInterfaces())) {
@@ -159,7 +160,12 @@ public class Binding<T> {
         if (result == null) {
             throw new DSIllegalStateException("Could not get a " + to);
         }
-        // TODO : extension point -> call for lifecycle
+        for (InstanceLifecycleHandler handler : PluginsLoader.getInstance().getLifecycleHandlers()) {
+            handler.handlePostConstruct(result);
+        }
+        for (InstanceHandler handler : PluginsLoader.getInstance().getInstanceHandlers()) {
+            result = (T) handler.handleInstance(result, from, injector);
+        }
         return result;
     }
 
