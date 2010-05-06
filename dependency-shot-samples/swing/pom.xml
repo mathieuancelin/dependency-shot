@@ -55,6 +55,7 @@
                 </executions>
             </plugin>
         </plugins>
+        <finalName>dependency-shot-samples-swing</finalName>
     </build>
     <dependencies>
         <dependency>

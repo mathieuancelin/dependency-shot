@@ -41,7 +41,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>vdm</finalName>
+        <finalName>dependency-shot-samples-web</finalName>
     </build>
     <dependencies>
         <dependency>

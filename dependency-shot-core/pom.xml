@@ -46,7 +46,7 @@
                 </executions>
             </plugin>
         </plugins>
-        <finalName>dependency-shot</finalName>
+        <finalName>dependency-shot-core</finalName>
     </build>
     <dependencies>
         <dependency>
