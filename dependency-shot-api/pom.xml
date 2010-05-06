@@ -11,6 +11,9 @@
     <artifactId>dependency-shot-api</artifactId>
     <name>Dependency-Shot (JSR-330) :: API</name>
     <url>http://code.google.com/p/dependency-shot/</url>
+    <build>
+        <finalName>dependency-shot-api</finalName>
+    </build>
     <dependencies>
         <dependency>
             <groupId>javax.inject</groupId>

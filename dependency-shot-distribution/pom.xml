@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
@@ -7,9 +7,10 @@
         <groupId>cx.ath.mancel01</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>dependency-shot-samples-services</artifactId>
-    <name>Dependency-Shot (JSR-330) :: Samples :: Services</name>
+    <artifactId>dependency-shot-distribution</artifactId>
+    <name>Dependency-Shot (JSR-330) :: Distribution</name>
     <url>http://code.google.com/p/dependency-shot/</url>
+    <packaging>pom</packaging>
     <licenses>
         <license>
             <name>Apache 2</name>
@@ -18,32 +19,33 @@
             <comments>A business-friendly OSS license</comments>
         </license>
     </licenses>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>generate-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <descriptors>
+                        <descriptor>src/main/assembly/binaries-distribution.xml</descriptor>
+                    </descriptors>
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>dependency-shot-samples-services</finalName>
+        <finalName>dependency-shot</finalName>
     </build>
     <dependencies>
         <dependency>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-bundle</artifactId>
-            <version>1.1.4.1</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
+            <groupId>cx.ath.mancel01</groupId>
+            <artifactId>dependency-shot-aop</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>cx.ath.mancel01</groupId>
@@ -57,22 +59,22 @@
         </dependency>
         <dependency>
             <groupId>cx.ath.mancel01</groupId>
+            <artifactId>dependency-shot-lifecycle</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cx.ath.mancel01</groupId>
             <artifactId>dependency-shot-utils</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>cx.ath.mancel01</groupId>
+            <artifactId>dependency-shot-web</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+        </dependency>
     </dependencies>
-    <repositories>
-        <repository>
-            <id>java.net</id>
-            <name>java.net maven repo</name>
-            <url>http://download.java.net/maven/2/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 </project>
-

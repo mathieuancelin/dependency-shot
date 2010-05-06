@@ -25,15 +25,6 @@
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <descriptors>
-                        <!--<descriptor>distribution/source-distribution.xml</descriptor>
-                        <descriptor>distribution/binaries-distribution.xml</descriptor>-->
-                    </descriptors>
-                </configuration>
-            </plugin>
         </plugins>
         <extensions>
             <extension>
@@ -44,17 +35,18 @@
         </extensions>
     </build>
     <modules>
-    	<module>dependency-shot-api</module>
+        <module>dependency-shot-api</module>
         <module>dependency-shot-aop</module>
         <module>dependency-shot-core</module>
         <module>dependency-shot-dynamic</module>
+        <module>dependency-shot-distribution</module>
         <module>dependency-shot-lifecycle</module>
         <module>dependency-shot-reflect</module>
         <module>dependency-shot-samples</module>
         <module>dependency-shot-utils</module>
         <module>dependency-shot-web</module>
         <module>tck</module>
-  </modules>
+    </modules>
     <dependencyManagement>
         <dependencies>
             <dependency>
