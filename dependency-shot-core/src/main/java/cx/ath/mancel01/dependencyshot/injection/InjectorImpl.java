@@ -108,7 +108,7 @@ public class InjectorImpl implements DSInjector {
                 if (binder.isEmpty()) {
                     Logger.getLogger(InjectorImpl.class.getName()).
                             log(Level.SEVERE, "Ooops, no bindings presents, "
-                            + "can't inject your apps ...");
+                            + "can't inject your app ...");
                     throw new DSException("No bindings loaded");
                 }
             }
