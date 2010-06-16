@@ -21,7 +21,10 @@ import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.api.Stage;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.injection.InjectorBuilder;
+import cx.ath.mancel01.dependencyshot.spi.ConfigurationHandler;
+import cx.ath.mancel01.dependencyshot.spi.PluginsLoader;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.logging.Logger;
 
 /**
@@ -72,5 +75,13 @@ public final class DependencyShot {
                 logger.info("Time elapsed for bootstrapping : " + (System.currentTimeMillis() - start) + " ms.");
             }
         }
+    }
+
+    public static ConfigurationHandler getSpecificConfigurator() {
+        ConfigurationHandler[] type = null;
+        Collection<ConfigurationHandler> handlers = PluginsLoader.getInstance().getConfigurationHandlers();
+        if (handlers.size() > 0)
+            return PluginsLoader.getInstance().getConfigurationHandlers().toArray(type)[0];
+        return null;
     }
 }
