@@ -40,6 +40,7 @@ public final class PluginsLoader {
     private Collection<ImplementationValidator> validators;
     private Collection<InstanceHandler> instanceHandlers;
     private Collection<InstanceLifecycleHandler> lifecycleHandlers;
+    private Collection<ConfigurationHandler> configurationHandlers;
     private Collection<Reflector> reflectors;
 
     /**
@@ -77,6 +78,10 @@ public final class PluginsLoader {
         lifecycleHandlers = loadLifecycleHandlers();
         sb.append("LifecycleHandler plugins loaded : ");
         sb.append(lifecycleHandlers.size());
+        sb.append("\n");
+        configurationHandlers = loadConfigurationHandlers();
+        sb.append("ConfigurationHandler plugins loaded : ");
+        sb.append(configurationHandlers.size());
         sb.append("\n");
         reflectors = loadReflectors();
         sb.append("Reflector plugins loaded : ");
@@ -138,6 +143,18 @@ public final class PluginsLoader {
         return implemvalidators;
     }
 
+    private Collection<ConfigurationHandler> loadConfigurationHandlers() {
+        ArrayList<ConfigurationHandler> configHandlers = new ArrayList<ConfigurationHandler>();
+        ServiceLoader<ConfigurationHandler> configHandlersProvider = ServiceLoader.load(ConfigurationHandler.class);
+        configHandlersProvider.reload();
+        Iterator<ConfigurationHandler> validatorsIterator = configHandlersProvider.iterator();
+        while (validatorsIterator.hasNext()) {
+            ConfigurationHandler validator = validatorsIterator.next();
+            configHandlers.add(validator);
+        }
+        return configHandlers;
+    }
+
     private Collection<Reflector> loadReflectors() {
         ArrayList<Reflector> loadedReflectors = new ArrayList<Reflector>();
         return loadedReflectors;
@@ -161,5 +178,9 @@ public final class PluginsLoader {
 
     public Collection<Reflector> getReflectors() {
         return reflectors;
+    }
+
+    public Collection<ConfigurationHandler> getConfigurationHandlers() {
+        return configurationHandlers;
     }
 }
