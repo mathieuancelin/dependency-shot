@@ -19,6 +19,7 @@ package cx.ath.mancel01.dependencyshot.dsl;
 
 import cx.ath.mancel01.dependencyshot.api.Stage;
 import cx.ath.mancel01.dependencyshot.graph.Binder;
+import cx.ath.mancel01.dependencyshot.injection.InjectorBuilder;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.ConfigurationHandler;
 import java.util.ArrayList;
@@ -34,11 +35,7 @@ public class DslConfigurator extends ConfigurationHandler {
 
     @Override
     public InjectorImpl getInjector(Stage stage, Object... params) {
-        InjectorImpl injector = new InjectorImpl();
         Collection<Binder> binders = new ArrayList<Binder>();
-        if ( stage != null) {
-            injector = new InjectorImpl(stage);
-        }
         if (params.length > 0) {
             for (Object o : params) {
                 try {
@@ -49,11 +46,7 @@ public class DslConfigurator extends ConfigurationHandler {
                 }
             }
         }
-        for (Binder binder : binders) {
-            injector.addBinder(binder);
-        }
-        injector.configureBinders();
-        return injector;
+        return InjectorBuilder.makeInjector(binders, stage);
     }
 
     @Override
