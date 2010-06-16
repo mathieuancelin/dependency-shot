@@ -64,7 +64,10 @@ import javax.inject.Provider;
  * 
  * @author Mathieu ANCELIN
  */
-public abstract class Binder implements DSBinder, FluentBinder, QualifiedBinding, StagingBinding {
+public abstract class Binder implements DSBinder,
+                                        FluentBinder,
+                                        QualifiedBinding,
+                                        StagingBinding {
 
     /**
      * Context for named injections.

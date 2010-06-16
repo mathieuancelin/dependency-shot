@@ -70,6 +70,8 @@ public class Binding<T> {
 
     private Stage stage;
 
+
+    public Binding() {}
     /**
      * Constructor
      * 

@@ -61,8 +61,9 @@ public final class PluginsLoader {
     }
 
     public final void loadPlugins(InjectorImpl injector) {
+        loadFirstPlugins();
         StringBuilder sb = new StringBuilder();
-        sb.append("\n====== Plugins management =======\n\n");
+        sb.append("\n====== Plugins (level 2) management =======\n\n");
         providedBindings = loadProvidedBindings(injector);
         sb.append("Provided bindings loaded : ");
         sb.append(providedBindings.size());
@@ -79,6 +80,14 @@ public final class PluginsLoader {
         sb.append("LifecycleHandler plugins loaded : ");
         sb.append(lifecycleHandlers.size());
         sb.append("\n");
+        if (DependencyShot.DEBUG) {
+            logger.info(sb.toString());
+        }
+    }
+
+    public final void loadFirstPlugins() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n====== Plugins (level 1) management =======\n\n");
         configurationHandlers = loadConfigurationHandlers();
         sb.append("ConfigurationHandler plugins loaded : ");
         sb.append(configurationHandlers.size());

@@ -24,7 +24,7 @@ import cx.ath.mancel01.dependencyshot.injection.InjectorBuilder;
 import cx.ath.mancel01.dependencyshot.spi.ConfigurationHandler;
 import cx.ath.mancel01.dependencyshot.spi.PluginsLoader;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -67,6 +67,7 @@ public final class DependencyShot {
      * @return the injector.
      */
     public static InjectorImpl getInjector(final Iterable<? extends DSBinder> binders, Stage stage) {
+        PluginsLoader.getInstance().loadFirstPlugins();
         long start = System.currentTimeMillis();
         try {
             return InjectorBuilder.makeInjector(binders, stage);
@@ -78,10 +79,10 @@ public final class DependencyShot {
     }
 
     public static ConfigurationHandler getSpecificConfigurator() {
-        ConfigurationHandler[] type = null;
-        Collection<ConfigurationHandler> handlers = PluginsLoader.getInstance().getConfigurationHandlers();
+        PluginsLoader.getInstance().loadFirstPlugins();
+        List<ConfigurationHandler> handlers = (List<ConfigurationHandler>) PluginsLoader.getInstance().getConfigurationHandlers();
         if (handlers.size() > 0)
-            return PluginsLoader.getInstance().getConfigurationHandlers().toArray(type)[0];
+            return handlers.get(0);
         return null;
     }
 }
