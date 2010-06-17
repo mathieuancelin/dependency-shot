@@ -40,7 +40,12 @@ class BindingsDelegate {
                 args[0]()
                 this.binder.bindings.put(binding, binding)
             } else {
-                throw new MissingMethodException(name, this.class, args as Object[])
+                if (name == "bind") {
+                    Binding binding = new Binding(args[0])
+                    this.binder.bindings.put(binding, binding)
+                } else {
+                    throw new MissingMethodException(name, this.class, args as Object[])
+                }
             }
         } else {
             throw new MissingMethodException(name, this.class, args as Object[])
