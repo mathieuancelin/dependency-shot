@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009-2010 Mathieu ANCELIN.
+ *  Copyright 2009 Mathieu ANCELIN.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,29 +15,32 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.dsl;
+package cx.ath.mancel01.dependencyshot.dsl.tck;
 
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
-import org.junit.Test;
-import static junit.framework.Assert.assertTrue;
+import junit.framework.Test;
+import junit.framework.TestSuite;
+import org.atinject.tck.Tck;
+import org.atinject.tck.auto.Car;
+import org.atinject.tck.auto.Convertible;
+import org.atinject.tck.auto.Tire;
+import org.atinject.tck.auto.accessories.SpareTire;
 
 /**
- *
+ * The test suite with TCK tests.
+ * 
  * @author Mathieu ANCELIN
  */
-public class DslTest {
-
-    @Test
-    public void testDsl() {
+public class TCKFluentStaticTest extends TestSuite {
+    
+    public static Test suite() {
         DSInjector injector = DependencyShot.getSpecificConfigurator()
-                .getInjector("src/main/resources/dsl.groovy");
-        BasicClient client = injector.getInstance(BasicClient.class);
-        client.go();
-        assertTrue(!client.getService().isGone());
-        assertTrue(!client.getService3().isGone());
-        assertTrue(!client.getService2().isGone());
-
-
+                .getInjector("src/main/resources/tck.groovy");
+        injector.injectStaticMembers(Convertible.class);
+        injector.injectStaticMembers(Tire.class);
+        injector.injectStaticMembers(SpareTire.class);
+        Car car = injector.getInstance(Car.class);
+        return Tck.testsFor(car, true, true);
     }
 }

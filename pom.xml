@@ -45,7 +45,6 @@
         <module>dependency-shot-samples</module>
         <module>dependency-shot-utils</module>
         <module>dependency-shot-web</module>
-        <module>tck</module>
         <module>dependency-shot-dsl</module>
   </modules>
     <dependencyManagement>

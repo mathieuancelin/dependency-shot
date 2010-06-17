@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009-2010 Mathieu ANCELIN.
+ *  Copyright 2009 Mathieu ANCELIN.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,28 +15,26 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.instanceinjection;
+package cx.ath.mancel01.dependencyshot.dsl.tck;
 
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
-import org.junit.Test;
-import static junit.framework.Assert.assertTrue;
+import junit.framework.Test;
+import junit.framework.TestSuite;
+import org.atinject.tck.Tck;
+import org.atinject.tck.auto.Car;
 
 /**
- *
+ * The test suite with TCK tests.
+ * 
  * @author Mathieu ANCELIN
  */
-public class InstanceInjectionTest {
-
-    @Test
-    public void testInstanceInjection() {
-        DSInjector injector = DependencyShot.getInjector();
-        Module client = new Module();
-        client = injector.injectInstance(client);
-        assertTrue(client.getProperty1().equals("PROPERTY1"));
-        assertTrue(client.getProperty2().equals("PROPERTY2"));
-        assertTrue(client.getProperty3().equals("PROPERTY3"));
-        assertTrue(client.getProperty4().equals(Module.DEFAULT));
-        assertTrue(client.getProperty5().equals("PROPERTY5"));
+public class TCKFluentTest extends TestSuite {
+    
+    public static Test suite() {
+        DSInjector injector = DependencyShot.getSpecificConfigurator()
+                .getInjector("src/main/resources/tck.groovy");
+  		Car car = injector.getInstance(Car.class);
+  		return Tck.testsFor(car, false, true);
     }
 }
