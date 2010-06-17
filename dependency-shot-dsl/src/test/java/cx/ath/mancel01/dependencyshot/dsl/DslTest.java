@@ -37,7 +37,16 @@ public class DslTest {
         assertTrue(!client.getService().isGone());
         assertTrue(!client.getService3().isGone());
         assertTrue(!client.getService2().isGone());
+    }
 
-
+    @Test
+    public void testDsl2() {
+        DSInjector injector = DependencyShot.getSpecificConfigurator()
+                .getInjector("src/main/resources/dsl2.groovy");
+        BasicClient client = injector.getInstance(BasicClient.class);
+        client.go();
+        assertTrue(!client.getService().isGone());
+        assertTrue(!client.getService3().isGone());
+        assertTrue(!client.getService2().isGone());
     }
 }

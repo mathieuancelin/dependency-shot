@@ -21,11 +21,13 @@ import cx.ath.mancel01.dependencyshot.api.Stage;
 import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.injection.util.EnhancedProvider;
+import cx.ath.mancel01.dependencyshot.injection.util.InstanceProvider;
 import cx.ath.mancel01.dependencyshot.spi.InstanceHandler;
 import cx.ath.mancel01.dependencyshot.spi.InstanceLifecycleHandler;
 import cx.ath.mancel01.dependencyshot.spi.PluginsLoader;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.util.Map;
 import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Qualifier;
@@ -97,6 +99,36 @@ public class Binding<T> {
         this.name = name;
         this.provider = provider;
         this.stage = stage;
+    }
+
+    public Binding(Map params) {
+        Class qualif = null;
+        if (params.containsKey("annotedWith")) {
+            qualif = (Class<? extends Annotation>) params.get("annotedWith");
+        }
+        if (qualif != null && !qualif.isAnnotationPresent(Qualifier.class)) {
+            throw new IllegalArgumentException();
+        } else {
+            this.qualifier = qualif;
+        }
+        if (params.containsKey("from")) {
+            this.from = (Class<T>) params.get("from");
+        }
+        if (params.containsKey("to")) {
+            this.to = (Class<? extends T>) params.get("to");
+        }
+        if (params.containsKey("named")) {
+            this.name = (String) params.get("named");
+        }
+        if (params.containsKey("providedBy")) {
+            this.provider = (Provider<T>) params.get("providedBy");
+        }
+        if (params.containsKey("onStage")) {
+            this.stage = (Stage) params.get("onStage");
+        }
+        if (params.containsKey("toInstance")) {
+            this.provider = new InstanceProvider(params.get("toInstance"));
+        }
     }
 
     /**
