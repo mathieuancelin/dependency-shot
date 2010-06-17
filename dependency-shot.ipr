@@ -185,8 +185,17 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/dependency-shot.iml" filepath="$PROJECT_DIR$/dependency-shot.iml" />
       <module fileurl="file://$PROJECT_DIR$/dependency-shot-api/dependency-shot-api.iml" filepath="$PROJECT_DIR$/dependency-shot-api/dependency-shot-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dependency-shot-core/dependency-shot-core.iml" filepath="$PROJECT_DIR$/dependency-shot-core/dependency-shot-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dependency-shot-dynamic/dependency-shot-dynamic.iml" filepath="$PROJECT_DIR$/dependency-shot-dynamic/dependency-shot-dynamic.iml" />
       <module fileurl="file://$PROJECT_DIR$/dependency-shot-impl/dependency-shot-impl.iml" filepath="$PROJECT_DIR$/dependency-shot-impl/dependency-shot-impl.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dependency-shot-reflect/dependency-shot-reflect.iml" filepath="$PROJECT_DIR$/dependency-shot-reflect/dependency-shot-reflect.iml" />
       <module fileurl="file://$PROJECT_DIR$/dependency-shot-samples/dependency-shot-samples.iml" filepath="$PROJECT_DIR$/dependency-shot-samples/dependency-shot-samples.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dependency-shot-samples/dependency-shot-samples.iml" filepath="$PROJECT_DIR$/dependency-shot-samples/dependency-shot-samples.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dependency-shot-samples/services/dependency-shot-samples-services.iml" filepath="$PROJECT_DIR$/dependency-shot-samples/services/dependency-shot-samples-services.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dependency-shot-samples/swing/dependency-shot-samples-swing.iml" filepath="$PROJECT_DIR$/dependency-shot-samples/swing/dependency-shot-samples-swing.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dependency-shot-samples/web/dependency-shot-samples-web.iml" filepath="$PROJECT_DIR$/dependency-shot-samples/web/dependency-shot-samples-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dependency-shot-utils/dependency-shot-utils.iml" filepath="$PROJECT_DIR$/dependency-shot-utils/dependency-shot-utils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dependency-shot-web/dependency-shot-web.iml" filepath="$PROJECT_DIR$/dependency-shot-web/dependency-shot-web.iml" />
       <module fileurl="file://$PROJECT_DIR$/tck/tck.iml" filepath="$PROJECT_DIR$/tck/tck.iml" />
     </modules>
   </component>
@@ -291,6 +300,50 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/javax/ws/rs/jsr311-api/1.1.1/jsr311-api-1.1.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javax.servlet:servlet-api:2.5">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/servlet-api/2.5/servlet-api-2.5-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/servlet-api/2.5/servlet-api-2.5-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javax.servlet.jsp:jsp-api:2.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/jsp/jsp-api/2.1/jsp-api-2.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/jsp/jsp-api/2.1/jsp-api-2.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/jsp/jsp-api/2.1/jsp-api-2.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javax.servlet:jstl:1.1.2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/jstl/1.1.2/jstl-1.1.2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/jstl/1.1.2/jstl-1.1.2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/jstl/1.1.2/jstl-1.1.2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javassist:javassist:3.8.0.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/javassist/javassist/3.8.0.GA/javassist-3.8.0.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javassist/javassist/3.8.0.GA/javassist-3.8.0.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javassist/javassist/3.8.0.GA/javassist-3.8.0.GA-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: net.java.dev.appframework:appframework:1.03">

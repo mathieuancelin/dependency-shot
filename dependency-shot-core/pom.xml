@@ -61,7 +61,7 @@
         </dependency>
         <dependency>
             <groupId>javax.inject</groupId>
-            <artifactId>tck</artifactId>
+            <artifactId>javax.inject-tck</artifactId>
             <version>1</version>
             <scope>test</scope>
         </dependency>

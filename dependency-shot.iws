@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager" verified="true">
     <list default="true" readonly="true" id="3ad79845-8ae5-400d-8fcf-15dfe52e08e2" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dependency-shot-api/src/main/java/cx/ath/mancel01/dependencyshot/api/Stages.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dependency-shot.ipr" afterPath="$PROJECT_DIR$/dependency-shot.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dependency-shot.iws" afterPath="$PROJECT_DIR$/dependency-shot.iws" />
     </list>
     <ignored path="dependency-shot.iws" />
@@ -80,7 +80,7 @@
       <file leaf-file-name="InjectorImpl.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dependency-shot-impl/src/main/java/cx/ath/mancel01/dependencyshot/injection/InjectorImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="138" column="20" selection-start="4347" selection-end="4347" vertical-scroll-proportion="0.0">
+            <state line="138" column="20" selection-start="4595" selection-end="4595" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -95,64 +95,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Module.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Module.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dependency-shot-impl/src/test/java/cx/ath/mancel01/dependencyshot/test/logger/Module.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="31" column="19" selection-start="933" selection-end="933" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RandomService.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dependency-shot-samples/src/main/java/cx/ath/mancel01/dependencyshot/samples/vdm/service/RandomService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="26" column="17" selection-start="856" selection-end="856" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RandomServiceImpl.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dependency-shot-samples/src/main/java/cx/ath/mancel01/dependencyshot/samples/vdm/service/impl/RandomServiceImpl.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="45" column="16" selection-start="1517" selection-end="1517" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="VdmController.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dependency-shot-samples/src/main/java/cx/ath/mancel01/dependencyshot/samples/vdm/gui/impl/VdmController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="53" column="18" selection-start="1603" selection-end="1603" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="VdmView.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dependency-shot-samples/src/main/java/cx/ath/mancel01/dependencyshot/samples/vdm/gui/impl/VdmView.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="36" selection-start="1199" selection-end="1199" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Stages.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/dependency-shot-api/src/main/java/cx/ath/mancel01/dependencyshot/api/Stages.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="0" selection-start="126" selection-end="126" vertical-scroll-proportion="0.15421687">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="InjectLogger.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dependency-shot-api/src/main/java/cx/ath/mancel01/dependencyshot/api/annotations/InjectLogger.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="32" column="30" selection-start="1061" selection-end="1073" vertical-scroll-proportion="0.0">
+            <state line="42" column="0" selection-start="1119" selection-end="1119" vertical-scroll-proportion="0.43345112">
               <folding />
             </state>
           </provider>
@@ -224,7 +170,7 @@
     <option name="STATE" value="0" />
   </component>
   <component name="ProjectView">
-    <navigator currentView="PackagesPane" proportions="" version="1" splitterProportion="0.5">
+    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -245,78 +191,20 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
+        </subPane>
+      </pane>
+      <pane id="ProjectPane">
+        <subPane>
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="dependency-shot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dependency-shot-api" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dependency-shot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dependency-shot-api" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="javax" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="interceptor" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dependency-shot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dependency-shot-api" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="javax" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="annotation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dependency-shot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dependency-shot-api" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cx.ath.mancel01.dependencyshot.api" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
       <pane id="Scope">
         <subPane subId="Problems" />
-        <subPane subId="Production">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
         <subPane subId="Tests">
           <PATH>
             <PATH_ELEMENT USER_OBJECT="Root">
@@ -325,9 +213,14 @@
             </PATH_ELEMENT>
           </PATH>
         </subPane>
-      </pane>
-      <pane id="ProjectPane">
-        <subPane />
+        <subPane subId="Production">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
       </pane>
     </panes>
   </component>
@@ -344,9 +237,9 @@
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
-    <property name="options.splitter.details.proportions" value="0.3026316" />
     <property name="dynamic.classpath" value="false" />
+    <property name="options.splitter.details.proportions" value="0.3026316" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -637,7 +530,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39935064" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.32954547" sideWeight="0.31447586" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19711539" sideWeight="0.12200684" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22970085" sideWeight="0.0" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3990878" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.8700114" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -715,6 +608,11 @@
         <state line="56" column="31" selection-start="2258" selection-end="2258" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/dependency-shot-api/src/main/java/cx/ath/mancel01/dependencyshot/api/annotations/InjectLogger.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="32" column="30" selection-start="1061" selection-end="1073" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/dependency-shot-api/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="18" column="18" selection-start="815" selection-end="815" vertical-scroll-proportion="0.0" />
@@ -722,7 +620,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/dependency-shot-impl/src/main/java/cx/ath/mancel01/dependencyshot/injection/InjectorImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="138" column="20" selection-start="4347" selection-end="4347" vertical-scroll-proportion="0.0" />
+        <state line="138" column="20" selection-start="4595" selection-end="4595" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/dependency-shot-impl/src/test/java/cx/ath/mancel01/dependencyshot/test/logger/LoggerTest.java">
@@ -732,39 +632,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/dependency-shot-impl/src/test/java/cx/ath/mancel01/dependencyshot/test/logger/Module.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="19" selection-start="933" selection-end="933" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dependency-shot-samples/src/main/java/cx/ath/mancel01/dependencyshot/samples/vdm/service/RandomService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="17" selection-start="856" selection-end="856" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dependency-shot-samples/src/main/java/cx/ath/mancel01/dependencyshot/samples/vdm/service/impl/RandomServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="45" column="16" selection-start="1517" selection-end="1517" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dependency-shot-samples/src/main/java/cx/ath/mancel01/dependencyshot/samples/vdm/gui/impl/VdmController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="18" selection-start="1603" selection-end="1603" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dependency-shot-api/src/main/java/cx/ath/mancel01/dependencyshot/api/annotations/InjectLogger.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="30" selection-start="1061" selection-end="1073" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dependency-shot-samples/src/main/java/cx/ath/mancel01/dependencyshot/samples/vdm/gui/impl/VdmView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="36" selection-start="1199" selection-end="1199" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dependency-shot-api/src/main/java/cx/ath/mancel01/dependencyshot/api/Stages.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="0" selection-start="126" selection-end="126" vertical-scroll-proportion="0.15421687">
+        <state line="42" column="0" selection-start="1119" selection-end="1119" vertical-scroll-proportion="0.43345112">
           <folding />
         </state>
       </provider>

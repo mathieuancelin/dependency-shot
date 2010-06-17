@@ -1,12 +1,12 @@
 /*
  *  Copyright 2009-2010 Mathieu ANCELIN.
- * 
+ *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- * 
+ *
  *       http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,15 +14,21 @@
  *  limitations under the License.
  *  under the License.
  */
+package cx.ath.mancel01.dependencyshot.dsl.tck;
 
-package cx.ath.mancel01.dependencyshot.test.instance;
+import cx.ath.mancel01.dependencyshot.DependencyShot;
+import javax.inject.Provider;
+import org.atinject.tck.auto.Tire;
+import org.atinject.tck.auto.accessories.SpareTire;
 
-import javax.inject.Qualifier;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+/**
+ *
+ * @author Mathieu ANCELIN
+ */
+public class TireProvider implements Provider{
 
-@Retention(RetentionPolicy.RUNTIME)
-@Qualifier
-public @interface MyModule {
-
+    @Override
+    public Tire get() {
+        return (Tire) DependencyShot.getInjector().getInstance(SpareTire.class);
+    }
 }
