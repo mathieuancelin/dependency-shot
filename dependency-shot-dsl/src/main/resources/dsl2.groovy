@@ -3,6 +3,6 @@ import cx.ath.mancel01.dependencyshot.dsl.BasicServiceImpl
 
 bindings {
 
-    bind from: BasicService.class, to: BasicServiceImpl.class
+    bind BasicService.class, to: BasicServiceImpl.class
     
 }
