@@ -42,7 +42,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>dependency-shot-aop</finalName>
+        <finalName>dependency-shot-dsl</finalName>
     </build>
     <dependencies>
         <dependency>
