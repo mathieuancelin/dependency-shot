@@ -16,6 +16,7 @@
  */
 package cx.ath.mancel01.dependencyshot.graph;
 
+import cx.ath.mancel01.dependencyshot.api.DslConstants;
 import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
 import cx.ath.mancel01.dependencyshot.api.Stage;
 import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
@@ -103,63 +104,61 @@ public class Binding<T> {
 
     public Binding(Map params) {
         Class qualif = null;
-        if (params.containsKey("annotedWith")) {
-            qualif = (Class<? extends Annotation>) params.get("annotedWith");
+        if (params.containsKey(DslConstants.ANNOTATED_WITH)) {
+            qualif = (Class<? extends Annotation>) params.get(DslConstants.ANNOTATED_WITH);
         }
         if (qualif != null && !qualif.isAnnotationPresent(Qualifier.class)) {
             throw new IllegalArgumentException();
         } else {
             this.qualifier = qualif;
         }
-        if (params.containsKey("from")) {
-            this.from = (Class<T>) params.get("from");
+        if (params.containsKey(DslConstants.FROM)) {
+            this.from = (Class<T>) params.get(DslConstants.FROM);
         } else {
             throw new DSIllegalStateException("A binding must contains a 'from' class.");
         }
-        if (params.containsKey("to")) {
-            this.to = (Class<? extends T>) params.get("to");
+        if (params.containsKey(DslConstants.TO)) {
+            this.to = (Class<? extends T>) params.get(DslConstants.TO);
         }
-        if (params.containsKey("named")) {
-            this.name = (String) params.get("named");
+        if (params.containsKey(DslConstants.NAMED)) {
+            this.name = (String) params.get(DslConstants.NAMED);
         }
-        if (params.containsKey("providedBy")) {
-            this.provider = (Provider<T>) params.get("providedBy");
+        if (params.containsKey(DslConstants.PROVIDED_BY)) {
+            this.provider = (Provider<T>) params.get(DslConstants.PROVIDED_BY);
         }
-        if (params.containsKey("onStage")) {
-            this.stage = (Stage) params.get("onStage");
+        if (params.containsKey(DslConstants.ON_STAGE)) {
+            this.stage = (Stage) params.get(DslConstants.ON_STAGE);
         }
-        if (params.containsKey("toInstance")) {
-            this.provider = new InstanceProvider(params.get("toInstance"));
+        if (params.containsKey(DslConstants.TO_INSTANCE)) {
+            this.provider = new InstanceProvider(params.get(DslConstants.TO_INSTANCE));
         }
     }
 
     public Binding(Class<T> from, Map params) {
         Class qualif = null;
-        if (params.containsKey("annotedWith")) {
-            qualif = (Class<? extends Annotation>) params.get("annotedWith");
+        if (params.containsKey(DslConstants.ANNOTATED_WITH)) {
+            qualif = (Class<? extends Annotation>) params.get(DslConstants.ANNOTATED_WITH);
         }
         if (qualif != null && !qualif.isAnnotationPresent(Qualifier.class)) {
             throw new IllegalArgumentException();
         } else {
             this.qualifier = qualif;
         }
-        
         this.from = from;
-        
-        if (params.containsKey("to")) {
-            this.to = (Class<? extends T>) params.get("to");
+        if (params.containsKey(DslConstants.TO)) {
+            this.to = (Class<? extends T>) params.get(DslConstants.TO);
         }
-        if (params.containsKey("named")) {
-            this.name = (String) params.get("named");
+        if (params.containsKey(DslConstants.NAMED)) {
+            this.name = (String) params.get(DslConstants.NAMED);
         }
-        if (params.containsKey("providedBy")) {
-            this.provider = (Provider<T>) params.get("providedBy");
+        if (params.containsKey(DslConstants.PROVIDED_BY)) {
+            this.provider = (Provider<T>) params.get(DslConstants.PROVIDED_BY);
         }
-        if (params.containsKey("onStage")) {
-            this.stage = (Stage) params.get("onStage");
+        if (params.containsKey(DslConstants.ON_STAGE)) {
+            this.stage = (Stage) params.get(DslConstants.ON_STAGE);
         }
-        if (params.containsKey("toInstance")) {
-            this.provider = new InstanceProvider(params.get("toInstance"));
+        if (params.containsKey(DslConstants.TO_INSTANCE)) {
+            this.provider = new InstanceProvider(params.get(DslConstants.TO_INSTANCE));
         }
     }
 

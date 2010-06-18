@@ -19,6 +19,7 @@ package cx.ath.mancel01.dependencyshot.dsl.delegate
 
 import cx.ath.mancel01.dependencyshot.dsl.DslBinder
 import cx.ath.mancel01.dependencyshot.graph.Binding
+import cx.ath.mancel01.dependencyshot.api.DslConstants
 /**
  *
  * @author Mathieu ANCELIN
@@ -33,14 +34,14 @@ class BindingsDelegate {
 
     def methodMissing(String name, Object args) {
         if (args.length <= 2) {
-            if (args[0] instanceof Closure) {
+            if (args[0] instanceof Closure && name == DslConstants.BINDING) {
                 Binding binding = new Binding()
                 args[0].delegate = new BindingDelegate(binding, binder)
                 args[0].resolveStrategy = Closure.DELEGATE_FIRST
                 args[0]()
                 this.binder.bindings.put(binding, binding)
             } else {
-                if (name == "bind") {
+                if (name == DslConstants.BIND) {
                     Binding binding = null
                     if (args.length == 2) {
                         binding = new Binding(args[1], args[0])
