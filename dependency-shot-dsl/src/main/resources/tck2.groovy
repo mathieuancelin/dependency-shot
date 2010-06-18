@@ -13,7 +13,7 @@ bindings {
     
     bind Car.class, to: Convertible.class
 
-    bind Seat.class, to: DriversSeat.class, annotedWith: Drivers.class
+    bind Seat.class, annotedWith: Drivers.class, to: DriversSeat.class
     
     bind Engine.class, to: V8Engine.class
     
