@@ -17,7 +17,7 @@ bindings {
     binding {
         from = Seat.class
         to = DriversSeat.class
-        qualifier = Drivers.class
+        annotedWith = Drivers.class
     }
     binding {
         from = Engine.class
@@ -25,7 +25,7 @@ bindings {
     }
     binding {
         from = Tire.class
-        name = "spare"
-        provider = new TireProvider()
+        named = "spare"
+        providedBy = new TireProvider()
     }
 }

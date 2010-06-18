@@ -19,6 +19,9 @@ package cx.ath.mancel01.dependencyshot.dsl.delegate
 
 import cx.ath.mancel01.dependencyshot.graph.Binding
 import cx.ath.mancel01.dependencyshot.dsl.DslBinder
+import cx.ath.mancel01.dependencyshot.api.Stage
+import cx.ath.mancel01.dependencyshot.injection.util.InstanceProvider
+import javax.inject.Provider
 
 /**
  *
@@ -43,19 +46,27 @@ class BindingDelegate {
         this.binding.to = to
     }
 
-    void setQualifier(Class qualifier) {
+    void setAnnotedWith(Class qualifier) {
         this.binding.qualifier = qualifier
     }
 
-    void setProvider(Object provider) {
+    void setProvidedBy(Provider provider) {
         this.binding.provider = provider
     }
 
-    void setName(String name) {
+    void setNamed(String name) {
         this.binding.name = name
     }
 
-    void methodMissing(String name, Object args) {
+    void setOnStage(Stage stage) {
+        this.binding.stage = stage
+    }
+
+    void setToInstance(Object instance) {
+        this.binding.provider = new InstanceProvider(instance)
+    }
+
+    def methodMissing(String name, Object args) {
         println "Method is missing : " + name
     }
 
