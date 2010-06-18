@@ -113,7 +113,39 @@ public class Binding<T> {
         }
         if (params.containsKey("from")) {
             this.from = (Class<T>) params.get("from");
+        } else {
+            throw new DSIllegalStateException("A binding must contains a 'from' class.");
         }
+        if (params.containsKey("to")) {
+            this.to = (Class<? extends T>) params.get("to");
+        }
+        if (params.containsKey("named")) {
+            this.name = (String) params.get("named");
+        }
+        if (params.containsKey("providedBy")) {
+            this.provider = (Provider<T>) params.get("providedBy");
+        }
+        if (params.containsKey("onStage")) {
+            this.stage = (Stage) params.get("onStage");
+        }
+        if (params.containsKey("toInstance")) {
+            this.provider = new InstanceProvider(params.get("toInstance"));
+        }
+    }
+
+    public Binding(Class<T> from, Map params) {
+        Class qualif = null;
+        if (params.containsKey("annotedWith")) {
+            qualif = (Class<? extends Annotation>) params.get("annotedWith");
+        }
+        if (qualif != null && !qualif.isAnnotationPresent(Qualifier.class)) {
+            throw new IllegalArgumentException();
+        } else {
+            this.qualifier = qualif;
+        }
+        
+        this.from = from;
+        
         if (params.containsKey("to")) {
             this.to = (Class<? extends T>) params.get("to");
         }

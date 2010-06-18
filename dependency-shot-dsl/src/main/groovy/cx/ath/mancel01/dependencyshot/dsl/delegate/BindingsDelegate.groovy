@@ -32,7 +32,7 @@ class BindingsDelegate {
     }
 
     def methodMissing(String name, Object args) {
-        if (args.length == 1) {
+        if (args.length <= 2) {
             if (args[0] instanceof Closure) {
                 Binding binding = new Binding()
                 args[0].delegate = new BindingDelegate(binding, binder)
@@ -41,7 +41,11 @@ class BindingsDelegate {
                 this.binder.bindings.put(binding, binding)
             } else {
                 if (name == "bind") {
-                    Binding binding = new Binding(args[0])
+                    Binding binding = null
+                    if (args.length == 2) {
+                        binding = new Binding(args[1], args[0])
+                    } else
+                        binding = new Binding(args[0])
                     this.binder.bindings.put(binding, binding)
                 } else {
                     throw new MissingMethodException(name, this.class, args as Object[])
