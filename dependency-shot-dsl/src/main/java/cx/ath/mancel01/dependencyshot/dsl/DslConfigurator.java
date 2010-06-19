@@ -33,6 +33,9 @@ import java.util.logging.Logger;
  */
 public class DslConfigurator extends ConfigurationHandler {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InjectorImpl getInjector(Stage stage, Object... params) {
         Collection<Binder> binders = new ArrayList<Binder>();
@@ -49,8 +52,19 @@ public class DslConfigurator extends ConfigurationHandler {
         return InjectorBuilder.makeInjector(binders, stage);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Object getDelegate() {
-        return this;
+        return this; 
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isAutoEnabled() {
+        return false;
     }
 }

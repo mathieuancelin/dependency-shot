@@ -67,22 +67,43 @@ public final class DependencyShot {
      * @return the injector.
      */
     public static InjectorImpl getInjector(final Iterable<? extends DSBinder> binders, Stage stage) {
-        PluginsLoader.getInstance().loadFirstPlugins();
         long start = System.currentTimeMillis();
+        PluginsLoader.getInstance().loadFirstPlugins();
+        List<ConfigurationHandler> handlers = (List<ConfigurationHandler>)
+                PluginsLoader.getInstance().getConfigurationHandlers();
         try {
+            if (handlers.size() > 0 && handlers.get(0).isAutoEnabled()) {
+                return handlers.get(0).getInjector(stage);
+            }
             return InjectorBuilder.makeInjector(binders, stage);
         } finally {
+            if (handlers.size() > 1) {
+                logger.warning("There are more than one configurator plugin in the classpath.");
+                logger.warning("The plugin : "
+                        + handlers.get(0).getClass().getSimpleName()
+                        + " is used for this session.");
+            }
             if (DEBUG) {
-                logger.info("Time elapsed for bootstrapping : " + (System.currentTimeMillis() - start) + " ms.");
+                logger.info("Time elapsed for bootstrapping : "
+                        + (System.currentTimeMillis() - start)
+                        + " ms.");
             }
         }
     }
 
     public static ConfigurationHandler getSpecificConfigurator() {
         PluginsLoader.getInstance().loadFirstPlugins();
-        List<ConfigurationHandler> handlers = (List<ConfigurationHandler>) PluginsLoader.getInstance().getConfigurationHandlers();
-        if (handlers.size() > 0)
+        List<ConfigurationHandler> handlers = (List<ConfigurationHandler>)
+                PluginsLoader.getInstance().getConfigurationHandlers();
+        if (handlers.size() > 1) {
+            logger.warning("There are more than one configurator plugin in the classpath.");
+            logger.warning("The plugin : "
+                    + handlers.get(0).getClass().getSimpleName()
+                    + " is used for this session.");
+        }
+        if (handlers.size() > 0) {
             return handlers.get(0);
+        }
         return null;
     }
 }
