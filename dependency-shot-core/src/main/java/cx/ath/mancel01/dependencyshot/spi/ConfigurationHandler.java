@@ -25,7 +25,6 @@ import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
  * @author Mathieu ANCELIN
  */
 public abstract class ConfigurationHandler {
-
     /**
      * Get an injector from configuration binders.
      * @param binders configuration binders.
@@ -42,5 +41,7 @@ public abstract class ConfigurationHandler {
     public abstract InjectorImpl getInjector(Stage stage, final Object... params);
 
     public abstract Object getDelegate();
+
+    public abstract boolean isAutoEnabled();
     
 }

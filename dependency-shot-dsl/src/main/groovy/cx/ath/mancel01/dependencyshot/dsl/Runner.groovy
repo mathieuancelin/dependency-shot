@@ -49,6 +49,6 @@ class Runner implements DslRunner {
             }
         })
         dslScript.run()
-        return binder;
+        return binder
     }
 }
