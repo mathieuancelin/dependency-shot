@@ -25,5 +25,8 @@ import javax.inject.Provider;
  * @author Mathieu ANCELIN
  */
 public interface EnhancedProvider<T> extends Provider {
+    /**
+     * @return the provided instance.
+     */
     T enhancedGet(InjectionPoint p);
 }

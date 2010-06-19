@@ -18,6 +18,8 @@
 package cx.ath.mancel01.dependencyshot.event;
 
 /**
+ * A manager for internal event.
+ * The generated events will be broadcasted to SPI extension points.
  *
  * @author Mathieu ANCELIN
  */

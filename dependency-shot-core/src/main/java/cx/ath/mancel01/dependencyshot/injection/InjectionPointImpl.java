@@ -24,50 +24,81 @@ import java.lang.reflect.Type;
 import java.util.Set;
 
 /**
+ * Data for an injection point.
  *
  * @author Mathieu ANCELIN
  */
 public class InjectionPointImpl implements InjectionPoint {
-
+    /**
+     * The injected type.
+     */
     private Type type;
-
+    /**
+     * Present annotations.
+     */
     private Set<Annotation> annotations;
-
+    /**
+     * The injected member.
+     */
     private Member member;
-
+    /**
+     * The injected class.
+     */
     private Class injectedClass;
-
-    public InjectionPointImpl(Type type, Set<Annotation> annotations, Member member, Class injectedClass) {
+    /**
+     * Constructor.
+     * 
+     * @param type
+     * @param annotations
+     * @param member
+     * @param injectedClass
+     */
+    public InjectionPointImpl(Type type,
+            Set<Annotation> annotations,
+            Member member,
+            Class injectedClass) {
         this.type = type;
         this.annotations = annotations;
         this.member = member;
         this.injectedClass = injectedClass;
     }
-
+    /**
+     * @return the injected type.
+     */
     @Override
     public final Type getType() {
         return this.type;
     }
-
+    /**
+     * @return annotations presents.
+     */
     @Override
     public final Set<Annotation> getAnnotations() {
         return this.annotations;
     }
-
+    /**
+     * @return the injected member.
+     */
     @Override
     public final Member getMember() {
         return this.member;
     }
-
+    /**
+     * @return the type of the bean.
+     */
     @Override
     public final Class getBeanClass() {
         return this.member.getDeclaringClass();
     }
-
+    /**
+     * @return injected class.
+     */
     public final Class getInjectedClass() {
         return injectedClass;
     }
-
+    /**
+     * @param injectedClass new value for injected class.
+     */
     public final void setInjectedClass(Class injectedClass) {
         this.injectedClass = injectedClass;
     }

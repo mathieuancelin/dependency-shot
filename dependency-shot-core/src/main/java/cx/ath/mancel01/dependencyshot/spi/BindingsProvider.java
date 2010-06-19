@@ -22,11 +22,16 @@ import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import java.util.Collection;
 
 /**
+ * A class that provides bindings.
  *
  * @author Mathieu ANCELIN
  */
 public abstract class BindingsProvider {
 
+    /**
+     * @param injector the actual injector.
+     * @return a collection of bindings.
+     */
     public abstract Collection<Binding> getProvidedBindings(InjectorImpl injector);
 
 }

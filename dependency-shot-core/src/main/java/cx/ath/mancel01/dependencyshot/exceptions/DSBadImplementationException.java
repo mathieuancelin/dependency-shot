@@ -19,21 +19,32 @@ package cx.ath.mancel01.dependencyshot.exceptions;
 
 /**
  * A common exception of dependency-shot.
+ * 
  * @author Mathieu ANCELIN
  */
 public class DSBadImplementationException extends RuntimeException {
     /**
      * Constructor.
+     *
      * @param message the error message.
      */
     public DSBadImplementationException(final String message) {
         super(message);
     }
-
+    /**
+     * Constructor.
+     *
+     * @param message the error message.
+     */
     public DSBadImplementationException(final Exception message) {
         super(message);
     }
-
+    /**
+     * Constructor.
+     *
+     * @param message the error message.
+     * @param ex the exceptions to launch.
+     */
     public DSBadImplementationException(final String message, final Exception ex) {
         super(message, ex);
     }

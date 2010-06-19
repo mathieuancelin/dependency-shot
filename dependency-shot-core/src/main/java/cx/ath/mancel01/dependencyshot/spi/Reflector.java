@@ -18,7 +18,8 @@
 package cx.ath.mancel01.dependencyshot.spi;
 
 /**
- *
+ * Extension point for reflection work.
+ * 
  * @author Mathieu ANCELIN
  */
 public abstract class Reflector {

@@ -42,11 +42,11 @@ import javax.inject.Singleton;
 public class Binding<T> {
 
     /**
-     *
+     * hash value.
      */
     private static final int HASH = 7;
     /**
-     *
+     * hash key value.
      */
     private static final int HASH_KEY = 79;
     /**
@@ -70,10 +70,15 @@ public class Binding<T> {
      * Name of a named binding i.e with @Named("something")
      */
     private String name;
-
+    /**
+     * Stage of the binding.
+     */
     private Stage stage;
 
-
+    /**
+     * New public empty constructor to help the job for
+     * spi configurator.
+     */
     public Binding() {}
     /**
      * Constructor
@@ -102,6 +107,11 @@ public class Binding<T> {
         this.stage = stage;
     }
 
+    /**
+     * Constructor for groovy configurator.
+     *
+     * @param params of the bindings.
+     */
     public Binding(Map params) {
         Class qualif = null;
         if (params.containsKey(DslConstants.ANNOTATED_WITH)) {
@@ -134,6 +144,12 @@ public class Binding<T> {
         }
     }
 
+    /**
+     * Constructor for groovy configurator.
+     *
+     * @param from the binded class of a binding.
+     * @param params of the bindings.
+     */
     public Binding(Class<T> from, Map params) {
         Class qualif = null;
         if (params.containsKey(DslConstants.ANNOTATED_WITH)) {
@@ -163,40 +179,35 @@ public class Binding<T> {
     }
 
     /**
-     *
-     * @return
+     * @return the class of the binding.
      */
     public final Class<T> getFrom() {
         return from;
     }
 
     /**
-     *
-     * @return
+     * @return the qualifier of the binding.
      */
     public final Class<? extends Annotation> getQualifier() {
         return qualifier;
     }
 
     /**
-     *
-     * @return
+     * @return the target of the binding.
      */
     public final Class<? extends T> getTo() {
         return to;
     }
 
     /**
-     * 
-     * @return
+     * @return the stage of the binding.
      */
     public final Stage getStage() {
         return stage;
     }
 
     /**
-     * 
-     * @param to
+     * @param to new value for the target class.
      */
     public final void setTo(Class<? extends T> to) {
         this.to = to;
@@ -234,6 +245,12 @@ public class Binding<T> {
         return result;
     }
 
+    /**
+     * Is this binding having an enhanced provider.
+     * 
+     * @param interfaces the class to check.
+     * @return Is this binding having an enhanced provider.
+     */
     private boolean isImplementingEnhancedProvider(Type[] interfaces) {
         boolean ret = false;
         for (Type t : interfaces) {

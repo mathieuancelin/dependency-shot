@@ -25,14 +25,26 @@ import javax.inject.Provider;
  */
 public class InstanceProvider implements Provider {
 
+    /**
+     * The provided instance.
+     */
     private Object providedInstance;
-
+    /**
+     * Constructor.
+     */
     private InstanceProvider() {}
-
+    /**
+     * Constructor.
+     *
+     * @param instance the provided instance.
+     */
     public InstanceProvider(Object instance) {
         this.providedInstance = instance;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final Object get() {
         return providedInstance;

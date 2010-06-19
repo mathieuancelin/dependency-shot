@@ -35,10 +35,15 @@ import java.util.logging.Logger;
  * @author Mathieu ANCELIN
  */
 public final class DependencyShot {
-
+    /**
+     * Debug flag for the logger.
+     */
     public static final boolean DEBUG = false;
-    
-    private static Logger logger = Logger.getLogger(DependencyShot.class.getSimpleName());
+    /**
+     * Logger for the class.
+     */
+    private static final Logger logger =
+            Logger.getLogger(DependencyShot.class.getSimpleName());
     /**
      * Private constructor cause it's a utility class.
      */
@@ -90,7 +95,11 @@ public final class DependencyShot {
             }
         }
     }
-
+    /**
+     * Allow user to manipulate a configurator extension point.
+     *
+     * @return a SPI configurationHandler.
+     */
     public static ConfigurationHandler getSpecificConfigurator() {
         PluginsLoader.getInstance().loadFirstPlugins();
         List<ConfigurationHandler> handlers = (List<ConfigurationHandler>)

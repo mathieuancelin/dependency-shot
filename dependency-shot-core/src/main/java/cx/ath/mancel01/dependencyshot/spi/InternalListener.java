@@ -18,11 +18,10 @@
 package cx.ath.mancel01.dependencyshot.spi;
 
 /**
+ * Listener for internal events.
  *
  * @author Mathieu ANCELIN
  */
 public abstract class InternalListener {
-
-    public abstract boolean isValid(Object o);
     
 }

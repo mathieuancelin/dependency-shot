@@ -32,6 +32,9 @@ import javax.inject.Inject;
  */
 public final class MethodHandler {
 
+    /**
+     * Constructor.
+     */
     private MethodHandler() {}
     /**
      * Inject all injectable methods of an object.

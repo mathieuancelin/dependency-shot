@@ -31,6 +31,9 @@ import javax.inject.Inject;
  */
 public final class FieldsHandler {
 
+    /**
+     * Constructor.
+     */
     private FieldsHandler() {}
     /**
      * Inject every fields of an object.

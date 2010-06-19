@@ -31,16 +31,29 @@ import java.util.List;
  * @author Mathieu ANCELIN
  */
 public final class ClassHandler {
-
+    /**
+     * The current injected class.
+     */
     private static Class currentlyInjected;
+    /**
+     * The current injector.
+     */
     private static DSInjector currentInjector;
-
+    /**
+     * Constructor.
+     */
     private ClassHandler() {}
 
+    /**
+     * @return the current injected class.
+     */
     public static Class getCurrentlyInjected() {
         return currentlyInjected;
     }
 
+    /**
+     * @return the current injector.
+     */
     public static DSInjector getCurrentInjector() {
         return currentInjector;
     }
