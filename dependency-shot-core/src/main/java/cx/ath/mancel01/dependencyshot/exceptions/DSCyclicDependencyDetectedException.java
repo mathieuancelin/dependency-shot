@@ -29,11 +29,20 @@ public class DSCyclicDependencyDetectedException extends RuntimeException {
     public DSCyclicDependencyDetectedException(final String message) {
         super(message);
     }
-
+    /**
+     * Constructor.
+     *
+     * @param message the error message.
+     */
     public DSCyclicDependencyDetectedException(final Exception message) {
         super(message);
     }
-
+    /**
+     * Constructor.
+     *
+     * @param message the error message.
+     * @param ex the exceptions to launch.
+     */
     public DSCyclicDependencyDetectedException(final String message, final Exception ex) {
         super(message, ex);
     }

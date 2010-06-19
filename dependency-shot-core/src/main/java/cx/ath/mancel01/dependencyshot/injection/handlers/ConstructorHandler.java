@@ -33,6 +33,9 @@ import javax.inject.Inject;
  */
 public final class ConstructorHandler {
 
+    /**
+     * Constructor.
+     */
     private ConstructorHandler() {}
 
     /**

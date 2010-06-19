@@ -60,7 +60,7 @@ public class InjectorImpl implements DSInjector {
      */
     private List<Binder> binders;
     /**
-     *
+     * Bindings of the injector.
      */
     private Map<Binding<?>, Binding<?>> bindings = null;
     /**
@@ -88,7 +88,11 @@ public class InjectorImpl implements DSInjector {
         instanciatedClasses = new HashMap<Class<?>, Object>();
         PluginsLoader.getInstance().loadPlugins(this);
     }
-
+    /**
+     * The constructor.
+     *
+     * @param stage of the injector.
+     */
     public InjectorImpl(Stage stage) {
         binders = new ArrayList();
         singletonContext = new HashMap<Class<?>, Object>();
@@ -115,10 +119,18 @@ public class InjectorImpl implements DSInjector {
         }
     }
 
+    /**
+     * @return if there are new bindings in the binder.
+     */
     public final boolean getBindingsChanged() {
         return bindingsChanged;
     }
 
+    /**
+     * Set if there are new bindings in the binder.
+     * 
+     * @param bindingsChanged new value.
+     */
     public final void setBindingsChanged(boolean bindingsChanged) {
         this.bindingsChanged = bindingsChanged;
     }
@@ -291,8 +303,9 @@ public class InjectorImpl implements DSInjector {
     }
 
     /**
-     *
-     * @param c
+     * Inject the static members of a class.
+     * 
+     * @param c the class to inject.
      */
     @Override
     public final void injectStaticMembers(Class<?> c) {
@@ -355,6 +368,7 @@ public class InjectorImpl implements DSInjector {
     }
 
     /**
+     * Callback for the destruction of the injector.
      *
      * @throws Throwable
      */
@@ -368,6 +382,9 @@ public class InjectorImpl implements DSInjector {
         super.finalize();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final String toString() {
         StringBuilder builder = new StringBuilder();
@@ -378,6 +395,9 @@ public class InjectorImpl implements DSInjector {
         return builder.toString();
     }
 
+    /**
+     * @return the stage of the injector.
+     */
     @Override
     public final Stage getStage() {
         return stage;

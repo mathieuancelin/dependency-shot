@@ -21,6 +21,7 @@ import cx.ath.mancel01.dependencyshot.api.Stage;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 
 /**
+ * Handle the configuration of the framework.
  *
  * @author Mathieu ANCELIN
  */
@@ -39,9 +40,13 @@ public abstract class ConfigurationHandler {
      * @return the configurated injector.
      */
     public abstract InjectorImpl getInjector(Stage stage, final Object... params);
-
+    /**
+     * @return the instance of the actual spi configurator.
+     */
     public abstract Object getDelegate();
-
+    /**
+     * @return if this configurator auto load its configuration.
+     */
     public abstract boolean isAutoEnabled();
     
 }

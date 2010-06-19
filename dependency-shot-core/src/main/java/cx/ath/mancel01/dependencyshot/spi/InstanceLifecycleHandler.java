@@ -20,27 +20,47 @@ package cx.ath.mancel01.dependencyshot.spi;
 import java.util.Collection;
 
 /**
- *
+ * Lifecycle phases handler.
+ * 
  * @author Mathieu ANCELIN
  */
 public abstract class InstanceLifecycleHandler {
-
+    /**
+     * @return validator for this hanler.
+     */
     public abstract <T extends ImplementationValidator> T getValidator();
-
+    /**
+     * @param instance
+     * @return if instance is valid for this handler.
+     */
     public abstract boolean isInstanceValid(Object instance);
-
+    /**
+     * Handle a postconstruct event.
+     * @param o handled instance.
+     */
     public abstract void postConstruct(Object o);
-
+    /**
+     * Handle a predestroy event.
+     * @param o handled instance.
+     */
     public abstract void preDestroy(Object o);
-
+    /**
+     * @return all the managed instances.
+     */
     public abstract Collection<Object> getManagedInstances();
-
+    /**
+     * Handle a postconstruct event.
+     * @param instance handled instance.
+     */
     public void handlePostConstruct(Object instance) {
         if (isInstanceValid(instance)) {
             postConstruct(instance);
         }
     }
-
+    /**
+     * Handle a predestroy event.
+     * @param instance handled instance.
+     */
     public void handlePreDestroy(Object instance) {
         if (isInstanceValid(instance)) {
             preDestroy(instance);

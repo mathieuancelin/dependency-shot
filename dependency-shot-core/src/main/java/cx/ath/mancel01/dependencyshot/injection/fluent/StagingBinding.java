@@ -20,9 +20,15 @@ package cx.ath.mancel01.dependencyshot.injection.fluent;
 import cx.ath.mancel01.dependencyshot.api.Stage;
 
 /**
+ * Interface for the binder.
  *
  * @author Mathieu ANCELIN
  */
 public interface StagingBinding {
+    /**
+     * Specify the stage of the binding.
+     *
+     * @param stage the actual stage.
+     */
     void onStage(Stage stage);
 }

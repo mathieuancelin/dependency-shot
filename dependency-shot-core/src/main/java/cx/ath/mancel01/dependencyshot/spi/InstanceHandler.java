@@ -22,28 +22,57 @@ import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import java.util.logging.Logger;
 
 /**
+ * Manipulates an instance provided by dependecy-shot before it's injected
+ * in an object.
  *
  * @author Mathieu ANCELIN
  */
 public abstract class InstanceHandler {
-
+    /**
+     * Logger.
+     */
     private static Logger logger = Logger.getLogger(InstanceHandler.class.getName());
-
+    /**
+     * @return the validator for this handler.
+     */
     public abstract <T extends ImplementationValidator> T getValidator();
-
+    /**
+     * @param instance to test.
+     * @return if the instance is valid for this handling.
+     */
     public abstract boolean isInstanceValid(Object instance);
-
+    /**
+     * Manipulate an instance.
+     *
+     * @param instance the instance.
+     * @param interf the instances interface.
+     * @param injector th actual injector.
+     * @return the handled instance (or proxy or whatever)
+     */
     public abstract Object manipulateInstance(Object instance, Class interf, InjectorImpl injector);
-
+    /**
+     * Handle an instance.
+     * 
+     * @param instance the instance.
+     * @param interf the instances interface.
+     * @param injector th actual injector.
+     * @return the handled instance (or proxy or whatever)
+     */
     public Object handleInstance(Object instance, Class interf, InjectorImpl injector) {
         if (isInstanceValid(instance)) {
             if (DependencyShot.DEBUG) {
-                logger.info("Instance '" + instance.toString() + "' handled by " + this.getClass().getSimpleName());
+                logger.info("Instance '"
+                        + instance.toString()
+                        + "' handled by "
+                        + this.getClass().getSimpleName());
             }
             return manipulateInstance(instance, interf, injector);
         } else {
             if (DependencyShot.DEBUG) {
-                logger.info("Instance '" + instance.toString() + "' can't be handled by " + this.getClass().getSimpleName());
+                logger.info("Instance '"
+                        + instance.toString()
+                        + "' can't be handled by "
+                        + this.getClass().getSimpleName());
             }
             return instance;
         }

@@ -18,11 +18,15 @@
 package cx.ath.mancel01.dependencyshot.spi;
 
 /**
+ * Validates the implementation of the binding.
  *
  * @author Mathieu ANCELIN
  */
 public abstract class ImplementationValidator {
-
+    /**
+     * @param o the object tot test.
+     * @return if the object is valid.
+     */
     public abstract boolean isValid(Object o);
     
 }

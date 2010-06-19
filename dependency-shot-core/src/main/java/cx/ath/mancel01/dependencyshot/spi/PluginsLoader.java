@@ -26,21 +26,42 @@ import java.util.ServiceLoader;
 import java.util.logging.Logger;
 
 /**
- *
+ * SPI plugins mamanger.
+ * 
  * @author Mathieu ANCELIN
  */
 public final class PluginsLoader {
-
+    /**
+     * Logger.
+     */
     private static Logger logger = Logger.getLogger(PluginsLoader.class.getName());
     /**
      * The unique instance of the class.
      */
     private static PluginsLoader instance = null;
+    /**
+     * Handled SPI plugins.
+     */
     private Collection<Binding> providedBindings;
+    /**
+     * Handled SPI plugins.
+     */
     private Collection<ImplementationValidator> validators;
+    /**
+     * Handled SPI plugins.
+     */
     private Collection<InstanceHandler> instanceHandlers;
+    /**
+     * Handled SPI plugins.
+     */
     private Collection<InstanceLifecycleHandler> lifecycleHandlers;
+    /**
+     * Handled SPI plugins.
+     */
     private Collection<ConfigurationHandler> configurationHandlers;
+    /**
+     * Handled SPI plugins.
+     */
     private Collection<Reflector> reflectors;
 
     /**
@@ -59,7 +80,11 @@ public final class PluginsLoader {
         }
         return instance;
     }
-
+    /**
+     * Load all the plugins.
+     *
+     * @param injector the actual injector.
+     */
     public final void loadPlugins(InjectorImpl injector) {
         loadFirstPlugins();
         StringBuilder sb = new StringBuilder();
@@ -84,7 +109,9 @@ public final class PluginsLoader {
             logger.info(sb.toString());
         }
     }
-
+    /**
+     * Load the plugins at the very beginning of the bootstrap.
+     */
     public final void loadFirstPlugins() {
         StringBuilder sb = new StringBuilder();
         sb.append("\n====== Plugins (level 1) management =======\n\n");
@@ -100,7 +127,12 @@ public final class PluginsLoader {
             logger.info(sb.toString());
         }
     }
-
+    /**
+     * Load binding provider bindings.
+     * 
+     * @param injector actual injector
+     * @return provided bindings.
+     */
     private Collection<Binding> loadProvidedBindings(InjectorImpl injector) {
         ArrayList<Binding> bindings = new ArrayList<Binding>();
         ServiceLoader<BindingsProvider> providersLoader = ServiceLoader.load(BindingsProvider.class);
@@ -115,7 +147,11 @@ public final class PluginsLoader {
         }
         return bindings;
     }
-
+    /**
+     * Load instance handlers.
+     * 
+     * @return loade instance handlers.
+     */
     private Collection<InstanceHandler> loadInstanceHandlers() {
         ArrayList<InstanceHandler> handlers = new ArrayList<InstanceHandler>();
         ServiceLoader<InstanceHandler> handlersProvider = ServiceLoader.load(InstanceHandler.class);
@@ -127,7 +163,11 @@ public final class PluginsLoader {
         }
         return handlers;
     }
-
+    /**
+     * Load lifecycle handlers.
+     *
+     * @return loaded lifecycle handlers.
+     */
     private Collection<InstanceLifecycleHandler> loadLifecycleHandlers() {
         ArrayList<InstanceLifecycleHandler> handlers = new ArrayList<InstanceLifecycleHandler>();
         ServiceLoader<InstanceLifecycleHandler> handlersProvider = ServiceLoader.load(InstanceLifecycleHandler.class);
@@ -139,7 +179,11 @@ public final class PluginsLoader {
         }
         return handlers;
     }
-
+    /**
+     * Load validators.
+     *
+     * @return loaded validators.
+     */
     private Collection<ImplementationValidator> loadImplementationValidators() {
         ArrayList<ImplementationValidator> implemvalidators = new ArrayList<ImplementationValidator>();
         ServiceLoader<ImplementationValidator> validatorsProvider = ServiceLoader.load(ImplementationValidator.class);
@@ -151,7 +195,11 @@ public final class PluginsLoader {
         }
         return implemvalidators;
     }
-
+    /**
+     * Load configurator.
+     *
+     * @return loaded configurators.
+     */
     private Collection<ConfigurationHandler> loadConfigurationHandlers() {
         ArrayList<ConfigurationHandler> configHandlers = new ArrayList<ConfigurationHandler>();
         ServiceLoader<ConfigurationHandler> configHandlersProvider = ServiceLoader.load(ConfigurationHandler.class);
@@ -163,32 +211,48 @@ public final class PluginsLoader {
         }
         return configHandlers;
     }
-
+    /**
+     * Load reflector services.
+     *
+     * @return loaded reflector services.
+     */
     private Collection<Reflector> loadReflectors() {
         ArrayList<Reflector> loadedReflectors = new ArrayList<Reflector>();
         return loadedReflectors;
     }
-
+    /**
+     * @return provided bindings.
+     */
     public final Collection<Binding> getProvidedBindings() {
         return providedBindings;
     }
-
+    /**
+     * @return instance handlers.
+     */
     public Collection<InstanceHandler> getInstanceHandlers() {
         return instanceHandlers;
     }
-
+    /**
+     * @return lifecycle handlers.
+     */
     public Collection<InstanceLifecycleHandler> getLifecycleHandlers() {
         return lifecycleHandlers;
     }
-
+    /**
+     * @return validators.
+     */
     public Collection<ImplementationValidator> getValidators() {
         return validators;
     }
-
+    /**
+     * @return reflector services.
+     */
     public Collection<Reflector> getReflectors() {
         return reflectors;
     }
-
+    /**
+     * @return configurators.
+     */
     public Collection<ConfigurationHandler> getConfigurationHandlers() {
         return configurationHandlers;
     }

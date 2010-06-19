@@ -29,11 +29,20 @@ public class DSException extends RuntimeException {
     public DSException(final String message) {
         super(message);
     }
-
+    /**
+     * Constructor.
+     *
+     * @param message the error message.
+     */
     public DSException(final Exception message) {
         super(message);
     }
-
+    /**
+     * Constructor.
+     *
+     * @param message the error message.
+     * @param ex the exceptions to launch.
+     */
     public DSException(final String message, final Exception ex) {
         super(message, ex);
     }

@@ -112,6 +112,9 @@ public abstract class Binder implements DSBinder,
         }
     }
 
+    /**
+     * Configure the last binding present in the binder (because of the fluent API).
+     */
     @Override
     public final void configureLastBinding() {
         addBindingToBinder(
@@ -135,7 +138,13 @@ public abstract class Binder implements DSBinder,
         this.stage = null;
     }
 
-    //TODO : binding validation in fluent API
+    /**
+     * Bind a class in the injector.
+     *
+     * @param <T> type.
+     * @param from the class to bind.
+     * @return the actual binder.
+     */
     public final <T> FluentBinder bind(Class<T> from) {
         if (binderInjector.getStage() != null) {
             if (binderInjector.getStage().equals(this.stage)) {
@@ -157,55 +166,107 @@ public abstract class Binder implements DSBinder,
         return this;
     }
 
+    /**
+     * The target class for a binding.
+     *
+     * @param <T> type.
+     * @param to the targeted class for the binding.
+     * @return the actual binder.
+     */
     @Override
     public final <T> StagingBinding to(Class<? extends T> to) {
         this.to = to;
         return this;
     }
 
+    /**
+     * Specify a name qualifier for a binding.
+     *
+     * @param <T> type.
+     * @param named the name for the qualifier.
+     * @return the actual binder.
+     */
     @Override
     public final <T> QualifiedBinding named(String named) {
         this.named = named;
         return this;
     }
 
+    /**
+     * Specify a qualfier for a binding.
+     *
+     * @param <T> type.
+     * @param annotation the qualifier of the binding.
+     * @return the actual binder.
+     */
     @Override
     public final <T> QualifiedBinding annotedWith(Class<? extends Annotation> annotation) {
         this.annotation = annotation;
         return this;
     }
 
+    /**
+     * Specify a provider for the actual binding.
+     *
+     * @param <T> type.
+     * @param provider the provider for the binding.
+     * @return the actual binder.
+     */
     @Override
     public final <T> StagingBinding providedBy(Provider<T> provider) {
         this.provider = provider;
         return this;
     }
 
+    /**
+     * Specify a specific instance to bind with.
+     *
+     * @param <T> type.
+     * @param instance specify the instance.
+     * @return the actual binder.
+     */
     @Override
     public final <T> StagingBinding toInstance(Object instance) {
         this.provider = new InstanceProvider(instance);
         return this;
     }
 
+    /**
+     * Specify the stage of the binding.
+     *
+     * @param stage the actual stage.
+     */
     @Override
     public final void onStage(Stage stage) {
         this.stage = stage;
     }
 
+    /**
+     * @return actual bindings in this binder.
+     */
     public final Map<Binding<?>, Binding<?>> getBindings() {
         return bindings;
     }
 
+    /**
+     * @return is the actual binder empty.
+     */
     @Override
     public final boolean isEmpty() {
         return bindings.isEmpty();
     }
 
+    /**
+     * @param injector set the value of the actual injector.
+     */
     @Override
     public final void setInjector(DSInjector injector) {
         binderInjector = injector;
     }
 
+    /**
+     * @return the actual injector.
+     */
     public final DSInjector getBinderInjector() {
         return binderInjector; 
     }

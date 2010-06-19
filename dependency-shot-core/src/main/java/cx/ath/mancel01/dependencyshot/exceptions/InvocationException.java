@@ -29,7 +29,11 @@ public class InvocationException extends RuntimeException {
     public InvocationException(final String message) {
         super(message);
     }
-
+    /**
+     * Constructor.
+     *
+     * @param message the error message.
+     */
     public InvocationException(final Exception message) {
         super(message);
     }
