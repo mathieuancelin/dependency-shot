@@ -40,6 +40,7 @@ class BindingDelegate {
 
     void setFrom(Class from) {
         this.binding.from = from
+        this.binding.to = from
     }
     
     void setTo(Class to) {
