@@ -43,6 +43,7 @@ public class BasicInjectTest {
         assertTrue(client.getService3().isGone());
     }
 
+    @Test
     public void testFluentInjectedClient() {
         DSInjector injector = DependencyShot.getInjector(new BasicFluentBinder());
         BasicClient client = injector.getInstance(BasicClient.class);
