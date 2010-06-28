@@ -124,6 +124,7 @@ public class Binding<T> {
         }
         if (params.containsKey(DslConstants.FROM)) {
             this.from = (Class<T>) params.get(DslConstants.FROM);
+            this.to = (Class<T>) params.get(DslConstants.FROM);
         } else {
             throw new DSIllegalStateException("A binding must contains a 'from' class.");
         }
@@ -161,6 +162,7 @@ public class Binding<T> {
             this.qualifier = qualif;
         }
         this.from = from;
+        this.to = from;
         if (params.containsKey(DslConstants.TO)) {
             this.to = (Class<? extends T>) params.get(DslConstants.TO);
         }
