@@ -308,7 +308,7 @@ public class InjectorImpl implements DSInjector {
      * @param c the class to inject.
      */
     @Override
-    public final void injectStaticMembers(Class<?> c) {
+    public final void injectStatics(Class<?> c) {
         try {
             List<Method> emptyList = Collections.emptyList();
             ClassHandler.classInjection(null, c, emptyList, true, this);

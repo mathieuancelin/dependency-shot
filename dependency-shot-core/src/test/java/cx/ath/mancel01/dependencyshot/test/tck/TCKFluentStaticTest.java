@@ -36,9 +36,9 @@ public class TCKFluentStaticTest extends TestSuite {
     
     public static Test suite() {
         final DSInjector injector = DependencyShot.getInjector(new TCKFluentBinder());
-        injector.injectStaticMembers(Convertible.class);
-        injector.injectStaticMembers(Tire.class);
-        injector.injectStaticMembers(SpareTire.class);
+        injector.injectStatics(Convertible.class);
+        injector.injectStatics(Tire.class);
+        injector.injectStatics(SpareTire.class);
         Car car = injector.getInstance(Car.class);
         return Tck.testsFor(car, true, true);
     }

@@ -36,7 +36,7 @@ public interface DSInjector {
      * 
      * @param c the class to inject.
      */
-    void injectStaticMembers(Class<?> c);
+    void injectStatics(Class<?> c);
 
     /**
      * Injection on an instance.
