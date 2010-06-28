@@ -8,7 +8,6 @@ import org.atinject.tck.auto.V8Engine
 import org.atinject.tck.auto.Tire
 import cx.ath.mancel01.dependencyshot.dsl.tck.TireProvider
 
-
 bindings {
     
     bind Car.class, to: Convertible.class
