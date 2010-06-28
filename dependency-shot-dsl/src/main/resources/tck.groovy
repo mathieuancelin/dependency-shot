@@ -10,22 +10,27 @@ import cx.ath.mancel01.dependencyshot.dsl.tck.TireProvider
 
 
 bindings {
+
     binding {
         from = Car.class
         to = Convertible.class
     }
+    
     binding {
         from = Seat.class
         to = DriversSeat.class
         annotedWith = Drivers.class
     }
+
     binding {
         from = Engine.class
         to = V8Engine.class
     }
+
     binding {
         from = Tire.class
         named = "spare"
         providedBy = new TireProvider()
     }
+
 }
