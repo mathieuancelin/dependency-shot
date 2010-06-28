@@ -46,6 +46,7 @@
         <module>dependency-shot-utils</module>
         <module>dependency-shot-web</module>
         <module>dependency-shot-dsl</module>
+        <module>dependency-shot-annotations-configurator</module>
   </modules>
     <dependencyManagement>
         <dependencies>
