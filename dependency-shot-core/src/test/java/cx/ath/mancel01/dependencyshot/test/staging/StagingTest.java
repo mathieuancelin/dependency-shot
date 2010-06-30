@@ -38,7 +38,7 @@ public class StagingTest {
 
     @Test
     public void testStagingDev() {
-        DSInjector injector = DependencyShot.getInjector(Stage.DEVELOPPEMENT, new ServiceBinder());
+        DSInjector injector = DependencyShot.getInjector(Stage.DEVELOPEMENT, new ServiceBinder());
         Module client = injector.getInstance(Module.class);
         assertTrue(client.getServiceResult().equals(Service.DEV));
     }

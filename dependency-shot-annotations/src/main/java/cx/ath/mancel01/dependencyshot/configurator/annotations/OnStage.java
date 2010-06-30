@@ -30,5 +30,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD,ElementType.PARAMETER, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface OnStage {
-    Stage value() default Stage.DEVELOPPEMENT;
+    Stage value() default Stage.DEVELOPEMENT;
 }

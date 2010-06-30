@@ -28,7 +28,7 @@ public class ServiceBinder extends Binder {
 
     @Override
     public void configureBindings() {
-        bind(Service.class).to(ServiceDev.class).onStage(Stage.DEVELOPPEMENT);
+        bind(Service.class).to(ServiceDev.class).onStage(Stage.DEVELOPEMENT);
         bind(Service.class).to(ServiceMock.class).onStage(Stage.TEST);
         bind(Service.class).to(ServiceImpl.class).onStage(Stage.PRODUCTION);
     }
