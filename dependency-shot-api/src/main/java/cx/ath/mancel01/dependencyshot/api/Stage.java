@@ -24,10 +24,10 @@ package cx.ath.mancel01.dependencyshot.api;
  */
 public enum Stage {
     /**
-     * Bindings declared for developpement stage (in an IDE)
+     * Bindings declared for developement stage (in an IDE)
      * and unit testing environment.
      */
-    DEVELOPPEMENT,
+    DEVELOPEMENT,
     /**
      * Bindings declared for test server environment.
      */
