@@ -35,7 +35,7 @@ public interface FluentBinder {
      * @param annotation the qualifier of the binding.
      * @return the actual binder.
      */
-    <T> QualifiedBinding annotedWith(Class<? extends Annotation> annotation);
+    <T> QualifiedBinding annotatedWith(Class<? extends Annotation> annotation);
     /**
      * Specify a name qualifier for a binding.
      *

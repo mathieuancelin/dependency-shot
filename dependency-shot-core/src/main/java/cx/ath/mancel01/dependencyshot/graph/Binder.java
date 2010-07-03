@@ -40,21 +40,21 @@ import javax.inject.Provider;
  * The fluent api of a binder can be used this way :
  * 
  * bind() -> to()
- *	  -> named()
- *	  -> annotedWith()
- *	  -> providedBy()
- *	  -> toInstance()
- *	  -> onStage()
+ *	      -> named()
+ *	      -> annotatedWith()
+ *	      -> providedBy()
+ *	      -> toInstance()
+ *	      -> onStage()
  *
  * to() -> onStage()
  *
  * named() -> to()
- *	   -> providedBy()
- *	   -> toInstance()
+ *         -> providedBy()
+ *         -> toInstance()
  *
- * annotedWith() -> to()
- *             -> providedBy()
- *	       -> toInstance()
+ * annotatedWith() -> to()
+ *                 -> providedBy()
+ *	               -> toInstance()
  *
  * providedBy() -> onStage()
  *
@@ -200,7 +200,7 @@ public abstract class Binder implements DSBinder,
      * @return the actual binder.
      */
     @Override
-    public final <T> QualifiedBinding annotedWith(Class<? extends Annotation> annotation) {
+    public final <T> QualifiedBinding annotatedWith(Class<? extends Annotation> annotation) {
         this.annotation = annotation;
         return this;
     }

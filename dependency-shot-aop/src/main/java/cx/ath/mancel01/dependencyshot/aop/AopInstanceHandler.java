@@ -147,7 +147,7 @@ public class AopInstanceHandler extends InstanceHandler{
                     if (m.isAnnotationPresent(AroundInvoke.class)) {
                         UserInterceptor interceptorTmp =
                                 new UserInterceptor(m, interceptorInstance);
-                        interceptorTmp.setAnnotedMethod(method);
+                        interceptorTmp.setAnnotatedMethod(method);
                         managedInterceptors.add(interceptorTmp);
                     }
                 }

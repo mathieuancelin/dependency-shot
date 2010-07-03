@@ -19,7 +19,7 @@ bindings {
     binding {
         from = Seat.class
         to = DriversSeat.class
-        annotedWith = Drivers.class
+        annotatedWith = Drivers.class
     }
 
     binding {

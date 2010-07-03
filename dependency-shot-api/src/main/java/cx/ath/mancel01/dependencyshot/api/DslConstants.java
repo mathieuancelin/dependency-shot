@@ -29,7 +29,7 @@ public class DslConstants {
 
     public static final String NAMED = "named";
 
-    public static final String ANNOTATED_WITH = "annotedWith";
+    public static final String ANNOTATED_WITH = "annotatedWith";
 
     public static final String ON_STAGE = "onStage";
 
