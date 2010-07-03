@@ -47,7 +47,7 @@ class BindingDelegate {
         this.binding.to = to
     }
 
-    void setAnnotedWith(Class qualifier) {
+    void setAnnotatedWith(Class qualifier) {
         this.binding.qualifier = qualifier
     }
 

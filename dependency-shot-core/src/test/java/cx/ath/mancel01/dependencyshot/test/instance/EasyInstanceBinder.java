@@ -31,8 +31,8 @@ public class EasyInstanceBinder extends Binder {
 
     @Override
     public void configureBindings() {
-        bind(String.class).annotedWith(MyModule.class).toInstance(MY_MODULE);
-        bind(String.class).annotedWith(MyOtherModule.class).toInstance(MY_OTHER_MODULE);
+        bind(String.class).annotatedWith(MyModule.class).toInstance(MY_MODULE);
+        bind(String.class).annotatedWith(MyOtherModule.class).toInstance(MY_OTHER_MODULE);
         bind(String.class).named("yam").toInstance(YAM);
     }
 }

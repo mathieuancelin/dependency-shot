@@ -38,9 +38,9 @@ public class UserInterceptor implements DSInterceptor {
     /**
      * The method to call before and after intercepted method.
      */
-    private Method annotedMethod = null;
+    private Method annotatedMethod = null;
     /**
-     * The object where annotedMethod is defined.
+     * The object where annotatedMethod is defined.
      */
     private Object interceptedObject = null;
     /**
@@ -53,11 +53,11 @@ public class UserInterceptor implements DSInterceptor {
         this.interceptedObject = object;
     }
     /**
-     * Set the annoted (intercept) method.
-     * @param annotedMethod the annoted method.
+     * Set the annotated (intercept) method.
+     * @param annotatedMethod the annotated method.
      */
-    public final void setAnnotedMethod(final Method annotedMethod) {
-        this.annotedMethod = annotedMethod;
+    public final void setAnnotatedMethod(final Method annotatedMethod) {
+        this.annotatedMethod = annotatedMethod;
     }
     /**
      * Invoke the next interceptor in the interceptor chain.
@@ -67,8 +67,8 @@ public class UserInterceptor implements DSInterceptor {
     @Override
     public final Object invoke(final DSInvocation invocation) {
         try {
-            if (annotedMethod != null) {
-                if (invocation.getMethod().getName().equals(annotedMethod.getName())) {
+            if (annotatedMethod != null) {
+                if (invocation.getMethod().getName().equals(annotatedMethod.getName())) {
                     return this.interceptMethod.invoke(interceptedObject, invocation);
                 } else {
                     return invocation.nextInterceptor();

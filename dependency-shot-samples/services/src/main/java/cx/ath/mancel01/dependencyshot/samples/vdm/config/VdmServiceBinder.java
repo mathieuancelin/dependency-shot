@@ -33,7 +33,7 @@ public class VdmServiceBinder extends Binder {
      */
     @Override
     public final void configureBindings() {
-        bind(String.class).annotedWith(VdmUrl.class).toInstance("http://api.viedemerde.fr/1.0/");
+        bind(String.class).annotatedWith(VdmUrl.class).toInstance("http://api.viedemerde.fr/1.0/");
         bind(RandomService.class).to(RandomServiceImpl.class);
     }
 }

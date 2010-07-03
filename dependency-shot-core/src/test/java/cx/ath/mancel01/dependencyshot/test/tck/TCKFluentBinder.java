@@ -38,7 +38,7 @@ public class TCKFluentBinder extends Binder {
     @Override 
     public void configureBindings() {
         bind(Car.class).to(Convertible.class);
-        bind(Seat.class).annotedWith(Drivers.class).to(DriversSeat.class);
+        bind(Seat.class).annotatedWith(Drivers.class).to(DriversSeat.class);
         bind(Engine.class).to(V8Engine.class);
         bind(Tire.class).named("spare").providedBy(new Provider<Tire>() {
   			@Override

@@ -32,13 +32,13 @@ public class InstanceBinder extends Binder {
 
     @Override
     public void configureBindings() {
-        bind(String.class).annotedWith(MyModule.class).providedBy(new Provider(){
+        bind(String.class).annotatedWith(MyModule.class).providedBy(new Provider(){
             @Override
             public Object get() {
                 return MY_MODULE;
             }
         });
-        bind(String.class).annotedWith(MyOtherModule.class).providedBy(new Provider(){
+        bind(String.class).annotatedWith(MyOtherModule.class).providedBy(new Provider(){
             @Override
             public Object get() {
                 return MY_OTHER_MODULE;
