@@ -51,4 +51,6 @@ public interface DSInjector {
 
     Stage getStage();
 
+    void allowCircularDependencies(boolean allowCircularDependencies);
+
 }
