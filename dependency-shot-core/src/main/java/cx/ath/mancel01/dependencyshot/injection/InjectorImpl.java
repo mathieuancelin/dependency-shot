@@ -54,6 +54,8 @@ import javax.inject.Qualifier;
  */
 public class InjectorImpl implements DSInjector {
 
+    private boolean allowCircularDependencies = false;
+
     private Logger logger = Logger.getLogger(InjectorImpl.class.getSimpleName());
     /**
      * Binders linked to the project.
@@ -267,6 +269,7 @@ public class InjectorImpl implements DSInjector {
                 instanciatedClasses.put(c, null);
                 // create a new instance of a class
                 T result = ConstructorHandler.getConstructedInstance(c, this);
+                instanciatedClasses.put(c, result);
                 // and inject it !!
                 ClassHandler.classInjection(result, c, new ArrayList<Method>(), false, this);
                 instanciatedClasses.remove(c);
@@ -275,8 +278,12 @@ public class InjectorImpl implements DSInjector {
                 throw new DSException(e);
             }
         } else {
-            throw new DSCyclicDependencyDetectedException(
+            if (allowCircularDependencies) {
+                return (T) instanciatedClasses.get(c);
+            } else {
+                throw new DSCyclicDependencyDetectedException(
                     "Circular dependency detected on " + c.getName());
+            }
         }
     }
 
@@ -401,5 +408,14 @@ public class InjectorImpl implements DSInjector {
     @Override
     public final Stage getStage() {
         return stage;
+    }
+
+    public boolean allowCircularDependencies() {
+        return allowCircularDependencies;
+    }
+
+    @Override
+    public void allowCircularDependencies(boolean allowCircularDependencies) {
+        this.allowCircularDependencies = allowCircularDependencies;
     }
 }

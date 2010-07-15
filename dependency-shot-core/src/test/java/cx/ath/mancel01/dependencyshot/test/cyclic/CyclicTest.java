@@ -21,6 +21,8 @@ import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import org.junit.Test;
 import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNull;
 
 /**
  * Tests of dependency-shot. 
@@ -44,6 +46,26 @@ public class CyclicTest {
         }
         assertTrue(isCyclic);
         assertTrue(ex.getMessage().contains("DSCyclicDependencyDetectedException"));
+    }
+
+    @Test
+    public void testCyclicDependencyAllowed() {
+        boolean isCyclic = false;
+        Exception ex = null;
+        try {
+            DSInjector injector = DependencyShot.getInjector();
+            injector.allowCircularDependencies(true);
+            BillingService service = injector.getInstance(BillingService.class);
+            service.chargeAccountFor(123);
+            assertTrue(service.getAccount().getMoney() == (100000 - 123));
+        } catch (Exception e) {
+            System.out.println(e);
+            ex = e;
+            isCyclic = true;
+            System.out.println("boooom");
+        }
+        assertFalse(isCyclic);
+        assertNull(ex);
     }
 
     @Test
