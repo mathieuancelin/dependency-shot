@@ -410,6 +410,13 @@ public class InjectorImpl implements DSInjector {
         return stage;
     }
 
+    @Override
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+
+    @Override
     public boolean allowCircularDependencies() {
         return allowCircularDependencies;
     }
