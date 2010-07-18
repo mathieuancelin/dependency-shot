@@ -17,6 +17,7 @@
 
 package cx.ath.mancel01.dependencyshot.aop;
 
+import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
 import cx.ath.mancel01.dependencyshot.graph.Binding;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.ImplementationValidator;
@@ -49,7 +50,7 @@ public class AopInstanceHandler extends InstanceHandler{
     }
 
     @Override
-    public Object manipulateInstance(Object instance, Class interf, InjectorImpl injector) {
+    public Object manipulateInstance(Object instance, Class interf, InjectorImpl injector, InjectionPoint point) {
         return scannInterceptorsAnnotations(instance, interf, injector);
     }
 

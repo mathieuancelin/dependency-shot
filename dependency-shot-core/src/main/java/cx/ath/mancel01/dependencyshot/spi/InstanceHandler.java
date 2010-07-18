@@ -18,6 +18,7 @@
 package cx.ath.mancel01.dependencyshot.spi;
 
 import cx.ath.mancel01.dependencyshot.DependencyShot;
+import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import java.util.logging.Logger;
 
@@ -49,7 +50,7 @@ public abstract class InstanceHandler {
      * @param injector th actual injector.
      * @return the handled instance (or proxy or whatever)
      */
-    public abstract Object manipulateInstance(Object instance, Class interf, InjectorImpl injector);
+    public abstract Object manipulateInstance(Object instance, Class interf, InjectorImpl injector, InjectionPoint point);
     /**
      * Handle an instance.
      * 
@@ -58,7 +59,7 @@ public abstract class InstanceHandler {
      * @param injector th actual injector.
      * @return the handled instance (or proxy or whatever)
      */
-    public Object handleInstance(Object instance, Class interf, InjectorImpl injector) {
+    public Object handleInstance(Object instance, Class interf, InjectorImpl injector, InjectionPoint point) {
         if (isInstanceValid(instance)) {
             if (DependencyShot.DEBUG) {
                 logger.info("Instance '"
@@ -66,7 +67,7 @@ public abstract class InstanceHandler {
                         + "' handled by "
                         + this.getClass().getSimpleName());
             }
-            return manipulateInstance(instance, interf, injector);
+            return manipulateInstance(instance, interf, injector, point);
         } else {
             if (DependencyShot.DEBUG) {
                 logger.info("Instance '"
