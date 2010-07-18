@@ -242,7 +242,7 @@ public class Binding<T> {
             handler.handlePostConstruct(result);
         }
         for (InstanceHandler handler : PluginsLoader.getInstance().getInstanceHandlers()) {
-            result = (T) handler.handleInstance(result, from, injector);
+            result = (T) handler.handleInstance(result, from, injector, point);
         }
         return result;
     }

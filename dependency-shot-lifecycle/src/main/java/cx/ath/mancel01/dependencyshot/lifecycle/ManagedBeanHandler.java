@@ -16,6 +16,7 @@
  */
 package cx.ath.mancel01.dependencyshot.lifecycle;
 
+import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.ImplementationValidator;
 import cx.ath.mancel01.dependencyshot.spi.InstanceHandler;
@@ -51,7 +52,7 @@ public final class ManagedBeanHandler extends InstanceHandler {
     }
 
     @Override
-    public Object manipulateInstance(Object instance, Class interf, InjectorImpl injector) {
+    public Object manipulateInstance(Object instance, Class interf, InjectorImpl injector, InjectionPoint point) {
         registerManagedBeanJNDI(instance);
         return instance;
     }
