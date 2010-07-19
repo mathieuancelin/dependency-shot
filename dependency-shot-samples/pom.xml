@@ -14,5 +14,6 @@
     	<module>services</module>
     	<module>swing</module>
     	<module>web</module>
+    	<module>command-runner</module>
     </modules>
 </project>
