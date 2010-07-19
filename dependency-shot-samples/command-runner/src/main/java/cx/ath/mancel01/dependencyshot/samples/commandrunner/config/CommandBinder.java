@@ -18,6 +18,11 @@
 package cx.ath.mancel01.dependencyshot.samples.commandrunner.config;
 
 import cx.ath.mancel01.dependencyshot.graph.Binder;
+import cx.ath.mancel01.dependencyshot.samples.commandrunner.CommandProvider;
+import cx.ath.mancel01.dependencyshot.samples.commandrunner.ParametersProvider;
+import cx.ath.mancel01.dependencyshot.samples.commandrunner.api.CommandContext;
+import cx.ath.mancel01.dependencyshot.samples.commandrunner.api.RunnableCommand;
+import javax.inject.Provider;
 
 /**
  * Binder for the services part of the app.
@@ -26,11 +31,20 @@ import cx.ath.mancel01.dependencyshot.graph.Binder;
  */
 public class CommandBinder extends Binder {
 
+    private CommandContext context;
+
+    public CommandBinder(CommandContext context) {
+        this.context = context;
+    }
+
     /**
      * Configuration of the services module.
      */
     @Override
     public final void configureBindings() {
-        
+        Provider provider = new ParametersProvider(context);
+        bind(String.class).providedBy(provider);
+        bind(Boolean.class).providedBy(provider);
+        bind(RunnableCommand.class).providedBy(new CommandProvider(context));
     }
 }
