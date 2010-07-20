@@ -34,9 +34,13 @@ public class CommandTest {
     public void testCommandRunner() {
         String[] commandLine = {"command1", "-v", "bla"};
         String[] commandLine2 = {"command", "-v", "bla"};
+        String[] commandLine3 = {"command1", "--verbose", "bla"};
+        String[] commandLine4 = {"command2", "bla"};
         CommandRunner runner = new CommandRunner();
         assertTrue(runner.run(commandLine).contains("execute command1 ..."));
         assertTrue(runner.run(commandLine2).contains("Can't find command named : command"));
+        runner.run(commandLine3);
+        runner.run(commandLine4);
     }
 
 }

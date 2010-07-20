@@ -17,10 +17,20 @@
 
 package cx.ath.mancel01.dependencyshot.samples.commandrunner.annotation;
 
+import javax.inject.Qualifier;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
+ * Annotation to specify new param.
  *
  * @author Mathieu ANCELIN
  */
+@Target({ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+@Qualifier
 public @interface Param {
     String name() default "";
     String shortName() default "";
@@ -28,7 +38,7 @@ public @interface Param {
     String defaultValue() default "";
     String description() default "";
     String acceptableValues() default "";
-    boolean multipleInstances() default false;
+    //boolean multipleInstances() default false;
     String separator() default ",";
     boolean primary() default false;
     String i18nKey() default "";

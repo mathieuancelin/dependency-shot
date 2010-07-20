@@ -19,7 +19,11 @@ package cx.ath.mancel01.dependencyshot.samples.commandrunner;
 
 import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
 import cx.ath.mancel01.dependencyshot.injection.util.EnhancedProvider;
+import cx.ath.mancel01.dependencyshot.samples.commandrunner.annotation.Param;
 import cx.ath.mancel01.dependencyshot.samples.commandrunner.api.CommandContext;
+import java.lang.annotation.Annotation;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -35,7 +39,59 @@ public class ParametersProvider implements EnhancedProvider {
 
     @Override
     public Object enhancedGet(InjectionPoint p) {
-        return null;
+
+        String name = p.getMember().getName();
+        Param param = null;
+
+        for (Annotation qualifier : p.getAnnotations()) {
+            if (qualifier instanceof Param) {
+                param = (Param) qualifier;
+            }
+        }
+
+        String description = param.description();
+        String key = param.i18nKey();
+
+        if(!param.name().equals(""))
+            name = param.name();
+
+        String separator = param.shortName();
+        List<String> acceptableValues = Arrays.asList(param.acceptableValues().split(separator));
+        Object value = param.defaultValue();
+  
+        //boolean multiple = param.multipleInstances();
+        boolean optional = param.optional();
+        boolean primary = param.primary();
+        String shortName = param.shortName();
+
+        String prefix = "-";
+            if (!shortName.equals(""))
+                prefix = "--";
+        
+        if (p.getType().equals(Boolean.class)) {
+            if (context.getCommandLineParams().contains(prefix + name))
+                value = true;
+            else
+                if (context.getCommandLineParams().contains("-" + shortName))
+                    value = true;
+                else {
+                    value = false;
+                    if (!optional) {
+                        context.setBadCommand(true);
+                        String error = "Parameter "
+                                + name;
+                                if (!shortName.equals("")) {
+                                    error += " (or \""
+                                        + shortName
+                                        + "\") ";
+                                }
+                                error += "is not present and is mandatory."
+                                + " Retry the command with good arguments.";
+                        context.addMessage(error);
+                    }
+                }
+        }
+        return value;
     }
 
     @Override
