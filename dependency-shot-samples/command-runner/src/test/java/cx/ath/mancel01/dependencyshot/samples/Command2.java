@@ -27,10 +27,10 @@ import javax.inject.Inject;
  *
  * @author Mathieu ANCELIN
  */
-@Command("command1")
-public class Command1 implements RunnableCommand {
+@Command("command2")
+public class Command2 implements RunnableCommand {
 
-    @Inject @Param(shortName="v", optional=true)
+    @Inject @Param(shortName="v", optional=false)
     private Boolean verbose;
 
     @Inject @Param(primary=true)
@@ -38,7 +38,7 @@ public class Command1 implements RunnableCommand {
 
     @Override
     public void execute(CommandContext context) {
-        context.addMessage("execute command1 ...");
+        context.addMessage("execute command2 ...");
         context.addMessage("verbose : " + verbose);
         context.addMessage("path : " + path);
     }

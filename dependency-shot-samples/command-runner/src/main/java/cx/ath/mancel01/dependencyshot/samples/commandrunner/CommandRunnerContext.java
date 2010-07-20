@@ -33,6 +33,8 @@ public class CommandRunnerContext implements CommandContext {
 
     private List<String> messages = new ArrayList<String>();
 
+    private boolean badCommand = false;
+
     @Override
     public List<String> getCommandLineParams() {
         return commandLineParams;
@@ -61,6 +63,16 @@ public class CommandRunnerContext implements CommandContext {
     @Override
     public void addMessage(String message) {
         this.messages.add(message);
+    }
+
+    @Override
+    public boolean isBadCommand() {
+        return badCommand;
+    }
+
+    @Override
+    public void setBadCommand(boolean badCommand) {
+        this.badCommand = badCommand;
     }
 
 }

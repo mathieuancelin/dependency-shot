@@ -17,8 +17,6 @@
 
 package cx.ath.mancel01.dependencyshot.samples.commandrunner;
 
-import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
-import cx.ath.mancel01.dependencyshot.injection.util.EnhancedProvider;
 import cx.ath.mancel01.dependencyshot.samples.commandrunner.annotation.Command;
 import cx.ath.mancel01.dependencyshot.samples.commandrunner.api.CommandContext;
 import java.net.URL;
@@ -27,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.inject.Provider;
 import org.scannotation.AnnotationDB;
 import org.scannotation.ClasspathUrlFinder;
 
@@ -34,7 +33,7 @@ import org.scannotation.ClasspathUrlFinder;
  *
  * @author Mathieu ANCELIN
  */
-public class CommandProvider implements EnhancedProvider {
+public class CommandProvider implements Provider {
 
     private CommandContext context;
 
@@ -71,7 +70,7 @@ public class CommandProvider implements EnhancedProvider {
     }
 
     @Override
-    public Object enhancedGet(InjectionPoint p) {
+    public Object get() {
         String command = context.getRawParams()[0];
         Class commandClazz = availableCommands.get(command);
         if (commandClazz != null) {
@@ -79,15 +78,10 @@ public class CommandProvider implements EnhancedProvider {
                 return commandClazz.newInstance();
             } catch (Exception ex) {
                 Logger.getLogger(CommandProvider.class.getName()).log(Level.SEVERE, null, ex);
-            } 
+            }
         } else {
             return new FakeCommand("Can't find command named : " + command); // TODO try to find matching names
         }
         return null;
-    }
-
-    @Override
-    public Object get() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

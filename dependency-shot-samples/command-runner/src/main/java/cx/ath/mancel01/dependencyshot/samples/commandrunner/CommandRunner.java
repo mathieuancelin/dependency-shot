@@ -42,7 +42,9 @@ public class CommandRunner {
         context.setCommandLineParams(Arrays.asList(params));
         DSInjector injector = DependencyShot.getInjector(new CommandBinder(context));
         RunnableCommand command = injector.getInstance(RunnableCommand.class);
-        command.execute(context);
+        injector.injectInstance(command);
+        if (!context.isBadCommand())
+            command.execute(context);
         List<String> messages = context.getMessages();
         for(String message : messages)
             System.out.println(message);

@@ -37,4 +37,8 @@ public interface CommandContext {
 
     void addMessage(String message);
 
+    boolean isBadCommand();
+
+    void setBadCommand(boolean badCommand);
+
 }

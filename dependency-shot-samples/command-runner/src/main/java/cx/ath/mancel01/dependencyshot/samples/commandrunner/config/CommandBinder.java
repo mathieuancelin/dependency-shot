@@ -20,6 +20,7 @@ package cx.ath.mancel01.dependencyshot.samples.commandrunner.config;
 import cx.ath.mancel01.dependencyshot.graph.Binder;
 import cx.ath.mancel01.dependencyshot.samples.commandrunner.CommandProvider;
 import cx.ath.mancel01.dependencyshot.samples.commandrunner.ParametersProvider;
+import cx.ath.mancel01.dependencyshot.samples.commandrunner.annotation.Param;
 import cx.ath.mancel01.dependencyshot.samples.commandrunner.api.CommandContext;
 import cx.ath.mancel01.dependencyshot.samples.commandrunner.api.RunnableCommand;
 import javax.inject.Provider;
@@ -42,9 +43,9 @@ public class CommandBinder extends Binder {
      */
     @Override
     public final void configureBindings() {
-        Provider provider = new ParametersProvider(context);
-        bind(String.class).providedBy(provider);
-        bind(Boolean.class).providedBy(provider);
+        ParametersProvider provider = new ParametersProvider(context);
+        bind(String.class).annotatedWith(Param.class).providedBy(provider);
+        bind(Boolean.class).annotatedWith(Param.class).providedBy(provider);
         bind(RunnableCommand.class).providedBy(new CommandProvider(context));
     }
 }
