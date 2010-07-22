@@ -55,8 +55,7 @@ public class ParametersProvider implements EnhancedProvider {
         if(!param.name().equals(""))
             name = param.name();
 
-        String separator = param.shortName();
-        List<String> acceptableValues = Arrays.asList(param.acceptableValues().split(separator));
+        List<String> acceptableValues = Arrays.asList(param.acceptableValues().split(","));
         Object value = param.defaultValue();
   
         //boolean multiple = param.multipleInstances();
