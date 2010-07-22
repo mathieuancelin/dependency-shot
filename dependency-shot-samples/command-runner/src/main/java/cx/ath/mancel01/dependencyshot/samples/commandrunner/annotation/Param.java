@@ -39,7 +39,7 @@ public @interface Param {
     String description() default "";
     String acceptableValues() default "";
     //boolean multipleInstances() default false;
-    String separator() default ",";
+    //String separator() default ",";
     boolean primary() default false;
     String i18nKey() default "";
 }
