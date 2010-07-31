@@ -12,7 +12,6 @@
                 <include>cx.ath.mancel01:dependency-shot-core</include>
                 <include>cx.ath.mancel01:dependency-shot-lifecycle</include>
                 <include>cx.ath.mancel01:dependency-shot-utils</include>
-                <include>cx.ath.mancel01:dependency-shot-web</include>
                 <include>javax.inject:javax.inject</include>
             </includes>
         </dependencySet>

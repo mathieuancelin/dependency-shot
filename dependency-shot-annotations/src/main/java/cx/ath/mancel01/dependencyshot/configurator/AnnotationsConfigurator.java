@@ -41,7 +41,7 @@ import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 
 /**
- * Configurator based on full annoations.
+ * Configurator based on full annotations.
  *
  * @author Mathieu ANCELIN
  */
