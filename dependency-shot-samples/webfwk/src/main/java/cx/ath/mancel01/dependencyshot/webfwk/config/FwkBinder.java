@@ -18,6 +18,8 @@
 package cx.ath.mancel01.dependencyshot.webfwk.config;
 
 import cx.ath.mancel01.dependencyshot.graph.Binder;
+import cx.ath.mancel01.dependencyshot.webfwk.rendering.Renderer;
+import cx.ath.mancel01.dependencyshot.webfwk.rendering.RendererImpl;
 
 /**
  *
@@ -27,6 +29,6 @@ public class FwkBinder extends Binder {
 
     @Override
     public void configureBindings() {
-        
+        bind(Renderer.class).to(RendererImpl.class);
     }
 }
