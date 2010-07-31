@@ -19,15 +19,18 @@ package cx.ath.mancel01.dependencyshot.samples.commandrunner;
 
 import cx.ath.mancel01.dependencyshot.samples.commandrunner.annotation.Command;
 import cx.ath.mancel01.dependencyshot.samples.commandrunner.api.CommandContext;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.ManagedBean;
 import javax.inject.Provider;
-import org.scannotation.AnnotationDB;
-import org.scannotation.ClasspathUrlFinder;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.scanners.TypeAnnotationsScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
 
 /**
  *
@@ -37,31 +40,23 @@ public class CommandProvider implements Provider {
 
     private CommandContext context;
 
-    private static Set<String> classes = null;
-
-    private static URL[] urls = null;
-
-    private static AnnotationDB db = null;
-
     private static Map<String, Class> availableCommands = null;
+
+    private String packagePrefix = "";
 
     public CommandProvider(CommandContext context) {
         try {
             this.context = context;
-            if (urls == null)
-                urls = ClasspathUrlFinder.findClassPaths();
-            if (db == null) {
-                db = new AnnotationDB();
-                db.scanArchives(urls);
-                classes = db.getAnnotationIndex().get(Command.class.getName());
-            }
+            Reflections reflections = new Reflections(new ConfigurationBuilder()
+                .setUrls(ClasspathHelper.getUrlsForPackagePrefix(packagePrefix))
+                .setScanners(new TypeAnnotationsScanner(), new SubTypesScanner()));
+            Set<Class<?>> commands = reflections.getTypesAnnotatedWith(Command.class);
             if (availableCommands == null) {
                 availableCommands = new HashMap<String, Class>();
-                for (String classe : classes) {              
-                        Class clazz = Class.forName(classe);
-                        Command commandAnnotation = (Command) clazz.getAnnotation(Command.class);
-                        String name = commandAnnotation.value();
-                        availableCommands.put(name, clazz);  
+                for (Class clazz : commands) {
+                    Command commandAnnotation = (Command) clazz.getAnnotation(Command.class);
+                    String name = commandAnnotation.value();
+                    availableCommands.put(name, clazz);
                 }
             }
         } catch (Exception ex) {
