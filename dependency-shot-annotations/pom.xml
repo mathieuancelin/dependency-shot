@@ -54,6 +54,11 @@
             <version>1.0.2</version>
             <type>jar</type>
         </dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.5-RC2</version>
+        </dependency>
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -66,4 +71,11 @@
             <comments>A business-friendly OSS license</comments>
         </license>
     </licenses>
+    <repositories>
+        <repository>
+            <id>reflections-repo</id>
+            <name>Reflections Maven2 Repository</name>
+            <url>http://reflections.googlecode.com/svn/repo</url>
+        </repository>
+    </repositories>
 </project>
