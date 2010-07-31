@@ -8,7 +8,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>dependency-shot-samples-swing</artifactId>
-    <name>Dependency-Shot (JSR-330) :: Samples :: SWING</name>
+    <name>Dependency-Shot (JSR-330) :: Samples :: Swing app.</name>
     <url>http://code.google.com/p/dependency-shot/</url>
     <licenses>
         <license>

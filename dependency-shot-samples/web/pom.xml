@@ -8,7 +8,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>dependency-shot-samples-web</artifactId>
-    <name>Dependency-Shot (JSR-330) :: Samples :: Web</name>
+    <name>Dependency-Shot (JSR-330) :: Samples :: Web app.</name>
     <url>http://code.google.com/p/dependency-shot/</url>
     <packaging>war</packaging>
     <licenses>

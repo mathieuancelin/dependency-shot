@@ -8,7 +8,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>dependency-shot-samples-swing-circular</artifactId>
-    <name>Dependency-Shot (JSR-330) :: Samples :: Circular SWING</name>
+    <name>Dependency-Shot (JSR-330) :: Samples :: Circular Swing app.</name>
     <url>http://code.google.com/p/dependency-shot/</url>
     <licenses>
         <license>
