@@ -15,20 +15,15 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.configurator.annotations;
+package com.exemple;
 
-import cx.ath.mancel01.dependencyshot.api.Stage;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import javax.annotation.ManagedBean;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
-@Target({ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface OnStage {
-    Stage value() default Stage.DEVELOPEMENT;
+@ManagedBean
+public class AnotherService {
+
 }

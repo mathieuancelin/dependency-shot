@@ -15,20 +15,19 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.configurator;
+package cx.ath.mancel01.dependencyshot.configurator.annotations;
 
-import cx.ath.mancel01.dependencyshot.DependencyShot;
-import cx.ath.mancel01.dependencyshot.api.DSInjector;
-import org.junit.Test;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
-public class ScanningTest {
-
-    @Test
-    public void testScanning() {
-        DSInjector injector = DependencyShot.getSpecificConfigurator().getInjector();
-    }
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ProvidedBy {
+    Class value();
 }

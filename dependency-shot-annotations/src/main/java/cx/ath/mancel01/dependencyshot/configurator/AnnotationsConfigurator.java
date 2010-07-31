@@ -14,7 +14,6 @@
  *  limitations under the License.
  *  under the License.
  */
-
 package cx.ath.mancel01.dependencyshot.configurator;
 
 import cx.ath.mancel01.dependencyshot.api.Stage;
@@ -22,16 +21,15 @@ import cx.ath.mancel01.dependencyshot.graph.Binder;
 import cx.ath.mancel01.dependencyshot.injection.InjectorBuilder;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.ConfigurationHandler;
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.inject.Inject;
-import org.scannotation.AnnotationDB;
-import org.scannotation.ClasspathUrlFinder;
+import javax.annotation.ManagedBean;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.scanners.TypeAnnotationsScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
 
 /**
  * Configurator based on full annoations.
@@ -40,22 +38,19 @@ import org.scannotation.ClasspathUrlFinder;
  */
 public class AnnotationsConfigurator extends ConfigurationHandler {
 
+    private String packagePrefix = "";
+
     @Override
     public InjectorImpl getInjector(Stage stage, Object... params) {
         Collection<Binder> binders = new ArrayList<Binder>();
-        try {
-            URL[] urls = ClasspathUrlFinder.findClassPaths();
-            AnnotationDB db = new AnnotationDB();
-            db.scanArchives(urls);
-            Set<String> classes = db.getAnnotationIndex().get(Inject.class.getName());
-            
-            for (String clazz : classes) {
-                System.out.println(Class.forName(clazz).getName());
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(AnnotationsConfigurator.class.getName())
-                    .log(Level.SEVERE, null, ex);
+        Reflections reflections = new Reflections(new ConfigurationBuilder()
+                .setUrls(ClasspathHelper.getUrlsForPackagePrefix(packagePrefix))
+                .setScanners(new TypeAnnotationsScanner(), new SubTypesScanner()));
+        Set<Class<?>> managedBeans = reflections.getTypesAnnotatedWith(ManagedBean.class);
+        for (Class clazz : managedBeans) {
+            System.out.println("\nManaged bean : " + clazz.getName());
         }
+        System.out.println("\n");
         return InjectorBuilder.makeInjector(binders, stage);
     }
 
@@ -69,4 +64,8 @@ public class AnnotationsConfigurator extends ConfigurationHandler {
         return true;
     }
 
+    public void setPackagePrefix(String packagePrefix) {
+        this.packagePrefix = packagePrefix;
+    }
+    
 }
