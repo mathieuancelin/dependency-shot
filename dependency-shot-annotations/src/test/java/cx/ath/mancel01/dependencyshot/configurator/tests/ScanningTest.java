@@ -15,20 +15,20 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.configurator.annotations;
+package cx.ath.mancel01.dependencyshot.configurator.tests;
 
-import cx.ath.mancel01.dependencyshot.api.Stage;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import cx.ath.mancel01.dependencyshot.DependencyShot;
+import cx.ath.mancel01.dependencyshot.api.DSInjector;
+import org.junit.Test;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
-@Target({ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface OnStage {
-    Stage value() default Stage.DEVELOPEMENT;
+public class ScanningTest {
+
+    @Test
+    public void testScanning() {
+        DSInjector injector = DependencyShot.getSpecificConfigurator().getInjector();
+    }
 }

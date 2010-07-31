@@ -15,15 +15,18 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.configurator;
+package cx.ath.mancel01.dependencyshot.configurator.tests;
 
 import java.util.logging.Logger;
+import javax.annotation.ManagedBean;
 import javax.inject.Inject;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
+
+@ManagedBean
 public class MyService {
 
     @Inject
