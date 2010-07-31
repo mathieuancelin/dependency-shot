@@ -17,14 +17,23 @@
 package cx.ath.mancel01.dependencyshot.configurator;
 
 import cx.ath.mancel01.dependencyshot.api.Stage;
+import cx.ath.mancel01.dependencyshot.configurator.annotations.OnStage;
+import cx.ath.mancel01.dependencyshot.configurator.annotations.ProvidedBy;
 import cx.ath.mancel01.dependencyshot.graph.Binder;
+import cx.ath.mancel01.dependencyshot.graph.Binding;
 import cx.ath.mancel01.dependencyshot.injection.InjectorBuilder;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.ConfigurationHandler;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.lang.annotation.Annotation;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
+import javax.inject.Named;
+import javax.inject.Provider;
+import javax.inject.Qualifier;
+import javax.inject.Singleton;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.scanners.TypeAnnotationsScanner;
@@ -42,16 +51,55 @@ public class AnnotationsConfigurator extends ConfigurationHandler {
 
     @Override
     public InjectorImpl getInjector(Stage stage, Object... params) {
-        Collection<Binder> binders = new ArrayList<Binder>();
+        Binder binder = new AnnotationBinder();
         Reflections reflections = new Reflections(new ConfigurationBuilder()
                 .setUrls(ClasspathHelper.getUrlsForPackagePrefix(packagePrefix))
                 .setScanners(new TypeAnnotationsScanner(), new SubTypesScanner()));
-        Set<Class<?>> managedBeans = reflections.getTypesAnnotatedWith(ManagedBean.class);
-        for (Class clazz : managedBeans) {
-            System.out.println("\nManaged bean : " + clazz.getName());
+        Set<Class<?>> components = new HashSet<Class<?>>();
+        components.addAll(reflections.getTypesAnnotatedWith(ManagedBean.class));
+        components.addAll(reflections.getTypesAnnotatedWith(Singleton.class));
+        components.addAll(reflections.getTypesAnnotatedWith(Named.class));
+        for(Class<?> clazz : components) {
+            String name = null;
+            Named named = clazz.getAnnotation(Named.class);
+            if (named != null)
+                name = named.value();
+            ProvidedBy providedBy = clazz.getAnnotation(ProvidedBy.class);
+            Provider provider = null;
+            try {
+                if(providedBy != null)
+                    provider = (Provider) providedBy.value().newInstance();
+            } catch (Exception ex) {
+                Logger.getLogger(AnnotationsConfigurator.class.getName())
+                        .log(Level.SEVERE, null, ex);
+            }
+            OnStage onStage = clazz.getAnnotation(OnStage.class);
+            Stage stag = null;
+            if (onStage != null)
+                stag = onStage.value();
+            Annotation[] annotations = clazz.getAnnotations();
+            Class<? extends Annotation> qualifier = null;
+            for(Annotation anno : annotations) {
+                if((anno.annotationType().isAnnotationPresent(Qualifier.class))
+                        && !(anno instanceof Named)) {
+                    qualifier = anno.annotationType();
+                }
+            }
+            if (clazz.getInterfaces().length > 0) {
+                for(Class interf : clazz.getInterfaces()) {
+                    Binding binding = new Binding(
+                            qualifier, name, interf, clazz, provider, stag);
+                    binder.getBindings().put(binding, binding);
+                }
+            } else {
+                Binding binding = new Binding(
+                        qualifier, name, clazz, clazz, provider, stag);
+                binder.getBindings().put(binding, binding);
+            }
         }
-        System.out.println("\n");
-        return InjectorBuilder.makeInjector(binders, stage);
+        for(Binding b : binder.getBindings().values())
+            System.out.println(b);
+        return InjectorBuilder.makeInjector(binder, stage);
     }
 
     @Override
