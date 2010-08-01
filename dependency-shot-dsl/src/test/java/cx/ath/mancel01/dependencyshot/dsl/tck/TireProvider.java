@@ -16,7 +16,7 @@
  */
 package cx.ath.mancel01.dependencyshot.dsl.tck;
 
-import cx.ath.mancel01.dependencyshot.DependencyShot;
+import javax.inject.Inject;
 import javax.inject.Provider;
 import org.atinject.tck.auto.Tire;
 import org.atinject.tck.auto.accessories.SpareTire;
@@ -27,8 +27,12 @@ import org.atinject.tck.auto.accessories.SpareTire;
  */
 public class TireProvider implements Provider{
 
+    @Inject
+    private SpareTire tire;
+
     @Override
     public Tire get() {
-        return (Tire) DependencyShot.getInjector().getInstance(SpareTire.class);
+        //return (Tire) DependencyShot.getInjector().getInstance(SpareTire.class);
+        return (Tire) tire;
     }
 }

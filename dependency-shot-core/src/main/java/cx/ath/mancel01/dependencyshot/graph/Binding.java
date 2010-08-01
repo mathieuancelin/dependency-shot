@@ -225,6 +225,7 @@ public class Binding<T> {
         // TODO : extension point : inject dynamic
         T result = null;
         if (provider != null) {
+            provider = injector.injectInstance(provider);
             if (isImplementingEnhancedProvider(provider.getClass().getGenericInterfaces())) {
                 result = (T) ((EnhancedProvider) provider).enhancedGet(point);
             } else {
