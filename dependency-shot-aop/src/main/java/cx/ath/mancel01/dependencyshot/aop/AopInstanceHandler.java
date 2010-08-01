@@ -40,17 +40,17 @@ public class AopInstanceHandler extends InstanceHandler{
     private List<DSInterceptor> managedInterceptors = new ArrayList<DSInterceptor>();
 
     @Override
-    public <T extends ImplementationValidator> T getValidator() {
+    public final <T extends ImplementationValidator> T getValidator() {
         return (T) new AOPValidator();
     }
 
     @Override
-    public boolean isInstanceValid(Object instance) {
+    public final boolean isInstanceValid(Object instance) {
         return new AOPValidator().isValid(instance);
     }
 
     @Override
-    public Object manipulateInstance(Object instance, Class interf, InjectorImpl injector, InjectionPoint point) {
+    public final Object manipulateInstance(Object instance, Class interf, InjectorImpl injector, InjectionPoint point) {
         return scannInterceptorsAnnotations(instance, interf, injector);
     }
 

@@ -26,7 +26,7 @@ import java.lang.reflect.Proxy;
  */
 public class ServiceProxyFactory {
 
-    public Object getProxyInstance(DynamicService service) {
+    public final Object getProxyInstance(DynamicService service) {
         ServiceProxy proxy = new ServiceProxy(service);
         return Proxy.newProxyInstance(
                 Thread.currentThread().getContextClassLoader(),

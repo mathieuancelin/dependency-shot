@@ -46,23 +46,23 @@ public class Event {
         this.service = service;
     }
 
-    public long getId() {
+    public final long getId() {
         return id;
     }
 
-    public DynamicService getService() {
+    public final DynamicService getService() {
         return service;
     }
 
-    public Object getValue() {
+    public final Object getValue() {
         return value;
     }
 
-    public void setValue(Object value) {
+    public final void setValue(Object value) {
         this.value = value;
     }
 
-    public Type getType() {
+    public final Type getType() {
         return type;
     }
 }

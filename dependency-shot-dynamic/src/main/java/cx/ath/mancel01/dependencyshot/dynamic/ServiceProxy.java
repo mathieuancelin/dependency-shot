@@ -46,12 +46,12 @@ public class ServiceProxy  implements InvocationHandler, Observer  {
     }
 
     @Override
-    public Object invoke(Object o, Method method, Object[] os) throws Throwable {      
+    public final Object invoke(Object o, Method method, Object[] os) throws Throwable {
         return method.invoke(serviceInstance, os);
     }
 
     @Override
-    public void update(Observable o, Object event) {
+    public final void update(Observable o, Object event) {
         this.lastEvent = (Event) event;
         this.serviceInstance = lastEvent.getValue();
     }
