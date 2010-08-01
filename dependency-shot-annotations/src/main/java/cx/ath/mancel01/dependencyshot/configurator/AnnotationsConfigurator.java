@@ -114,10 +114,15 @@ public class AnnotationsConfigurator extends ConfigurationHandler {
                     binder.getBindings().put(binding, binding);
                 }
             } else if (superInterfaces.length > 0) {
-                for (Class interf : superInterfaces) {
-                    Binding binding = new Binding(
-                            qualifier, name, interf, clazz, provider, stag);
-                    binder.getBindings().put(binding, binding);
+                Class superClass = superType;
+                while(superInterfaces.length > 0) {
+                    for (Class interf : superInterfaces) {
+                        Binding binding = new Binding(
+                                qualifier, name, interf, clazz, provider, stag);
+                        binder.getBindings().put(binding, binding);
+                    }
+                    superClass = superClass.getSuperclass();
+                    superInterfaces = superClass.getInterfaces();
                 }
             } else {
                 while (superType != null) {
