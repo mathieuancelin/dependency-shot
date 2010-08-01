@@ -18,6 +18,7 @@
 package cx.ath.mancel01.dependencyshot.test.tck;
 
 import cx.ath.mancel01.dependencyshot.graph.Binder;
+import javax.inject.Inject;
 import javax.inject.Provider;
 import org.atinject.tck.auto.Car;
 import org.atinject.tck.auto.Convertible;
@@ -41,10 +42,14 @@ public class TCKFluentBinder extends Binder {
         bind(Seat.class).annotatedWith(Drivers.class).to(DriversSeat.class);
         bind(Engine.class).to(V8Engine.class);
         bind(Tire.class).named("spare").providedBy(new Provider<Tire>() {
+
+            @Inject
+            private SpareTire tire;
+
   			@Override
   			public Tire get() {
-                return (Tire) getBinderInjector().getInstance(SpareTire.class);
-  			}
+                return (Tire) tire;
+            }
   		});
         /**
          * Not needed since single bindings are automatically detected.
