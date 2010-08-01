@@ -36,7 +36,7 @@ public class AOPValidator extends ImplementationValidator {
     }
 
     @Override
-    public boolean isValid(Object o) {
+    public final boolean isValid(Object o) {
         return isManagedBean(o);
     }
 }

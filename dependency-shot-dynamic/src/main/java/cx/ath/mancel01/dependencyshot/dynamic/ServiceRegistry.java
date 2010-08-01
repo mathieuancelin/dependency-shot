@@ -17,6 +17,7 @@
 
 package cx.ath.mancel01.dependencyshot.dynamic;
 
+import cx.ath.mancel01.dependencyshot.exceptions.DSException;
 import cx.ath.mancel01.dependencyshot.graph.Binding;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import java.util.HashMap;
@@ -30,7 +31,7 @@ import java.util.logging.Logger;
  */
 public class ServiceRegistry {
 
-    private static final Logger logger = Logger.getLogger(ServiceRegistry.class.getName());
+    private static Logger logger = Logger.getLogger(ServiceRegistry.class.getName());
 
     private Map<Binding, DynamicService> dynamicServices;
 
@@ -41,7 +42,7 @@ public class ServiceRegistry {
         factory = new ServiceProxyFactory();
     }
 
-    public Object addService(Binding binding, Object instance, InjectorImpl injector) {
+    public final Object addService(Binding binding, Object instance, InjectorImpl injector) {
         if (!dynamicServices.containsKey(binding)) {
             DynamicService service = new DynamicService(binding, instance, injector);
             dynamicServices.put(binding, service);
@@ -52,14 +53,14 @@ public class ServiceRegistry {
         }
     }
     
-    public Object getService(Binding binding) {
+    public final Object getService(Binding binding) {
         if (dynamicServices.containsKey(binding)) {
             return factory.getProxyInstance(dynamicServices.get(binding));
         }
-        throw new RuntimeException("Can't find service with binding " + binding.toString());
+        throw new DSException("Can't find service with binding " + binding.toString());
     }
 
-    public void removeService(Binding binding) {
+    public final void removeService(Binding binding) {
         if (dynamicServices.containsKey(binding)) {
             dynamicServices.remove(binding);
         } else {
@@ -67,10 +68,10 @@ public class ServiceRegistry {
         }
     }
 
-    public void changeServiceImpl(Binding binding, Class newImpl) {
+    public final void changeServiceImpl(Binding binding, Class newImpl) {
         if (dynamicServices.containsKey(binding)) {
             dynamicServices.get(binding).changeImpl(newImpl);
         }
-        throw new RuntimeException("Can't find service with binding " + binding.toString());
+        throw new DSException("Can't find service with binding " + binding.toString());
     }
 }

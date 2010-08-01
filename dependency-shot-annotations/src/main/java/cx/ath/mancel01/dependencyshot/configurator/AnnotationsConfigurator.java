@@ -54,7 +54,7 @@ public class AnnotationsConfigurator extends ConfigurationHandler {
     private boolean showBindings = false;
 
     @Override
-    public InjectorImpl getInjector(Stage stage, Object... params) {
+    public final InjectorImpl getInjector(Stage stage, Object... params) {
         Binder binder = new AnnotationBinder();
         Reflections reflections = new Reflections(new ConfigurationBuilder()
                 .setUrls(ClasspathHelper.getUrlsForPackagePrefix(packagePrefix))
@@ -149,20 +149,20 @@ public class AnnotationsConfigurator extends ConfigurationHandler {
     }
 
     @Override
-    public Object getDelegate() {
+    public final Object getDelegate() {
         return this;
     }
 
     @Override
-    public boolean isAutoEnabled() {
+    public final boolean isAutoEnabled() {
         return true;
     }
 
-    public void setPackagePrefix(String packagePrefix) {
+    public final void setPackagePrefix(String packagePrefix) {
         this.packagePrefix = packagePrefix;
     }
 
-    public void setShowBindings(boolean showBindings) {
+    public final void setShowBindings(boolean showBindings) {
         this.showBindings = showBindings;
     }
 }

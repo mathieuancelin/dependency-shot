@@ -40,23 +40,23 @@ public class DynamicService extends Observable {
         this.injector = injector;
     }
 
-    public Binding getBinding() {
+    public final Binding getBinding() {
         return binding;
     }
 
-    public Class getImplementation() {
+    public final Class getImplementation() {
         return binding.getTo();
     }
 
-    public Class getInterface() {
+    public final Class getInterface() {
         return binding.getFrom();
     }
 
-    public Object getActualInstance() {
+    public final Object getActualInstance() {
         return actualImplementationInstance;
     }
 
-    public void changeImpl(Class newImpl) {
+    public final void changeImpl(Class newImpl) {
         this.binding.setTo(newImpl);
         this.injector.setBindingsChanged(true);
         Object instance = binding.getInstance(injector, null); // TODO handle injection points
