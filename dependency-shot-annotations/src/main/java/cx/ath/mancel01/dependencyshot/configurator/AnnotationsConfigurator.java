@@ -51,6 +51,8 @@ public class AnnotationsConfigurator extends ConfigurationHandler {
 
     private String packagePrefix = "";
 
+    private boolean showBindings = false;
+
     @Override
     public InjectorImpl getInjector(Stage stage, Object... params) {
         Binder binder = new AnnotationBinder();
@@ -61,58 +63,83 @@ public class AnnotationsConfigurator extends ConfigurationHandler {
         components.addAll(reflections.getTypesAnnotatedWith(ManagedBean.class));
         components.addAll(reflections.getTypesAnnotatedWith(Singleton.class));
         components.addAll(reflections.getTypesAnnotatedWith(Named.class));
-        for(Class<?> clazz : components) {
+        for (Class<?> clazz : components) {
             String name = null;
             Named named = clazz.getAnnotation(Named.class);
-            if (named != null)
+            if (named != null) {
                 name = named.value();
+            }
             ProvidedBy providedBy = clazz.getAnnotation(ProvidedBy.class);
             Provider provider = null;
             try {
-                if(providedBy != null)
+                if (providedBy != null) {
                     provider = (Provider) providedBy.value().newInstance();
+                }
             } catch (Exception ex) {
                 logger.log(Level.SEVERE, null, ex);
             }
             OnStage onStage = clazz.getAnnotation(OnStage.class);
             Stage stag = null;
-            if (onStage != null)
+            if (onStage != null) {
                 stag = onStage.value();
+            }
             Annotation[] annotations = clazz.getAnnotations();
             Class<? extends Annotation> qualifier = null;
             boolean qualifierPresent = false;
-            for(Annotation anno : annotations) {
-                if((anno.annotationType().isAnnotationPresent(Qualifier.class))
-                        && !(anno instanceof Named)) {                   
+            for (Annotation anno : annotations) {
+                if ((anno.annotationType().isAnnotationPresent(Qualifier.class))
+                        && !(anno instanceof Named)) {
                     if (qualifierPresent) {
-                        logger.log(Level.WARNING, new StringBuilder().append("Class ")
-                                .append(clazz.getSimpleName() )
-                                .append(" has more than one qualifier.\n" )
-                                .append("Qualifier @" )
-                                .append(anno.annotationType().getSimpleName())
-                                .append(" will override @" )
-                                .append(qualifier.getSimpleName())
-                                .append(".").toString());
+                        logger.log(Level.WARNING, new StringBuilder()
+                                .append("Class ").append(clazz.getSimpleName())
+                                .append(" has more than one qualifier.\n")
+                                .append("Qualifier @")
+                                .append(anno.annotationType()
+                                .getSimpleName()).append(" will override @")
+                                .append(qualifier.getSimpleName()).append(".")
+                                .toString());
                     } else {
                         qualifierPresent = true;
                     }
                     qualifier = anno.annotationType();
                 }
             }
-            if (clazz.getInterfaces().length > 0) {
-                for(Class interf : clazz.getInterfaces()) {
+            Class<?>[] superInterfaces = clazz.getSuperclass().getInterfaces();
+            Class<?> superType = clazz.getSuperclass();
+            Class<?>[] typeInterfaces = clazz.getInterfaces();
+            if (typeInterfaces.length > 0) {
+                for (Class interf : typeInterfaces) {
+                    Binding binding = new Binding(
+                            qualifier, name, interf, clazz, provider, stag);
+                    binder.getBindings().put(binding, binding);
+                }
+            } else if (superInterfaces.length > 0) {
+                for (Class interf : superInterfaces) {
                     Binding binding = new Binding(
                             qualifier, name, interf, clazz, provider, stag);
                     binder.getBindings().put(binding, binding);
                 }
             } else {
+                while (superType != null) {
+                    if (!superType.equals(Object.class)) {
+                        Binding binding = new Binding(
+                                qualifier, name, superType, clazz, provider, stag);
+                        binder.getBindings().put(binding, binding);
+                        superType = superType.getSuperclass();
+                    } else {
+                        superType = null;
+                    }
+                }
                 Binding binding = new Binding(
                         qualifier, name, clazz, clazz, provider, stag);
                 binder.getBindings().put(binding, binding);
             }
         }
-        for(Binding b : binder.getBindings().values())
-            System.out.println(b);
+        if(showBindings) {
+            for (Binding b : binder.getBindings().values()) {
+                System.out.println(b);
+            }
+        }
         return InjectorBuilder.makeInjector(binder, stage);
     }
 
@@ -129,5 +156,8 @@ public class AnnotationsConfigurator extends ConfigurationHandler {
     public void setPackagePrefix(String packagePrefix) {
         this.packagePrefix = packagePrefix;
     }
-    
+
+    public void setShowBindings(boolean showBindings) {
+        this.showBindings = showBindings;
+    }
 }

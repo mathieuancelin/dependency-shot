@@ -1,5 +1,5 @@
 /*
- *  Copyright 2010 mathieuancelin.
+ *  Copyright 2009 Mathieu ANCELIN.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20,19 +20,24 @@ package cx.ath.mancel01.dependencyshot.configurator.tests;
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import cx.ath.mancel01.dependencyshot.configurator.AnnotationsConfigurator;
-import org.junit.Test;
+import junit.framework.Test;
+import junit.framework.TestSuite;
+import org.atinject.tck.Tck;
+import org.atinject.tck.auto.Car;
 
 /**
- *
+ * The test suite with TCK tests.
+ * 
  * @author Mathieu ANCELIN
  */
-public class ScanningTest {
-
-    @Test
-    public void testScanning() {
+public class AnnotatedTCKTest extends TestSuite {
+    
+    public static Test suite() {
         AnnotationsConfigurator conf = (AnnotationsConfigurator) DependencyShot.getSpecificConfigurator();
-        conf.setPackagePrefix("com.exemple");
+        conf.setPackagePrefix("org.atinject");
         conf.setShowBindings(true);
         final DSInjector injector = conf.getInjector();
+  		Car car = injector.getInstance(Car.class);
+  		return Tck.testsFor(car, false, true);
     }
 }
