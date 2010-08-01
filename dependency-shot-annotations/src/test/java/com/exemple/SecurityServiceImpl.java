@@ -17,16 +17,16 @@
 
 package com.exemple;
 
+import javax.annotation.ManagedBean;
 import javax.inject.Named;
-import javax.inject.Singleton;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
-@Named("service")
-@Singleton
-@Logger
-public class AService {
+@ManagedBean
+@Security
+@Named("another")
+public class SecurityServiceImpl implements Service, SecurityService {
 
 }
