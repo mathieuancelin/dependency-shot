@@ -14,25 +14,24 @@
  *  limitations under the License.
  *  under the License.
  */
-
 package cx.ath.mancel01.dependencyshot.configurator.tests;
 
-import cx.ath.mancel01.dependencyshot.DependencyShot;
-import cx.ath.mancel01.dependencyshot.api.DSInjector;
-import cx.ath.mancel01.dependencyshot.configurator.AnnotationsConfigurator;
-import org.junit.Test;
+import javax.inject.Inject;
+import javax.inject.Provider;
+import org.atinject.tck.auto.Tire;
+import org.atinject.tck.auto.accessories.SpareTire;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
-public class ScanningTest {
+public class TireProvider implements Provider<Tire> {
 
-    @Test
-    public void testScanning() {
-        AnnotationsConfigurator conf = (AnnotationsConfigurator) DependencyShot.getSpecificConfigurator();
-        conf.setPackagePrefix("com.exemple");
-        conf.setShowBindings(true);
-        final DSInjector injector = conf.getInjector();
+    @Inject
+    private SpareTire tire;
+
+    @Override
+    public Tire get() {
+        return (Tire) tire;
     }
 }
