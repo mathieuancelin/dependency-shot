@@ -47,6 +47,8 @@ import org.reflections.util.ConfigurationBuilder;
  */
 public class AnnotationsConfigurator extends ConfigurationHandler {
 
+    private static final Logger logger = Logger.getLogger(AnnotationsConfigurator.class.getName());
+
     private String packagePrefix = "";
 
     @Override
@@ -70,8 +72,7 @@ public class AnnotationsConfigurator extends ConfigurationHandler {
                 if(providedBy != null)
                     provider = (Provider) providedBy.value().newInstance();
             } catch (Exception ex) {
-                Logger.getLogger(AnnotationsConfigurator.class.getName())
-                        .log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, null, ex);
             }
             OnStage onStage = clazz.getAnnotation(OnStage.class);
             Stage stag = null;
@@ -79,9 +80,22 @@ public class AnnotationsConfigurator extends ConfigurationHandler {
                 stag = onStage.value();
             Annotation[] annotations = clazz.getAnnotations();
             Class<? extends Annotation> qualifier = null;
+            boolean qualifierPresent = false;
             for(Annotation anno : annotations) {
                 if((anno.annotationType().isAnnotationPresent(Qualifier.class))
-                        && !(anno instanceof Named)) {
+                        && !(anno instanceof Named)) {                   
+                    if (qualifierPresent) {
+                        logger.log(Level.WARNING, new StringBuilder().append("Class ")
+                                .append(clazz.getSimpleName() )
+                                .append(" has more than one qualifier.\n" )
+                                .append("Qualifier @" )
+                                .append(anno.annotationType().getSimpleName())
+                                .append(" will override @" )
+                                .append(qualifier.getSimpleName())
+                                .append(".").toString());
+                    } else {
+                        qualifierPresent = true;
+                    }
                     qualifier = anno.annotationType();
                 }
             }

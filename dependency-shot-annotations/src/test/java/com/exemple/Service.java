@@ -17,13 +17,10 @@
 
 package com.exemple;
 
-import javax.inject.Singleton;
-
 /**
  *
  * @author Mathieu ANCELIN
  */
-@Singleton
-public class SingletonService implements Service {
+public interface Service {
 
 }

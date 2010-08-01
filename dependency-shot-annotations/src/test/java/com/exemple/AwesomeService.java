@@ -15,25 +15,15 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.configurator.tests;
+package com.exemple;
 
-import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
-import javax.inject.Inject;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
-
 @ManagedBean
-public class MyService {
-
-    @Inject
-    private Logger logger;
-
-    public void log(String log) {
-        logger.info(log);
-    }
+public class AwesomeService {
 
 }

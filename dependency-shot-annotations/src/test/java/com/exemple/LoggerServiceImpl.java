@@ -17,13 +17,16 @@
 
 package com.exemple;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
+@Named("service")
 @Singleton
-public class SingletonService implements Service {
+@Logger
+public class LoggerServiceImpl implements Service, LoggerService {
 
 }
