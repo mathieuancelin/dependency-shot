@@ -39,22 +39,18 @@ public class ParametersProvider implements EnhancedProvider {
 
     @Override
     public Object enhancedGet(InjectionPoint p) {
-
         String name = p.getMember().getName();
         Param param = null;
-
         for (Annotation qualifier : p.getAnnotations()) {
             if (qualifier instanceof Param) {
                 param = (Param) qualifier;
             }
         }
-
         String description = param.description();
         String key = param.i18nKey();
-
-        if(!param.name().equals(""))
+        if(!param.name().equals("")) {
             name = param.name();
-
+        }
         List<String> acceptableValues = Arrays.asList(param.acceptableValues().split(","));
         Object value = param.defaultValue();
   
@@ -64,31 +60,32 @@ public class ParametersProvider implements EnhancedProvider {
         String shortName = param.shortName();
 
         String prefix = "-";
-            if (!shortName.equals(""))
-                prefix = "--";
-        
+        if (!shortName.equals("")) {
+            prefix = "--";
+        }
         if (p.getType().equals(Boolean.class)) {
-            if (context.getCommandLineParams().contains(prefix + name))
+            if (context.getCommandLineParams().contains(prefix + name)) {
                 value = true;
-            else
-                if (context.getCommandLineParams().contains("-" + shortName))
+            } else {
+                if (context.getCommandLineParams().contains("-" + shortName)) {
                     value = true;
-                else {
+                } else {
                     value = false;
                     if (!optional) {
                         context.setBadCommand(true);
-                        String error = "Parameter "
-                                + name;
+                        StringBuilder error = new StringBuilder().append("Parameter ")
+                                .append(name);
                                 if (!shortName.equals("")) {
-                                    error += " (or \""
-                                        + shortName
-                                        + "\") ";
+                                    error.append(" (or \"")
+                                         .append(shortName)
+                                         .append("\") ");
                                 }
-                                error += "is not present and is mandatory."
-                                + " Retry the command with good arguments.";
-                        context.addMessage(error);
+                                error.append("is not present and is mandatory.")
+                                     .append(" Retry the command with good arguments.");
+                        context.addMessage(error.toString());
                     }
                 }
+            }
         }
         return value;
     }
