@@ -32,15 +32,20 @@ public class CommandTest {
 
     @Test
     public void testCommandRunner() {
-        String[] commandLine = {"command1", "-v", "bla"};
+        String[] commandLine  = {"command1", "-v", "bla"};
         String[] commandLine2 = {"command", "-v", "bla"};
         String[] commandLine3 = {"command1", "--verbose", "bla"};
         String[] commandLine4 = {"command2", "bla"};
+        String[] commandLine5 = {"command3", "--path", "blablabla"};
+        String[] commandLine6 = {"command3", "-p", "blablabla"};
         CommandRunner runner = new CommandRunner();
         assertTrue(runner.run(commandLine).contains("execute command1 ..."));
         assertTrue(runner.run(commandLine2).contains("Can't find command named : command"));
+        
         runner.run(commandLine3);
         runner.run(commandLine4);
+        runner.run(commandLine5);
+        runner.run(commandLine6);
     }
 
 }

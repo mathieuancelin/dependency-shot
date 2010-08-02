@@ -54,7 +54,6 @@ public class ParametersProvider implements EnhancedProvider {
         List<String> acceptableValues = Arrays.asList(param.acceptableValues().split(","));
         Object value = param.defaultValue();
   
-        //boolean multiple = param.multipleInstances();
         boolean optional = param.optional();
         boolean primary = param.primary();
         String shortName = param.shortName();
@@ -64,13 +63,70 @@ public class ParametersProvider implements EnhancedProvider {
             prefix = "--";
         }
         if (p.getType().equals(Boolean.class)) {
-            if (context.getCommandLineParams().contains(prefix + name)) {
+            value = handleBooleanParam(value, prefix, name, shortName, optional);
+        }
+        if (p.getType().equals(String.class)) {
+            value = handleStringParam(value, prefix, name, shortName, optional);
+        }
+        return value;
+    }
+
+    @Override
+    public Object get() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    private Object handleBooleanParam(Object value, String prefix,
+            String name, String shortName, boolean optional) {
+        if (context.getCommandLineParams().contains(prefix + name)) {
+            value = true;
+        } else {
+            if (context.getCommandLineParams().contains("-" + shortName)) {
                 value = true;
             } else {
-                if (context.getCommandLineParams().contains("-" + shortName)) {
-                    value = true;
+                value = false;
+                if (!optional) {
+                    context.setBadCommand(true);
+                    StringBuilder error = new StringBuilder().append("Parameter ").append(name);
+                    if (!shortName.equals("")) {
+                        error.append(" (or \"").append(shortName).append("\") ");
+                    }
+                    error.append(" is not present and is mandatory.").append(" Retry the command with good arguments.");
+                    context.addMessage(error.toString());
+                }
+            }
+        }
+        return value;
+    }
+
+    private String handleStringParam(Object value, String prefix,
+                        String name, String shortName, boolean optional) {
+        if (context.getCommandLineParams().contains(prefix + name)) {
+            int index = context.getCommandLineParams().indexOf(prefix + name);
+            try {
+                value = context.getCommandLineParams().get(index + 1);
+            } catch (Exception e) {
+                context.setBadCommand(true);
+                StringBuilder error = new StringBuilder()
+                        .append(e);
+                context.addMessage(error.toString());
+            }
+        } else {
+            if (context.getCommandLineParams().contains("-" + shortName)) {
+                int index = context.getCommandLineParams().indexOf("-" + shortName);
+                try {
+                    value = context.getCommandLineParams().get(index + 1);
+                } catch (Exception e) {
+                    context.setBadCommand(true);
+                    StringBuilder error = new StringBuilder()
+                            .append(e);
+                    context.addMessage(error.toString());
+                }
+            } else {
+                if (isPrimaryPresent()) {
+                    value = getPrimary();
                 } else {
-                    value = false;
+                    value = "NOT FOUND";
                     if (!optional) {
                         context.setBadCommand(true);
                         StringBuilder error = new StringBuilder().append("Parameter ")
@@ -80,18 +136,21 @@ public class ParametersProvider implements EnhancedProvider {
                                          .append(shortName)
                                          .append("\") ");
                                 }
-                                error.append("is not present and is mandatory.")
+                                error.append(" is not present and is mandatory.")
                                      .append(" Retry the command with good arguments.");
                         context.addMessage(error.toString());
                     }
                 }
             }
         }
-        return value;
+        return (String) value;
     }
 
-    @Override
-    public Object get() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    private boolean isPrimaryPresent() {
+        return true;
+    }
+
+    private String getPrimary() {
+        return "primary";
     }
 }
