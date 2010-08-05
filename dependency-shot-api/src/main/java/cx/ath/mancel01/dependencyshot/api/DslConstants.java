@@ -42,5 +42,7 @@ public class DslConstants {
     public static final String BINDING = "binding";
 
     public static final String BINDINGS = "bindings";
+
+    public static final String IMPORT = "importBindingsFrom";
     
 }
