@@ -237,11 +237,15 @@ public class InjectorImpl implements DSInjector {
         if (b != null) {
             return b;
         } else {
-            // add binding for single bindings
-            this.bindings.put(new Binding<T>(null, null,
-                    c, c, null, null), new Binding<T>(null, null,
-                    c, c, null, null));
-            b = getBinding(c, annotation);
+            if (!c.isInterface()) {
+                // add binding for single bindings
+                this.bindings.put(new Binding<T>(null, null,
+                        c, c, null, null), new Binding<T>(null, null,
+                        c, c, null, null));
+                b = getBinding(c, annotation);
+            } else {
+                // TODO : search for classes implementing interface
+            }
             if (b != null) {
                 return b;
             }
