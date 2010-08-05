@@ -24,8 +24,8 @@ import cx.ath.mancel01.dependencyshot.api.Stage;
  * 
  * @author Mathieu ANCELIN
  */
-public final class InjectorBuilder { //TODO : manage multiple binder injection
-                                     //TODO : with different config in one injector (or container ?)
+public final class InjectorBuilder { 
+                                     
     /**
      * Private constructor.
      */
