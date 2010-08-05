@@ -17,6 +17,7 @@
 
 package cx.ath.mancel01.dependencyshot.test.cyclic;
 
+import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import javax.inject.Inject;
 
 /**
@@ -25,14 +26,18 @@ import javax.inject.Inject;
  */
 public class BillingService {
 
-    @Inject
+    //@Inject
     private LoggerService logger;
+
+    @Inject
+    private DSInjector injector;
 
     @Inject
     private Account account;
 
     public void chargeAccountFor(int ammountOfMoney) {
         account.charge(ammountOfMoney);
+        logger = injector.getInstance(LoggerService.class);
         logger.log("Billing service is charging " + ammountOfMoney);
         logger.log("There is " + account.getMoney() + " left on account");
     }
