@@ -20,6 +20,7 @@ package cx.ath.mancel01.dependencyshot.utils;
 import cx.ath.mancel01.dependencyshot.api.annotations.InjectLogger;
 import cx.ath.mancel01.dependencyshot.api.annotations.Property;
 import cx.ath.mancel01.dependencyshot.graph.Binding;
+import cx.ath.mancel01.dependencyshot.graph.BindingBuilder;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.BindingsProvider;
 import java.util.ArrayList;
@@ -35,10 +36,21 @@ public class UtilsProvider extends BindingsProvider {
     @Override
     public Collection<Binding> getProvidedBindings(InjectorImpl injector) {
         ArrayList<Binding> bindings = new ArrayList<Binding>();
-        bindings.add(new Binding(InjectLogger.class, null, Logger.class,
-                Logger.class, new LoggerProvider(), null));
-        bindings.add(new Binding(Property.class, null, String.class,
-                String.class, new PropertiesProvider(injector), null));
+
+        bindings.add(BindingBuilder
+                .prepareBindingThat()
+                .bind(Logger.class)
+                .annotatedWith(InjectLogger.class)
+                .providedBy(new LoggerProvider())
+                .build());
+
+        bindings.add(BindingBuilder
+                .prepareBindingThat()
+                .bind(String.class)
+                .annotatedWith(Property.class)
+                .providedBy(new PropertiesProvider(injector))
+                .build());
+
         return bindings;
     }
 
