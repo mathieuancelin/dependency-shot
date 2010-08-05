@@ -81,6 +81,10 @@ public class InjectorImpl implements DSInjector {
 
     private boolean bindingsChanged = false;
 
+    private ClassHandler classHandler;
+
+    private ConstructorHandler constructorHandler;
+
     /**
      * The constructor.
      */
@@ -88,7 +92,9 @@ public class InjectorImpl implements DSInjector {
         binders = new ArrayList();
         singletonContext = new HashMap<Class<?>, Object>();
         instanciatedClasses = new HashMap<Class<?>, Object>();
-        PluginsLoader.getInstance().loadPlugins(this);
+        classHandler = new ClassHandler();
+        constructorHandler = new ConstructorHandler();
+        PluginsLoader.getInstance().loadPlugins(this);  
     }
     /**
      * The constructor.
@@ -100,6 +106,8 @@ public class InjectorImpl implements DSInjector {
         singletonContext = new HashMap<Class<?>, Object>();
         instanciatedClasses = new HashMap<Class<?>, Object>();
         this.stage = stage;
+        classHandler = new ClassHandler();
+        constructorHandler = new ConstructorHandler();
         PluginsLoader.getInstance().loadPlugins(this);
     }
 
@@ -273,10 +281,10 @@ public class InjectorImpl implements DSInjector {
             try {
                 instanciatedClasses.put(c, null);
                 // create a new instance of a class
-                T result = ConstructorHandler.getConstructedInstance(c, this);
+                T result = constructorHandler.getConstructedInstance(c, this);
                 instanciatedClasses.put(c, result);
                 // and inject it !!
-                ClassHandler.classInjection(result, c, new ArrayList<Method>(), false, this);
+                classHandler.classInjection(result, c, new ArrayList<Method>(), false, this);
                 instanciatedClasses.remove(c);
                 return result;
             } catch (Exception e) {
@@ -306,7 +314,7 @@ public class InjectorImpl implements DSInjector {
         try {
             T result = instance;
             // and inject it !!
-            ClassHandler.classInjection(result,
+            classHandler.classInjection(result,
                     instance.getClass(), new ArrayList<Method>(), false, this);
             return result;
         } catch (Exception e) {
@@ -323,7 +331,7 @@ public class InjectorImpl implements DSInjector {
     public final void injectStatics(Class<?> c) {
         try {
             List<Method> emptyList = Collections.emptyList();
-            ClassHandler.classInjection(null, c, emptyList, true, this);
+            classHandler.classInjection(null, c, emptyList, true, this);
         } catch (Exception e) {
             throw new DSException("Could not inject static members for " + c, e);
         }

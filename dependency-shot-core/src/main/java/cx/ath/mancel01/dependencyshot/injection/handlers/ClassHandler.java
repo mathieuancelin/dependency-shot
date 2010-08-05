@@ -33,10 +33,17 @@ import java.util.logging.Logger;
 public final class ClassHandler {
 
     private static final Logger logger = Logger.getLogger(ClassHandler.class.getSimpleName());
+
+    private FieldsHandler fieldsHandler;
+
+    private MethodHandler methodHandler;
     /**
      * Constructor.
      */
-    private ClassHandler() {}
+    public ClassHandler() {
+        fieldsHandler = new FieldsHandler();
+        methodHandler = new MethodHandler();
+    }
 
     /**
      * Perform a complete injection on an object instance.
@@ -51,7 +58,7 @@ public final class ClassHandler {
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      */
-    public static <T> void classInjection(
+    public <T> void classInjection(
             T instance,
             Class<?> c,
             List<Method> maybeOverrides,
@@ -69,8 +76,8 @@ public final class ClassHandler {
 			classInjection(instance, superclass, overideMethodOfTheClass, staticInjection, injector);
 		}
         // inject fields of the instance
-		FieldsHandler.fieldsInjection(instance, c, staticInjection, injector);
+		fieldsHandler.fieldsInjection(instance, c, staticInjection, injector);
         // inject methods of the instance
-		MethodHandler.methodsInjection(instance, c, maybeOverrides, staticInjection, injector);
+		methodHandler.methodsInjection(instance, c, maybeOverrides, staticInjection, injector);
 	}
 }

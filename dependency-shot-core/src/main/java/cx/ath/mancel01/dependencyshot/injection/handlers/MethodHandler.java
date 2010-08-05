@@ -38,7 +38,7 @@ public final class MethodHandler {
     /**
      * Constructor.
      */
-    private MethodHandler() {}
+    public MethodHandler() {}
     /**
      * Inject all injectable methods of an object.
      * 
@@ -52,7 +52,7 @@ public final class MethodHandler {
      * @throws IllegalArgumentException
      * @throws InvocationTargetException
      */
-    public static <T> void methodsInjection(T instance, Class<?> c,
+    public <T> void methodsInjection(T instance, Class<?> c,
             List<Method> maybeOverrides,
             boolean staticInjection,
             InjectorImpl injector) throws IllegalAccessException,

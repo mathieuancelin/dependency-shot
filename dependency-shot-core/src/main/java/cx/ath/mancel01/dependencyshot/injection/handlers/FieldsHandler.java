@@ -37,7 +37,7 @@ public final class FieldsHandler {
     /**
      * Constructor.
      */
-    private FieldsHandler() {}
+    public FieldsHandler() {}
     /**
      * Inject every fields of an object.
      * 
@@ -48,7 +48,7 @@ public final class FieldsHandler {
      * @param injector the concerned injector.
      * @throws IllegalAccessException
      */
-    public static <T> void fieldsInjection(T instance, Class<?> c,
+    public <T> void fieldsInjection(T instance, Class<?> c,
             boolean staticInjection,
             InjectorImpl injector) throws IllegalAccessException {
 		Field[] fieldsOfTheClass = c.getDeclaredFields();
