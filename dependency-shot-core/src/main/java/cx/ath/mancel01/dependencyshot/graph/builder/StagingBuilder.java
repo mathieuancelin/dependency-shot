@@ -18,13 +18,14 @@
 package cx.ath.mancel01.dependencyshot.graph.builder;
 
 import cx.ath.mancel01.dependencyshot.api.Stage;
+import cx.ath.mancel01.dependencyshot.graph.Binding;
 
 /**
  * Interface for the binder.
  *
  * @author Mathieu ANCELIN
  */
-public interface StagingBuilder {
+public interface StagingBuilder extends Builder<Binding> {
     /**
      * Specify the stage of the binding.
      *

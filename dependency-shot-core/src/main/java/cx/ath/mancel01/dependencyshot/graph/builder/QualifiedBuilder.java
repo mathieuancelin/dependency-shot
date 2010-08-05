@@ -17,6 +17,7 @@
 
 package cx.ath.mancel01.dependencyshot.graph.builder;
 
+import cx.ath.mancel01.dependencyshot.graph.Binding;
 import javax.inject.Provider;
 
 /**
@@ -24,7 +25,7 @@ import javax.inject.Provider;
  * 
  * @author Mathieu ANCELIN
  */
-public interface QualifiedBuilder {
+public interface QualifiedBuilder extends Builder<Binding> {
     /**
      * The target class for a binding.
      *
