@@ -36,7 +36,10 @@ public final class ManagedBeanHandler extends InstanceHandler {
     private static final Logger logger = Logger.getLogger(ManagedBeanHandler.class.getSimpleName());
 
     public static boolean isManagedBean(Object o) {
-        return isManagedBean(o.getClass());
+        if (o != null) {
+            return isManagedBean(o.getClass());
+        }
+        return false;
     }
 
     public static boolean isManagedBean(Class clazz) {

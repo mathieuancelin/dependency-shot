@@ -60,12 +60,12 @@ public class LifecycleServiceImpl implements LifecycleService {
 
     @PostConstruct
     private void load() {
-        //System.out.println("Load LifecycleServiceImpl : " + this.getClass().getName());
+        System.out.println("Load LifecycleServiceImpl : " + this.getClass().getSimpleName());
         LifecycleCounter.getInstance().incrementLoad();
     }
     @PreDestroy
     private void unload() {
-        //System.out.println("Unload LifecycleServiceImpl : " + this.getClass().getName());
+        System.out.println("Unload LifecycleServiceImpl : " + this.getClass().getSimpleName());
         LifecycleCounter.getInstance().incrementUnload();
     }
 }
