@@ -39,7 +39,7 @@ public final class ConstructorHandler {
     /**
      * Constructor.
      */
-    private ConstructorHandler() {}
+    public ConstructorHandler() {}
 
     /**
      * Return an instance of an object by constructor invocation.
@@ -52,7 +52,7 @@ public final class ConstructorHandler {
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      */
-    public static <T> T getConstructedInstance(Class<T> c, InjectorImpl injector) 
+    public <T> T getConstructedInstance(Class<T> c, InjectorImpl injector) 
             throws InstantiationException,
                    IllegalAccessException,
                    InvocationTargetException {
