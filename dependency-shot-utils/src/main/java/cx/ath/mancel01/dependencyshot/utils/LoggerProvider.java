@@ -18,7 +18,6 @@
 package cx.ath.mancel01.dependencyshot.utils;
 
 import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
-import cx.ath.mancel01.dependencyshot.injection.handlers.ClassHandler;
 import cx.ath.mancel01.dependencyshot.injection.util.EnhancedProvider;
 import java.util.logging.Logger;
 
@@ -35,7 +34,8 @@ public class LoggerProvider implements EnhancedProvider {
 
     @Override
     public final Object get() {
-        return Logger.getLogger(ClassHandler.getCurrentlyInjected().getName());
+        throw new UnsupportedOperationException(
+                "This operation isn't supported on EnhancedProvider.");
     }
 
 }

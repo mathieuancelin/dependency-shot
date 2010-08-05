@@ -165,12 +165,13 @@ public class InjectorImpl implements DSInjector {
                 bindings.put(binding, binding);
             }
 
+            final DSInjector injector = this;
             Binding injectorBinding = new Binding(null, null, DSInjector.class,
                     DSInjector.class, new Provider() {
 
                 @Override
                 public Object get() {
-                    return ClassHandler.getCurrentInjector();
+                    return injector;
                 }
             }, null);
             bindings.put(injectorBinding, injectorBinding);
