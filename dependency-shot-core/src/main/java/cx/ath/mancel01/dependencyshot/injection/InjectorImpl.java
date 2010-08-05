@@ -94,7 +94,7 @@ public class InjectorImpl implements DSInjector {
         instanciatedClasses = new HashMap<Class<?>, Object>();
         classHandler = new ClassHandler();
         constructorHandler = new ConstructorHandler();
-        PluginsLoader.getInstance().loadPlugins(this);  
+        PluginsLoader.getInstance().loadPlugins(this);
     }
     /**
      * The constructor.
@@ -387,19 +387,18 @@ public class InjectorImpl implements DSInjector {
         this.singletonContext = new HashMap<Class<?>, Object>();
     }
 
-    /**
-     * Callback for the destruction of the injector.
-     *
-     * @throws Throwable
-     */
-    @Override
-    protected final void finalize() throws Throwable {
+    public final void registerShutdownHook() {
+        ShutdownThread thread = new ShutdownThread();
+        thread.setInjector(this);
+        Runtime.getRuntime().addShutdownHook(thread);
+    }
+
+    void shutdownInjector() {
         for (InstanceLifecycleHandler handler : PluginsLoader.getInstance().getLifecycleHandlers()) {
             for (Object o : handler.getManagedInstances()) {
-                handler.handlePreDestroy(null);
+                handler.handlePreDestroy(o);
             }
         }
-        super.finalize();
     }
 
     /**

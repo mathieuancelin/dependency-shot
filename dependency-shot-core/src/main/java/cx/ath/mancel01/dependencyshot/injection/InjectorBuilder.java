@@ -37,6 +37,7 @@ public final class InjectorBuilder {
      */
     public static InjectorImpl makeInjector(final Iterable<? extends DSBinder> binders, Stage stage) {
         InjectorImpl injector = new InjectorImpl(stage);
+        injector.registerShutdownHook();
         injector.resetBinders();
         for (DSBinder binder : binders) {
             injector.addBinder(binder);
@@ -51,6 +52,7 @@ public final class InjectorBuilder {
      */
     public static InjectorImpl makeInjector(final DSBinder binder, Stage stage) {
         InjectorImpl injector = new InjectorImpl(stage);
+        injector.registerShutdownHook();
         injector.resetBinders();
         injector.addBinder(binder);
         injector.configureBinders();
