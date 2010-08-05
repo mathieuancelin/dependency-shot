@@ -193,7 +193,11 @@ public class InjectorImpl implements DSInjector {
             return getInstance(c, null, null);
         } finally {
             if (DependencyShot.DEBUG) {
-                logger.info("Time elapsed for injection : " + (System.currentTimeMillis() - start) + " ms.");
+                logger.info(new StringBuilder()
+                        .append("Time elapsed for injection : ")
+                        .append(System.currentTimeMillis() - start)
+                        .append(" ms.")
+                        .toString());
             }
         }
     }

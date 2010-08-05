@@ -242,6 +242,22 @@ public abstract class Binder implements DSBinder,
     }
 
     /**
+     * Allow user to import multiple exisiting binder in one main binder.
+     *
+     * @param binders binders instance to import.
+     */
+    public final void importBindingsFrom(Binder... binders) {
+        for(Binder binder : binders) {
+            binder.setInjector(binderInjector);
+            binder.configureBindings();
+            binder.configureLastBinding();
+            for (Binding binding : binder.getBindings().values()) {
+                this.addBindingToBinder(binding);
+            }
+        }
+    }
+
+    /**
      * @return actual bindings in this binder.
      */
     public final Map<Binding<?>, Binding<?>> getBindings() {
