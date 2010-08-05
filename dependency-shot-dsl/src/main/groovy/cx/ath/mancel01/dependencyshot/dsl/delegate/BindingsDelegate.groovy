@@ -48,7 +48,10 @@ class BindingsDelegate {
                     } else
                         binding = new Binding(args[0])
                     this.binder.bindings.put(binding, binding)
-                } else {
+                } //else if (name == DslConstants.IMPORT) {
+                //    this.binder.importBindingsFrom(args[0]);
+                //}
+                else {
                     throw new MissingMethodException(name, this.class, args as Object[])
                 }
             }
