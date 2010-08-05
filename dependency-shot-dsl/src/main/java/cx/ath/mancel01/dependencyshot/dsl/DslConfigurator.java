@@ -33,6 +33,7 @@ import java.util.logging.Logger;
  */
 public class DslConfigurator extends ConfigurationHandler {
 
+    private static final Logger logger = Logger.getLogger(DslConfigurator.class.getSimpleName());
     /**
      * {@inheritDoc}
      */
@@ -45,7 +46,7 @@ public class DslConfigurator extends ConfigurationHandler {
                     DslRunner runner = new cx.ath.mancel01.dependencyshot.dsl.Runner();
                     binders.add(runner.getBindings((String) o));
                 } catch (Exception ex) {
-                    Logger.getAnonymousLogger().severe(ex.getLocalizedMessage());
+                    logger.severe(ex.getLocalizedMessage());
                 }
             }
         }

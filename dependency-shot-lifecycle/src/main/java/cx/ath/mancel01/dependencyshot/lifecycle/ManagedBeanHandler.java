@@ -33,6 +33,8 @@ import javax.naming.InitialContext;
  */
 public final class ManagedBeanHandler extends InstanceHandler {
 
+    private static final Logger logger = Logger.getLogger(ManagedBeanHandler.class.getSimpleName());
+
     public static boolean isManagedBean(Object o) {
         return isManagedBean(o.getClass());
     }
@@ -74,8 +76,7 @@ public final class ManagedBeanHandler extends InstanceHandler {
                     }
                 }
             } catch (Exception ex) {
-                Logger.getLogger(ManagedBeanHandler.class.getName())
-                        .log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, null, ex);
             }
         }
     }

@@ -22,6 +22,7 @@ import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
+import java.util.logging.Logger;
 import javax.inject.Inject;
 
 /**
@@ -30,6 +31,8 @@ import javax.inject.Inject;
  * @author Mathieu ANCELIN
  */
 public final class FieldsHandler {
+
+    private static final Logger logger = Logger.getLogger(FieldsHandler.class.getSimpleName());
 
     /**
      * Constructor.

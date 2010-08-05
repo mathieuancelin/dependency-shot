@@ -34,6 +34,8 @@ import javax.annotation.PreDestroy;
  */
 public final class LifecycleHandler  extends InstanceLifecycleHandler {
 
+    private static final Logger logger = Logger.getLogger(LifecycleHandler.class.getSimpleName());
+
     private Collection<Object> managedInstances = new ArrayList<Object>();
 
     @Override
@@ -82,8 +84,7 @@ public final class LifecycleHandler  extends InstanceLifecycleHandler {
                 try {
                     method.invoke(o, parameters);
                 } catch (Exception ex) {
-                    Logger.getLogger(LifecycleHandler.class.getName()).
-                            log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, null, ex);
                 } finally {
                     // if method was private, then put it private back
                     if (!accessible) {
@@ -113,8 +114,7 @@ public final class LifecycleHandler  extends InstanceLifecycleHandler {
                 try {
                     method.invoke(o, parameters);
                 } catch (Exception ex) {
-                    Logger.getLogger(LifecycleHandler.class.getName()).
-                            log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, null, ex);
                 } finally {
                     // if method was private, then put it private back
                     if (!accessible) {

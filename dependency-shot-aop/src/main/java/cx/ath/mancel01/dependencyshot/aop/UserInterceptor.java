@@ -31,6 +31,7 @@ import java.util.logging.Logger;
  */
 public class UserInterceptor implements DSInterceptor {
 
+    private static final Logger logger = Logger.getLogger(UserInterceptor.class.getSimpleName());
     /**
      * The intercepted method.
      */
@@ -76,7 +77,7 @@ public class UserInterceptor implements DSInterceptor {
             }
             return this.interceptMethod.invoke(interceptedObject, invocation);
         } catch (Exception ex) {
-            Logger.getLogger(UserInterceptor.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
             throw new InvocationException(ex);
         } 
     }

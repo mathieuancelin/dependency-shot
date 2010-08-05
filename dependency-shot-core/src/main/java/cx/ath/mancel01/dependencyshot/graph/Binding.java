@@ -321,7 +321,8 @@ public class Binding<T> {
     @Override
     public final String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append(getClass().getSimpleName() + " [");
+        builder.append(getClass().getSimpleName());
+        builder.append(" [");
         if (from != null) {
             builder.append("from=");
             builder.append(from.getName());

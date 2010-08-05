@@ -47,7 +47,7 @@ import org.reflections.util.ConfigurationBuilder;
  */
 public class AnnotationsConfigurator extends ConfigurationHandler {
 
-    private static final Logger logger = Logger.getLogger(AnnotationsConfigurator.class.getName());
+    private static final Logger logger = Logger.getLogger(AnnotationsConfigurator.class.getSimpleName());
 
     private String packagePrefix = "";
 

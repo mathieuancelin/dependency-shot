@@ -24,6 +24,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
+import java.util.logging.Logger;
 import javax.inject.Inject;
 
 /**
@@ -32,6 +33,8 @@ import javax.inject.Inject;
  * @author Mathieu ANCELIN
  */
 public final class ConstructorHandler {
+
+    private static final Logger logger = Logger.getLogger(ConstructorHandler.class.getSimpleName());
 
     /**
      * Constructor.

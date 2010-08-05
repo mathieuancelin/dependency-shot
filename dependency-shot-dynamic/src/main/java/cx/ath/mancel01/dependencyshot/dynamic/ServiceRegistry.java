@@ -31,7 +31,7 @@ import java.util.logging.Logger;
  */
 public class ServiceRegistry {
 
-    private static Logger logger = Logger.getLogger(ServiceRegistry.class.getName());
+    private static final Logger logger = Logger.getLogger(ServiceRegistry.class.getSimpleName());
 
     private Map<Binding, DynamicService> dynamicServices;
 

@@ -17,6 +17,8 @@
 
 package cx.ath.mancel01.dependencyshot.event;
 
+import java.util.logging.Logger;
+
 /**
  * A manager for internal event.
  * The generated events will be broadcasted to SPI extension points.
@@ -24,5 +26,7 @@ package cx.ath.mancel01.dependencyshot.event;
  * @author Mathieu ANCELIN
  */
 public class EventManager {
+
+    private static final Logger logger = Logger.getLogger(EventManager.class.getSimpleName());
 
 }

@@ -31,7 +31,7 @@ import javax.naming.InitialContext;
  */
 public class JndiProvider implements EnhancedProvider {
 
-    private Logger logger = Logger.getLogger(JndiProvider.class.getName());
+    private static final Logger logger = Logger.getLogger(JndiProvider.class.getSimpleName());
 
     @Override
     public final Object enhancedGet(InjectionPoint p) {
