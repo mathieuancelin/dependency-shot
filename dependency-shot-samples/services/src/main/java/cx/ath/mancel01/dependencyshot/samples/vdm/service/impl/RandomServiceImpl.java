@@ -18,11 +18,11 @@ package cx.ath.mancel01.dependencyshot.samples.vdm.service.impl;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
-import cx.ath.mancel01.dependencyshot.api.annotations.InjectLogger;
 import cx.ath.mancel01.dependencyshot.samples.vdm.config.VdmUrl;
 import cx.ath.mancel01.dependencyshot.samples.vdm.model.Random;
 import cx.ath.mancel01.dependencyshot.samples.vdm.model.Vdm;
 import cx.ath.mancel01.dependencyshot.samples.vdm.service.RandomService;
+import cx.ath.mancel01.dependencyshot.utils.annotations.Log;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -43,7 +43,7 @@ public class RandomServiceImpl implements RandomService {
     /**
      * The logger of the service;
      */
-    @Inject @InjectLogger
+    @Inject @Log
     private Logger logger;
 
     /**

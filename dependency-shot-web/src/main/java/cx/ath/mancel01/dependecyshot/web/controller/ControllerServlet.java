@@ -22,7 +22,7 @@ import cx.ath.mancel01.dependecyshot.web.handlers.LifecycleHandler;
 import cx.ath.mancel01.dependecyshot.web.handlers.RequestHandler;
 import cx.ath.mancel01.dependecyshot.web.listeners.DependencyShotListener;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
-import cx.ath.mancel01.dependencyshot.api.annotations.InjectLogger;
+import cx.ath.mancel01.dependencyshot.utils.annotations.Log;
 import java.io.IOException;
 import java.util.logging.Logger;
 import javax.inject.Inject;
@@ -41,8 +41,7 @@ public abstract class ControllerServlet extends HttpServlet {
     /**
      * The logger of the controller;
      */
-    @Inject
-    @InjectLogger
+    @Inject @Log
     protected Logger logger;
 
     /**
