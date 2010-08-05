@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.ManagedBean;
 import javax.inject.Provider;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
