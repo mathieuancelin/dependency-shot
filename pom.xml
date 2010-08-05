@@ -7,6 +7,20 @@
     <version>1.0-SNAPSHOT</version>
     <name>Dependency-Shot (JSR-330)</name>
     <url>http://code.google.com/p/dependency-shot/</url>
+    <modules>
+        <module>dependency-shot-api</module>
+        <module>dependency-shot-aop</module>
+        <module>dependency-shot-core</module>
+        <module>dependency-shot-dynamic</module>
+        <module>dependency-shot-distribution</module>
+        <module>dependency-shot-lifecycle</module>
+        <module>dependency-shot-reflect</module>
+        <module>dependency-shot-samples</module>
+        <module>dependency-shot-utils</module>
+        <module>dependency-shot-web</module>
+        <module>dependency-shot-dsl</module>
+        <module>dependency-shot-annotations</module>
+    </modules>
     <build>
         <plugins>
             <plugin>
@@ -34,20 +48,6 @@
             </extension>
         </extensions>
     </build>
-    <modules>
-        <module>dependency-shot-api</module>
-        <module>dependency-shot-aop</module>
-        <module>dependency-shot-core</module>
-        <module>dependency-shot-dynamic</module>
-        <module>dependency-shot-distribution</module>
-        <module>dependency-shot-lifecycle</module>
-        <module>dependency-shot-reflect</module>
-        <module>dependency-shot-samples</module>
-        <module>dependency-shot-utils</module>
-        <module>dependency-shot-web</module>
-        <module>dependency-shot-dsl</module>
-        <module>dependency-shot-annotations</module>
-  </modules>
     <dependencyManagement>
         <dependencies>
             <dependency>
