@@ -23,6 +23,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.inject.Inject;
 
 /**
@@ -31,6 +32,8 @@ import javax.inject.Inject;
  * @author Mathieu ANCELIN
  */
 public final class MethodHandler {
+
+    private static final Logger logger = Logger.getLogger(MethodHandler.class.getSimpleName());
 
     /**
      * Constructor.

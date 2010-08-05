@@ -32,7 +32,7 @@ public abstract class InstanceHandler {
     /**
      * Logger.
      */
-    private static Logger logger = Logger.getLogger(InstanceHandler.class.getName());
+    private static final Logger logger = Logger.getLogger(InstanceHandler.class.getSimpleName());
     /**
      * @return the validator for this handler.
      */
@@ -62,18 +62,22 @@ public abstract class InstanceHandler {
     public Object handleInstance(Object instance, Class interf, InjectorImpl injector, InjectionPoint point) {
         if (isInstanceValid(instance)) {
             if (DependencyShot.DEBUG) {
-                logger.info("Instance '"
-                        + instance.toString()
-                        + "' handled by "
-                        + this.getClass().getSimpleName());
+                logger.info(new StringBuilder()
+                        .append("Instance '")
+                        .append(instance.toString())
+                        .append("' handled by ")
+                        .append(this.getClass().getSimpleName())
+                        .toString());
             }
             return manipulateInstance(instance, interf, injector, point);
         } else {
             if (DependencyShot.DEBUG) {
-                logger.info("Instance '"
-                        + instance.toString()
-                        + "' can't be handled by "
-                        + this.getClass().getSimpleName());
+                logger.info(new StringBuilder()
+                        .append("Instance '")
+                        .append(instance.toString())
+                        .append("' can't be handled by ")
+                        .append(this.getClass().getSimpleName())
+                        .toString());
             }
             return instance;
         }

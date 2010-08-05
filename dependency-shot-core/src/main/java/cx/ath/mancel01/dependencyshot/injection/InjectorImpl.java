@@ -56,7 +56,7 @@ public class InjectorImpl implements DSInjector {
 
     private boolean allowCircularDependencies = false;
 
-    private Logger logger = Logger.getLogger(InjectorImpl.class.getSimpleName());
+    private static final Logger logger = Logger.getLogger(InjectorImpl.class.getSimpleName());
     /**
      * Binders linked to the project.
      */

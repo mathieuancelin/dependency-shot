@@ -34,7 +34,7 @@ public final class PluginsLoader {
     /**
      * Logger.
      */
-    private static Logger logger = Logger.getLogger(PluginsLoader.class.getName());
+    private static final Logger logger = Logger.getLogger(PluginsLoader.class.getSimpleName());
     /**
      * The unique instance of the class.
      */

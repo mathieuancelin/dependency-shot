@@ -24,6 +24,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Utility class that handle injection on Classes.
@@ -31,6 +32,8 @@ import java.util.List;
  * @author Mathieu ANCELIN
  */
 public final class ClassHandler {
+
+    private static final Logger logger = Logger.getLogger(ClassHandler.class.getSimpleName());
     /**
      * The current injected class.
      */

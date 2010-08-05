@@ -18,7 +18,6 @@
 package cx.ath.mancel01.dependencyshot.aop;
 
 import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
-import cx.ath.mancel01.dependencyshot.graph.Binding;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.ImplementationValidator;
 import cx.ath.mancel01.dependencyshot.spi.InstanceHandler;
@@ -36,6 +35,8 @@ import javax.interceptor.Interceptors;
  * @author mathieu
  */
 public class AopInstanceHandler extends InstanceHandler{
+
+    private static final Logger logger = Logger.getLogger(AopInstanceHandler.class.getSimpleName());
 
     private List<DSInterceptor> managedInterceptors = new ArrayList<DSInterceptor>();
 
@@ -125,7 +126,7 @@ public class AopInstanceHandler extends InstanceHandler{
                     }
                 }
             } catch (Exception ex) {
-                Logger.getLogger(Binding.class.getName()).log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -153,7 +154,7 @@ public class AopInstanceHandler extends InstanceHandler{
                     }
                 }
             } catch (Exception ex) {
-                Logger.getLogger(Binding.class.getName()).log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, null, ex);
             }
         }
     }
