@@ -15,13 +15,13 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.api.annotations;
+package cx.ath.mancel01.dependencyshot.utils.annotations;
 
-import javax.inject.Qualifier;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import javax.inject.Qualifier;
 
 /**
  *
@@ -30,4 +30,8 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD,ElementType.PARAMETER, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Qualifier
-public @interface InjectLogger { }
+public @interface WebProperty {
+    String name() default "";
+    String value() default "";
+    String bundle() default "";
+}

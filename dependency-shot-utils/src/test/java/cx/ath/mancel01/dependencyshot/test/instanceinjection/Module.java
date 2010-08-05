@@ -17,7 +17,7 @@
 
 package cx.ath.mancel01.dependencyshot.test.instanceinjection;
 
-import cx.ath.mancel01.dependencyshot.api.annotations.Property;
+import cx.ath.mancel01.dependencyshot.utils.annotations.Property;
 import javax.inject.Inject;
 
 /**

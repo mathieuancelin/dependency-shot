@@ -20,7 +20,7 @@ import cx.ath.mancel01.dependencyshot.webfwk.config.FwkBinder;
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import cx.ath.mancel01.dependencyshot.api.Stage;
-import cx.ath.mancel01.dependencyshot.api.annotations.InjectLogger;
+import cx.ath.mancel01.dependencyshot.utils.annotations.Log;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -53,8 +53,7 @@ public abstract class FrontalServlet extends HttpServlet {
     /**
      * The logger of the controller;
      */
-    @Inject
-    @InjectLogger
+    @Inject @Log
     private Logger logger;
 
     /**

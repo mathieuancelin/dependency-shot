@@ -15,27 +15,23 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.logger;
+package cx.ath.mancel01.dependencyshot.utils.annotations;
 
-import cx.ath.mancel01.dependencyshot.utils.annotations.Log;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.inject.Inject;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import javax.inject.Qualifier;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
-public class Module {
-
-    @Inject @Log
-    private Logger logger;
-
-    public Logger getLogger() {
-        return logger;
-    }
-
-    public void logSomething(String log) {
-        logger.log(Level.INFO, log);
-    }
+@Target({ElementType.FIELD,ElementType.PARAMETER, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Qualifier
+public @interface Property {
+    String name() default "";
+    String value() default "";
+    String bundle() default "";
 }

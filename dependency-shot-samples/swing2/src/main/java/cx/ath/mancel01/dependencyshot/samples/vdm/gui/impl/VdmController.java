@@ -17,11 +17,11 @@
 
 package cx.ath.mancel01.dependencyshot.samples.vdm.gui.impl;
 
-import cx.ath.mancel01.dependencyshot.api.annotations.InjectLogger;
 import cx.ath.mancel01.dependencyshot.samples.vdm.gui.Controller;
 import cx.ath.mancel01.dependencyshot.samples.vdm.gui.View;
 import cx.ath.mancel01.dependencyshot.samples.vdm.model.Vdm;
 import cx.ath.mancel01.dependencyshot.samples.vdm.service.RandomService;
+import cx.ath.mancel01.dependencyshot.utils.annotations.Log;
 import java.util.Observable;
 import java.util.logging.Logger;
 import javax.inject.Inject;
@@ -49,7 +49,7 @@ public class VdmController extends Observable implements Controller {
     /**
      * The logger of the controller;
      */
-    @Inject @InjectLogger
+    @Inject @Log
     private Logger logger;
 
     /**

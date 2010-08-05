@@ -17,12 +17,14 @@
 
 package cx.ath.mancel01.dependencyshot.utils;
 
-import cx.ath.mancel01.dependencyshot.api.annotations.InjectLogger;
-import cx.ath.mancel01.dependencyshot.api.annotations.Property;
 import cx.ath.mancel01.dependencyshot.graph.Binding;
 import cx.ath.mancel01.dependencyshot.graph.BindingBuilder;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.BindingsProvider;
+import cx.ath.mancel01.dependencyshot.utils.annotations.Log;
+import cx.ath.mancel01.dependencyshot.utils.annotations.JndiLookup;
+import cx.ath.mancel01.dependencyshot.utils.annotations.Property;
+import cx.ath.mancel01.dependencyshot.utils.annotations.WebProperty;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Logger;
@@ -35,12 +37,13 @@ public class UtilsProvider extends BindingsProvider {
 
     @Override
     public Collection<Binding> getProvidedBindings(InjectorImpl injector) {
+
         ArrayList<Binding> bindings = new ArrayList<Binding>();
 
         bindings.add(BindingBuilder
                 .prepareBindingThat()
                 .bind(Logger.class)
-                .annotatedWith(InjectLogger.class)
+                .annotatedWith(Log.class)
                 .providedBy(new LoggerProvider())
                 .build());
 
@@ -49,6 +52,20 @@ public class UtilsProvider extends BindingsProvider {
                 .bind(String.class)
                 .annotatedWith(Property.class)
                 .providedBy(new PropertiesProvider(injector))
+                .build());
+
+        bindings.add(BindingBuilder
+                .prepareBindingThat()
+                .bind(String.class)
+                .annotatedWith(WebProperty.class)
+                .providedBy(new WebPropertiesProvider(injector))
+                .build());
+
+        bindings.add(BindingBuilder
+                .prepareBindingThat()
+                .bind(Object.class)
+                .annotatedWith(JndiLookup.class)
+                .providedBy(new JndiProvider())
                 .build());
 
         return bindings;

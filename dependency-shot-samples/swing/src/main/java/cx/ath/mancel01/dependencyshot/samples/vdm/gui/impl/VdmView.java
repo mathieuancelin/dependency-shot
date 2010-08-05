@@ -17,9 +17,9 @@
 
 package cx.ath.mancel01.dependencyshot.samples.vdm.gui.impl;
 
-import cx.ath.mancel01.dependencyshot.api.annotations.InjectLogger;
 import cx.ath.mancel01.dependencyshot.samples.vdm.gui.Controller;
 import cx.ath.mancel01.dependencyshot.samples.vdm.gui.View;
+import cx.ath.mancel01.dependencyshot.utils.annotations.Log;
 import java.util.Observable;
 import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
@@ -60,7 +60,7 @@ public class VdmView extends JFrame implements View {
     /**
      * The logger of the view;
      */
-    @Inject @InjectLogger
+    @Inject @Log
     private Logger logger;
 
     /**
