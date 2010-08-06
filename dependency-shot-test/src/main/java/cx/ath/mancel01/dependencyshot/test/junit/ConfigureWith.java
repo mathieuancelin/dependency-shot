@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009-2010 Mathieu ANCELIN.
+ *  Copyright 2010 mathieuancelin.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,24 +15,21 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test;
+package cx.ath.mancel01.dependencyshot.test.junit;
 
-import javax.inject.Inject;
+import cx.ath.mancel01.dependencyshot.graph.Binder;
+import java.lang.annotation.*;
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.*;
 
 /**
  *
- * @author Mathieu ANCELIN
  */
-public class LoggerService {
-
-    @Inject
-    private WhichLoggerToChooseService which;
-
-    public void log(String log){
-        System.out.println("Framework n°" + which.which() + " : " + log);
-    }
-
-    public void setWhich(WhichLoggerToChooseService which) {
-        this.which = which;
-    }
+@Documented
+@Retention (RUNTIME)
+@Target(TYPE)
+public @interface ConfigureWith {
+    Class<? extends Binder>[] value();
+    boolean staging() default false;
+    boolean allowCircularDependencies() default false;
 }
