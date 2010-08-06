@@ -119,8 +119,14 @@ public abstract class Binder implements DSBinder,
     public final void configureLastBinding() {
         addBindingToBinder(
                 new Binding(this.annotation, this.named,
-                this.from, this.to, this.provider, this.stage));if (binderInjector.getStage() != null) {
+                this.from, this.to, this.provider, this.stage));
+        if (binderInjector.getStage() != null) {
             if (binderInjector.getStage().equals(this.stage)) {
+                addBindingToBinder(
+                        new Binding(this.annotation, this.named,
+                        this.from, this.to, this.provider, this.stage));
+            }
+            if (this.stage == null) {
                 addBindingToBinder(
                         new Binding(this.annotation, this.named,
                         this.from, this.to, this.provider, this.stage));
@@ -148,6 +154,11 @@ public abstract class Binder implements DSBinder,
     public final <T> FluentBinder bind(Class<T> from) {
         if (binderInjector.getStage() != null) {
             if (binderInjector.getStage().equals(this.stage)) {
+                addBindingToBinder(
+                        new Binding<T>(this.annotation, this.named,
+                        this.from, this.to, this.provider, this.stage));
+            }
+            if (this.stage == null) {
                 addBindingToBinder(
                         new Binding<T>(this.annotation, this.named,
                         this.from, this.to, this.provider, this.stage));

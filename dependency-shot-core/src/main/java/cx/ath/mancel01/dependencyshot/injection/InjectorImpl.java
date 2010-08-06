@@ -411,9 +411,13 @@ public class InjectorImpl implements DSInjector {
     @Override
     public final String toString() {
         StringBuilder builder = new StringBuilder();
-        for (Binding b : bindings.values()) {
-            builder.append(b);
-            builder.append("\n");
+        if (bindings != null) {
+            for (Binding b : bindings.values()) {
+                builder.append(b);
+                builder.append("\n");
+            }
+        } else {
+            builder.append("No bindings in this binder.");
         }
         return builder.toString();
     }
