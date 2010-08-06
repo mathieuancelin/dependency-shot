@@ -22,7 +22,6 @@ import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.ServiceLoader;
 import java.util.logging.Logger;
 
 /**
@@ -135,7 +134,8 @@ public final class PluginsLoader {
      */
     private Collection<Binding> loadProvidedBindings(InjectorImpl injector) {
         ArrayList<Binding> bindings = new ArrayList<Binding>();
-        ServiceLoader<BindingsProvider> providersLoader = ServiceLoader.load(BindingsProvider.class);
+        //ServiceLoader<BindingsProvider> providersLoader = ServiceLoader.load(BindingsProvider.class);
+        DSServiceLoader<BindingsProvider> providersLoader = DSServiceLoader.load(BindingsProvider.class);
         providersLoader.reload();
         Iterator<BindingsProvider> providersIterator = providersLoader.iterator();
         while (providersIterator.hasNext()) {
@@ -154,7 +154,8 @@ public final class PluginsLoader {
      */
     private Collection<InstanceHandler> loadInstanceHandlers() {
         ArrayList<InstanceHandler> handlers = new ArrayList<InstanceHandler>();
-        ServiceLoader<InstanceHandler> handlersProvider = ServiceLoader.load(InstanceHandler.class);
+        //ServiceLoader<InstanceHandler> handlersProvider = ServiceLoader.load(InstanceHandler.class);
+        DSServiceLoader<InstanceHandler> handlersProvider = DSServiceLoader.load(InstanceHandler.class);
         handlersProvider.reload();
         Iterator<InstanceHandler> handlersIterator = handlersProvider.iterator();
         while (handlersIterator.hasNext()) {
@@ -170,7 +171,8 @@ public final class PluginsLoader {
      */
     private Collection<InstanceLifecycleHandler> loadLifecycleHandlers() {
         ArrayList<InstanceLifecycleHandler> handlers = new ArrayList<InstanceLifecycleHandler>();
-        ServiceLoader<InstanceLifecycleHandler> handlersProvider = ServiceLoader.load(InstanceLifecycleHandler.class);
+        //ServiceLoader<InstanceLifecycleHandler> handlersProvider = ServiceLoader.load(InstanceLifecycleHandler.class);
+        DSServiceLoader<InstanceLifecycleHandler> handlersProvider = DSServiceLoader.load(InstanceLifecycleHandler.class);
         handlersProvider.reload();
         Iterator<InstanceLifecycleHandler> handlersIterator = handlersProvider.iterator();
         while (handlersIterator.hasNext()) {
@@ -186,7 +188,8 @@ public final class PluginsLoader {
      */
     private Collection<ImplementationValidator> loadImplementationValidators() {
         ArrayList<ImplementationValidator> implemvalidators = new ArrayList<ImplementationValidator>();
-        ServiceLoader<ImplementationValidator> validatorsProvider = ServiceLoader.load(ImplementationValidator.class);
+        //ServiceLoader<ImplementationValidator> validatorsProvider = ServiceLoader.load(ImplementationValidator.class);
+        DSServiceLoader<ImplementationValidator> validatorsProvider = DSServiceLoader.load(ImplementationValidator.class);
         validatorsProvider.reload();
         Iterator<ImplementationValidator> validatorsIterator = validatorsProvider.iterator();
         while (validatorsIterator.hasNext()) {
@@ -202,7 +205,8 @@ public final class PluginsLoader {
      */
     private Collection<ConfigurationHandler> loadConfigurationHandlers() {
         ArrayList<ConfigurationHandler> configHandlers = new ArrayList<ConfigurationHandler>();
-        ServiceLoader<ConfigurationHandler> configHandlersProvider = ServiceLoader.load(ConfigurationHandler.class);
+        //ServiceLoader<ConfigurationHandler> configHandlersProvider = ServiceLoader.load(ConfigurationHandler.class);
+        DSServiceLoader<ConfigurationHandler> configHandlersProvider = DSServiceLoader.load(ConfigurationHandler.class);
         configHandlersProvider.reload();
         Iterator<ConfigurationHandler> validatorsIterator = configHandlersProvider.iterator();
         while (validatorsIterator.hasNext()) {
