@@ -29,6 +29,7 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
 
 /**
+ * JUnit code runner that allow dependency injection in JUnit tests.
  *
  * @author Mathieu ANCELIN
  */
@@ -54,15 +55,17 @@ public class DependencyShotRunner extends BlockJUnit4ClassRunner {
                 }
             }
             Binder[] bins = new Binder[binders.size()];
-            if (config.staging())
+            if (config.staging()) {
                 injector = DependencyShot.getInjector(Stage.TEST, binders.toArray(bins));
-            else
+            } else {
                 injector = DependencyShot.getInjector(binders.toArray(bins));
+            }
         } else {
             injector = DependencyShot.getInjector();
         }
-        if (config.allowCircularDependencies())
+        if (config.allowCircularDependencies()) {
             injector.allowCircularDependencies(true);
+        }
         logger.info(new StringBuilder()
                 .append("Running test class \"")
                 .append(clazz.getSimpleName())
