@@ -20,6 +20,7 @@
         <module>dependency-shot-web</module>
         <module>dependency-shot-dsl</module>
         <module>dependency-shot-annotations</module>
+        <module>dependency-shot-test</module>
     </modules>
     <build>
         <plugins>
