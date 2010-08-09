@@ -75,4 +75,128 @@ public class CyclicTest {
         service.chargeAccountFor(123);
         assertTrue(service.getAccount().getMoney() == (100000 - 123));
     }
+
+    @Test
+    public void testCyclicMethod() {
+        boolean isCyclic = false;
+        DSInjector injector = DependencyShot.getInjector();
+        try {
+            MethodA a = injector.getInstance(MethodA.class);
+        } catch (Exception e ) {
+            isCyclic = true;
+        }
+        assertTrue(isCyclic);
+        isCyclic = false;
+        injector.allowCircularDependencies(true);
+        try {
+            MethodA a = injector.getInstance(MethodA.class);
+        } catch (Exception e ) {
+            isCyclic = true;
+        }
+        assertFalse(isCyclic);
+    }
+
+    @Test
+    public void testCyclicConstructor() {
+        boolean isCyclic = false;
+        DSInjector injector = DependencyShot.getInjector();
+        try {
+            ConstructorA a = injector.getInstance(ConstructorA.class);
+        } catch (Exception e ) {
+            //e.printStackTrace();
+            isCyclic = true;
+        }
+        assertTrue(isCyclic);
+        isCyclic = false;
+        injector.allowCircularDependencies(true);
+        try {
+            ConstructorA a = injector.getInstance(ConstructorA.class);
+        } catch (Exception e ) {
+            //e.printStackTrace();
+            isCyclic = true;
+        }
+        assertTrue(isCyclic);
+    }
+
+    @Test
+    public void testCyclicField() {
+        boolean isCyclic = false;
+        DSInjector injector = DependencyShot.getInjector();
+        try {
+            FieldA a = injector.getInstance(FieldA.class);
+        } catch (Exception e ) {
+            isCyclic = true;
+        }
+        assertTrue(isCyclic);
+        isCyclic = false;
+        injector.allowCircularDependencies(true);
+        try {
+            FieldA a = injector.getInstance(FieldA.class);
+        } catch (Exception e ) {
+            isCyclic = true;
+        }
+        assertFalse(isCyclic);
+    }
+
+    @Test
+    public void testSingletonCyclicMethod() {
+        boolean isCyclic = false;
+        DSInjector injector = DependencyShot.getInjector();
+        try {
+            SingletonMethodA a = injector.getInstance(SingletonMethodA.class);
+        } catch (Exception e ) {
+            isCyclic = true;
+        }
+        assertFalse(isCyclic);
+        isCyclic = false;
+        injector.allowCircularDependencies(true);
+        try {
+            SingletonMethodA a = injector.getInstance(SingletonMethodA.class);
+        } catch (Exception e ) {
+            isCyclic = true;
+        }
+        assertFalse(isCyclic);
+    }
+
+    @Test
+    public void testSingletonCyclicConstructor() {
+        boolean isCyclic = false;
+        DSInjector injector = DependencyShot.getInjector();
+        try {
+            SingletonConstructorA a = injector.getInstance(SingletonConstructorA.class);
+        } catch (Exception e ) {
+            //e.printStackTrace();
+            isCyclic = true;
+        }
+        assertTrue(isCyclic);
+        isCyclic = false;
+        injector.allowCircularDependencies(true);
+        try {
+            SingletonConstructorA a = injector.getInstance(SingletonConstructorA.class);
+        } catch (Exception e ) {
+            //e.printStackTrace();
+            isCyclic = true;
+        }
+        assertTrue(isCyclic);
+    }
+
+    @Test
+    public void testSingletonCyclicField() {
+        boolean isCyclic = false;
+        DSInjector injector = DependencyShot.getInjector();
+        try {
+            SingletonFieldA a = injector.getInstance(SingletonFieldA.class);
+        } catch (Exception e ) {
+            isCyclic = true;
+        }
+        assertFalse(isCyclic);
+        isCyclic = false;
+        injector.allowCircularDependencies(true);
+        try {
+            SingletonFieldA a = injector.getInstance(SingletonFieldA.class);
+        } catch (Exception e ) {
+            isCyclic = true;
+        }
+        assertFalse(isCyclic);
+    }
 }
