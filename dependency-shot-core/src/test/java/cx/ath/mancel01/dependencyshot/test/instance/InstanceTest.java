@@ -64,4 +64,13 @@ public class InstanceTest {
         assertTrue(module3.getName()
                 .equals(EasyInstanceBinder.YAM));
     }
+
+    @Test
+    public void testInstanceInjection() {
+        DSInjector injector = DependencyShot.getInjector(new EasyInstanceBinder());
+        ServiceClient client = injector.getInstance(ServiceClient.class);
+        assertTrue(client.getService().getValue()
+                .equals(EasyInstanceBinder.MY_MODULE));
+
+    }
 }

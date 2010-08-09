@@ -24,7 +24,9 @@ import cx.ath.mancel01.dependencyshot.injection.fluent.FluentBinder;
 import cx.ath.mancel01.dependencyshot.injection.fluent.QualifiedBinding;
 import cx.ath.mancel01.dependencyshot.injection.fluent.StagingBinding;
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.inject.Provider;
 
@@ -84,6 +86,8 @@ public abstract class Binder implements DSBinder,
     private Provider provider = null;
     private Stage stage = null;
 
+    private List<Object> injectLater = new ArrayList<Object>();
+
     /**
      * Constructor.
      */
@@ -142,6 +146,13 @@ public abstract class Binder implements DSBinder,
         this.annotation = null;
         this.provider = null;
         this.stage = null;
+        injectLateObjects();
+    }
+
+    private void injectLateObjects() {
+        for (Object o : injectLater)  {
+            o = binderInjector.injectInstance(o);
+        }
     }
 
     /**
@@ -238,6 +249,7 @@ public abstract class Binder implements DSBinder,
      */
     @Override
     public final <T> StagingBinding toInstance(Object instance) {
+        injectLater.add(instance);
         this.provider = new InstanceProvider(instance);
         return this;
     }
