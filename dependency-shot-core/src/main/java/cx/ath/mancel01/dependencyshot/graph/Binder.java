@@ -294,7 +294,7 @@ public abstract class Binder implements DSBinder,
     /**
      * @return the actual injector.
      */
-    public final DSInjector getBinderInjector() {
+    public final DSInjector injector() {
         return binderInjector; 
     }
 }
