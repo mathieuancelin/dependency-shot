@@ -31,7 +31,7 @@ public class ShutdownThread extends Thread {
 
     @Override
     public void run() {
-        injector.shutdownInjector();
+        injector.triggerLifecycleDestroyCallbacks();
     }
 
 }

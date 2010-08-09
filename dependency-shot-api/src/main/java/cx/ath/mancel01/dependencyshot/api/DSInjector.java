@@ -55,4 +55,9 @@ public interface DSInjector {
 
     boolean areCircularDependenciesAllowed();
 
+    /**
+     * Register a shutdown hook to shutdown container when JVM stop.
+     */
+    void registerShutdownHook();
+
 }
