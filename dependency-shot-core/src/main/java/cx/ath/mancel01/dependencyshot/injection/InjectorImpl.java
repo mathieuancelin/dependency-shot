@@ -29,10 +29,13 @@ import cx.ath.mancel01.dependencyshot.injection.handlers.ClassHandler;
 import cx.ath.mancel01.dependencyshot.injection.handlers.ConstructorHandler;
 import cx.ath.mancel01.dependencyshot.spi.InstanceLifecycleHandler;
 import cx.ath.mancel01.dependencyshot.spi.PluginsLoader;
+import cx.ath.mancel01.dependencyshot.util.CyclicProxy;
+import cx.ath.mancel01.dependencyshot.util.ReflectionUtil;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -297,6 +300,8 @@ public class InjectorImpl implements DSInjector {
         } else {
             if (allowCircularDependencies) {
                 return (T) instanciatedClasses.get(c);
+            } else if (ReflectionUtil.isSingleton(c)) {
+                return (T) instanciatedClasses.get(c);
             } else {
                 throw new DSCyclicDependencyDetectedException(
                     "Circular dependency detected on " + c.getName());
@@ -428,11 +433,6 @@ public class InjectorImpl implements DSInjector {
     @Override
     public final Stage getStage() {
         return stage;
-    }
-
-    @Override
-    public void setStage(Stage stage) {
-        this.stage = stage;
     }
 
     @Override

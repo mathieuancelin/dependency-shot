@@ -26,13 +26,13 @@ import cx.ath.mancel01.dependencyshot.injection.util.InstanceProvider;
 import cx.ath.mancel01.dependencyshot.spi.InstanceHandler;
 import cx.ath.mancel01.dependencyshot.spi.InstanceLifecycleHandler;
 import cx.ath.mancel01.dependencyshot.spi.PluginsLoader;
+import cx.ath.mancel01.dependencyshot.util.ReflectionUtil;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Map;
 import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Qualifier;
-import javax.inject.Singleton;
 
 /**
  * Object representation of a binding.
@@ -231,7 +231,7 @@ public class Binding<T> {
             } else {
                 result = provider.get();
             }
-        } else if (to.isAnnotationPresent(Singleton.class)) {
+        } else if (ReflectionUtil.isSingleton(to)) {
             result = (T) injector.getSingleton(to);
         } else {
             result = (T) injector.createInstance(to);
