@@ -408,13 +408,20 @@ public class InjectorImpl implements DSInjector {
         this.singletonContext = new HashMap<Class<?>, Object>();
     }
 
+    /**
+     * Register a shutdown hook to shutdown container when JVM stop.
+     */
+    @Override
     public final void registerShutdownHook() {
         ShutdownThread thread = new ShutdownThread();
         thread.setInjector(this);
         Runtime.getRuntime().addShutdownHook(thread);
     }
 
-    void shutdownInjector() {
+    /**
+     * Trigger all lifecycle handlers preDestroy method.
+     */
+    public void triggerLifecycleDestroyCallbacks() {
         for (InstanceLifecycleHandler handler : PluginsLoader.getInstance().getLifecycleHandlers()) {
             for (Object o : handler.getManagedInstances()) {
                 handler.handlePreDestroy(o);

@@ -35,6 +35,8 @@ public final class ManagedBeanHandler extends InstanceHandler {
 
     private static final Logger logger = Logger.getLogger(ManagedBeanHandler.class.getSimpleName());
 
+    private boolean registered = false;
+
     public static boolean isManagedBean(Object o) {
         if (o != null) {
             return isManagedBean(o.getClass());
@@ -58,6 +60,10 @@ public final class ManagedBeanHandler extends InstanceHandler {
 
     @Override
     public Object manipulateInstance(Object instance, Class interf, InjectorImpl injector, InjectionPoint point) {
+        if (!registered) { // TODO :  replace this with the upcoming event spi api.
+            injector.registerShutdownHook();
+            registered = true;
+        }
         registerManagedBeanJNDI(instance);
         return instance;
     }
