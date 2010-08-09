@@ -39,5 +39,9 @@ public enum Stage {
     /**
      * Bindings declared for production server environment.
      */
-    PRODUCTION
+    PRODUCTION,
+    /**
+     * Non provided stage (for stage injection)
+     */
+    NONE
 }

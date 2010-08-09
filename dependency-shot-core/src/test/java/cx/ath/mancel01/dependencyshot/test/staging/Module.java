@@ -17,6 +17,7 @@
 
 package cx.ath.mancel01.dependencyshot.test.staging;
 
+import cx.ath.mancel01.dependencyshot.api.Stage;
 import javax.inject.Inject;
 
 /**
@@ -26,9 +27,16 @@ import javax.inject.Inject;
 public class Module {
 
     @Inject
+    private Stage stage;
+
+    @Inject
     private Service service;
 
     public String getServiceResult() {
         return service.doService();
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 }

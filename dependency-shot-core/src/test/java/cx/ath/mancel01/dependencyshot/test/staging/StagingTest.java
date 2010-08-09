@@ -34,6 +34,7 @@ public class StagingTest {
         DSInjector injector = DependencyShot.getInjector(Stage.TEST, new ServiceBinder());
         Module client = injector.getInstance(Module.class);
         assertTrue(client.getServiceResult().equals(Service.MOCK));
+        assertTrue(client.getStage().equals(Stage.TEST));
     }
 
     @Test
@@ -41,6 +42,7 @@ public class StagingTest {
         DSInjector injector = DependencyShot.getInjector(Stage.DEVELOPEMENT, new ServiceBinder());
         Module client = injector.getInstance(Module.class);
         assertTrue(client.getServiceResult().equals(Service.DEV));
+        assertTrue(client.getStage().equals(Stage.DEVELOPEMENT));
     }
 
     @Test
@@ -48,5 +50,13 @@ public class StagingTest {
         DSInjector injector = DependencyShot.getInjector(Stage.PRODUCTION, new ServiceBinder());
         Module client = injector.getInstance(Module.class);
         assertTrue(client.getServiceResult().equals(Service.IMPL));
+        assertTrue(client.getStage().equals(Stage.PRODUCTION));
+    }
+
+    @Test
+    public void testStagingNone() {
+        DSInjector injector = DependencyShot.getInjector(new ServiceBinder());
+        Module client = injector.getInstance(Module.class);
+        assertTrue(client.getStage().equals(Stage.NONE));
     }
 }

@@ -29,13 +29,11 @@ import cx.ath.mancel01.dependencyshot.injection.handlers.ClassHandler;
 import cx.ath.mancel01.dependencyshot.injection.handlers.ConstructorHandler;
 import cx.ath.mancel01.dependencyshot.spi.InstanceLifecycleHandler;
 import cx.ath.mancel01.dependencyshot.spi.PluginsLoader;
-import cx.ath.mancel01.dependencyshot.util.CyclicProxy;
 import cx.ath.mancel01.dependencyshot.util.ReflectionUtil;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -80,7 +78,7 @@ public class InjectorImpl implements DSInjector {
     /**
      * Stage of the injector.
      */
-    private Stage stage = null;
+    private Stage stage = Stage.NONE;
 
     private boolean bindingsChanged = false;
 
@@ -178,14 +176,28 @@ public class InjectorImpl implements DSInjector {
 
             final DSInjector injector = this;
             Binding injectorBinding = new Binding(null, null, DSInjector.class,
-                    DSInjector.class, new Provider() {
+                    DSInjector.class, new Provider<DSInjector>() {
 
                 @Override
-                public Object get() {
+                public DSInjector get() {
                     return injector;
                 }
             }, null);
             bindings.put(injectorBinding, injectorBinding);
+
+            final Stage stag = stage;
+            Binding stageBinding = new Binding(null, null, Stage.class,
+                    Stage.class, new Provider<Stage>() {
+
+                @Override
+                public Stage get() {
+                    if (stag == null) {
+                        return Stage.NONE;
+                    }
+                    return stag;
+                }
+            }, null);
+            bindings.put(stageBinding, stageBinding);
             bindingsChanged = false;
         }
         return bindings;
