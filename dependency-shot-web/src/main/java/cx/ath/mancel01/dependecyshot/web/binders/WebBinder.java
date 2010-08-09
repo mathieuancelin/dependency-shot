@@ -32,7 +32,7 @@ public class WebBinder  extends Binder {
 
     @Override
     public void configureBindings() {
-        DSInjector injector = this.getBinderInjector();
+        DSInjector injector = this.injector();
         bind(String.class).annotatedWith(WebProperty.class).providedBy(new WebPropertiesProvider(injector));
         bind(String.class).annotatedWith(JndiLookup.class).providedBy(new JndiProvider());
     }
