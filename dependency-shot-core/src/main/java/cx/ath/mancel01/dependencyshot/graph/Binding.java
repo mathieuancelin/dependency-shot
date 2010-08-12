@@ -236,6 +236,7 @@ public class Binding<T> {
         } else {
             result = (T) injector.createInstance(to);
         }
+        injector.getInstanciatedClasses().clear();
         if (result == null) {
             throw new DSIllegalStateException("Could not get a " + to);
         }

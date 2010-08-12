@@ -25,10 +25,22 @@ import javax.inject.Singleton;
  * @author mathieuancelin
  */
 @Singleton
-public class SingletonConstructorB {
+public class SingletonConstructorB implements SingletonInterfaceB {
+
+    private SingletonInterfaceA a;
 
     @Inject
-    public SingletonConstructorB(SingletonConstructorA a) {
+    public SingletonConstructorB(SingletonInterfaceA a) {
+         this.a = a;
     }
 
+    @Override
+    public String getValue() {
+        return "SingletonConstructorB";
+    }
+
+    @Override
+    public SingletonInterfaceA getA() {
+        return a;
+    }
 }

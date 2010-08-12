@@ -15,7 +15,9 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.injection;
+package cx.ath.mancel01.dependencyshot.util;
+
+import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 
 /**
  *
