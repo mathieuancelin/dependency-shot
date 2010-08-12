@@ -15,30 +15,16 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.util;
-
-import cx.ath.mancel01.dependencyshot.api.DSInjector;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
+package cx.ath.mancel01.dependencyshot.test.cyclic;
 
 /**
  *
  * @author mathieuancelin
  */
-public class CyclicProxy<T> implements InvocationHandler {
+public interface InterfaceA {
 
-    private T delegateObject;
+    String getValue();
 
-    private DSInjector injector;
-
-    public CyclicProxy(T delegate, DSInjector injector) {
-        this.delegateObject = delegate;
-        this.injector = injector;
-    }
-
-    @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        return method.invoke(delegateObject, args);
-    }
+    InterfaceB getB();
 
 }

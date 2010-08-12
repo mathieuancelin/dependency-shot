@@ -23,10 +23,23 @@ import javax.inject.Inject;
  *
  * @author mathieuancelin
  */
-public class ConstructorB {
+public class ConstructorB implements InterfaceB {
+
+    private InterfaceA a;
 
     @Inject
-    public ConstructorB(ConstructorA a) {
+    public ConstructorB(InterfaceA a) {
+        this.a = a;
+    }
+
+    @Override
+    public String getValue() {
+        return "ConstructorB";
+    }
+
+    @Override
+    public InterfaceA getA() {
+        return a;
     }
 
 }

@@ -17,12 +17,14 @@
 
 package cx.ath.mancel01.dependencyshot.test.cyclic;
 
+import cx.ath.mancel01.dependencyshot.graph.Binder;
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import org.junit.Test;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertEquals;
 
 /**
  * Tests of dependency-shot. 
@@ -103,7 +105,6 @@ public class CyclicTest {
         try {
             ConstructorA a = injector.getInstance(ConstructorA.class);
         } catch (Exception e ) {
-            //e.printStackTrace();
             isCyclic = true;
         }
         assertTrue(isCyclic);
@@ -112,10 +113,38 @@ public class CyclicTest {
         try {
             ConstructorA a = injector.getInstance(ConstructorA.class);
         } catch (Exception e ) {
-            //e.printStackTrace();
             isCyclic = true;
         }
         assertTrue(isCyclic);
+    }
+
+    @Test
+    public void testCyclicInterfaceConstructor() {
+        boolean isCyclic = false;
+        DSInjector injector = DependencyShot.getInjector(new Binder() {
+                    @Override
+                    public void configureBindings() {
+                        bind(InterfaceA.class).to(ConstructorA.class);
+                        bind(InterfaceB.class).to(ConstructorB.class);
+                    }
+                });
+        InterfaceA a = null;
+        try {
+            a = injector.getInstance(InterfaceA.class);
+        } catch (Exception e ) {
+            isCyclic = true;
+        }
+        assertTrue(isCyclic);
+        isCyclic = false;
+        injector.allowCircularDependencies(true);
+        try {
+            a = injector.getInstance(InterfaceA.class);
+        } catch (Exception e ) {
+            isCyclic = true;
+        }
+        assertFalse(isCyclic);
+//        assertEquals(a.getB().getA().getValue(), "ConstructorA");
+//        assertEquals(a.getB().getA().getB().getValue(), "ConstructorB");
     }
 
     @Test
@@ -165,7 +194,6 @@ public class CyclicTest {
         try {
             SingletonConstructorA a = injector.getInstance(SingletonConstructorA.class);
         } catch (Exception e ) {
-            //e.printStackTrace();
             isCyclic = true;
         }
         assertTrue(isCyclic);
@@ -174,10 +202,39 @@ public class CyclicTest {
         try {
             SingletonConstructorA a = injector.getInstance(SingletonConstructorA.class);
         } catch (Exception e ) {
-            //e.printStackTrace();
             isCyclic = true;
         }
         assertTrue(isCyclic);
+    }
+
+    @Test
+    public void testSingletonCyclicInterfaceConstructor() {
+        boolean isCyclic = false;
+        DSInjector injector = DependencyShot.getInjector(
+                new Binder() {
+                    @Override
+                    public void configureBindings() {
+                        bind(SingletonInterfaceA.class).to(SingletonConstructorA.class);
+                        bind(SingletonInterfaceB.class).to(SingletonConstructorB.class);
+                    }
+                });
+        SingletonInterfaceA a = null;
+        try {
+             a = injector.getInstance(SingletonInterfaceA.class);
+        } catch (Exception e ) {
+            isCyclic = true;
+        }
+        assertFalse(isCyclic);
+        isCyclic = false;
+        injector.allowCircularDependencies(true);
+        try {
+            a = injector.getInstance(SingletonInterfaceA.class);
+        } catch (Exception e ) {
+            isCyclic = true;
+        }
+        assertFalse(isCyclic);
+//        assertEquals(a.getB().getA().getValue(), "SingletonConstructorA");
+//        assertEquals(a.getB().getA().getB().getValue(), "SingletonConstructorB");
     }
 
     @Test

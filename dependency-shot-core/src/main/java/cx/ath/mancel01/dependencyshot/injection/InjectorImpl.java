@@ -16,6 +16,7 @@
  */
 package cx.ath.mancel01.dependencyshot.injection;
 
+import cx.ath.mancel01.dependencyshot.util.ShutdownThread;
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
@@ -29,11 +30,13 @@ import cx.ath.mancel01.dependencyshot.injection.handlers.ClassHandler;
 import cx.ath.mancel01.dependencyshot.injection.handlers.ConstructorHandler;
 import cx.ath.mancel01.dependencyshot.spi.InstanceLifecycleHandler;
 import cx.ath.mancel01.dependencyshot.spi.PluginsLoader;
+import cx.ath.mancel01.dependencyshot.util.CircularProxy;
 import cx.ath.mancel01.dependencyshot.util.ReflectionUtil;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -85,6 +88,8 @@ public class InjectorImpl implements DSInjector {
     private ClassHandler classHandler;
 
     private ConstructorHandler constructorHandler;
+
+    private Class actualFromClass;
 
     /**
      * The constructor.
@@ -236,6 +241,7 @@ public class InjectorImpl implements DSInjector {
      */
     private <T> T getInstance(Class<T> c, Annotation qualifier, InjectionPoint point) {
         Binding<T> binding = getBinding(c, qualifier);
+        actualFromClass = binding.getFrom();
         return binding.getInstance(this, point);
     }
 
@@ -310,9 +316,17 @@ public class InjectorImpl implements DSInjector {
                 throw new DSException(e);
             }
         } else {
-            if (allowCircularDependencies) {
-                return (T) instanciatedClasses.get(c);
-            } else if (ReflectionUtil.isSingleton(c)) {
+            if (allowCircularDependencies || ReflectionUtil.isSingleton(c)) {
+                if (actualFromClass.isInterface() && instanciatedClasses.get(c) == null) {
+                    System.out.println("Circular dependency in constructor of " + c.getSimpleName() + ".java is detected. Trying to proxy it ... ");
+                    CircularProxy proxy = new CircularProxy();
+                    proxy.setInjector(this);
+                    proxy.setClazz(c);
+                    T instance = (T) Proxy.newProxyInstance(
+                        Thread.currentThread().getContextClassLoader(),
+                        new Class[]{actualFromClass}, proxy);
+                    instanciatedClasses.put(c, instance);
+                }
                 return (T) instanciatedClasses.get(c);
             } else {
                 throw new DSCyclicDependencyDetectedException(
@@ -444,6 +458,10 @@ public class InjectorImpl implements DSInjector {
             builder.append("No bindings in this binder.");
         }
         return builder.toString();
+    }
+
+    public Map<Class<?>, Object> getInstanciatedClasses() {
+        return instanciatedClasses;
     }
 
     /**
