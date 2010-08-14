@@ -25,6 +25,7 @@ import cx.ath.mancel01.dependencyshot.exceptions.NullInjectionException;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.injection.util.EnhancedProvider;
 import cx.ath.mancel01.dependencyshot.injection.util.InstanceProvider;
+import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
 import cx.ath.mancel01.dependencyshot.spi.InstanceHandler;
 import cx.ath.mancel01.dependencyshot.spi.InstanceLifecycleHandler;
 import cx.ath.mancel01.dependencyshot.spi.PluginsLoader;
@@ -226,6 +227,7 @@ public class Binding<T> {
     public final T getInstance(InjectorImpl injector, InjectionPoint point) {
         // TODO : extension point : inject dynamic
         T result = null;
+        Class<? extends Annotation> scope = ReflectionUtil.getScope(to);
         if (provider != null) {
             provider = injector.injectInstance(provider);
             if (isImplementingEnhancedProvider(provider.getClass().getGenericInterfaces())) {
@@ -233,8 +235,9 @@ public class Binding<T> {
             } else {
                 result = provider.get();
             }
-        } else if (ReflectionUtil.isSingleton(to)) {
-            result = (T) injector.getSingleton(to);
+        } else if (scope != null) {
+            result = (T) injector.getScopeHandler(scope)
+                    .getScopedInstance(from, to, injector);
         } else {
             result = (T) injector.createInstance(to);
         }

@@ -19,10 +19,21 @@ package cx.ath.mancel01.dependencyshot.spi;
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.graph.Binding;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
+import cx.ath.mancel01.dependencyshot.scope.Newable;
+import cx.ath.mancel01.dependencyshot.scope.PoolScope;
+import cx.ath.mancel01.dependencyshot.scope.PoolScoped;
+import cx.ath.mancel01.dependencyshot.scope.SimpleScope;
+import cx.ath.mancel01.dependencyshot.scope.SingletonScope;
+import cx.ath.mancel01.dependencyshot.scope.ThreadScope;
+import cx.ath.mancel01.dependencyshot.scope.ThreadScoped;
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.logging.Logger;
+import javax.inject.Singleton;
 
 /**
  * SPI plugins mamanger.
@@ -58,6 +69,10 @@ public final class PluginsLoader {
      * Handled SPI plugins.
      */
     private Collection<ConfigurationHandler> configurationHandlers;
+    /**
+     * Handled SPI plugins.
+     */
+    private Map<Class<? extends Annotation>, CustomScopeHandler> scopeHandlers;
     /**
      * Handled SPI plugins.
      */
@@ -103,6 +118,10 @@ public final class PluginsLoader {
         lifecycleHandlers = loadLifecycleHandlers();
         sb.append("LifecycleHandler plugins loaded : ");
         sb.append(lifecycleHandlers.size());
+        sb.append("\n");
+        scopeHandlers = loadCustomScopeHandlers(injector);
+        sb.append("CustomScopeHandler plugins loaded : ");
+        sb.append(scopeHandlers.size());
         sb.append("\n");
         if (DependencyShot.DEBUG) {
             logger.info(sb.toString());
@@ -215,6 +234,22 @@ public final class PluginsLoader {
         }
         return configHandlers;
     }
+
+    private Map<Class<? extends Annotation>, CustomScopeHandler> loadCustomScopeHandlers(InjectorImpl injector) {
+        HashMap<Class<? extends Annotation>, CustomScopeHandler> handlers =
+                new HashMap<Class<? extends Annotation>, CustomScopeHandler>();
+        DSServiceLoader<CustomScopeHandler> scopeHandlersProvider = DSServiceLoader.load(CustomScopeHandler.class);
+        scopeHandlersProvider.reload();
+        Iterator<CustomScopeHandler> handlersIterator = scopeHandlersProvider.iterator();
+        while (handlersIterator.hasNext()) {
+            CustomScopeHandler handler = handlersIterator.next();
+            handlers.put(handler.getScope(), handler);
+        }
+        handlers.put(Newable.class, new SimpleScope());
+        handlers.put(Singleton.class, new SingletonScope());
+        handlers.put(ThreadScoped.class, new ThreadScope());
+        return handlers;
+    }
     /**
      * Load reflector services.
      *
@@ -259,5 +294,9 @@ public final class PluginsLoader {
      */
     public Collection<ConfigurationHandler> getConfigurationHandlers() {
         return configurationHandlers;
+    }
+
+    public Map<Class<? extends Annotation>, CustomScopeHandler> getScopeHandlers() {
+        return scopeHandlers;
     }
 }
