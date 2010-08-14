@@ -14,9 +14,10 @@
  *  limitations under the License.
  *  under the License.
  */
-
 package cx.ath.mancel01.dependencyshot.util;
 
+import java.lang.annotation.Annotation;
+import javax.inject.Scope;
 import javax.inject.Singleton;
 
 /**
@@ -30,5 +31,16 @@ public class ReflectionUtil {
             return true;
         }
         return false;
+    }
+
+    public static Class<? extends Annotation> getScope(Class clazz) {
+        Annotation[] annotations = clazz.getAnnotations();
+        Class<? extends Annotation> scope = null;
+        for (Annotation anno : annotations) {
+            if ((anno.annotationType().isAnnotationPresent(Scope.class))) {
+                scope = anno.annotationType();
+            }
+        }
+        return scope;
     }
 }

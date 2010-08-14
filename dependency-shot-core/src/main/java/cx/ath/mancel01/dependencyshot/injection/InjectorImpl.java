@@ -28,6 +28,8 @@ import cx.ath.mancel01.dependencyshot.graph.Binder;
 import cx.ath.mancel01.dependencyshot.graph.Binding;
 import cx.ath.mancel01.dependencyshot.injection.handlers.ClassHandler;
 import cx.ath.mancel01.dependencyshot.injection.handlers.ConstructorHandler;
+import cx.ath.mancel01.dependencyshot.scope.SimpleScope;
+import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
 import cx.ath.mancel01.dependencyshot.spi.InstanceLifecycleHandler;
 import cx.ath.mancel01.dependencyshot.spi.PluginsLoader;
 import cx.ath.mancel01.dependencyshot.util.CircularProxy;
@@ -95,6 +97,8 @@ public class InjectorImpl implements DSInjector {
 
     private Map<Class<?>, Object> circularConstructorArgumentsInstances;
 
+    private Map<Class<? extends Annotation>, CustomScopeHandler> scopeHandlers;
+
     /**
      * The constructor.
      */
@@ -107,6 +111,7 @@ public class InjectorImpl implements DSInjector {
         classHandler = new ClassHandler();
         constructorHandler = new ConstructorHandler();
         PluginsLoader.getInstance().loadPlugins(this);
+        scopeHandlers = PluginsLoader.getInstance().getScopeHandlers();
     }
     /**
      * The constructor.
@@ -123,6 +128,7 @@ public class InjectorImpl implements DSInjector {
         classHandler = new ClassHandler();
         constructorHandler = new ConstructorHandler();
         PluginsLoader.getInstance().loadPlugins(this);
+        scopeHandlers = PluginsLoader.getInstance().getScopeHandlers();
     }
 
     /**
@@ -298,6 +304,7 @@ public class InjectorImpl implements DSInjector {
             result = createInstance(c);
             singletonContext.put(c, result);
         }
+        System.out.println(((Object) result).toString());
         return result;
     }
 
@@ -500,5 +507,14 @@ public class InjectorImpl implements DSInjector {
     @Override
     public boolean areCircularDependenciesAllowed() {
         return allowCircularDependencies;
+    }
+
+    public CustomScopeHandler getScopeHandler(Class<? extends Annotation> clazz) {
+        CustomScopeHandler handler = scopeHandlers.get(clazz);
+        if (handler != null) {
+            return scopeHandlers.get(clazz);
+        } else {
+            return new SimpleScope();
+        }
     }
 }
