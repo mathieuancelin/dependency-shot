@@ -15,15 +15,15 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.cyclic;
+package cx.ath.mancel01.dependencyshot.test.circular;
 
 /**
  *
  * @author mathieuancelin
  */
-public interface SingletonInterfaceA {
+public interface SingletonInterfaceB {
 
-    SingletonInterfaceB getB();
+    SingletonInterfaceA getA();
 
     String getValue();
 

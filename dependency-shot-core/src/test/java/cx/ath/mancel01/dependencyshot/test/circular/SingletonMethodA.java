@@ -15,18 +15,20 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.cyclic;
+package cx.ath.mancel01.dependencyshot.test.circular;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  *
  * @author mathieuancelin
  */
-public class MethodB {
+@Singleton
+public class SingletonMethodA {
 
     @Inject
-    public void setMethodA(MethodA a) {
+    public void setMethodB(SingletonMethodB b) {
 
     }
 }

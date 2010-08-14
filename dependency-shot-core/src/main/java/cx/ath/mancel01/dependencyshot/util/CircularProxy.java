@@ -18,8 +18,10 @@
 package cx.ath.mancel01.dependencyshot.util;
 
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
+import cx.ath.mancel01.dependencyshot.injection.handlers.CircularConstructorHandler;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.Map;
 
 /**
  *
@@ -33,7 +35,12 @@ public class CircularProxy implements InvocationHandler {
 
     private Class clazz;
 
+    private Map<Class<?>, Object> circularConstructorArgumentsInstances;
+
+    private CircularConstructorHandler handler;
+
     public CircularProxy() {
+        handler = new CircularConstructorHandler();
     }
 
     public void setInjector(InjectorImpl injector) {
@@ -41,17 +48,24 @@ public class CircularProxy implements InvocationHandler {
     }
 
     public void setClazz(Class clazz) {
-        System.out.println("New proxy for class "  + clazz.getSimpleName());
+        System.out.println("New proxy created for class "  + clazz.getSimpleName());
         this.clazz = clazz;
     }
 
+    public void setCircularConstructorArgumentsInstances(Map<Class<?>, Object> circularConstructorArgumentsInstances) {
+        this.circularConstructorArgumentsInstances = circularConstructorArgumentsInstances;
+    }
+
+
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        System.out.println("Call from circular proxy on method : " + clazz.getSimpleName() + "." + method.getName() + "()");
         if (delegateObject == null) {
-            System.out.println("Possible implementations for " + clazz.getSimpleName() + " are => " + injector.getInstanciatedClasses().keySet());
-            delegateObject = injector.getInstanciatedClasses().get(clazz);
-            injector.getInstanciatedClasses().remove(clazz);
+            System.out.println("Lazy creation from proxy of " + clazz.getSimpleName() +".java");
+            System.out.println("Possible injected instances are " + circularConstructorArgumentsInstances);
+            delegateObject = handler.getConstructedInstance(clazz, circularConstructorArgumentsInstances);
+            if (delegateObject == null) {
+                System.out.println("Instance of " + clazz.getSimpleName() + ".java is null :(");
+            }
         }
         return method.invoke(delegateObject, args);
     }

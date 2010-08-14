@@ -15,19 +15,16 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.cyclic;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
+package cx.ath.mancel01.dependencyshot.test.circular;
 
 /**
  *
  * @author mathieuancelin
  */
-@Singleton
-public class SingletonFieldA {
+public interface SingletonInterfaceA {
 
-    @Inject
-    private SingletonFieldB b;
+    SingletonInterfaceB getB();
+
+    String getValue();
 
 }

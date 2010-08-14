@@ -15,17 +15,16 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.cyclic;
-
-import javax.inject.Inject;
+package cx.ath.mancel01.dependencyshot.test.circular;
 
 /**
  *
  * @author mathieuancelin
  */
-public class FieldB {
+public interface InterfaceA {
 
-    @Inject
-    private FieldA a;
+    String getValue();
+
+    InterfaceB getB();
 
 }

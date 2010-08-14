@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.cyclic;
+package cx.ath.mancel01.dependencyshot.test.circular;
 
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import javax.inject.Inject;

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2010 mathieuancelin.
+ *  Copyright 2009-2010 Mathieu ANCELIN.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,18 +15,24 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.cyclic;
+package cx.ath.mancel01.dependencyshot.test.circular;
 
 import javax.inject.Inject;
 
 /**
  *
- * @author mathieuancelin
+ * @author Mathieu ANCELIN
  */
-public class MethodA {
+public class LoggerService {
 
     @Inject
-    public void setMethodB(MethodB b) {
+    private WhichLoggerToChooseService which;
 
+    public void log(String log){
+        System.out.println("Framework n°" + which.which() + " : " + log);
+    }
+
+    public void setWhich(WhichLoggerToChooseService which) {
+        this.which = which;
     }
 }

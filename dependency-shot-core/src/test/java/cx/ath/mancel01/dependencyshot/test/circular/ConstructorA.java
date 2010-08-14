@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009-2010 Mathieu ANCELIN.
+ *  Copyright 2010 mathieuancelin.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,24 +15,31 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.cyclic;
+package cx.ath.mancel01.dependencyshot.test.circular;
 
 import javax.inject.Inject;
 
 /**
  *
- * @author Mathieu ANCELIN
+ * @author mathieuancelin
  */
-public class LoggerService {
+public class ConstructorA implements InterfaceA {
+
+    private InterfaceB b;
 
     @Inject
-    private WhichLoggerToChooseService which;
-
-    public void log(String log){
-        System.out.println("Framework n°" + which.which() + " : " + log);
+    public ConstructorA(InterfaceB b) {
+        this.b = b;
     }
 
-    public void setWhich(WhichLoggerToChooseService which) {
-        this.which = which;
+    @Override
+    public String getValue() {
+       return "ConstructorA";
     }
+
+    @Override
+    public InterfaceB getB() {
+        return b;
+    }
+
 }

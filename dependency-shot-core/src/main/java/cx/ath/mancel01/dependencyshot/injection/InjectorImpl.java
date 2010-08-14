@@ -91,6 +91,10 @@ public class InjectorImpl implements DSInjector {
 
     private Class actualFromClass;
 
+    private List<Class> circularClasses;
+
+    private Map<Class<?>, Object> circularConstructorArgumentsInstances;
+
     /**
      * The constructor.
      */
@@ -98,6 +102,8 @@ public class InjectorImpl implements DSInjector {
         binders = new ArrayList();
         singletonContext = new HashMap<Class<?>, Object>();
         instanciatedClasses = new HashMap<Class<?>, Object>();
+        circularConstructorArgumentsInstances = new HashMap<Class<?>, Object>();
+        circularClasses = new ArrayList<Class>();
         classHandler = new ClassHandler();
         constructorHandler = new ConstructorHandler();
         PluginsLoader.getInstance().loadPlugins(this);
@@ -111,6 +117,8 @@ public class InjectorImpl implements DSInjector {
         binders = new ArrayList();
         singletonContext = new HashMap<Class<?>, Object>();
         instanciatedClasses = new HashMap<Class<?>, Object>();
+        circularConstructorArgumentsInstances = new HashMap<Class<?>, Object>();
+        circularClasses = new ArrayList<Class>();
         this.stage = stage;
         classHandler = new ClassHandler();
         constructorHandler = new ConstructorHandler();
@@ -311,6 +319,13 @@ public class InjectorImpl implements DSInjector {
                 // and inject it !!
                 classHandler.classInjection(result, c, new ArrayList<Method>(), false, this);
                 instanciatedClasses.remove(c);
+                if (circularClasses.contains(c)) {
+                    circularClasses.remove(c);
+                } else {
+                    if (circularClasses.size() > 0) {
+                        circularConstructorArgumentsInstances.put(c, result);
+                    }
+                }
                 return result;
             } catch (Exception e) {
                 throw new DSException(e);
@@ -318,14 +333,19 @@ public class InjectorImpl implements DSInjector {
         } else {
             if (allowCircularDependencies || ReflectionUtil.isSingleton(c)) {
                 if (actualFromClass.isInterface() && instanciatedClasses.get(c) == null) {
-                    System.out.println("Circular dependency in constructor of " + c.getSimpleName() + ".java is detected. Trying to proxy it ... ");
+                    circularClasses.add(c);
+                    System.out.println("Circular dependency detected in constructor of " + c.getSimpleName() + ".java. Trying to proxy it ... ");
                     CircularProxy proxy = new CircularProxy();
                     proxy.setInjector(this);
                     proxy.setClazz(c);
+                    proxy.setCircularConstructorArgumentsInstances(circularConstructorArgumentsInstances);
                     T instance = (T) Proxy.newProxyInstance(
                         Thread.currentThread().getContextClassLoader(),
                         new Class[]{actualFromClass}, proxy);
                     instanciatedClasses.put(c, instance);
+                }
+                if (!actualFromClass.isInterface() && instanciatedClasses.get(c) == null) {
+                    throw new DSException("Can't proxy circular dependencies without interface.");
                 }
                 return (T) instanciatedClasses.get(c);
             } else {

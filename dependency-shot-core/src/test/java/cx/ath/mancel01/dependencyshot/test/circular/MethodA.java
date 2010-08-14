@@ -15,15 +15,18 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.cyclic;
+package cx.ath.mancel01.dependencyshot.test.circular;
+
+import javax.inject.Inject;
 
 /**
  *
  * @author mathieuancelin
  */
-public interface InterfaceB {
+public class MethodA {
 
-    String getValue();
+    @Inject
+    public void setMethodB(MethodB b) {
 
-    InterfaceA getA();
+    }
 }

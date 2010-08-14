@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.cyclic;
+package cx.ath.mancel01.dependencyshot.test.circular;
 
 import javax.inject.Inject;
 
@@ -23,23 +23,9 @@ import javax.inject.Inject;
  *
  * @author mathieuancelin
  */
-public class ConstructorB implements InterfaceB {
-
-    private InterfaceA a;
+public class FieldA {
 
     @Inject
-    public ConstructorB(InterfaceA a) {
-        this.a = a;
-    }
-
-    @Override
-    public String getValue() {
-        return "ConstructorB";
-    }
-
-    @Override
-    public InterfaceA getA() {
-        return a;
-    }
+    private FieldB b;
 
 }
