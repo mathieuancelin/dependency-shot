@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009-2010 Mathieu ANCELIN.
+ *  Copyright 2010 mathieuancelin.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,18 +15,12 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.instance;
+package cx.ath.mancel01.dependencyshot.api;
 
-/**
- *
- * @author Mathieu ANCELIN
- */
-public interface Module {
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-    String getName();
-
-    void start();
-
-    String getNullString();
-
-}
+@Retention(value = RetentionPolicy.RUNTIME)
+@Documented
+public @interface Nullable {}

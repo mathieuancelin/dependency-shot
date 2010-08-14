@@ -21,6 +21,7 @@ import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import org.junit.Test;
 import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.assertEquals;;
 
 /**
  * Tests of dependency-shot. 
@@ -46,6 +47,9 @@ public class InstanceTest {
                 .equals(InstanceBinder.MY_OTHER_MODULE));
         assertTrue(module3.getName()
                 .equals(InstanceBinder.YAM));
+        assertEquals(module1.getNullString(), null);
+        assertEquals(module2.getNullString(), null);
+        assertEquals(module3.getNullString(), null);
     }
 
     @Test
@@ -63,6 +67,9 @@ public class InstanceTest {
                 .equals(EasyInstanceBinder.MY_OTHER_MODULE));
         assertTrue(module3.getName()
                 .equals(EasyInstanceBinder.YAM));
+        assertEquals(module1.getNullString(), null);
+        assertEquals(module2.getNullString(), null);
+        assertEquals(module3.getNullString(), null);
     }
 
     @Test
