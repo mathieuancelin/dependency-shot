@@ -50,7 +50,12 @@ public class InstanceBinder extends Binder {
                 return YAM;
             }
         });
-        
+        bind(String.class).named("null").providedBy(new Provider(){
+            @Override
+            public Object get() {
+                return null;
+            }
+        });
         bind(InstanceModule.class);
         bind(InstanceModule2.class);
         bind(InstanceModule3.class);

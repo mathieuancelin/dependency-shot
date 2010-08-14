@@ -18,8 +18,10 @@ package cx.ath.mancel01.dependencyshot.graph;
 
 import cx.ath.mancel01.dependencyshot.api.DslConstants;
 import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
+import cx.ath.mancel01.dependencyshot.api.Nullable;
 import cx.ath.mancel01.dependencyshot.api.Stage;
 import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
+import cx.ath.mancel01.dependencyshot.exceptions.NullInjectionException;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.injection.util.EnhancedProvider;
 import cx.ath.mancel01.dependencyshot.injection.util.InstanceProvider;
@@ -236,15 +238,27 @@ public class Binding<T> {
         } else {
             result = (T) injector.createInstance(to);
         }
-        injector.getInstanciatedClasses().clear();
+        //injector.getInstanciatedClasses().clear();
+        boolean nullable = false;
         if (result == null) {
-            throw new DSIllegalStateException("Could not get a " + to);
+            if (point != null) {
+                for(Annotation a : point.getAnnotations()) {
+                    if (a.annotationType().isAssignableFrom(Nullable.class)) {
+                        nullable = true;
+                    }
+                }
+            }
+            if (!nullable) {
+                throw new NullInjectionException("Could not get a " + to + ". Can't inject object with null value. For that use @Nullable annotation.");
+            }
         }
-        for (InstanceLifecycleHandler handler : PluginsLoader.getInstance().getLifecycleHandlers()) {
-            handler.handlePostConstruct(result);
-        }
-        for (InstanceHandler handler : PluginsLoader.getInstance().getInstanceHandlers()) {
-            result = (T) handler.handleInstance(result, from, injector, point);
+        if (!nullable) {
+            for (InstanceLifecycleHandler handler : PluginsLoader.getInstance().getLifecycleHandlers()) {
+                handler.handlePostConstruct(result);
+            }
+            for (InstanceHandler handler : PluginsLoader.getInstance().getInstanceHandlers()) {
+                result = (T) handler.handleInstance(result, from, injector, point);
+            }
         }
         return result;
     }

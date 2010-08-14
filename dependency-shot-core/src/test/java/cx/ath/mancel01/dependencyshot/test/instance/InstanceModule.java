@@ -17,7 +17,9 @@
 
 package cx.ath.mancel01.dependencyshot.test.instance;
 
+import cx.ath.mancel01.dependencyshot.api.Nullable;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  * Implementation of a service.
@@ -29,6 +31,10 @@ public class InstanceModule implements Module {
     @Inject @MyModule
     private String name;
 
+
+    @Inject @Named("null") @Nullable
+    private String nullString;
+
     @Override
     public void start() {
         System.out.println("Starting module : " + name);
@@ -37,5 +43,9 @@ public class InstanceModule implements Module {
     @Override
     public String getName() {
         return this.name;
+    }
+
+    public String getNullString() {
+        return nullString;
     }
 }

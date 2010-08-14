@@ -34,6 +34,7 @@ public class EasyInstanceBinder extends Binder {
         bind(String.class).annotatedWith(MyModule.class).toInstance(MY_MODULE);
         bind(String.class).annotatedWith(MyOtherModule.class).toInstance(MY_OTHER_MODULE);
         bind(String.class).named("yam").toInstance(YAM);
+        bind(String.class).named("null").toInstance(null);
         bind(Service.class).toInstance(new ServiceImpl());
     }
 }
