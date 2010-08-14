@@ -151,7 +151,9 @@ public abstract class Binder implements DSBinder,
 
     private void injectLateObjects() {
         for (Object o : injectLater)  {
-            o = binderInjector.injectInstance(o);
+            if (o != null) {
+                o = binderInjector.injectInstance(o);
+            }
         }
     }
 
