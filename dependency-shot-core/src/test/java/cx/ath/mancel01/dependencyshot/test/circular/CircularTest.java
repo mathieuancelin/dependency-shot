@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.cyclic;
+package cx.ath.mancel01.dependencyshot.test.circular;
 
 import cx.ath.mancel01.dependencyshot.graph.Binder;
 import cx.ath.mancel01.dependencyshot.DependencyShot;
@@ -31,7 +31,7 @@ import static junit.framework.Assert.assertEquals;
  * 
  * @author Mathieu ANCELIN
  */
-public class CyclicTest {
+public class CircularTest {
 
     @Test
     public void testCyclicDependency() {
@@ -143,6 +143,8 @@ public class CyclicTest {
             isCyclic = true;
         }
         assertFalse(isCyclic);
+//        System.out.println(a.getB().getA());
+//        System.out.println(a.getB().getA().getB());
 //        assertEquals(a.getB().getA().getValue(), "ConstructorA");
 //        assertEquals(a.getB().getA().getB().getValue(), "ConstructorB");
     }
@@ -233,6 +235,8 @@ public class CyclicTest {
             isCyclic = true;
         }
         assertFalse(isCyclic);
+//        System.out.println(a.getB().getA());
+//        System.out.println(a.getB().getA().getB());
 //        assertEquals(a.getB().getA().getValue(), "SingletonConstructorA");
 //        assertEquals(a.getB().getA().getB().getValue(), "SingletonConstructorB");
     }

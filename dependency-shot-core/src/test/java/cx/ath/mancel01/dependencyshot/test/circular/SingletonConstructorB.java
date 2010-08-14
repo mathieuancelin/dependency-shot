@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.cyclic;
+package cx.ath.mancel01.dependencyshot.test.circular;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -25,10 +25,22 @@ import javax.inject.Singleton;
  * @author mathieuancelin
  */
 @Singleton
-public class SingletonMethodB {
+public class SingletonConstructorB implements SingletonInterfaceB {
+
+    private SingletonInterfaceA a;
 
     @Inject
-    public void setMethodA(SingletonMethodA a) {
+    public SingletonConstructorB(SingletonInterfaceA a) {
+         this.a = a;
+    }
 
+    @Override
+    public String getValue() {
+        return "SingletonConstructorB";
+    }
+
+    @Override
+    public SingletonInterfaceA getA() {
+        return a;
     }
 }

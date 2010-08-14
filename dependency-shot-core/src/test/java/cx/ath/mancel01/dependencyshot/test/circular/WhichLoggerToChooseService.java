@@ -1,5 +1,5 @@
 /*
- *  Copyright 2010 mathieuancelin.
+ *  Copyright 2009-2010 Mathieu ANCELIN.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,16 +15,28 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.cyclic;
+package cx.ath.mancel01.dependencyshot.test.circular;
+
+import javax.inject.Inject;
 
 /**
+ * Warning, this class is supposed to fail test and throwing exception
+ * because of cyclic dependency with logger.
  *
- * @author mathieuancelin
+ * @author Mathieu ANCELIN
  */
-public interface SingletonInterfaceB {
+public class WhichLoggerToChooseService {
 
-    SingletonInterfaceA getA();
+    @Inject
+    private LoggerService logger;
 
-    String getValue();
+    public int which(){
+        int which = (int) ((Math.random() * 3) + 1);
+        //logger.log("chosing logging framework number " + which);
+        return which;
+    }
 
+    public void setLogger(LoggerService logger) {
+        this.logger = logger;
+    }
 }

@@ -15,31 +15,19 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.cyclic;
+package cx.ath.mancel01.dependencyshot.test.circular;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  *
  * @author mathieuancelin
  */
-public class ConstructorA implements InterfaceA {
-
-    private InterfaceB b;
+@Singleton
+public class SingletonFieldA {
 
     @Inject
-    public ConstructorA(InterfaceB b) {
-        this.b = b;
-    }
-
-    @Override
-    public String getValue() {
-       return "ConstructorA";
-    }
-
-    @Override
-    public InterfaceB getB() {
-        return b;
-    }
+    private SingletonFieldB b;
 
 }

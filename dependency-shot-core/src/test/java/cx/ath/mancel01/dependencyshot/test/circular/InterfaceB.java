@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009-2010 Mathieu ANCELIN.
+ *  Copyright 2010 mathieuancelin.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,27 +15,15 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.cyclic;
-
-import javax.inject.Inject;
+package cx.ath.mancel01.dependencyshot.test.circular;
 
 /**
  *
- * @author Mathieu ANCELIN
+ * @author mathieuancelin
  */
-public class Account {
+public interface InterfaceB {
 
-    @Inject
-    private LoggerService logger;
+    String getValue();
 
-    private int money = 100000;
-
-    public void charge(int amount) {
-        money -= amount;
-        logger.log("charging " + amount);
-    }
-
-    public int getMoney() {
-        return money;
-    }
+    InterfaceA getA();
 }
