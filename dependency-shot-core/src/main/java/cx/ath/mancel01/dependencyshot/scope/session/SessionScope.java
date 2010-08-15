@@ -15,20 +15,25 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.scope;
+package cx.ath.mancel01.dependencyshot.scope.session;
 
+import cx.ath.mancel01.dependencyshot.scope.thread.*;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
- * Like singleton scope handler but in a thread
+ * Like singleton scope handler but in a thread (ie. one singleton per thread)
  *
  * @author Mathieu ANCELIN
  */
-public class ThreadScope extends CustomScopeHandler {
+public class SessionScope extends CustomScopeHandler {
+
+    private static final Logger logger = Logger.getLogger(SessionScope.class.getSimpleName());
 
     private final ThreadLocal<Map<Class<?>, Object>> threadLocalinstances =
             new ThreadLocal<Map<Class<?>, Object>>() {
@@ -45,13 +50,18 @@ public class ThreadScope extends CustomScopeHandler {
 
     @Override
     public <T> T getScopedInstance(Class<T> interf, Class<? extends T> clazz, InjectorImpl injector) {
-        Map<Class<?>, Object> scope = threadLocalinstances.get();
-        T result = clazz.cast(scope.get(clazz));
-        if (result == null) {
-            result = injector.createInstance(clazz);
-            scope.put(clazz, result);
+        if (!interf.isInterface()) {
+            logger.warning(new StringBuilder()
+                    .append("Sessioncope can't be applied on objects without interfaces. ")
+                    .append("Applying standard injection on ")
+                    .append(clazz.getSimpleName())
+                    .append(".java").toString());
+            return injector.createInstance(clazz);
         }
-        return result;
+        SessionScopeProxy proxy = new SessionScopeProxy(threadLocalinstances, clazz, injector);
+        return (T) Proxy.newProxyInstance(
+                    Thread.currentThread().getContextClassLoader(),
+                    new Class[]{interf}, proxy);
     }
 
     @Override

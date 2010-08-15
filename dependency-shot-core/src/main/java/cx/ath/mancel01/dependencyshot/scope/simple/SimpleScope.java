@@ -15,50 +15,31 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.scope;
+package cx.ath.mancel01.dependencyshot.scope.simple;
 
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
 import java.lang.annotation.Annotation;
-import java.util.HashMap;
-import java.util.Map;
-import javax.inject.Singleton;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
-public class SingletonScope extends CustomScopeHandler {
-
-    /**
-     * Singleton scoped object singletonContext.
-     */
-    private Map<Class<?>, Object> singletonContext;
-
-    public SingletonScope() {
-        singletonContext = new HashMap<Class<?>, Object>();
-    }
+public class SimpleScope extends CustomScopeHandler {
 
     @Override
     public Class<? extends Annotation> getScope() {
-        return Singleton.class;
+        return Newable.class;
     }
 
     @Override
     public <T> T getScopedInstance(Class<T> interf, Class<? extends T> clazz, InjectorImpl injector) {
-        // check if the singleton is present in the singleton context
-        T result = clazz.cast(singletonContext.get(clazz));
-        // if not, create one
-        if (result == null) {
-            result = injector.createInstance(clazz);
-            singletonContext.put(clazz, result);
-        }
-        return result;
+        return injector.createInstance(clazz);
     }
 
     @Override
     public void reset() {
-        singletonContext.clear();
+
     }
 
 }
