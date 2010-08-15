@@ -15,20 +15,12 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.scope;
-
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import javax.inject.Scope;
+package cx.ath.mancel01.dependencyshot.scope.request;
 
 /**
  *
- * @author Mathieu ANCELIN
+ * @author mathieuancelin
  */
-@Retention(value = RetentionPolicy.RUNTIME)
-@Documented
-@Scope
-public @interface Newable {
+public class RequestContextHolder {
 
 }

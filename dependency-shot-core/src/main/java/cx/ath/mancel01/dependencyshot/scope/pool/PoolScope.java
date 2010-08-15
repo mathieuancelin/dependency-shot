@@ -15,20 +15,31 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.scope;
+package cx.ath.mancel01.dependencyshot.scope.pool;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import javax.inject.Scope;
+import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
+import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
+import java.lang.annotation.Annotation;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
-@Retention(value = RetentionPolicy.RUNTIME)
-@Documented
-@Scope
-public @interface PoolScoped {
+public class PoolScope extends CustomScopeHandler {
+
+    @Override
+    public Class<? extends Annotation> getScope() {
+        return PoolScoped.class;
+    }
+
+    @Override
+    public <T> T getScopedInstance(Class<T> interf, Class<? extends T> clazz, InjectorImpl injector) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void reset() {
+        
+    }
 
 }
