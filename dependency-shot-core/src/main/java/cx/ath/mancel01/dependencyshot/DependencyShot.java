@@ -73,14 +73,16 @@ public final class DependencyShot {
      */
     public static InjectorImpl getInjector(final Iterable<? extends DSBinder> binders, Stage stage) {
         long start = System.currentTimeMillis();
-        PluginsLoader.getInstance().loadFirstPlugins();
+        PluginsLoader loader = new PluginsLoader();
+        loader.loadFirstPlugins();
         List<ConfigurationHandler> handlers = (List<ConfigurationHandler>)
-                PluginsLoader.getInstance().getConfigurationHandlers();
+                loader.getConfigurationHandlers();
         try {
             if (handlers.size() > 0 && handlers.get(0).isAutoEnabled()) {
                 return handlers.get(0).getInjector(stage);
             }
-            return InjectorBuilder.makeInjector(binders, stage);
+            InjectorImpl injector = InjectorBuilder.makeInjector(binders, loader, stage);
+            return injector;
         } finally {
             if (handlers.size() > 1) {
                 logger.warning("There are more than one configurator plugin in the classpath.");
@@ -101,9 +103,10 @@ public final class DependencyShot {
      * @return a SPI configurationHandler.
      */
     public static ConfigurationHandler getSpecificConfigurator() {
-        PluginsLoader.getInstance().loadFirstPlugins();
+        PluginsLoader loader = new PluginsLoader();
+        loader.loadFirstPlugins();
         List<ConfigurationHandler> handlers = (List<ConfigurationHandler>)
-                PluginsLoader.getInstance().getConfigurationHandlers();
+                loader.getConfigurationHandlers();
         if (handlers.size() > 1) {
             logger.warning("There are more than one configurator plugin in the classpath.");
             logger.warning("The plugin : "

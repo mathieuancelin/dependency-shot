@@ -20,8 +20,6 @@ import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.graph.Binding;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.scope.simple.Newable;
-import cx.ath.mancel01.dependencyshot.scope.pool.PoolScope;
-import cx.ath.mancel01.dependencyshot.scope.pool.PoolScoped;
 import cx.ath.mancel01.dependencyshot.scope.simple.SimpleScope;
 import cx.ath.mancel01.dependencyshot.scope.singleton.SingletonScope;
 import cx.ath.mancel01.dependencyshot.scope.thread.ThreadScope;
@@ -81,19 +79,19 @@ public final class PluginsLoader {
     /**
      * The private constructor of the singleton.
      */
-    private PluginsLoader() {
+    public PluginsLoader() {
     }
 
-    /**
-     * The accessor for the unique instance of the singleton.
-     * @return the unique instance of the singleton.
-     */
-    public static synchronized PluginsLoader getInstance() {
-        if (instance == null) {
-            instance = new PluginsLoader();
-        }
-        return instance;
-    }
+//    /**
+//     * The accessor for the unique instance of the singleton.
+//     * @return the unique instance of the singleton.
+//     */
+//    public static synchronized PluginsLoader getInstance() {
+//        if (instance == null) {
+//            instance = new PluginsLoader();
+//        }
+//        return instance;
+//    }
     /**
      * Load all the plugins.
      *
@@ -155,7 +153,7 @@ public final class PluginsLoader {
         ArrayList<Binding> bindings = new ArrayList<Binding>();
         //ServiceLoader<BindingsProvider> providersLoader = ServiceLoader.load(BindingsProvider.class);
         DSServiceLoader<BindingsProvider> providersLoader = DSServiceLoader.load(BindingsProvider.class);
-        providersLoader.reload();
+        //providersLoader.reload();
         Iterator<BindingsProvider> providersIterator = providersLoader.iterator();
         while (providersIterator.hasNext()) {
             BindingsProvider provider = providersIterator.next();
@@ -175,7 +173,7 @@ public final class PluginsLoader {
         ArrayList<InstanceHandler> handlers = new ArrayList<InstanceHandler>();
         //ServiceLoader<InstanceHandler> handlersProvider = ServiceLoader.load(InstanceHandler.class);
         DSServiceLoader<InstanceHandler> handlersProvider = DSServiceLoader.load(InstanceHandler.class);
-        handlersProvider.reload();
+        //handlersProvider.reload();
         Iterator<InstanceHandler> handlersIterator = handlersProvider.iterator();
         while (handlersIterator.hasNext()) {
             InstanceHandler handler = handlersIterator.next();
@@ -192,7 +190,7 @@ public final class PluginsLoader {
         ArrayList<InstanceLifecycleHandler> handlers = new ArrayList<InstanceLifecycleHandler>();
         //ServiceLoader<InstanceLifecycleHandler> handlersProvider = ServiceLoader.load(InstanceLifecycleHandler.class);
         DSServiceLoader<InstanceLifecycleHandler> handlersProvider = DSServiceLoader.load(InstanceLifecycleHandler.class);
-        handlersProvider.reload();
+        //handlersProvider.reload();
         Iterator<InstanceLifecycleHandler> handlersIterator = handlersProvider.iterator();
         while (handlersIterator.hasNext()) {
             InstanceLifecycleHandler handler = handlersIterator.next();
@@ -209,7 +207,7 @@ public final class PluginsLoader {
         ArrayList<ImplementationValidator> implemvalidators = new ArrayList<ImplementationValidator>();
         //ServiceLoader<ImplementationValidator> validatorsProvider = ServiceLoader.load(ImplementationValidator.class);
         DSServiceLoader<ImplementationValidator> validatorsProvider = DSServiceLoader.load(ImplementationValidator.class);
-        validatorsProvider.reload();
+        //validatorsProvider.reload();
         Iterator<ImplementationValidator> validatorsIterator = validatorsProvider.iterator();
         while (validatorsIterator.hasNext()) {
             ImplementationValidator validator = validatorsIterator.next();
@@ -226,7 +224,7 @@ public final class PluginsLoader {
         ArrayList<ConfigurationHandler> configHandlers = new ArrayList<ConfigurationHandler>();
         //ServiceLoader<ConfigurationHandler> configHandlersProvider = ServiceLoader.load(ConfigurationHandler.class);
         DSServiceLoader<ConfigurationHandler> configHandlersProvider = DSServiceLoader.load(ConfigurationHandler.class);
-        configHandlersProvider.reload();
+        //configHandlersProvider.reload();
         Iterator<ConfigurationHandler> validatorsIterator = configHandlersProvider.iterator();
         while (validatorsIterator.hasNext()) {
             ConfigurationHandler validator = validatorsIterator.next();
@@ -239,7 +237,7 @@ public final class PluginsLoader {
         HashMap<Class<? extends Annotation>, CustomScopeHandler> handlers =
                 new HashMap<Class<? extends Annotation>, CustomScopeHandler>();
         DSServiceLoader<CustomScopeHandler> scopeHandlersProvider = DSServiceLoader.load(CustomScopeHandler.class);
-        scopeHandlersProvider.reload();
+        //scopeHandlersProvider.reload();
         Iterator<CustomScopeHandler> handlersIterator = scopeHandlersProvider.iterator();
         while (handlersIterator.hasNext()) {
             CustomScopeHandler handler = handlersIterator.next();

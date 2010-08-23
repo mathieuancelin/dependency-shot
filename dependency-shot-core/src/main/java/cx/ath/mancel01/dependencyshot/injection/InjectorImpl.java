@@ -91,6 +91,8 @@ public class InjectorImpl implements DSInjector {
 
     private ConstructorHandler constructorHandler;
 
+    private PluginsLoader loader;
+
     private Class actualFromClass;
 
     private List<Class> circularClasses;
@@ -102,7 +104,7 @@ public class InjectorImpl implements DSInjector {
     /**
      * The constructor.
      */
-    public InjectorImpl() {
+    public InjectorImpl(PluginsLoader loader) {
         binders = new ArrayList();
         singletonContext = new HashMap<Class<?>, Object>();
         instanciatedClasses = new HashMap<Class<?>, Object>();
@@ -110,15 +112,16 @@ public class InjectorImpl implements DSInjector {
         circularClasses = new ArrayList<Class>();
         classHandler = new ClassHandler();
         constructorHandler = new ConstructorHandler();
-        PluginsLoader.getInstance().loadPlugins(this);
-        scopeHandlers = PluginsLoader.getInstance().getScopeHandlers();
+        this.loader = loader;
+        loader.loadPlugins(this);
+        scopeHandlers = loader.getScopeHandlers();
     }
     /**
      * The constructor.
      *
      * @param stage of the injector.
      */
-    public InjectorImpl(Stage stage) {
+    public InjectorImpl(PluginsLoader loader, Stage stage) {
         binders = new ArrayList();
         singletonContext = new HashMap<Class<?>, Object>();
         instanciatedClasses = new HashMap<Class<?>, Object>();
@@ -127,8 +130,9 @@ public class InjectorImpl implements DSInjector {
         this.stage = stage;
         classHandler = new ClassHandler();
         constructorHandler = new ConstructorHandler();
-        PluginsLoader.getInstance().loadPlugins(this);
-        scopeHandlers = PluginsLoader.getInstance().getScopeHandlers();
+        this.loader = loader;
+        loader.loadPlugins(this);
+        scopeHandlers = loader.getScopeHandlers();
     }
 
     /**
@@ -189,7 +193,7 @@ public class InjectorImpl implements DSInjector {
                 }
             }
             // extension point -> provided bindings
-            for (Binding binding : PluginsLoader.getInstance().getProvidedBindings()) {
+            for (Binding binding : loader.getProvidedBindings()) {
                 bindings.put(binding, binding);
             }
 
@@ -463,7 +467,7 @@ public class InjectorImpl implements DSInjector {
      * Trigger all lifecycle handlers preDestroy method.
      */
     public void triggerLifecycleDestroyCallbacks() {
-        for (InstanceLifecycleHandler handler : PluginsLoader.getInstance().getLifecycleHandlers()) {
+        for (InstanceLifecycleHandler handler : loader.getLifecycleHandlers()) {
             for (Object o : handler.getManagedInstances()) {
                 handler.handlePreDestroy(o);
             }
@@ -507,6 +511,10 @@ public class InjectorImpl implements DSInjector {
     @Override
     public boolean areCircularDependenciesAllowed() {
         return allowCircularDependencies;
+    }
+
+    public PluginsLoader getLoader() {
+        return loader;
     }
 
     public CustomScopeHandler getScopeHandler(Class<? extends Annotation> clazz) {
