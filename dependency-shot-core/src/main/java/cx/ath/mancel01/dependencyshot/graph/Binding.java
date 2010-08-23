@@ -256,10 +256,10 @@ public class Binding<T> {
             }
         }
         if (!nullable) {
-            for (InstanceLifecycleHandler handler : PluginsLoader.getInstance().getLifecycleHandlers()) {
+            for (InstanceLifecycleHandler handler : injector.getLoader().getLifecycleHandlers()) {
                 handler.handlePostConstruct(result);
             }
-            for (InstanceHandler handler : PluginsLoader.getInstance().getInstanceHandlers()) {
+            for (InstanceHandler handler : injector.getLoader().getInstanceHandlers()) {
                 result = (T) handler.handleInstance(result, from, injector, point);
             }
         }
