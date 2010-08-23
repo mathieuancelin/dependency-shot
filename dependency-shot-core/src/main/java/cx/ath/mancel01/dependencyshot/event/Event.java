@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009-2010 Mathieu ANCELIN.
+ *  Copyright 2010 mathieuancelin.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,12 +15,24 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.api.event;
+package cx.ath.mancel01.dependencyshot.event;
+
+import cx.ath.mancel01.dependencyshot.api.event.EventType;
 
 /**
  *
- * @author Mathieu ANCELIN
+ * @author mathieuancelin
  */
-public enum Events {
+public class Event {
+
+    private EventType type;
+
+    public Event(EventType type) {
+        this.type = type;
+    }
+
+    public EventType getType() {
+        return type;
+    }
 
 }
