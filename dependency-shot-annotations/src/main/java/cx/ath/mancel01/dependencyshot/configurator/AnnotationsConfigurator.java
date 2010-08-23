@@ -24,6 +24,7 @@ import cx.ath.mancel01.dependencyshot.graph.Binding;
 import cx.ath.mancel01.dependencyshot.injection.InjectorBuilder;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.ConfigurationHandler;
+import cx.ath.mancel01.dependencyshot.spi.PluginsLoader;
 import java.lang.annotation.Annotation;
 import java.util.HashSet;
 import java.util.Set;
@@ -145,7 +146,7 @@ public class AnnotationsConfigurator extends ConfigurationHandler {
                 System.out.println(b);
             }
         }
-        return InjectorBuilder.makeInjector(binder, stage);
+        return InjectorBuilder.makeInjector(binder, new PluginsLoader(), stage);
     }
 
     @Override

@@ -22,6 +22,7 @@ import cx.ath.mancel01.dependencyshot.graph.Binder;
 import cx.ath.mancel01.dependencyshot.injection.InjectorBuilder;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.ConfigurationHandler;
+import cx.ath.mancel01.dependencyshot.spi.PluginsLoader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Logger;
@@ -50,7 +51,7 @@ public class DslConfigurator extends ConfigurationHandler {
                 }
             }
         }
-        return InjectorBuilder.makeInjector(binders, stage);
+        return InjectorBuilder.makeInjector(binders, new PluginsLoader(), stage);
     }
 
     /**
