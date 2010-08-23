@@ -48,6 +48,12 @@
             <artifactId>dependency-shot-core</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>cx.ath.mancel01</groupId>
+            <artifactId>dependency-shot-aop</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

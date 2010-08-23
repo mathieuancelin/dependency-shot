@@ -20,6 +20,8 @@ import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.ImplementationValidator;
 import cx.ath.mancel01.dependencyshot.spi.InstanceHandler;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
@@ -35,7 +37,7 @@ public final class ManagedBeanHandler extends InstanceHandler {
 
     private static final Logger logger = Logger.getLogger(ManagedBeanHandler.class.getSimpleName());
 
-    private boolean registered = false;
+    private static List<InjectorImpl> injectors = new ArrayList<InjectorImpl>();
 
     public static boolean isManagedBean(Object o) {
         if (o != null) {
@@ -60,9 +62,9 @@ public final class ManagedBeanHandler extends InstanceHandler {
 
     @Override
     public Object manipulateInstance(Object instance, Class interf, InjectorImpl injector, InjectionPoint point) {
-        if (!registered) { // TODO :  replace this with the upcoming event spi api.
+        if (!injectors.contains(injector)) { // TODO :  replace this with the upcoming event spi api.
+            injectors.add(injector);
             injector.registerShutdownHook();
-            registered = true;
         }
         registerManagedBeanJNDI(instance);
         return instance;

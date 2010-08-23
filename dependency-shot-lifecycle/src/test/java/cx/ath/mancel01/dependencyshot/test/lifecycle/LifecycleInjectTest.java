@@ -17,6 +17,7 @@
 
 package cx.ath.mancel01.dependencyshot.test.lifecycle;
 
+import cx.ath.mancel01.dependencyshot.graph.Binder;
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import org.junit.Test;
@@ -34,5 +35,19 @@ public class LifecycleInjectTest {
         LifecycleClient client = injector.getInstance(LifecycleClient.class);
         client.go();
         assertTrue(LifecycleCounter.getInstance().getLoadCounter() == 4);
+    }
+
+    @Test
+    public void testLifecycleOnAOP() {
+        DSInjector injector = DependencyShot.getInjector(new Binder() {
+            @Override
+            public void configureBindings() {
+                bind(Service.class).to(ServiceImpl.class);
+            }
+        });
+        AOPServiceInjected injected = injector.getInstance(AOPServiceInjected.class);
+        injected.doIt();
+        Interceptor interceptor = injector.getInstance(Interceptor.class);
+        assertTrue(interceptor.getBefore() == 1);
     }
 }
