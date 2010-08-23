@@ -15,29 +15,14 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.event;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.logging.Logger;
+package cx.ath.mancel01.dependencyshot.api.event;
 
 /**
- * A manager for internal event.
- * The generated events will be broadcasted to SPI extension points.
  *
  * @author Mathieu ANCELIN
  */
-public class EventManager {
+public enum EventType {
 
-    private static final Logger logger = Logger.getLogger(EventManager.class.getSimpleName());
-
-    private static final int NTHREADS = 10;
-
-    private static final ExecutorService exec = Executors.newFixedThreadPool(NTHREADS);
-
-    private void fireEvent(Event evt) {
-        EventBroadcastExecution task = new EventBroadcastExecution(evt, null);
-        exec.execute(task);
-    }
+    STARTING_INJECTOR, STOPPING_INJECTOR, BINDING_ADDED, START_BEAN_INJECTION, STOP_BEAN_INJECTION
 
 }
