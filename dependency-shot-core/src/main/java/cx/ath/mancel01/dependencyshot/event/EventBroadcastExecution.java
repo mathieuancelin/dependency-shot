@@ -20,6 +20,7 @@ package cx.ath.mancel01.dependencyshot.event;
 import java.util.Collection;
 
 /**
+ * Thread that notify listener of the particular event.
  *
  * @author mathieuancelin
  */
@@ -36,7 +37,7 @@ public class EventBroadcastExecution implements Runnable  {
 
     @Override
     public void run() {
-        for(EventListener listener : listeners) {
+        for (EventListener listener : listeners) {
             listener.onEvent(event);
         }
     }

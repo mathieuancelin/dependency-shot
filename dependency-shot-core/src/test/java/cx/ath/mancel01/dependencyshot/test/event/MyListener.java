@@ -15,37 +15,25 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.event;
+package cx.ath.mancel01.dependencyshot.test.event;
 
-import cx.ath.mancel01.dependencyshot.exceptions.DSException;
-import java.util.UUID;
-import javax.inject.Inject;
+import cx.ath.mancel01.dependencyshot.event.EventListener;
 
 /**
- * Event class.
  *
- * @author mathieuancelin
+ * @author Mathieu ANCELIN
  */
-public class Event {
+public class MyListener implements EventListener<MyEvent> {
 
-    private String id;
+    private int calls = 0;
 
-    @Inject
-    private EventManager manager;
-
-    public Event() {
-        this.id = UUID.randomUUID().toString();
+    @Override
+    public void onEvent(MyEvent evt) {
+       calls++;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void fire() {
-        if (manager == null) {
-            throw new DSException("You should inject the event in order to call fire on it.");
-        }
-        manager.fireEvent(this);
+    public int getCalls() {
+        return calls;
     }
 
 }

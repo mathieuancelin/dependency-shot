@@ -17,14 +17,13 @@
 
 package cx.ath.mancel01.dependencyshot.event;
 
-import cx.ath.mancel01.dependencyshot.api.event.EventType;
-
 /**
+ * Interface for listeners.
  *
  * @author mathieuancelin
  */
-public interface EventListener<T extends EventType> {
+public interface EventListener<T extends Event> {
 
-    void onEvent(Event evt);
+    void onEvent(T evt);
 
 }
