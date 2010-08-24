@@ -17,9 +17,14 @@
 
 package cx.ath.mancel01.dependencyshot.event;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
+import javax.inject.Singleton;
 
 /**
  * A manager for internal event.
@@ -27,17 +32,45 @@ import java.util.logging.Logger;
  *
  * @author Mathieu ANCELIN
  */
+@Singleton
 public class EventManager {
 
     private static final Logger logger = Logger.getLogger(EventManager.class.getSimpleName());
 
     private static final int NTHREADS = 10;
 
-    private static final ExecutorService exec = Executors.newFixedThreadPool(NTHREADS);
+    private final ExecutorService exec = Executors.newFixedThreadPool(NTHREADS);
 
-    private void fireEvent(Event evt) {
-        EventBroadcastExecution task = new EventBroadcastExecution(evt, null);
+    private HashMap<Class<? extends Event>, ArrayList<EventListener>> listeners;
+    
+    public EventManager() {
+        listeners = new HashMap<Class<? extends Event>, ArrayList<EventListener>>();
+    }
+
+    public void registerListener(EventListener toRegister) {
+        Type[] interfaces = toRegister.getClass().getGenericInterfaces();
+        Class<? extends Event> type = null;
+        for(Type interf : interfaces) {
+            if (EventListener.class.isAssignableFrom((Class)((ParameterizedType)interf).getRawType())) {
+                type = (Class<? extends Event>)((ParameterizedType) interf).getActualTypeArguments()[0];
+            }
+        }
+        if (type != null) {
+            if (!listeners.containsKey(type)) {
+                listeners.put(type, new ArrayList<EventListener>());
+                
+            }
+            listeners.get(type).add(toRegister);
+        }
+    }
+
+    public void fireEvent(Event evt) {
+        EventBroadcastExecution task = new EventBroadcastExecution(evt, listeners.get(evt.getClass()));
         exec.execute(task);
+    }
+
+    public ExecutorService getExec() {
+        return exec;
     }
 
 }
