@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009-2010 Mathieu ANCELIN.
+ *  Copyright 2010 mathieuancelin.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,22 +15,12 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.graph.builder;
+package cx.ath.mancel01.dependencyshot.test.typesafe;
 
 /**
- * Interface for the binder.
  *
  * @author Mathieu ANCELIN
  */
-public interface BindBuilder {
-    
-    /**
-     * Bind a class in the injector.
-     *
-     * @param <T> type.
-     * @param from the class to bind.
-     * @return the actual binder.
-     */
-    <T> FluentBuilder bind(Class<T> from);
+public class ServiceImpl implements Service {
 
 }

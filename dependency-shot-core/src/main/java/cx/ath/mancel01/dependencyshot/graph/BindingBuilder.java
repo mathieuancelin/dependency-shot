@@ -19,11 +19,8 @@ package cx.ath.mancel01.dependencyshot.graph;
 
 import cx.ath.mancel01.dependencyshot.graph.builder.Builder;
 import cx.ath.mancel01.dependencyshot.api.Stage;
-import cx.ath.mancel01.dependencyshot.graph.builder.BindBuilder;
 import cx.ath.mancel01.dependencyshot.graph.builder.FluentBuilder;
-import cx.ath.mancel01.dependencyshot.graph.builder.QualifiedBuilder;
-import cx.ath.mancel01.dependencyshot.graph.builder.StagingBuilder;
-import cx.ath.mancel01.dependencyshot.injection.util.InstanceProvider;
+import cx.ath.mancel01.dependencyshot.graph.builder.TypesafeBuilder;
 import java.lang.annotation.Annotation;
 import javax.inject.Provider;
 
@@ -33,11 +30,7 @@ import javax.inject.Provider;
  *
  * @author Mathieu ANCELIN
  */
-public class BindingBuilder implements BindBuilder,
-                                    FluentBuilder,
-                                    QualifiedBuilder,
-                                    StagingBuilder,
-                                    Builder<Binding> {
+public class BindingBuilder implements Builder<Binding>{
 
     private Class from = null;
     private Class to = null;
@@ -56,76 +49,22 @@ public class BindingBuilder implements BindBuilder,
      * Instanciate the builder to create bindings.
      * @return
      */
-    public static BindBuilder prepareBindingThat() {
+    public static BindingBuilder prepareBindingThat() {
         return new BindingBuilder();
     }
 
     /**
      * {@inheritDoc }
      */
-    @Override
-    public final <T> FluentBuilder bind(Class<T> from) {
+    //@Override
+    public final <T> FluentBuilder<T> bind(Class<T> from) {
         this.from = from;
         this.to = from;
         this.named = null;
         this.annotation = null;
         this.provider = null;
         this.stage = null;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc }
-     */
-    @Override
-    public final <T> QualifiedBuilder annotatedWith(Class<? extends Annotation> annotation) {
-        this.annotation = annotation;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc }
-     */
-    @Override
-    public final <T> QualifiedBuilder named(String named) {
-        this.named = named;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc }
-     */
-    @Override
-    public <T> StagingBuilder providedBy(Provider<T> provider) {
-        this.provider = provider;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc }
-     */
-    @Override
-    public <T> StagingBuilder to(Class<? extends T> to) {
-        this.to = to;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc }
-     */
-    @Override
-    public <T> StagingBuilder toInstance(Object instance) {
-        this.provider = new InstanceProvider(instance);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc }
-     */
-    @Override
-    public Builder onStage(Stage stage) {
-        this.stage = stage;
-        return this;
+        return new TypesafeBuilder<T>(this);
     }
 
     /**
@@ -135,5 +74,25 @@ public class BindingBuilder implements BindBuilder,
     public Binding build() {
         return new Binding(this.annotation, this.named,
                         this.from, this.to, this.provider, this.stage);
+    }
+
+    public void setAnnotation(Class<? extends Annotation> annotation) {
+        this.annotation = annotation;
+    }
+
+    public void setNamed(String named) {
+        this.named = named;
+    }
+
+    public void setProvider(Provider provider) {
+        this.provider = provider;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public void setTo(Class to) {
+        this.to = to;
     }
 }

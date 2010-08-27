@@ -17,16 +17,14 @@
 
 package cx.ath.mancel01.dependencyshot.injection.fluent;
 
-import cx.ath.mancel01.dependencyshot.api.Stage;
 import java.lang.annotation.Annotation;
-import javax.inject.Provider;
 
 /**
  * Interface for the binder.
  *
  * @author Mathieu ANCELIN
  */
-public interface FluentBinder {
+public interface FluentBinder<T> extends QualifiedBinding<T>, StagingBinding<T> {
 
     /**
      * Specify a qualfier for a binding.
@@ -35,7 +33,7 @@ public interface FluentBinder {
      * @param annotation the qualifier of the binding.
      * @return the actual binder.
      */
-    <T> QualifiedBinding annotatedWith(Class<? extends Annotation> annotation);
+    QualifiedBinding<T> annotatedWith(Class<? extends Annotation> annotation);
     /**
      * Specify a name qualifier for a binding.
      *
@@ -43,36 +41,6 @@ public interface FluentBinder {
      * @param named the name for the qualifier.
      * @return the actual binder.
      */
-    <T> QualifiedBinding named(String named);
-    /**
-     * Specify a provider for the actual binding.
-     *
-     * @param <T> type.
-     * @param provider the provider for the binding.
-     * @return the actual binder.
-     */
-    <T> StagingBinding providedBy(Provider<T> provider);
-    /**
-     * The target class for a binding.
-     *
-     * @param <T> type.
-     * @param to the targeted class for the binding.
-     * @return the actual binder.
-     */
-    <T> StagingBinding to(Class<? extends T> to);
-    /**
-     * Specify a specific instance to bind with.
-     *
-     * @param <T> type.
-     * @param instance specify the instance.
-     * @return the actual binder.
-     */
-    <T> StagingBinding toInstance(Object instance);
-    /**
-     * Specify the stage of the binding.
-     *
-     * @param stage the actual stage.
-     */
-    void onStage(Stage stage);
+    QualifiedBinding<T> named(String named);
 
 }

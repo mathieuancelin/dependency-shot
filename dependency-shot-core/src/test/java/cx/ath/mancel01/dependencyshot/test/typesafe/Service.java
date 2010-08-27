@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009-2010 Mathieu ANCELIN.
+ *  Copyright 2010 mathieuancelin.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,21 +15,12 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.graph.builder;
-
-import cx.ath.mancel01.dependencyshot.api.Stage;
-import cx.ath.mancel01.dependencyshot.graph.Binding;
+package cx.ath.mancel01.dependencyshot.test.typesafe;
 
 /**
- * Interface for the binder.
  *
  * @author Mathieu ANCELIN
  */
-public interface StagingBuilder<T> extends Builder<Binding> {
-    /**
-     * Specify the stage of the binding.
-     *
-     * @param stage the actual stage.
-     */
-    Builder onStage(Stage stage);
+public interface Service {
+
 }

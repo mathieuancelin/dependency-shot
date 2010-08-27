@@ -24,7 +24,7 @@ import cx.ath.mancel01.dependencyshot.api.Stage;
  *
  * @author Mathieu ANCELIN
  */
-public interface StagingBinding {
+public interface StagingBinding<T> {
     /**
      * Specify the stage of the binding.
      *
