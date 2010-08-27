@@ -51,7 +51,7 @@ public class EventTest {
         for(int i = 0; i < 20; i++)
             event3.fire();
         try {
-            Thread.sleep(200);
+            Thread.sleep(500);
         } catch (InterruptedException ex) {
             Logger.getLogger(EventTest.class.getName())
                     .log(Level.SEVERE, null, ex);

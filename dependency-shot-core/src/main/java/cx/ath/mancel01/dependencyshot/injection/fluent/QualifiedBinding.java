@@ -24,7 +24,7 @@ import javax.inject.Provider;
  * 
  * @author Mathieu ANCELIN
  */
-public interface QualifiedBinding {
+public interface QualifiedBinding<T> {
     /**
      * The target class for a binding.
      *
@@ -32,7 +32,7 @@ public interface QualifiedBinding {
      * @param to the targeted class for the binding.
      * @return the actual binder.
      */
-    <T> StagingBinding to(Class<? extends T> to);
+    StagingBinding<T> to(Class<? extends T> to);
     /**
      * Specify a specific instance to bind with.
      *
@@ -40,7 +40,7 @@ public interface QualifiedBinding {
      * @param instance specify the instance.
      * @return the actual binder.
      */
-    <T> StagingBinding toInstance(Object instance);
+    StagingBinding<T> toInstance(Object instance);
     /**
      * Specify a provider for the actual binding.
      *
@@ -48,5 +48,5 @@ public interface QualifiedBinding {
      * @param provider the provider for the binding.
      * @return the actual binder.
      */
-    <T> StagingBinding providedBy(Provider<T> provider);
+    StagingBinding<T> providedBy(Provider<? extends T> provider);
 }

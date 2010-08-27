@@ -17,7 +17,6 @@
 
 package cx.ath.mancel01.dependencyshot.graph.builder;
 
-import cx.ath.mancel01.dependencyshot.graph.Binding;
 import javax.inject.Provider;
 
 /**
@@ -25,7 +24,7 @@ import javax.inject.Provider;
  * 
  * @author Mathieu ANCELIN
  */
-public interface QualifiedBuilder extends Builder<Binding> {
+public interface QualifiedBuilder<T> {
     /**
      * The target class for a binding.
      *
@@ -33,7 +32,7 @@ public interface QualifiedBuilder extends Builder<Binding> {
      * @param to the targeted class for the binding.
      * @return the actual binder.
      */
-    <T> StagingBuilder to(Class<? extends T> to);
+    StagingBuilder<T> to(Class<? extends T> to);
     /**
      * Specify a specific instance to bind with.
      *
@@ -41,7 +40,7 @@ public interface QualifiedBuilder extends Builder<Binding> {
      * @param instance specify the instance.
      * @return the actual binder.
      */
-    <T> StagingBuilder toInstance(Object instance);
+    StagingBuilder<T> toInstance(Object instance);
     /**
      * Specify a provider for the actual binding.
      *
@@ -49,5 +48,5 @@ public interface QualifiedBuilder extends Builder<Binding> {
      * @param provider the provider for the binding.
      * @return the actual binder.
      */
-    <T> StagingBuilder providedBy(Provider<T> provider);
+    StagingBuilder<T> providedBy(Provider<? extends T> provider);
 }

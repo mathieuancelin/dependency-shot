@@ -66,10 +66,7 @@ import javax.inject.Provider;
  * 
  * @author Mathieu ANCELIN
  */
-public abstract class Binder implements DSBinder,
-                                        FluentBinder,
-                                        QualifiedBinding,
-                                        StagingBinding {
+public abstract class Binder implements DSBinder {
 
     /**
      * Context for named injections.
@@ -164,7 +161,7 @@ public abstract class Binder implements DSBinder,
      * @param from the class to bind.
      * @return the actual binder.
      */
-    public final <T> FluentBinder bind(Class<T> from) {
+    public final <T> FluentBinder<T> bind(Class<T> from) {
         if (binderInjector.getStage() != null) {
             if (binderInjector.getStage().equals(this.stage)) {
                 addBindingToBinder(
@@ -187,7 +184,7 @@ public abstract class Binder implements DSBinder,
         this.annotation = null;
         this.provider = null;
         this.stage = null;
-        return this;
+        return new TypesafeBinder<T>(this);
     }
 
     /**
@@ -197,10 +194,8 @@ public abstract class Binder implements DSBinder,
      * @param to the targeted class for the binding.
      * @return the actual binder.
      */
-    @Override
-    public final <T> StagingBinding to(Class<? extends T> to) {
+    public final void to(Class to) {
         this.to = to;
-        return this;
     }
 
     /**
@@ -210,10 +205,8 @@ public abstract class Binder implements DSBinder,
      * @param named the name for the qualifier.
      * @return the actual binder.
      */
-    @Override
-    public final <T> QualifiedBinding named(String named) {
+    public final void named(String named) {
         this.named = named;
-        return this;
     }
 
     /**
@@ -223,10 +216,8 @@ public abstract class Binder implements DSBinder,
      * @param annotation the qualifier of the binding.
      * @return the actual binder.
      */
-    @Override
-    public final <T> QualifiedBinding annotatedWith(Class<? extends Annotation> annotation) {
+    public final void annotatedWith(Class<? extends Annotation> annotation) {
         this.annotation = annotation;
-        return this;
     }
 
     /**
@@ -236,10 +227,8 @@ public abstract class Binder implements DSBinder,
      * @param provider the provider for the binding.
      * @return the actual binder.
      */
-    @Override
-    public final <T> StagingBinding providedBy(Provider<T> provider) {
+    public final void providedBy(Provider provider) {
         this.provider = provider;
-        return this;
     }
 
     /**
@@ -249,11 +238,9 @@ public abstract class Binder implements DSBinder,
      * @param instance specify the instance.
      * @return the actual binder.
      */
-    @Override
-    public final <T> StagingBinding toInstance(Object instance) {
+    public final void toInstance(Object instance) {
         injectLater.add(instance);
         this.provider = new InstanceProvider(instance);
-        return this;
     }
 
     /**
@@ -261,7 +248,6 @@ public abstract class Binder implements DSBinder,
      *
      * @param stage the actual stage.
      */
-    @Override
     public final void onStage(Stage stage) {
         this.stage = stage;
     }

@@ -24,7 +24,7 @@ import java.lang.annotation.Annotation;
  *
  * @author Mathieu ANCELIN
  */
-public interface FluentBuilder extends QualifiedBuilder, StagingBuilder {
+public interface FluentBuilder<T> extends QualifiedBuilder<T>, StagingBuilder<T> {
 
     /**
      * Specify a qualfier for a binding.
@@ -33,7 +33,7 @@ public interface FluentBuilder extends QualifiedBuilder, StagingBuilder {
      * @param annotation the qualifier of the binding.
      * @return the actual binder.
      */
-    <T> QualifiedBuilder annotatedWith(Class<? extends Annotation> annotation);
+    QualifiedBuilder<T> annotatedWith(Class<? extends Annotation> annotation);
     /**
      * Specify a name qualifier for a binding.
      *
@@ -41,6 +41,6 @@ public interface FluentBuilder extends QualifiedBuilder, StagingBuilder {
      * @param named the name for the qualifier.
      * @return the actual binder.
      */
-    <T> QualifiedBuilder named(String named);
+    QualifiedBuilder<T> named(String named);
 
 }
