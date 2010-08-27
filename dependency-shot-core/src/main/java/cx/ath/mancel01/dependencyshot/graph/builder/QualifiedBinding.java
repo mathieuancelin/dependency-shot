@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.injection.fluent;
+package cx.ath.mancel01.dependencyshot.graph.builder;
 
 import javax.inject.Provider;
 
