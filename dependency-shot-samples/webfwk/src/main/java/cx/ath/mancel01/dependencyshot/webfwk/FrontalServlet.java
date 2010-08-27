@@ -77,7 +77,7 @@ public abstract class FrontalServlet extends HttpServlet {
         super.destroy();
     }
 
-    private final void handleRequest(final HttpAction action, final HttpServletRequest request, final HttpServletResponse response) {
+    private void handleRequest(final HttpAction action, final HttpServletRequest request, final HttpServletResponse response) {
         try {
             RequestExecution task = new RequestExecution();
             task.setInjector(injector);
@@ -89,7 +89,7 @@ public abstract class FrontalServlet extends HttpServlet {
             logger.severe(e.getLocalizedMessage());
             logger.severe(e.getCause().getLocalizedMessage());
         } finally {
-            
+            logger.info("end of request");
         }
     }
 
