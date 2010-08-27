@@ -18,9 +18,9 @@
 package cx.ath.mancel01.dependencyshot.graph;
 
 import cx.ath.mancel01.dependencyshot.api.Stage;
-import cx.ath.mancel01.dependencyshot.injection.fluent.FluentBinder;
-import cx.ath.mancel01.dependencyshot.injection.fluent.QualifiedBinding;
-import cx.ath.mancel01.dependencyshot.injection.fluent.StagingBinding;
+import cx.ath.mancel01.dependencyshot.graph.builder.FluentBinder;
+import cx.ath.mancel01.dependencyshot.graph.builder.QualifiedBinding;
+import cx.ath.mancel01.dependencyshot.graph.builder.StagingBinding;
 import java.lang.annotation.Annotation;
 import javax.inject.Provider;
 

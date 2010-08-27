@@ -15,20 +15,32 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.injection.fluent;
+package cx.ath.mancel01.dependencyshot.graph.builder;
 
-import cx.ath.mancel01.dependencyshot.api.Stage;
+import java.lang.annotation.Annotation;
 
 /**
  * Interface for the binder.
  *
  * @author Mathieu ANCELIN
  */
-public interface StagingBinding<T> {
+public interface FluentBinder<T> extends QualifiedBinding<T>, StagingBinding<T> {
+
     /**
-     * Specify the stage of the binding.
+     * Specify a qualfier for a binding.
      *
-     * @param stage the actual stage.
+     * @param <T> type.
+     * @param annotation the qualifier of the binding.
+     * @return the actual binder.
      */
-    void onStage(Stage stage);
+    QualifiedBinding<T> annotatedWith(Class<? extends Annotation> annotation);
+    /**
+     * Specify a name qualifier for a binding.
+     *
+     * @param <T> type.
+     * @param named the name for the qualifier.
+     * @return the actual binder.
+     */
+    QualifiedBinding<T> named(String named);
+
 }
