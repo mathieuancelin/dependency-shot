@@ -63,7 +63,7 @@ public class TypesafeBinder<T> implements FluentBinder<T>,
     }
 
     @Override
-    public StagingBinding<T> providedBy(Provider<T> provider) {
+    public StagingBinding<T> providedBy(Provider<? extends T> provider) {
         binder.providedBy(provider);
         return this;
     }
