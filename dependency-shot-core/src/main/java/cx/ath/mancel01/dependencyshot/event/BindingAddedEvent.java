@@ -15,18 +15,41 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.event;
+package cx.ath.mancel01.dependencyshot.event;
 
 import cx.ath.mancel01.dependencyshot.api.event.Event;
+import cx.ath.mancel01.dependencyshot.api.DSInjector;
+import cx.ath.mancel01.dependencyshot.graph.Binder;
+import cx.ath.mancel01.dependencyshot.graph.Binding;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
-public class MyEvent extends Event {
+public class BindingAddedEvent extends Event {
 
-    public MyEvent() {
-        super();
+    private DSInjector injector;
+
+    private Binding binding;
+
+    private Binder binder;
+
+    public BindingAddedEvent(DSInjector injector, Binding binding, Binder binder) {
+        this.injector = injector;
+        this.binding = binding;
+        this.binder = binder;
     }
 
+    public DSInjector getInjector() {
+        return injector;
+    }
+
+    public Binder getBinder() {
+        return binder;
+    }
+
+    public Binding getBinding() {
+        return binding;
+    }
+    
 }

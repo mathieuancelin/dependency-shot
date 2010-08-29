@@ -15,18 +15,25 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.event;
+package cx.ath.mancel01.dependencyshot.event;
 
 import cx.ath.mancel01.dependencyshot.api.event.Event;
+import cx.ath.mancel01.dependencyshot.api.DSInjector;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
-public class MyEvent extends Event {
+public class InjectorStartedEvent extends Event {
 
-    public MyEvent() {
-        super();
+    private DSInjector injector;
+
+    public InjectorStartedEvent(DSInjector injector) {
+        this.injector = injector;
+    }
+
+    public DSInjector getInjector() {
+        return injector;
     }
 
 }

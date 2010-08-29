@@ -15,18 +15,15 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.event;
-
-import cx.ath.mancel01.dependencyshot.api.event.Event;
+package cx.ath.mancel01.dependencyshot.api.event;
 
 /**
+ * Interface for listeners.
  *
- * @author Mathieu ANCELIN
+ * @author mathieuancelin
  */
-public class MyEvent extends Event {
+public interface EventListener<T extends Event> {
 
-    public MyEvent() {
-        super();
-    }
+    void onEvent(T evt);
 
 }

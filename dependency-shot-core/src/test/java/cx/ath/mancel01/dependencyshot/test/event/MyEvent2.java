@@ -17,7 +17,7 @@
 
 package cx.ath.mancel01.dependencyshot.test.event;
 
-import cx.ath.mancel01.dependencyshot.event.Event;
+import cx.ath.mancel01.dependencyshot.api.event.Event;
 
 /**
  *

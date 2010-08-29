@@ -18,10 +18,13 @@ package cx.ath.mancel01.dependencyshot.injection;
 
 import cx.ath.mancel01.dependencyshot.util.ShutdownThread;
 import cx.ath.mancel01.dependencyshot.DependencyShot;
-import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
 import cx.ath.mancel01.dependencyshot.api.Stage;
+import cx.ath.mancel01.dependencyshot.api.event.Event;
+import cx.ath.mancel01.dependencyshot.api.event.EventListener;
+import cx.ath.mancel01.dependencyshot.api.event.EventManager;
+import cx.ath.mancel01.dependencyshot.event.EventManagerImpl;
 import cx.ath.mancel01.dependencyshot.exceptions.DSCyclicDependencyDetectedException;
 import cx.ath.mancel01.dependencyshot.exceptions.DSException;
 import cx.ath.mancel01.dependencyshot.graph.Binder;
@@ -29,6 +32,7 @@ import cx.ath.mancel01.dependencyshot.graph.BinderAccessor;
 import cx.ath.mancel01.dependencyshot.graph.Binding;
 import cx.ath.mancel01.dependencyshot.injection.handlers.ClassHandler;
 import cx.ath.mancel01.dependencyshot.injection.handlers.ConstructorHandler;
+import cx.ath.mancel01.dependencyshot.injection.util.InstanceProvider;
 import cx.ath.mancel01.dependencyshot.scope.simple.SimpleScope;
 import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
 import cx.ath.mancel01.dependencyshot.spi.InstanceLifecycleHandler;
@@ -88,6 +92,8 @@ public class InjectorImpl implements DSInjector {
 
     private boolean bindingsChanged = false;
 
+    private EventManagerImpl eventManager;
+
     private ClassHandler classHandler;
 
     private ConstructorHandler constructorHandler;
@@ -116,6 +122,8 @@ public class InjectorImpl implements DSInjector {
         this.loader = loader;
         loader.loadPlugins(this);
         scopeHandlers = loader.getScopeHandlers();
+        eventManager = new EventManagerImpl();
+        eventManager.registerListeners(loader.getEventListeners());
     }
     /**
      * The constructor.
@@ -134,6 +142,8 @@ public class InjectorImpl implements DSInjector {
         this.loader = loader;
         loader.loadPlugins(this);
         scopeHandlers = loader.getScopeHandlers();
+        eventManager = new EventManagerImpl();
+        eventManager.registerListeners(loader.getEventListeners());
     }
 
     /**
@@ -224,6 +234,11 @@ public class InjectorImpl implements DSInjector {
                 }
             }, null);
             bindings.put(stageBinding, stageBinding);
+
+            Binding eventBinding = new Binding(null, null, EventManager.class,
+                    EventManagerImpl.class, new InstanceProvider(eventManager), null);
+            bindings.put(eventBinding, eventBinding);
+            
             bindingsChanged = false;
         }
         return bindings;
@@ -466,6 +481,11 @@ public class InjectorImpl implements DSInjector {
         Runtime.getRuntime().addShutdownHook(thread);
     }
 
+    @Override
+    public final void registerEventListener(EventListener<? extends Event> listener) {
+        eventManager.registerListener(listener);
+    }
+
     /**
      * Trigger all lifecycle handlers preDestroy method.
      */
@@ -528,4 +548,9 @@ public class InjectorImpl implements DSInjector {
             return new SimpleScope();
         }
     }
+
+    public EventManagerImpl getEventManager() {
+        return eventManager;
+    }
+    
 }

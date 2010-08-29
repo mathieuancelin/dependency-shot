@@ -19,7 +19,6 @@ package cx.ath.mancel01.dependencyshot.test.event;
 
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
-import cx.ath.mancel01.dependencyshot.event.EventManager;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Assert;
@@ -34,16 +33,15 @@ public class EventTest {
     @Test
     public void broadcast() {
         DSInjector injector = DependencyShot.getInjector();
-        EventManager manager = injector.getInstance(EventManager.class);
         MyEvent event = injector.getInstance(MyEvent.class);
         MyEvent2 event2 = injector.getInstance(MyEvent2.class);
         MyEvent3 event3 = injector.getInstance(MyEvent3.class);
         MyListener listener = new MyListener();
         MyListener2 listener2 = new MyListener2();
         MyListener3 listener3 = new MyListener3();
-        manager.registerListener(listener);
-        manager.registerListener(listener2);
-        manager.registerListener(listener3);
+        injector.registerEventListener(listener);
+        injector.registerEventListener(listener2);
+        injector.registerEventListener(listener3);
         for(int i = 0; i < 20; i++)
             event.fire();
         for(int i = 0; i < 20; i++)

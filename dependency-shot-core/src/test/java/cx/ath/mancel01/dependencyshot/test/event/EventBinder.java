@@ -17,16 +17,17 @@
 
 package cx.ath.mancel01.dependencyshot.test.event;
 
-import cx.ath.mancel01.dependencyshot.api.event.Event;
+import cx.ath.mancel01.dependencyshot.graph.Binder;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
-public class MyEvent extends Event {
+public class EventBinder extends Binder {
 
-    public MyEvent() {
-        super();
+    @Override
+    public void configureBindings() {
+        registerEventListener(null);
     }
 
 }
