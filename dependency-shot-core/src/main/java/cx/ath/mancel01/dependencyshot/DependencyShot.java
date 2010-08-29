@@ -87,14 +87,16 @@ public final class DependencyShot {
         } finally {
             if (handlers.size() > 1) {
                 logger.warning("There are more than one configurator plugin in the classpath.");
-                logger.warning("The plugin : "
-                        + handlers.get(0).getClass().getSimpleName()
-                        + " is used for this session.");
+                logger.warning(new StringBuilder()
+                        .append("The plugin : ")
+                        .append(handlers.get(0).getClass().getSimpleName())
+                        .append(" is used for this session.").toString());
             }
             if (DEBUG) {
-                logger.info("Time elapsed for bootstrapping : "
-                        + (System.currentTimeMillis() - start)
-                        + " ms.");
+                logger.info(new StringBuilder()
+                        .append("Time elapsed for bootstrapping : ")
+                        .append((System.currentTimeMillis() - start))
+                        .append(" ms.").toString());
             }
         }
     }
@@ -110,9 +112,10 @@ public final class DependencyShot {
                 loader.getConfigurationHandlers();
         if (handlers.size() > 1) {
             logger.warning("There are more than one configurator plugin in the classpath.");
-            logger.warning("The plugin : "
-                    + handlers.get(0).getClass().getSimpleName()
-                    + " is used for this session.");
+            logger.warning(new StringBuilder()
+                    .append("The plugin : ")
+                    .append(handlers.get(0).getClass().getSimpleName())
+                    .append(" is used for this session."). toString());
         }
         if (handlers.size() > 0) {
             return handlers.get(0);
