@@ -39,6 +39,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>aopalliance</groupId>
+            <artifactId>aopalliance</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
             <groupId>cx.ath.mancel01</groupId>
             <artifactId>dependency-shot-api</artifactId>
             <version>${project.version}</version>
