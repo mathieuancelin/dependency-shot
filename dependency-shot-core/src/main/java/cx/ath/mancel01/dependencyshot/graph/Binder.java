@@ -20,9 +20,10 @@ import cx.ath.mancel01.dependencyshot.injection.util.InstanceProvider;
 import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import cx.ath.mancel01.dependencyshot.api.Stage;
-import cx.ath.mancel01.dependencyshot.event.Event;
-import cx.ath.mancel01.dependencyshot.event.EventListener;
+import cx.ath.mancel01.dependencyshot.api.event.Event;
+import cx.ath.mancel01.dependencyshot.api.event.EventListener;
 import cx.ath.mancel01.dependencyshot.graph.builder.FluentBinder;
+import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -273,7 +274,7 @@ public abstract class Binder implements DSBinder {
     }
 
     public final void registerEventListener(EventListener<? extends Event> listener) {
-
+        ((InjectorImpl) binderInjector).getEventManager().registerListener(listener);
     }
 
     /**

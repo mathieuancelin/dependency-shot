@@ -17,6 +17,7 @@
 package cx.ath.mancel01.dependencyshot.spi;
 
 import cx.ath.mancel01.dependencyshot.DependencyShot;
+import cx.ath.mancel01.dependencyshot.api.event.EventListener;
 import cx.ath.mancel01.dependencyshot.graph.Binding;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.scope.simple.Newable;
@@ -44,10 +45,6 @@ public final class PluginsLoader {
      */
     private static final Logger logger = Logger.getLogger(PluginsLoader.class.getSimpleName());
     /**
-     * The unique instance of the class.
-     */
-    private static PluginsLoader instance = null;
-    /**
      * Handled SPI plugins.
      */
     private Collection<Binding> providedBindings;
@@ -68,6 +65,10 @@ public final class PluginsLoader {
      */
     private Collection<ConfigurationHandler> configurationHandlers;
     /**
+     * Listeners SPI plugins.
+     */
+    private Collection<EventListener> eventListeners;
+    /**
      * Handled SPI plugins.
      */
     private Map<Class<? extends Annotation>, CustomScopeHandler> scopeHandlers;
@@ -82,16 +83,6 @@ public final class PluginsLoader {
     public PluginsLoader() {
     }
 
-//    /**
-//     * The accessor for the unique instance of the singleton.
-//     * @return the unique instance of the singleton.
-//     */
-//    public static synchronized PluginsLoader getInstance() {
-//        if (instance == null) {
-//            instance = new PluginsLoader();
-//        }
-//        return instance;
-//    }
     /**
      * Load all the plugins.
      *
@@ -120,6 +111,10 @@ public final class PluginsLoader {
         scopeHandlers = loadCustomScopeHandlers(injector);
         sb.append("CustomScopeHandler plugins loaded : ");
         sb.append(scopeHandlers.size());
+        sb.append("\n");
+        eventListeners = loadEventListeners();
+        sb.append("Event listeners plugins loaded : ");
+        sb.append(eventListeners.size());
         sb.append("\n");
         if (DependencyShot.DEBUG) {
             logger.info(sb.toString());
@@ -248,6 +243,25 @@ public final class PluginsLoader {
         handlers.put(ThreadScoped.class, new ThreadScope());
         return handlers;
     }
+
+    /**
+     * Load eventListeners.
+     *
+     * @return loaded eventListeners.
+     */
+    private Collection<EventListener> loadEventListeners() {
+        ArrayList<EventListener> listeners = new ArrayList<EventListener>();
+        //ServiceLoader<ConfigurationHandler> configHandlersProvider = ServiceLoader.load(ConfigurationHandler.class);
+        DSServiceLoader<EventListener> listenersProvider = DSServiceLoader.load(EventListener.class);
+        //configHandlersProvider.reload();
+        Iterator<EventListener> validatorsIterator = listenersProvider.iterator();
+        while (validatorsIterator.hasNext()) {
+            EventListener validator = validatorsIterator.next();
+            listeners.add(validator);
+        }
+        return listeners;
+    }
+    
     /**
      * Load reflector services.
      *
@@ -297,4 +311,9 @@ public final class PluginsLoader {
     public Map<Class<? extends Annotation>, CustomScopeHandler> getScopeHandlers() {
         return scopeHandlers;
     }
+
+    public Collection<EventListener> getEventListeners() {
+        return eventListeners;
+    }
+    
 }

@@ -17,6 +17,9 @@
 
 package cx.ath.mancel01.dependencyshot.api;
 
+import cx.ath.mancel01.dependencyshot.api.event.Event;
+import cx.ath.mancel01.dependencyshot.api.event.EventListener;
+
 /**
  * Injector interface.
  * 
@@ -70,5 +73,7 @@ public interface DSInjector {
      * Register a shutdown hook to shutdown container when JVM stop.
      */
     void registerShutdownHook();
+
+    void registerEventListener(EventListener<? extends Event> listener);
 
 }

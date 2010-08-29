@@ -15,18 +15,14 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.event;
-
-import cx.ath.mancel01.dependencyshot.api.event.Event;
+package cx.ath.mancel01.dependencyshot.api.event;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
-public class MyEvent extends Event {
+public interface EventManager {
 
-    public MyEvent() {
-        super();
-    }
-
+    public void fireEvent(Event evt);
+    
 }

@@ -15,32 +15,44 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.event;
+package cx.ath.mancel01.dependencyshot.api.event;
 
-import cx.ath.mancel01.dependencyshot.api.event.EventListener;
-import cx.ath.mancel01.dependencyshot.api.event.Event;
-import java.util.Collection;
+import java.util.UUID;
+import javax.inject.Inject;
 
 /**
- * Thread that notify listener of the particular event.
+ * Event class.
  *
  * @author mathieuancelin
  */
-public class EventBroadcastExecution implements Runnable  {
+public class Event {
 
-    private final Event event;
+    private String id;
 
-    private final Collection<EventListener> listeners;
+    private long timestamp;
 
-    public EventBroadcastExecution(Event event, Collection<EventListener> listeners) {
-        this.event = event;
-        this.listeners = listeners;
+    @Inject
+    private EventManager manager;
+
+    public Event() {
+        this.id = UUID.randomUUID().toString();
+        this.timestamp = System.currentTimeMillis();
     }
 
-    @Override
-    public void run() {
-        for (EventListener listener : listeners) {
-            listener.onEvent(event);
+    public String getId() {
+        return id;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+
+    public void fire() {
+        if (manager == null) {
+            throw new RuntimeException("You should inject the event in order to call fire on it.");
         }
+        manager.fireEvent(this);
     }
+
 }

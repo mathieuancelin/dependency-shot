@@ -17,9 +17,13 @@
 
 package cx.ath.mancel01.dependencyshot.event;
 
+import cx.ath.mancel01.dependencyshot.api.event.EventListener;
+import cx.ath.mancel01.dependencyshot.api.event.Event;
+import cx.ath.mancel01.dependencyshot.api.event.EventManager;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -33,9 +37,9 @@ import javax.inject.Singleton;
  * @author Mathieu ANCELIN
  */
 @Singleton
-public class EventManager {
+public class EventManagerImpl implements EventManager {
 
-    private static final Logger logger = Logger.getLogger(EventManager.class.getSimpleName());
+    private static final Logger logger = Logger.getLogger(EventManagerImpl.class.getSimpleName());
 
     private static final int NTHREADS = 10;
 
@@ -43,8 +47,14 @@ public class EventManager {
 
     private HashMap<Class<? extends Event>, ArrayList<EventListener>> listeners;
     
-    public EventManager() {
+    public EventManagerImpl() {
         listeners = new HashMap<Class<? extends Event>, ArrayList<EventListener>>();
+    }
+
+    public void registerListeners(Collection<EventListener> listeners) {
+        for (EventListener evt : listeners) {
+            registerListener(evt);
+        }
     }
 
     public void registerListener(EventListener toRegister) {
@@ -58,15 +68,20 @@ public class EventManager {
         if (type != null) {
             if (!listeners.containsKey(type)) {
                 listeners.put(type, new ArrayList<EventListener>());
-                
             }
             listeners.get(type).add(toRegister);
         }
     }
 
+    @Override
     public void fireEvent(Event evt) {
-        EventBroadcastExecution task = new EventBroadcastExecution(evt, listeners.get(evt.getClass()));
-        exec.execute(task);
+        ArrayList<EventListener> list = listeners.get(evt.getClass());
+        if (list != null) {
+            if (!list.isEmpty()) {
+                EventBroadcastExecution task = new EventBroadcastExecution(evt, listeners.get(evt.getClass()));
+                exec.execute(task);
+            }
+        }
     }
 
     public ExecutorService getExec() {
