@@ -49,10 +49,21 @@ public interface DSInjector {
      */
     <T> T injectInstance(T instance);
 
+    /**
+     * @return the actual stage of the injector.
+     */
     Stage getStage();
 
+    /**
+     * Enable or not the circular dependencies in the injector.
+     *
+     * @param allowCircularDependencies new value for circular dependencies.
+     */
     void allowCircularDependencies(boolean allowCircularDependencies);
 
+    /**
+     * @return if circular dependencies are allowed by the injector
+     */
     boolean areCircularDependenciesAllowed();
 
     /**
