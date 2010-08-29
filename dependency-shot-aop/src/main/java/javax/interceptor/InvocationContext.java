@@ -52,15 +52,6 @@ public interface InvocationContext {
      */
     Object getTarget();
     /**
-     * Returns the timer object associated with a timeout
-     * method invocation on the target class, or a null value for method
-     * and lifecycle callback interceptor methods.  For example, when associated
-     * with an EJB component timeout, this method returns {@link javax.ejb.Timer}
-     *
-     * @return the timer object or a null value
-     */
-    Object getTimer();
-    /**
      * Returns the method of the target class for which the interceptor
      * was invoked.  For method interceptors, the method of the
      * target class is returned. For lifecycle callback interceptors,
@@ -96,14 +87,6 @@ public interface InvocationContext {
      * @param params the parameter values, as an array
      */
     void setParameters(Object[] params);
-    /**
-     * Returns the context data associated with this invocation or
-     * lifecycle callback.  If there is no context data, an
-     * empty {@code Map<String,Object>} object will be returned.
-     *
-     * @return the context data, as a map
-     */
-    Map<String, Object> getContextData();
     /**
      * Proceed to the next interceptor in the interceptor chain.
      * Return the result of the next method invoked, or a null

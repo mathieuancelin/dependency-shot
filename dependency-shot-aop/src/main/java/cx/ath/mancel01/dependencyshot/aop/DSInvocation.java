@@ -18,7 +18,6 @@
 package cx.ath.mancel01.dependencyshot.aop;
 
 import java.lang.reflect.Method;
-import java.util.Map;
 import javax.interceptor.InvocationContext;
 
 /**
@@ -98,10 +97,6 @@ public class DSInvocation implements InvocationContext {
         return bean;
     }
 
-    @Override
-    public final Object getTimer() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
     /**
      * @return the invocation's parameters.
      */
@@ -113,10 +108,5 @@ public class DSInvocation implements InvocationContext {
     @Override
     public final void setParameters(Object[] params) {
         this.args = params;
-    }
-
-    @Override
-    public final Map<String, Object> getContextData() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
