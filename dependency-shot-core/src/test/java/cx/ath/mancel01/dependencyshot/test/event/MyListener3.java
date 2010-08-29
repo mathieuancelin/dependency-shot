@@ -18,11 +18,13 @@
 package cx.ath.mancel01.dependencyshot.test.event;
 
 import cx.ath.mancel01.dependencyshot.api.event.EventListener;
+import javax.inject.Singleton;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
+@Singleton
 public class MyListener3 implements EventListener<MyEvent3> {
 
     private int calls = 0;
