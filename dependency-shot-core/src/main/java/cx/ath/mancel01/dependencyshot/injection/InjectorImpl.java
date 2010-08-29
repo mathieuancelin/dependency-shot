@@ -25,6 +25,7 @@ import cx.ath.mancel01.dependencyshot.api.Stage;
 import cx.ath.mancel01.dependencyshot.exceptions.DSCyclicDependencyDetectedException;
 import cx.ath.mancel01.dependencyshot.exceptions.DSException;
 import cx.ath.mancel01.dependencyshot.graph.Binder;
+import cx.ath.mancel01.dependencyshot.graph.BinderAccessor;
 import cx.ath.mancel01.dependencyshot.graph.Binding;
 import cx.ath.mancel01.dependencyshot.injection.handlers.ClassHandler;
 import cx.ath.mancel01.dependencyshot.injection.handlers.ConstructorHandler;
@@ -140,9 +141,10 @@ public class InjectorImpl implements DSInjector {
      */
     public final void configureBinders() {
         if (binders.size() > 0) {
-            for (DSBinder binder : binders) {
+            for (Binder binder : binders) {
                 binder.configureBindings();
-                binder.configureLastBinding();
+                //binder.configureLastBinding();
+                BinderAccessor.configureLastBinding(binder, this);
                 if (binder.isEmpty()) {
                     Logger.getLogger(InjectorImpl.class.getName()).
                             log(Level.SEVERE, "Ooops, no bindings presents, "
@@ -174,8 +176,9 @@ public class InjectorImpl implements DSInjector {
      *
      * @param binder the binder to add.
      */
-    public final void addBinder(final DSBinder binder) {
-        binder.setInjector(this);
+    public final void addBinder(final Binder binder) {
+        //binder.setInjector(this);
+        BinderAccessor.setInjector(binder, this);
         binders.add((Binder) binder);
     }
 

@@ -20,7 +20,10 @@ import cx.ath.mancel01.dependencyshot.injection.util.InstanceProvider;
 import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import cx.ath.mancel01.dependencyshot.api.Stage;
+import cx.ath.mancel01.dependencyshot.event.Event;
+import cx.ath.mancel01.dependencyshot.event.EventListener;
 import cx.ath.mancel01.dependencyshot.graph.builder.FluentBinder;
+import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -114,8 +117,7 @@ public abstract class Binder implements DSBinder {
     /**
      * Configure the last binding present in the binder (because of the fluent API).
      */
-    @Override
-    public final void configureLastBinding() {
+    final void configureLastBinding() {
         addBindingToBinder(
                 new Binding(this.annotation, this.named,
                 this.from, this.to, this.provider, this.stage));
@@ -192,7 +194,7 @@ public abstract class Binder implements DSBinder {
      * @param to the targeted class for the binding.
      * @return the actual binder.
      */
-    public final void to(Class to) {
+    final void to(Class to) {
         this.to = to;
     }
 
@@ -203,7 +205,7 @@ public abstract class Binder implements DSBinder {
      * @param named the name for the qualifier.
      * @return the actual binder.
      */
-    public final void named(String named) {
+    final void named(String named) {
         this.named = named;
     }
 
@@ -214,7 +216,7 @@ public abstract class Binder implements DSBinder {
      * @param annotation the qualifier of the binding.
      * @return the actual binder.
      */
-    public final void annotatedWith(Class<? extends Annotation> annotation) {
+    final void annotatedWith(Class<? extends Annotation> annotation) {
         this.annotation = annotation;
     }
 
@@ -225,7 +227,7 @@ public abstract class Binder implements DSBinder {
      * @param provider the provider for the binding.
      * @return the actual binder.
      */
-    public final void providedBy(Provider provider) {
+    final void providedBy(Provider provider) {
         this.provider = provider;
     }
 
@@ -236,7 +238,7 @@ public abstract class Binder implements DSBinder {
      * @param instance specify the instance.
      * @return the actual binder.
      */
-    public final void toInstance(Object instance) {
+    final void toInstance(Object instance) {
         injectLater.add(instance);
         this.provider = new InstanceProvider(instance);
     }
@@ -246,7 +248,7 @@ public abstract class Binder implements DSBinder {
      *
      * @param stage the actual stage.
      */
-    public final void onStage(Stage stage) {
+    final void onStage(Stage stage) {
         this.stage = stage;
     }
 
@@ -264,6 +266,14 @@ public abstract class Binder implements DSBinder {
                 this.addBindingToBinder(binding);
             }
         }
+    }
+
+    public final void registerScope(CustomScopeHandler handler) {
+
+    }
+
+    public final void registerEventListener(EventListener<? extends Event> listener) {
+
     }
 
     /**
@@ -284,9 +294,8 @@ public abstract class Binder implements DSBinder {
     /**
      * @param injector set the value of the actual injector.
      */
-    @Override
-    public final void setInjector(DSInjector injector) {
-        binderInjector = injector;
+    final void setInjector(DSInjector injector) {
+        this.binderInjector = injector;
     }
 
     /**
