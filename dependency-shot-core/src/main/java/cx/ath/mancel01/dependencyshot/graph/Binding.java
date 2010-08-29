@@ -20,6 +20,7 @@ import cx.ath.mancel01.dependencyshot.api.DslConstants;
 import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
 import cx.ath.mancel01.dependencyshot.api.Nullable;
 import cx.ath.mancel01.dependencyshot.api.Stage;
+import cx.ath.mancel01.dependencyshot.api.event.EventListener;
 import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
 import cx.ath.mancel01.dependencyshot.exceptions.NullInjectionException;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
@@ -259,6 +260,9 @@ public class Binding<T> {
             }
             for (InstanceHandler handler : injector.getLoader().getInstanceHandlers()) {
                 result = (T) handler.handleInstance(result, from, injector, point);
+            }
+            if (EventListener.class.isAssignableFrom(result.getClass())) {
+                injector.registerEventListener((EventListener) result);
             }
         }
         return result;

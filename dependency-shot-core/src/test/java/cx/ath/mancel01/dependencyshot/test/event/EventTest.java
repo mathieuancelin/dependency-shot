@@ -28,7 +28,7 @@ import org.junit.Test;
  *
  * @author mathieuancelin
  */
-public class EventTest {
+public class EventTest { 
 
     @Test
     public void broadcast() {
@@ -36,12 +36,9 @@ public class EventTest {
         MyEvent event = injector.getInstance(MyEvent.class);
         MyEvent2 event2 = injector.getInstance(MyEvent2.class);
         MyEvent3 event3 = injector.getInstance(MyEvent3.class);
-        MyListener listener = new MyListener();
-        MyListener2 listener2 = new MyListener2();
-        MyListener3 listener3 = new MyListener3();
-        injector.registerEventListener(listener);
-        injector.registerEventListener(listener2);
-        injector.registerEventListener(listener3);
+        MyListener listener = injector.getInstance(MyListener.class);
+        MyListener2 listener2 = injector.getInstance(MyListener2.class);
+        MyListener3 listener3 = injector.getInstance(MyListener3.class);
         for(int i = 0; i < 20; i++)
             event.fire();
         for(int i = 0; i < 20; i++)
