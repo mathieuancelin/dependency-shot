@@ -19,6 +19,7 @@ package cx.ath.mancel01.dependencyshot;
 
 import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.api.Stage;
+import cx.ath.mancel01.dependencyshot.graph.Binder;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.injection.InjectorBuilder;
 import cx.ath.mancel01.dependencyshot.spi.ConfigurationHandler;
@@ -81,7 +82,7 @@ public final class DependencyShot {
             if (handlers.size() > 0 && handlers.get(0).isAutoEnabled()) {
                 return handlers.get(0).getInjector(stage);
             }
-            InjectorImpl injector = InjectorBuilder.makeInjector(binders, loader, stage);
+            InjectorImpl injector = InjectorBuilder.makeInjector((Iterable<Binder>) binders, loader, stage);
             return injector;
         } finally {
             if (handlers.size() > 1) {

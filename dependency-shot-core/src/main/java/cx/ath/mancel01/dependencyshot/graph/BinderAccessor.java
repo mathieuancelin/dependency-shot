@@ -1,12 +1,12 @@
 /*
- *  Copyright 2009-2010 Mathieu ANCELIN.
- *
+ *  Copyright 2010 mathieuancelin.
+ * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- *
+ * 
  *       http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,21 +15,22 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.api;
+package cx.ath.mancel01.dependencyshot.graph;
+
+import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 
 /**
- * Interface for a binder.
- * 
+ *
  * @author Mathieu ANCELIN
  */
-public interface DSBinder {
-    /**
-     * configure the binder's bindings.
-     */
-    void configureBindings();
-    /**
-     * @return if a binder contains no binding.
-     */
-    boolean isEmpty();
+public class BinderAccessor {
+
+    public static void setInjector(Binder binder, InjectorImpl injector){
+        binder.setInjector(injector);
+    }
+
+    public static void configureLastBinding(Binder binder, InjectorImpl injector) {
+        binder.configureLastBinding();
+    }
 
 }

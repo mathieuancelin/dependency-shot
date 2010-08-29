@@ -16,8 +16,8 @@
  */
 package cx.ath.mancel01.dependencyshot.injection;
 
-import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.api.Stage;
+import cx.ath.mancel01.dependencyshot.graph.Binder;
 import cx.ath.mancel01.dependencyshot.spi.PluginsLoader;
 
 /**
@@ -36,11 +36,11 @@ public final class InjectorBuilder {
      * @param binders the binders.
      * @return the configured injector.
      */
-    public static InjectorImpl makeInjector(final Iterable<? extends DSBinder> binders, PluginsLoader loader, Stage stage) {
+    public static InjectorImpl makeInjector(final Iterable<? extends Binder> binders, PluginsLoader loader, Stage stage) {
         InjectorImpl injector = new InjectorImpl(loader, stage);
         //injector.registerShutdownHook();
         injector.resetBinders();
-        for (DSBinder binder : binders) {
+        for (Binder binder : binders) {
             injector.addBinder(binder);
         }
         injector.configureBinders();
@@ -51,7 +51,7 @@ public final class InjectorBuilder {
      * @param binder the only binder.
      * @return the configured injector.
      */
-    public static InjectorImpl makeInjector(final DSBinder binder, PluginsLoader loader, Stage stage) {
+    public static InjectorImpl makeInjector(final Binder binder, PluginsLoader loader, Stage stage) {
         InjectorImpl injector = new InjectorImpl(loader, stage);
         //injector.registerShutdownHook();
         injector.resetBinders();
