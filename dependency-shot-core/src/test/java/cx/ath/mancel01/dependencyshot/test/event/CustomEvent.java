@@ -15,15 +15,12 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.api.event;
+package cx.ath.mancel01.dependencyshot.test.event;
 
 /**
- * Event class.
  *
  * @author mathieuancelin
  */
-public interface Event<T> {
-
-    void fire(T event);
+public class CustomEvent {
 
 }

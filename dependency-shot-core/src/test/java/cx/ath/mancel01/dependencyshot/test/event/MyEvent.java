@@ -17,13 +17,13 @@
 
 package cx.ath.mancel01.dependencyshot.test.event;
 
-import cx.ath.mancel01.dependencyshot.api.event.Event;
+import cx.ath.mancel01.dependencyshot.event.AutoEvent;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
-public class MyEvent extends Event {
+public class MyEvent extends AutoEvent {
 
     public MyEvent() {
         super();

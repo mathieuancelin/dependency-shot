@@ -17,12 +17,10 @@
 
 package cx.ath.mancel01.dependencyshot.event;
 
-import cx.ath.mancel01.dependencyshot.api.event.Event;
-
 /**
  *
  * @author Mathieu ANCELIN
  */
-public class InjectionStoppedEvent extends Event {
+public class InjectionStoppedEvent extends AutoEvent {
 
 }

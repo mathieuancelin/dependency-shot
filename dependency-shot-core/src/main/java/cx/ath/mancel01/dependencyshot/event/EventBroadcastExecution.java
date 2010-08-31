@@ -18,7 +18,6 @@
 package cx.ath.mancel01.dependencyshot.event;
 
 import cx.ath.mancel01.dependencyshot.api.event.EventListener;
-import cx.ath.mancel01.dependencyshot.api.event.Event;
 import java.util.Collection;
 
 /**
@@ -26,13 +25,13 @@ import java.util.Collection;
  *
  * @author mathieuancelin
  */
-public class EventBroadcastExecution implements Runnable  {
+public class EventBroadcastExecution<T> implements Runnable  {
 
-    private final Event event;
+    private final T event;
 
     private final Collection<EventListener> listeners;
 
-    public EventBroadcastExecution(Event event, Collection<EventListener> listeners) {
+    public EventBroadcastExecution(T event, Collection<EventListener> listeners) {
         this.event = event;
         this.listeners = listeners;
     }

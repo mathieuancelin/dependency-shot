@@ -24,6 +24,7 @@ import cx.ath.mancel01.dependencyshot.api.Stage;
 import cx.ath.mancel01.dependencyshot.api.event.Event;
 import cx.ath.mancel01.dependencyshot.api.event.EventListener;
 import cx.ath.mancel01.dependencyshot.api.event.EventManager;
+import cx.ath.mancel01.dependencyshot.event.EventImpl;
 import cx.ath.mancel01.dependencyshot.event.EventManagerImpl;
 import cx.ath.mancel01.dependencyshot.exceptions.DSCyclicDependencyDetectedException;
 import cx.ath.mancel01.dependencyshot.exceptions.DSException;
@@ -235,10 +236,14 @@ public class InjectorImpl implements DSInjector {
             }, null);
             bindings.put(stageBinding, stageBinding);
 
-            Binding eventBinding = new Binding(null, null, EventManager.class,
+            Binding eventManagerBinding = new Binding(null, null, EventManager.class,
                     EventManagerImpl.class, new InstanceProvider(eventManager), null);
+            bindings.put(eventManagerBinding, eventManagerBinding);
+
+            Binding eventBinding = new Binding(null, null, Event.class,
+                    EventImpl.class, null, null);
             bindings.put(eventBinding, eventBinding);
-            
+
             bindingsChanged = false;
         }
         return bindings;

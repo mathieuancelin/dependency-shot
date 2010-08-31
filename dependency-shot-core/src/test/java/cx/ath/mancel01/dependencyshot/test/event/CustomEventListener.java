@@ -15,15 +15,27 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.api.event;
+package cx.ath.mancel01.dependencyshot.test.event;
+
+import cx.ath.mancel01.dependencyshot.api.event.EventListener;
+import javax.inject.Singleton;
 
 /**
- * Event class.
  *
- * @author mathieuancelin
+ * @author Mathieu ANCELIN
  */
-public interface Event<T> {
+@Singleton
+public class CustomEventListener implements EventListener<CustomEvent> {
 
-    void fire(T event);
+    private int calls = 0;
+
+    public int getCalls() {
+        return calls;
+    }
+
+    @Override
+    public void onEvent(CustomEvent evt) {
+        calls++;
+    }
 
 }

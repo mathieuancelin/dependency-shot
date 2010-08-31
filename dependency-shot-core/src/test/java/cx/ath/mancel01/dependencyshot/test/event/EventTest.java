@@ -19,6 +19,7 @@ package cx.ath.mancel01.dependencyshot.test.event;
 
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
+import cx.ath.mancel01.dependencyshot.api.event.Event;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Assert;
@@ -54,6 +55,22 @@ public class EventTest {
         Assert.assertTrue(listener.getCalls() == 20);
         Assert.assertTrue(listener2.getCalls() == 20);
         Assert.assertTrue(listener3.getCalls() == 20);
+    }
+
+    @Test
+    public void broadcastEvent() {
+        DSInjector injector = DependencyShot.getInjector();
+        Event<CustomEvent> event = injector.getInstance(Event.class);
+        CustomEventListener listener = injector.getInstance(CustomEventListener.class);
+        for(int i = 0; i < 20; i++)
+            event.fire(new CustomEvent());
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(EventTest.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        }
+        Assert.assertTrue(listener.getCalls() == 20);
     }
 
 }

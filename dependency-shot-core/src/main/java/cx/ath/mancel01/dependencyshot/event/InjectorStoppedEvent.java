@@ -17,14 +17,13 @@
 
 package cx.ath.mancel01.dependencyshot.event;
 
-import cx.ath.mancel01.dependencyshot.api.event.Event;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
-public class InjectorStoppedEvent extends Event {
+public class InjectorStoppedEvent extends AutoEvent {
 
     private DSInjector injector;
 
