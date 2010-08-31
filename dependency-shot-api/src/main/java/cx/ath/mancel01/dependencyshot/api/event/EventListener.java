@@ -22,7 +22,7 @@ package cx.ath.mancel01.dependencyshot.api.event;
  *
  * @author mathieuancelin
  */
-public interface EventListener<T extends Event> {
+public interface EventListener<T> {
 
     void onEvent(T evt);
 

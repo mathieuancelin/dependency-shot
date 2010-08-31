@@ -23,6 +23,6 @@ package cx.ath.mancel01.dependencyshot.api.event;
  */
 public interface EventManager {
 
-    public void fireEvent(Event evt);
+    <T> void fireEvent(T evt);
     
 }

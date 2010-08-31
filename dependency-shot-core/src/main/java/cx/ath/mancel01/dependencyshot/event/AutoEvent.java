@@ -17,38 +17,41 @@
 
 package cx.ath.mancel01.dependencyshot.event;
 
-import cx.ath.mancel01.dependencyshot.api.DSInjector;
-import cx.ath.mancel01.dependencyshot.graph.Binder;
-import cx.ath.mancel01.dependencyshot.graph.Binding;
+import cx.ath.mancel01.dependencyshot.api.event.EventManager;
+import java.util.UUID;
+import javax.inject.Inject;
 
 /**
+ * Event class.
  *
- * @author Mathieu ANCELIN
+ * @author mathieuancelin
  */
-public class BindingAddedEvent extends AutoEvent {
+public abstract class AutoEvent {
 
-    private DSInjector injector;
+    private String id;
 
-    private Binding binding;
+    private long timestamp;
 
-    private Binder binder;
+    @Inject
+    private EventManager manager;
 
-    public BindingAddedEvent(DSInjector injector, Binding binding, Binder binder) {
-        this.injector = injector;
-        this.binding = binding;
-        this.binder = binder;
+    public AutoEvent() {
+        this.id = UUID.randomUUID().toString();
+        this.timestamp = System.currentTimeMillis();
     }
 
-    public DSInjector getInjector() {
-        return injector;
+    public String getId() {
+        return id;
     }
 
-    public Binder getBinder() {
-        return binder;
+    public long getTimestamp() {
+        return timestamp;
     }
 
-    public Binding getBinding() {
-        return binding;
+    public void fire() {
+        if (manager == null) {
+            throw new RuntimeException("You should inject the event in order to call fire on it.");
+        }
+        manager.fireEvent(this);
     }
-    
 }

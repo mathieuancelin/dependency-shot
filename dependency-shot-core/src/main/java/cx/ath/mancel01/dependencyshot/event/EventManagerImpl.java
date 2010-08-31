@@ -45,10 +45,10 @@ public class EventManagerImpl implements EventManager {
 
     private final ExecutorService exec = Executors.newFixedThreadPool(NTHREADS);
 
-    private HashMap<Class<? extends Event>, ArrayList<EventListener>> listeners;
+    private HashMap<Class<?>, ArrayList<EventListener>> listeners;
     
     public EventManagerImpl() {
-        listeners = new HashMap<Class<? extends Event>, ArrayList<EventListener>>();
+        listeners = new HashMap<Class<?>, ArrayList<EventListener>>();
     }
 
     public void registerListeners(Collection<EventListener> listeners) {
@@ -74,7 +74,7 @@ public class EventManagerImpl implements EventManager {
     }
 
     @Override
-    public void fireEvent(Event evt) {
+    public <T> void fireEvent(T evt) {
         ArrayList<EventListener> list = listeners.get(evt.getClass());
         if (list != null) {
             if (!list.isEmpty()) {

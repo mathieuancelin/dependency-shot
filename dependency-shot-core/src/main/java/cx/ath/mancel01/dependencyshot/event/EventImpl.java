@@ -15,15 +15,29 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.api.event;
+package cx.ath.mancel01.dependencyshot.event;
+
+import cx.ath.mancel01.dependencyshot.api.event.Event;
+import cx.ath.mancel01.dependencyshot.api.event.EventManager;
+import cx.ath.mancel01.dependencyshot.exceptions.DSException;
+import javax.inject.Inject;
 
 /**
- * Event class.
  *
  * @author mathieuancelin
  */
-public interface Event<T> {
+public class EventImpl<T> implements Event<T>{
 
-    void fire(T event);
+
+    @Inject
+    private EventManager manager;
+
+    @Override
+    public void fire(T event) {
+        if (manager == null) {
+            throw new DSException("You should inject the event in order to call fire on it.");
+        }
+        manager.fireEvent(event);
+    }
 
 }
