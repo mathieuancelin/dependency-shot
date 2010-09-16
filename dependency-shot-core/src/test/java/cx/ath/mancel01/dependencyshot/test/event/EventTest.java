@@ -20,6 +20,7 @@ package cx.ath.mancel01.dependencyshot.test.event;
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import cx.ath.mancel01.dependencyshot.api.event.Event;
+import cx.ath.mancel01.dependencyshot.event.EventManagerImpl;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Assert;
@@ -32,8 +33,9 @@ import org.junit.Test;
 public class EventTest { 
 
     @Test
-    public void broadcast() {
+    public void broadcast() throws Exception {
         DSInjector injector = DependencyShot.getInjector();
+        EventManagerImpl mgmt = injector.getInstance(EventManagerImpl.class);
         MyEvent event = injector.getInstance(MyEvent.class);
         MyEvent2 event2 = injector.getInstance(MyEvent2.class);
         MyEvent3 event3 = injector.getInstance(MyEvent3.class);
@@ -46,12 +48,13 @@ public class EventTest {
             event2.fire();
         for(int i = 0; i < 20; i++)
             event3.fire();
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(EventTest.class.getName())
-                    .log(Level.SEVERE, null, ex);
+        mgmt.getExec().shutdown();
+        while(!mgmt.isTerminated()) {
+            Thread.sleep(100);
         }
+        System.out.println("listener 1 : " + listener.getCalls() + " events received ...");
+        System.out.println("listener 2 : " + listener2.getCalls() + " events received ...");
+        System.out.println("listener 3 : " + listener3.getCalls() + " events received ...");
         Assert.assertTrue(listener.getCalls() == 20);
         Assert.assertTrue(listener2.getCalls() == 20);
         Assert.assertTrue(listener3.getCalls() == 20);

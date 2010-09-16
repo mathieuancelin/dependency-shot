@@ -88,4 +88,8 @@ public class EventManagerImpl implements EventManager {
         return exec;
     }
 
+    public boolean isTerminated() {
+        return exec.isTerminated();
+    }
+
 }
