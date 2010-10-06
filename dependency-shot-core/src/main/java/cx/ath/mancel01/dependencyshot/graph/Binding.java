@@ -26,10 +26,13 @@ import cx.ath.mancel01.dependencyshot.exceptions.NullInjectionException;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.injection.util.EnhancedProvider;
 import cx.ath.mancel01.dependencyshot.injection.util.InstanceProvider;
+import cx.ath.mancel01.dependencyshot.scope.ScopeInvocationHandler;
+import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
 import cx.ath.mancel01.dependencyshot.spi.InstanceHandler;
 import cx.ath.mancel01.dependencyshot.spi.InstanceLifecycleHandler;
 import cx.ath.mancel01.dependencyshot.util.ReflectionUtil;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.util.Map;
 import javax.inject.Named;
@@ -76,6 +79,8 @@ public class Binding<T> {
      * Stage of the binding.
      */
     private Stage stage;
+
+    private ScopeInvocationHandler scopeHandler;
 
     /**
      * New public empty constructor to help the job for
@@ -217,13 +222,17 @@ public class Binding<T> {
         this.to = to;
     }
 
+    public final T getInstance(InjectorImpl injector, InjectionPoint point) {
+        return getInstance(injector, point, true);
+    }
+
     /**
      * Get an instance of a binded object.
      *
      * @param injector the concerned injector
      * @return binded object
      */
-    public final T getInstance(InjectorImpl injector, InjectionPoint point) {
+    public final T getInstance(InjectorImpl injector, InjectionPoint point, boolean scoped) {
         // TODO : extension point : inject dynamic
         T result = null;
         Class<? extends Annotation> scope = ReflectionUtil.getScope(to);
@@ -234,9 +243,24 @@ public class Binding<T> {
             } else {
                 result = provider.get();
             }
-        } else if (scope != null) {
-            result = (T) injector.getScopeHandler(scope)
-                    .getScopedInstance(from, to, injector);
+        } else if (scope != null && scoped) {
+            CustomScopeHandler scopedInstanceStore = injector.getScopeHandler(scope);
+            if (scopedInstanceStore.isBeanValid(from, to)) {
+                if (scopedInstanceStore.isDynamic()) {
+                    if (scopeHandler == null)
+                        scopeHandler =
+                            new ScopeInvocationHandler(injector.getScopeHandler(scope),
+                                from, to, injector);
+                    result = (T) Proxy.newProxyInstance(
+                            Thread.currentThread().getContextClassLoader(),
+                            new Class[]{from}, scopeHandler);
+                } else {
+                    result = (T) injector.getScopeHandler(scope).getScopedInstance(from, to, injector);
+                }
+            } else {
+                throw new DSIllegalStateException("The scope " + scopedInstanceStore.getClass().getSimpleName()
+                        + " is invalid. Can't perform injection.");
+            }
         } else {
             result = (T) injector.createInstance(to);
         }

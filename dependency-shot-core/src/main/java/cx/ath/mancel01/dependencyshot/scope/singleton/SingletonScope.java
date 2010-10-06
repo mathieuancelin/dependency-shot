@@ -61,4 +61,14 @@ public class SingletonScope extends CustomScopeHandler {
         singletonContext.clear();
     }
 
+    @Override
+    public boolean isDynamic() {
+        return false;
+    }
+
+    @Override
+    public boolean isBeanValid(Class from, Class to) {
+        return true;
+    }
+
 }
