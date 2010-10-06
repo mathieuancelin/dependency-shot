@@ -15,41 +15,35 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.scope.pool;
+package cx.ath.mancel01.dependencyshot.scope;
 
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
-import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
-public class PoolScope extends CustomScopeHandler {
+public class ScopeInvocationHandler implements InvocationHandler {
 
-    @Override
-    public Class<? extends Annotation> getScope() {
-        return PoolScoped.class;
+    private final CustomScopeHandler handler;
+    private final Class interf;
+    private final Class clazz;
+    private final InjectorImpl injector;
+
+    public ScopeInvocationHandler(CustomScopeHandler handler,
+            Class interf, Class clazz, InjectorImpl injector) {
+        this.handler = handler;
+        this.interf = interf;
+        this.clazz = clazz;
+        this.injector = injector;
     }
 
     @Override
-    public <T> T getScopedInstance(Class<T> interf, Class<? extends T> clazz, InjectorImpl injector) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void reset() {
-        
-    }
-
-    @Override
-    public boolean isDynamic() {
-        return true;
-    }
-
-    @Override
-    public boolean isBeanValid(Class from, Class to) {
-        return from.isInterface();
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        return method.invoke(handler.getScopedInstance(interf, clazz, injector), args);
     }
 
 }

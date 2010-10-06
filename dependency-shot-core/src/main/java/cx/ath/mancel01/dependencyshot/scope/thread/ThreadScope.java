@@ -67,4 +67,14 @@ public class ThreadScope extends CustomScopeHandler {
     public void reset() {
         threadLocalinstances.get().clear();
     }
+
+    @Override
+    public boolean isDynamic() {
+        return true;
+    }
+
+    @Override
+    public boolean isBeanValid(Class from, Class to) {
+        return from.isInterface();
+    }
 }

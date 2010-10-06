@@ -29,8 +29,12 @@ public abstract class CustomScopeHandler {
 
     public abstract Class<? extends Annotation> getScope();
 
-    public abstract <T> T getScopedInstance(Class<T> interf, Class<? extends T> clazz, InjectorImpl injector);
+    public abstract <T> T getScopedInstance(Class<T> from, Class<? extends T> to, InjectorImpl injector);
 
     public abstract void reset();
+
+    public abstract boolean isDynamic();
+
+    public abstract boolean isBeanValid(Class from, Class to);
 
 }

@@ -67,7 +67,6 @@ import javax.inject.Qualifier;
 public class InjectorImpl implements DSInjector {
 
     private boolean allowCircularDependencies = false;
-
     private static final Logger logger = Logger.getLogger(InjectorImpl.class.getSimpleName());
     /**
      * Binders linked to the project.
@@ -90,23 +89,14 @@ public class InjectorImpl implements DSInjector {
      * Stage of the injector.
      */
     private Stage stage = Stage.NONE;
-
     private boolean bindingsChanged = false;
-
     private EventManagerImpl eventManager;
-
     private ClassHandler classHandler;
-
     private ConstructorHandler constructorHandler;
-
     private PluginsLoader loader;
-
     private Class actualFromClass;
-
     private List<Class> circularClasses;
-
     private Map<Class<?>, Object> circularConstructorArgumentsInstances;
-
     private Map<Class<? extends Annotation>, CustomScopeHandler> scopeHandlers;
 
     /**
@@ -126,6 +116,7 @@ public class InjectorImpl implements DSInjector {
         eventManager = new EventManagerImpl();
         eventManager.registerListeners(loader.getEventListeners());
     }
+
     /**
      * The constructor.
      *
@@ -199,7 +190,7 @@ public class InjectorImpl implements DSInjector {
      * @return current bindings
      */
     public final Map<Binding<?>, Binding<?>> bindings() { //TODO : replace for real multi-binder and better perf
-        if (bindings == null  || bindingsChanged) {
+        if (bindings == null || bindingsChanged) {
             bindings = new HashMap<Binding<?>, Binding<?>>();
             for (Binder binder : binders) {
                 for (Binding<?> binding : binder.getBindings().keySet()) {
@@ -258,16 +249,20 @@ public class InjectorImpl implements DSInjector {
      */
     @Override
     public final <T> T getInstance(Class<T> c) {
+        return getInstance(c, true);
+    }
+
+    public final <T> T getUnscopedInstance(Class<T> c) {
+        return getInstance(c, false);
+    }
+
+    public final <T> T getInstance(Class<T> c, boolean scoped) {
         long start = System.currentTimeMillis();
         try {
-            return getInstance(c, null, null);
+            return getInstance(c, null, null, scoped);
         } finally {
             if (DependencyShot.DEBUG) {
-                logger.info(new StringBuilder()
-                        .append("Time elapsed for injection : ")
-                        .append(System.currentTimeMillis() - start)
-                        .append(" ms.")
-                        .toString());
+                logger.info(new StringBuilder().append("Time elapsed for injection : ").append(System.currentTimeMillis() - start).append(" ms.").toString());
             }
         }
     }
@@ -280,10 +275,10 @@ public class InjectorImpl implements DSInjector {
      * @param qualifier instance qualifier
      * @return instance of c
      */
-    private <T> T getInstance(Class<T> c, Annotation qualifier, InjectionPoint point) {
+    private <T> T getInstance(Class<T> c, Annotation qualifier, InjectionPoint point, boolean scoped) {
         Binding<T> binding = getBinding(c, qualifier);
         actualFromClass = binding.getFrom();
-        return binding.getInstance(this, point);
+        return binding.getInstance(this, point, scoped);
     }
 
     /**
@@ -344,47 +339,53 @@ public class InjectorImpl implements DSInjector {
      */
     public final <T> T createInstance(Class<T> c) {
         // manage circular dependencies
-        if (!instanciatedClasses.containsKey(c)) { 
-            try {
-                instanciatedClasses.put(c, null);
-                // create a new instance of a class
-                T result = constructorHandler.getConstructedInstance(c, this);
-                instanciatedClasses.put(c, result);
-                // and inject it !!
-                classHandler.classInjection(result, c, new ArrayList<Method>(), false, this);
-                instanciatedClasses.remove(c);
-                if (circularClasses.contains(c)) {
-                    circularClasses.remove(c);
-                } else {
-                    if (circularClasses.size() > 0) {
-                        circularConstructorArgumentsInstances.put(c, result);
+        synchronized (this) {
+            if (!instanciatedClasses.containsKey(c)) {
+                try {
+                    instanciatedClasses.put(c, null);
+                    // create a new instance of a class
+                    T result = constructorHandler.getConstructedInstance(c, this);
+                    instanciatedClasses.put(c, result);
+                    // and inject it !!
+                    classHandler.classInjection(result, c, new ArrayList<Method>(), false, this);
+                    instanciatedClasses.remove(c);
+                    if (circularClasses.contains(c)) {
+                        circularClasses.remove(c);
+                    } else {
+                        if (circularClasses.size() > 0) {
+                            circularConstructorArgumentsInstances.put(c, result);
+                        }
                     }
+                    return result;
+                } catch (Exception e) {
+                    throw new DSException(e);
                 }
-                return result;
-            } catch (Exception e) {
-                throw new DSException(e);
-            }
-        } else {
-            if (allowCircularDependencies || ReflectionUtil.isSingleton(c)) {
-                if (actualFromClass.isInterface() && instanciatedClasses.get(c) == null) {
-                    circularClasses.add(c);
-                    System.out.println("Circular dependency detected in constructor of " + c.getSimpleName() + ".java. Trying to proxy it ... ");
-                    CircularProxy proxy = new CircularProxy();
-                    proxy.setInjector(this);
-                    proxy.setClazz(c);
-                    proxy.setCircularConstructorArgumentsInstances(circularConstructorArgumentsInstances);
-                    T instance = (T) Proxy.newProxyInstance(
-                        Thread.currentThread().getContextClassLoader(),
-                        new Class[]{actualFromClass}, proxy);
-                    instanciatedClasses.put(c, instance);
-                }
-                if (!actualFromClass.isInterface() && instanciatedClasses.get(c) == null) {
-                    throw new DSException("Can't proxy circular dependencies without interface.");
-                }
-                return (T) instanciatedClasses.get(c);
             } else {
-                throw new DSCyclicDependencyDetectedException(
-                    "Circular dependency detected on " + c.getName());
+                if (allowCircularDependencies || ReflectionUtil.isSingleton(c)) {
+                    if (actualFromClass.isInterface() && instanciatedClasses.get(c) == null) {
+                        circularClasses.add(c);
+                        System.out.println("Circular dependency detected in constructor of " + c.getSimpleName() + ".java. Trying to proxy it ... ");
+                        CircularProxy proxy = new CircularProxy();
+                        proxy.setInjector(this);
+                        proxy.setClazz(c);
+                        proxy.setCircularConstructorArgumentsInstances(circularConstructorArgumentsInstances);
+                        T instance = (T) Proxy.newProxyInstance(
+                                Thread.currentThread().getContextClassLoader(),
+                                new Class[]{actualFromClass}, proxy);
+                        instanciatedClasses.put(c, instance);
+                    }
+                    if (!actualFromClass.isInterface() && instanciatedClasses.get(c) == null) {
+                        throw new DSException("Can't proxy circular dependencies without interface.");
+                    }
+                    try {
+                        return (T) instanciatedClasses.get(c);
+                    } finally {
+                        circularClasses.remove(c);
+                    }
+                } else {
+                    throw new DSCyclicDependencyDetectedException(
+                            "Circular dependency detected on " + c.getName());
+                }
             }
         }
     }
@@ -458,12 +459,12 @@ public class InjectorImpl implements DSInjector {
 
                 @Override
                 public Object get() {
-                    return getInstance(providedType, finalQualifier, point);
+                    return getInstance(providedType, finalQualifier, point, true);
                 }
             };
         } else { // or get a simple instance
             value = getInstance(type, qualifier, new InjectionPointImpl(genericType,
-                    new HashSet(Arrays.asList(annotations)), m, type));
+                    new HashSet(Arrays.asList(annotations)), m, type), true);
         }
         return value;
     }
@@ -557,5 +558,4 @@ public class InjectorImpl implements DSInjector {
     public EventManagerImpl getEventManager() {
         return eventManager;
     }
-    
 }
