@@ -1,0 +1,69 @@
+h1. dependency-shot module
+
+The dependency-shot module helps you to inject dependency-shot managed components into your Play! application. 
+The injection points are defined by the  @javax.inject.Inject annotation. 
+
+h2. Enable the dependency-shot module for the application
+
+Just add the following jars in your lib folder
+
+javax.inject-1.jar
+
+dependency-shot-core-*xxx*.jar
+
+dependency-shot-api-*xxx*.jar 
+
+play-play-dependency-shot.jar
+
+You can also add dependency-shot spi extensions by dropping the jars in the lib folder.
+
+h2. Defining a dependency-shot binder :
+
+just add in your code a class extending cx.ath.mancel01.dependencyshot.graph.Binder and write your bindings in the configureBindings method.
+
+for instance :
+
+<pre>
+	<code class="java">
+public class VdmBinder extends Binder {
+    @Override
+    public void configureBindings() {
+        bind(RandomService.class).to(RandomServiceImpl.class);
+    }
+}
+	</code>
+</pre>
+
+then you can define a service 
+
+<pre>
+	<code class="java">
+public interface RandomService {
+    Document getRandomVDM();
+}
+
+public class RandomServiceImpl implements RandomService {
+	public final static String URL = "http://api.viedemerde.fr/1.0/view/random";
+	public Document getRandomVDM() {
+		return WS.url(URL).get().getXml();
+	}
+}
+	</code>
+</pre>
+
+and use it in your Play! controller
+
+<pre>
+	<code class="java">
+public class Application extends Controller {
+    @Inject private static RandomService service;
+    public static void index() {
+        renderXml(service.getRandomVDM());
+    }
+}
+	</code>
+</pre>
+
+For more informations see http://code.google.com/p/dependency-shot/
+
+
