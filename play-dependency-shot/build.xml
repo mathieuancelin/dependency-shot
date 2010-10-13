@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="play-dependency-shot" default="build" basedir=".">
+<project name="play-dependency-shot" default="distribution" basedir=".">
 
     <path id="project.classpath">
         <pathelement path="${play.path}/framework/classes"/>
@@ -25,7 +25,7 @@
                 <include name="**/play.static"/>
             </fileset>
         </copy>
-        <jar destfile="lib/play-play-dependency-shot.jar" basedir="tmp/classes">
+        <jar destfile="lib/play-dependency-shot.jar" basedir="tmp/classes">
             <manifest>
                 <section name="Play-module">
                     <attribute name="Specification-Title" value="play-dependency-shot"/>
@@ -40,6 +40,13 @@
         <javac srcdir="src" destdir="tmp/classes" target="1.5" debug="true">
             <classpath refid="project.classpath" />
         </javac>
+    </target>
+    
+    <target name="distribution" depends="build">
+    	<zip destfile="play-dependency-shot.zip">
+    		<fileset dir="lib"/>
+    		<fileset dir="." includes="README.textile"/>
+    	</zip>
     </target>
 
 </project>
