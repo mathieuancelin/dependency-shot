@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.netbeans.org/ns/project/1">
+    <type>org.netbeans.modules.ant.freeform</type>
+    <configuration>
+        <general-data xmlns="http://www.netbeans.org/ns/freeform-project/1">
+            <name>play-dependency-shot</name>
+        </general-data>
+        <general-data xmlns="http://www.netbeans.org/ns/freeform-project/2">
+            <!-- Do not use Project Properties customizer when editing this file manually. -->
+            <name>play-dependency-shot</name>
+            <properties/>
+            <folders>
+                <source-folder>
+                    <label>src</label>
+                    <type>java</type>
+                    <location>src</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>play-dependency-shot</label>
+                    <location>.</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+            </folders>
+            <ide-actions>
+                <action name="build">
+                    <target>distribution</target>
+                </action>
+            </ide-actions>
+            <view>
+                <items>
+                    <source-folder style="packages">
+                        <label>src</label>
+                        <location>src</location>
+                    </source-folder>
+                    <source-file>
+                        <location>build.xml</location>
+                    </source-file>
+                </items>
+                <context-menu>
+                    <ide-action name="build"/>
+                </context-menu>
+            </view>
+        </general-data>
+        <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/3">
+            <compilation-unit>
+                <package-root>src</package-root>
+                <classpath mode="compile">lib/dependency-shot-aop-1.0-SNAPSHOT.jar:lib/dependency-shot-api-1.0-SNAPSHOT.jar:lib/dependency-shot-core-1.0-SNAPSHOT.jar:lib/dependency-shot-lifecycle-1.0-SNAPSHOT.jar:lib/dependency-shot-utils-1.0-SNAPSHOT.jar:lib/javax.inject-1.jar:/Applications/Developer/play-1.0.3.2/framework/play.jar:/Applications/Developer/play-1.0.3.2/framework/lib/activation.jar:/Applications/Developer/play-1.0.3.2/framework/lib/antlr-2.7.6.jar:/Applications/Developer/play-1.0.3.2/framework/lib/asyncweb-common-0.9.0-SNAPSHOT.jar:/Applications/Developer/play-1.0.3.2/framework/lib/backport-util-concurrent-3.0.jar:/Applications/Developer/play-1.0.3.2/framework/lib/c3p0-0.9.1.jar:/Applications/Developer/play-1.0.3.2/framework/lib/cglib-nodep-2.2.jar:/Applications/Developer/play-1.0.3.2/framework/lib/commons-beanutils.jar:/Applications/Developer/play-1.0.3.2/framework/lib/commons-codec.jar:/Applications/Developer/play-1.0.3.2/framework/lib/commons-collections-3.1.jar:/Applications/Developer/play-1.0.3.2/framework/lib/commons-fileupload-1.2.jar:/Applications/Developer/play-1.0.3.2/framework/lib/commons-httpclient.jar:/Applications/Developer/play-1.0.3.2/framework/lib/commons-io.jar:/Applications/Developer/play-1.0.3.2/framework/lib/commons-lang.jar:/Applications/Developer/play-1.0.3.2/framework/lib/commons-logging-1.1.1.jar:/Applications/Developer/play-1.0.3.2/framework/lib/compiler-jdt.jar:/Applications/Developer/play-1.0.3.2/framework/lib/dom4j-1.6.1.jar:/Applications/Developer/play-1.0.3.2/framework/lib/ehcache-1.5.0.jar:/Applications/Developer/play-1.0.3.2/framework/lib/ejb3-persistence.jar:/Applications/Developer/play-1.0.3.2/framework/lib/ezmorph-1.0.3.jar:/Applications/Developer/play-1.0.3.2/framework/lib/groovy-all-1.7.1.jar:/Applications/Developer/play-1.0.3.2/framework/lib/gson-1.3.jar:/Applications/Developer/play-1.0.3.2/framework/lib/hibernate-annotations.jar:/Applications/Developer/play-1.0.3.2/framework/lib/hibernate-commons-annotations.jar:/Applications/Developer/play-1.0.3.2/framework/lib/hibernate-entitymanager.jar:/Applications/Developer/play-1.0.3.2/framework/lib/hibernate-validator.jar:/Applications/Developer/play-1.0.3.2/framework/lib/hibernate3-ast.jar:/Applications/Developer/play-1.0.3.2/framework/lib/hibernate3.jar:/Applications/Developer/play-1.0.3.2/framework/lib/hsqldb.jar:/Applications/Developer/play-1.0.3.2/framework/lib/jamon-2.7.jar:/Applications/Developer/play-1.0.3.2/framework/lib/javassist.jar:/Applications/Developer/play-1.0.3.2/framework/lib/jaxen-1.1.jar:/Applications/Developer/play-1.0.3.2/framework/lib/joda-time-1.6.jar:/Applications/Developer/play-1.0.3.2/framework/lib/jregex1.2_01.jar:/Applications/Developer/play-1.0.3.2/framework/lib/jsr107cache-1.0.jar:/Applications/Developer/play-1.0.3.2/framework/lib/jta.jar:/Applications/Developer/play-1.0.3.2/framework/lib/junit-4.4.jar:/Applications/Developer/play-1.0.3.2/framework/lib/log4j-1.2.15.jar:/Applications/Developer/play-1.0.3.2/framework/lib/lucene-analyzers-2.3.1.jar:/Applications/Developer/play-1.0.3.2/framework/lib/lucene-core-2.3.1.jar:/Applications/Developer/play-1.0.3.2/framework/lib/mail.jar:/Applications/Developer/play-1.0.3.2/framework/lib/memcached-2.4.2.jar:/Applications/Developer/play-1.0.3.2/framework/lib/mina-core-2.0.0-M2-SNAPSHOT.jar:/Applications/Developer/play-1.0.3.2/framework/lib/mysql-connector-java-5.1.8-bin.jar:/Applications/Developer/play-1.0.3.2/framework/lib/oval-1.31.jar:/Applications/Developer/play-1.0.3.2/framework/lib/play-imaging.jar:/Applications/Developer/play-1.0.3.2/framework/lib/play-SimpleCaptcha.jar:/Applications/Developer/play-1.0.3.2/framework/lib/provided-geronimo-servlet_2.5_spec-1.2.jar:/Applications/Developer/play-1.0.3.2/framework/lib/slf4j-api-1.5.0.jar:/Applications/Developer/play-1.0.3.2/framework/lib/slf4j-log4j12-1.5.0.jar:/Applications/Developer/play-1.0.3.2/framework/lib/SnakeYAML-1.2.jar:/Applications/Developer/play-1.0.3.2/framework/lib/wikitext.core_1.1.1.jar:/Applications/Developer/play-1.0.3.2/framework/lib/WikiText.jar:/Applications/Developer/play-1.0.3.2/framework/lib/ZDB.jar</classpath>
+                <source-level>1.6</source-level>
+            </compilation-unit>
+        </java-data>
+    </configuration>
+</project>
