@@ -1,0 +1,7 @@
+The main goal of dependency-shot is to implement the JSR-330, known as Dependency Injection for Java, in a simple and easy to use framework. Dependency-shot is also an educational framework to understand the principles of dependency injection, inversion of control and aspect oriented programming with a framework.
+
+You can find the final release of the JSR-330 on the JSR-330 specification website or on the atinject project on google code. You can also find the code of the Reference Implementation on the Guice trunk.
+
+You can contact us at dependencyshot@gmail.com
+
+You can also join our mailing lists on google groups, ask questions about dependency-shot usage of development. We automatically forward dev. messages (issues, commit, etc ... ) to the development list.
