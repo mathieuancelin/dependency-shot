@@ -21,6 +21,7 @@ import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import cx.ath.mancel01.dependencyshot.api.event.Event;
 import cx.ath.mancel01.dependencyshot.event.EventManagerImpl;
+import java.util.concurrent.TimeUnit;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -46,7 +47,7 @@ public class EventTest {
             event2.fire();
         for(int i = 0; i < 20; i++)
             event3.fire();
-        Thread.sleep(500);
+        mgmt.getExec().awaitTermination(2, TimeUnit.SECONDS);
         System.out.println("listener 1 : " + listener.getCalls() + " events received ...");
         System.out.println("listener 2 : " + listener2.getCalls() + " events received ...");
         System.out.println("listener 3 : " + listener3.getCalls() + " events received ...");
@@ -58,11 +59,12 @@ public class EventTest {
     @Test
     public void broadcastEvent() throws Exception {
         DSInjector injector = DependencyShot.getInjector();
+        EventManagerImpl mgmt = injector.getInstance(EventManagerImpl.class);
         Event<CustomEvent> event = injector.getInstance(Event.class);
         CustomEventListener listener = injector.getInstance(CustomEventListener.class);
         for(int i = 0; i < 20; i++)
             event.fire(new CustomEvent());
-        Thread.sleep(500);
+        mgmt.getExec().awaitTermination(2, TimeUnit.SECONDS);
         System.out.println("listener 1 : " + listener.getCalls() + " events received ...");
         Assert.assertTrue(listener.getCalls() == 20);
     }
