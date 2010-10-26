@@ -15,9 +15,9 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.aop.v2;
+package cx.ath.mancel01.dependencyshot.aop;
 
-import cx.ath.mancel01.dependencyshot.aop.v2.annotation.ExcludeInterceptors;
+import cx.ath.mancel01.dependencyshot.aop.annotation.ExcludeInterceptors;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;

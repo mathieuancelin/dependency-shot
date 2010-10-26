@@ -18,8 +18,8 @@
 package cx.ath.mancel01.dependencyshot.test.aop.all;
 
 import cx.ath.mancel01.dependencyshot.DependencyShot;
-import cx.ath.mancel01.dependencyshot.aop.v2.AOPBinder;
-import cx.ath.mancel01.dependencyshot.aop.v2.PatternHelper;
+import cx.ath.mancel01.dependencyshot.aop.AOPBinder;
+import cx.ath.mancel01.dependencyshot.aop.PatternHelper;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import cx.ath.mancel01.dependencyshot.test.aop.ResultSingleton;
 import cx.ath.mancel01.dependencyshot.test.aop.Service;

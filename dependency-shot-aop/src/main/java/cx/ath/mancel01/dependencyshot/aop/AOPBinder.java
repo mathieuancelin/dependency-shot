@@ -14,7 +14,7 @@
  *  limitations under the License.
  *  under the License.
  */
-package cx.ath.mancel01.dependencyshot.aop.v2;
+package cx.ath.mancel01.dependencyshot.aop;
 
 import cx.ath.mancel01.dependencyshot.graph.Binder;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;

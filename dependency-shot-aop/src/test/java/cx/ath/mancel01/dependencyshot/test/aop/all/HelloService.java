@@ -17,8 +17,8 @@
 
 package cx.ath.mancel01.dependencyshot.test.aop.all;
 
-import cx.ath.mancel01.dependencyshot.aop.v2.annotation.ExcludeInterceptors;
-import cx.ath.mancel01.dependencyshot.aop.v2.annotation.Interceptors;
+import cx.ath.mancel01.dependencyshot.aop.annotation.ExcludeInterceptors;
+import cx.ath.mancel01.dependencyshot.aop.annotation.Interceptors;
 import cx.ath.mancel01.dependencyshot.test.aop.Service;
 
 /**
