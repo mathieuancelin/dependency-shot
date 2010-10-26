@@ -17,31 +17,24 @@
 
 package cx.ath.mancel01.dependencyshot.test.aop.v2;
 
-import cx.ath.mancel01.dependencyshot.aop.v2.annotation.ExcludeInterceptors;
-import cx.ath.mancel01.dependencyshot.aop.v2.annotation.Interceptors;
+import javax.inject.Singleton;
+import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
-@Interceptors(AnnotationInterceptor.class)
-public class HelloService implements Service {
+@Singleton
+public class AnnotationInterceptor implements MethodInterceptor {
 
     @Override
-    public void hello() {
-        System.out.println("----------> Hello World!");
+    public Object invoke(MethodInvocation mi) throws Throwable {
+        try {
+            System.out.println("before with annotation");
+            return mi.proceed();
+        } finally {
+            System.out.println("after with annotation");
+        }
     }
-
-    @ExcludeInterceptors
-    @Override
-    public void goodbye() {
-        System.out.println("----------> Goodbye!");
-    }
-
-    @Override
-    @Interceptors(SomethingInterceptor.class)
-    public void something() {
-        System.out.println("----------> something");
-    }
-
 }
