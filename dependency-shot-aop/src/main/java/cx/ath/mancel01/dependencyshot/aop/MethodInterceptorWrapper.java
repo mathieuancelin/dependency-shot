@@ -54,4 +54,9 @@ public class MethodInterceptorWrapper implements MethodInterceptor {
         return interceptor.invoke(mi);
     }
 
+    @Override
+    public String toString() {
+        return "MethodInterceptorWrapper{" + "interceptor=" + interceptor + ", interceptedMethods=" + interceptedMethods + '}';
+    }
+
 }

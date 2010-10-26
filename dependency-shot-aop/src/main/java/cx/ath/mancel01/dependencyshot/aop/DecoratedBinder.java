@@ -17,30 +17,23 @@
 
 package cx.ath.mancel01.dependencyshot.aop;
 
-import java.util.List;
 import org.aopalliance.intercept.MethodInterceptor;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
-public class CutBinder implements Cut {
+public class DecoratedBinder implements Cut {
 
     private final AOPBinder binder;
 
-    private final List<Class<?>> cutClasses;
-
-    private final String cutStringClasses;
-
-    public CutBinder(AOPBinder binder, String cutStringClasses, List<Class<?>> cutClasses) {
+    public DecoratedBinder(AOPBinder binder) {
         this.binder = binder;
-        this.cutClasses = cutClasses;
-        this.cutStringClasses = cutStringClasses;
     }
 
     @Override
     public void with(Class<? extends MethodInterceptor>... interceptors) {
-        binder.with(cutClasses, cutStringClasses, interceptors);
+
     }
 
 }

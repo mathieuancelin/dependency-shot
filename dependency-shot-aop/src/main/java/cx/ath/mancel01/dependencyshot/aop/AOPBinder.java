@@ -21,6 +21,7 @@ import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,40 +33,36 @@ import org.aopalliance.intercept.MethodInterceptor;
  */
 public abstract class AOPBinder extends Binder {
 
-    private List<Class<?>> cutClasses = new ArrayList<Class<?>>();
-    private String cutStringClasses = null;
     private Map<Class<?>, ArrayList<Class<? extends MethodInterceptor>>> advices =
             new HashMap<Class<?>, ArrayList<Class<? extends MethodInterceptor>>>();
     private Map<String, ArrayList<Class<? extends MethodInterceptor>>> stringAdvices =
             new HashMap<String, ArrayList<Class<? extends MethodInterceptor>>>();
     
     public final CutBinder cut(Class<?>... classes) {
-        cutClasses.clear();
-        cutClasses.addAll(Arrays.asList(classes));
-        return new CutBinder(this);
+        return new CutBinder(this, null, Arrays.asList(classes));
     }
 
     public final CutBinder cut(String classes) {
-        cutStringClasses = null;
-        cutStringClasses = classes;
-        return new CutBinder(this);
+        return new CutBinder(this, classes, Collections.EMPTY_LIST);
     }
 
-    final void with(Class<? extends MethodInterceptor>... interceptors) {
+    /**public final DecoratedBinder decoractes(Class<?> decorated) {
+        return new DecoratedBinder(this);
+    }**/
+
+    final void with(List<Class<?>> cutClasses, String cutStringClasses, Class<? extends MethodInterceptor>... interceptors) {
         for (Class clazz : cutClasses) {
             if (!advices.containsKey(clazz)) {
                 advices.put(clazz, new ArrayList<Class<? extends MethodInterceptor>>());
             }
             advices.get(clazz).addAll(Arrays.asList(interceptors));
         }
-        cutClasses.clear();
         if (cutStringClasses != null) {
             if (!stringAdvices.containsKey(cutStringClasses)) {
                 stringAdvices.put(cutStringClasses, new ArrayList<Class<? extends MethodInterceptor>>());
             }
             stringAdvices.get(cutStringClasses).addAll(Arrays.asList(interceptors));
         }
-        cutStringClasses = null;
     }
 
     Map<Class<?>, ArrayList<Class<? extends MethodInterceptor>>> getAdvices() {
