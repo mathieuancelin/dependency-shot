@@ -83,6 +83,6 @@ public class MethodJoinpoint implements MethodInvocation {
 
     @Override
     public AccessibleObject getStaticPart() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return method;
     }
 }
