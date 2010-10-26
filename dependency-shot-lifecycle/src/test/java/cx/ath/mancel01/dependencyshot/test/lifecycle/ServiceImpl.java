@@ -17,10 +17,10 @@
 
 package cx.ath.mancel01.dependencyshot.test.lifecycle;
 
+import cx.ath.mancel01.dependencyshot.aop.annotation.Interceptors;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.interceptor.Interceptors;
 
 /**
  *

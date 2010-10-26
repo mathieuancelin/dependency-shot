@@ -18,31 +18,19 @@
 package cx.ath.mancel01.dependencyshot.test.lifecycle;
 
 import javax.inject.Singleton;
-import javax.interceptor.AroundInvoke;
-import javax.interceptor.InvocationContext;
+import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
 @Singleton
-public class Interceptor {
+public class Interceptor implements MethodInterceptor {
 
     private int before = 0;
 
     private int after = 0;
-
-    @AroundInvoke
-    public Object intercept(final InvocationContext ctx) throws Exception {
-        System.out.println("before doing something");
-        before++;
-        try {
-            return ctx.proceed();
-        } finally {
-            System.out.println("after doing something");
-            after++;
-        }
-    }
 
     public int getAfter() {
         return after;
@@ -50,5 +38,17 @@ public class Interceptor {
 
     public int getBefore() {
         return before;
+    }
+
+    @Override
+    public Object invoke(MethodInvocation mi) throws Throwable {
+        System.out.println("before doing something");
+        before++;
+        try {
+            return mi.proceed();
+        } finally {
+            System.out.println("after doing something");
+            after++;
+        }
     }
 }

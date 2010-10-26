@@ -60,9 +60,13 @@ public class AopInstanceHandler extends InstanceHandler{
                 interceptors.addAll(((AOPBinder) binder).getInterceptors(clazz, injector));
             }
         }
-        MethodInvocationHandler handler = new MethodInvocationHandler(
-                interceptors, interf, clazz, instance);
-        return ProxyHelper.createProxy(instance, handler);
+        if (interceptors.isEmpty()) {
+            return instance;
+        } else  {
+            MethodInvocationHandler handler = new MethodInvocationHandler(
+                    interceptors, interf, clazz, instance);
+            return ProxyHelper.createProxy(instance, handler);
+        }
     }
 
     private void applyAspect(Class clazz, 
