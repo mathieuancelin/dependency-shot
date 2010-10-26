@@ -18,6 +18,7 @@ package cx.ath.mancel01.dependencyshot.aop.v2;
 
 import cx.ath.mancel01.dependencyshot.graph.Binder;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -32,12 +33,21 @@ import org.aopalliance.intercept.MethodInterceptor;
 public abstract class AOPBinder extends Binder {
 
     private List<Class<?>> cutClasses = new ArrayList<Class<?>>();
+    private String cutStringClasses = null;
     private Map<Class<?>, ArrayList<Class<? extends MethodInterceptor>>> advices =
             new HashMap<Class<?>, ArrayList<Class<? extends MethodInterceptor>>>();
+    private Map<String, ArrayList<Class<? extends MethodInterceptor>>> stringAdvices =
+            new HashMap<String, ArrayList<Class<? extends MethodInterceptor>>>();
     
     public final CutBinder cut(Class<?>... classes) {
         cutClasses.clear();
         cutClasses.addAll(Arrays.asList(classes));
+        return new CutBinder(this);
+    }
+
+    public final CutBinder cut(String classes) {
+        cutStringClasses = null;
+        cutStringClasses = classes;
         return new CutBinder(this);
     }
 
@@ -49,6 +59,13 @@ public abstract class AOPBinder extends Binder {
             advices.get(clazz).addAll(Arrays.asList(interceptors));
         }
         cutClasses.clear();
+        if (cutStringClasses != null) {
+            if (!stringAdvices.containsKey(cutStringClasses)) {
+                stringAdvices.put(cutStringClasses, new ArrayList<Class<? extends MethodInterceptor>>());
+            }
+            stringAdvices.get(cutStringClasses).addAll(Arrays.asList(interceptors));
+        }
+        cutStringClasses = null;
     }
 
     Map<Class<?>, ArrayList<Class<? extends MethodInterceptor>>> getAdvices() {
@@ -57,11 +74,30 @@ public abstract class AOPBinder extends Binder {
 
     List<MethodInterceptorWrapper> getInterceptors(Class<?> clazz, InjectorImpl injector) {
         List<MethodInterceptorWrapper> wrappers = new ArrayList<MethodInterceptorWrapper>();
-        // TODO with strings match
         if (advices.containsKey(clazz)) {
             ArrayList<Class<? extends MethodInterceptor>> interceptors = advices.get(clazz);
             for (Class<? extends MethodInterceptor> interceptor : interceptors) {
                 wrappers.add(new MethodInterceptorWrapper(injector.getInstance(interceptor)));
+            }
+        }
+        for (String pattern : stringAdvices.keySet()) {
+            if (PatternHelper.matchWithClass(clazz.getName(), pattern)) {
+                ArrayList<Class<? extends MethodInterceptor>> interceptors = stringAdvices.get(pattern);
+                for (Class<? extends MethodInterceptor> interceptor : interceptors) {
+                    wrappers.add(new MethodInterceptorWrapper(injector.getInstance(interceptor)));
+                }
+            }
+            if (pattern.endsWith("()")) {
+                for (Method m : clazz.getMethods()) {
+                    if (PatternHelper.matchWithClass(clazz.getName() + "." + m.getName() + "()", pattern)) {
+                        ArrayList<Class<? extends MethodInterceptor>> interceptors = stringAdvices.get(pattern);
+                        for (Class<? extends MethodInterceptor> interceptor : interceptors) {
+                            MethodInterceptorWrapper wrap = new MethodInterceptorWrapper(injector.getInstance(interceptor));
+                            wrap.addInterceptedMethod(m);
+                            wrappers.add(wrap);
+                        }
+                    }
+                }
             }
         }
         return wrappers;

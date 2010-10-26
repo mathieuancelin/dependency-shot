@@ -19,12 +19,9 @@ package cx.ath.mancel01.dependencyshot.test.aop.v2;
 
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.aop.v2.AOPBinder;
-import cx.ath.mancel01.dependencyshot.aop.v2.MethodInterceptorWrapper;
-import cx.ath.mancel01.dependencyshot.aop.v2.MethodInvocationHandler;
-import cx.ath.mancel01.dependencyshot.aop.v2.ProxyHelper;
+import cx.ath.mancel01.dependencyshot.aop.v2.PatternHelper;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
-import java.util.ArrayList;
-import java.util.List;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -41,7 +38,10 @@ public class AOPTest {
             @Override
             public void configureBindings() {
                 bind(Service.class).to(HelloService.class);
+
                 cut(HelloService.class).with(HelloInterceptor.class);
+                cut("cx*.HelloService").with(ClassPatternInterceptor.class);
+                cut("cx.ath.*.HelloS*.hell*()").with(MethodPatternInterceptor.class);
             }
         });
 
@@ -51,5 +51,64 @@ public class AOPTest {
         service.hello();
         service.something();
         service.goodbye();
+    }
+
+    @Test
+    public void testPackagesMatcher() throws Exception {
+        Assert.assertTrue(PatternHelper.
+                matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
+                               "cx.*"));
+        Assert.assertTrue(PatternHelper.
+                matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
+                               "cx.ath.*"));
+        Assert.assertTrue(PatternHelper.
+                matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
+                               "cx.ath.mancel01.*"));
+        Assert.assertTrue(PatternHelper.
+                matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
+                               "cx.ath.mancel*"));
+        Assert.assertTrue(PatternHelper.
+                matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
+                               "cx.ath.mancel01.project.*"));
+        Assert.assertTrue(PatternHelper.
+                matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
+                               "cx.ath.mancel01.project.*"));
+        Assert.assertTrue(PatternHelper.
+                matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
+                               "cx.ath.mancel01.project.package1.*"));
+        Assert.assertTrue(PatternHelper.
+                matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
+                               "cx.ath.mancel01.project.package1.sub1.*"));
+        Assert.assertTrue(PatternHelper.
+                matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc", 
+                               "cx.ath.mancel01.project.package1.sub1.Truc"));
+
+        Assert.assertTrue(PatternHelper.
+                matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
+                               "cx.ath.mancel01.*.package1.sub1.Truc"));
+        Assert.assertTrue(PatternHelper.
+                matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
+                               "cx.ath.mancel01.****.*.sub1.Truc"));
+        Assert.assertTrue(PatternHelper.
+                matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
+                               "cx.ath.mancel01.*.Truc"));
+        Assert.assertTrue(PatternHelper.
+                matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
+                               "cx.ath.mancel01.project.pack*.sub1.Truc"));
+        Assert.assertTrue(PatternHelper.
+                matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
+                               "cx.ath.m*.project.*.Truc"));
+        Assert.assertTrue(PatternHelper.
+                matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
+                               "cx.*.mancel01.proj*t.pac*age1.s*b1.Truc"));
+        Assert.assertTrue(PatternHelper.
+                matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
+                               "*.project.*.sub1.Truc"));
+        Assert.assertTrue(PatternHelper.
+                matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
+                               "cx.ath.*.*.*.sub1.Truc"));
+        Assert.assertTrue(PatternHelper.
+                matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
+                               "cx.ath.mancel01.project.package1.sub1.Tr*"));
     }
 }
