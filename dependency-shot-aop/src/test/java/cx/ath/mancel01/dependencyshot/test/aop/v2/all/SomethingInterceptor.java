@@ -15,8 +15,10 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.aop.v2;
+package cx.ath.mancel01.dependencyshot.test.aop.v2.all;
 
+import cx.ath.mancel01.dependencyshot.test.aop.v2.ResultSingleton;
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -26,15 +28,18 @@ import org.aopalliance.intercept.MethodInvocation;
  * @author Mathieu ANCELIN
  */
 @Singleton
-public class MethodPatternInterceptor implements MethodInterceptor {
+public class SomethingInterceptor implements MethodInterceptor {
+
+    @Inject
+    private ResultSingleton singleton;
 
     @Override
     public Object invoke(MethodInvocation mi) throws Throwable {
         try {
-            System.out.println("before with method pattern");
+            singleton.incrementBeforeCall();
             return mi.proceed();
         } finally {
-            System.out.println("after with method pattern");
+            singleton.incrementAfterCall();
         }
     }
 }

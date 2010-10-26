@@ -15,26 +15,31 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.aop.v2;
+package cx.ath.mancel01.dependencyshot.test.aop.v2.patternmethod;
 
-import javax.inject.Singleton;
-import org.aopalliance.intercept.MethodInterceptor;
-import org.aopalliance.intercept.MethodInvocation;
+import cx.ath.mancel01.dependencyshot.aop.v2.annotation.ExcludeInterceptors;
+import cx.ath.mancel01.dependencyshot.test.aop.v2.Service;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
-@Singleton
-public class SomethingInterceptor implements MethodInterceptor {
+public class HelloService implements Service {
 
     @Override
-    public Object invoke(MethodInvocation mi) throws Throwable {
-        try {
-            System.out.println("before doing something");
-            return mi.proceed();
-        } finally {
-            System.out.println("after doing something");
-        }
+    public void hello() {
+        System.out.println("----------> Hello World!");
     }
+
+    @ExcludeInterceptors
+    @Override
+    public void goodbye() {
+        System.out.println("----------> Goodbye!");
+    }
+
+    @Override
+    public void something() {
+        System.out.println("----------> something");
+    }
+
 }

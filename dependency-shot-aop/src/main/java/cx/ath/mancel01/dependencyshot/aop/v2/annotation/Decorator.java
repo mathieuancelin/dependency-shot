@@ -1,5 +1,5 @@
 /*
- *  Copyright 2010 mathieuancelin.
+ *  Copyright 2009-2010 Mathieu ANCELIN
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,26 +15,17 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.aop.v2;
+package cx.ath.mancel01.dependencyshot.aop.v2.annotation;
 
-import javax.inject.Singleton;
-import org.aopalliance.intercept.MethodInterceptor;
-import org.aopalliance.intercept.MethodInvocation;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- *
- * @author Mathieu ANCELIN
+ * 
+ * @author mathieuancelin
  */
-@Singleton
-public class AnnotationInterceptor implements MethodInterceptor {
-
-    @Override
-    public Object invoke(MethodInvocation mi) throws Throwable {
-        try {
-            System.out.println("before with annotation");
-            return mi.proceed();
-        } finally {
-            System.out.println("after with annotation");
-        }
-    }
-}
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Decorator {}

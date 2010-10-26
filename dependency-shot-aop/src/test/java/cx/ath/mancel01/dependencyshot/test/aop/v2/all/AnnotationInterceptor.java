@@ -15,8 +15,9 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.aop.v2;
+package cx.ath.mancel01.dependencyshot.test.aop.v2.all;
 
+import cx.ath.mancel01.dependencyshot.test.aop.v2.ResultSingleton;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.aopalliance.intercept.MethodInterceptor;
@@ -27,7 +28,7 @@ import org.aopalliance.intercept.MethodInvocation;
  * @author Mathieu ANCELIN
  */
 @Singleton
-public class HelloInterceptor implements MethodInterceptor {
+public class AnnotationInterceptor implements MethodInterceptor {
 
     @Inject
     private ResultSingleton singleton;

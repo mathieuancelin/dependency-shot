@@ -15,8 +15,9 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.aop.v2;
+package cx.ath.mancel01.dependencyshot.test.aop.v2.all;
 
+import cx.ath.mancel01.dependencyshot.test.aop.v2.ResultSingleton;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.aopalliance.intercept.MethodInterceptor;

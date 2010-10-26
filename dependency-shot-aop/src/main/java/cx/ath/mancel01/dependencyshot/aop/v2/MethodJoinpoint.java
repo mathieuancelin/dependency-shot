@@ -63,7 +63,7 @@ public class MethodJoinpoint implements MethodInvocation {
     public Object proceed() throws Throwable {
         if (interceptor.hasNext()) {
             MethodInterceptorWrapper wrap = interceptor.next();
-            if (!wrap.canBeAppliedOn(method)) {
+            while (!wrap.canBeAppliedOn(method)) {
                 if (interceptor.hasNext()) {
                     wrap = interceptor.next();
                 } else {

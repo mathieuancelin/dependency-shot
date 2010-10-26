@@ -15,8 +15,10 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.aop.v2;
+package cx.ath.mancel01.dependencyshot.test.aop.v2.annoclass;
 
+import cx.ath.mancel01.dependencyshot.test.aop.v2.Service;
+import cx.ath.mancel01.dependencyshot.test.aop.v2.HelloInterceptor;
 import cx.ath.mancel01.dependencyshot.aop.v2.annotation.ExcludeInterceptors;
 import cx.ath.mancel01.dependencyshot.aop.v2.annotation.Interceptors;
 
@@ -24,7 +26,7 @@ import cx.ath.mancel01.dependencyshot.aop.v2.annotation.Interceptors;
  *
  * @author Mathieu ANCELIN
  */
-@Interceptors(AnnotationInterceptor.class)
+@Interceptors(HelloInterceptor.class)
 public class HelloService implements Service {
 
     @Override
@@ -39,9 +41,8 @@ public class HelloService implements Service {
     }
 
     @Override
-    @Interceptors(SomethingInterceptor.class)
     public void something() {
-        System.out.println("----------> something");
+        System.out.println("----------> Something");
     }
 
 }

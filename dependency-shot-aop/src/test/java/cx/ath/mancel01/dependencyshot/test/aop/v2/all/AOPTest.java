@@ -15,12 +15,13 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.aop.v2;
+package cx.ath.mancel01.dependencyshot.test.aop.v2.all;
 
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.aop.v2.AOPBinder;
 import cx.ath.mancel01.dependencyshot.aop.v2.PatternHelper;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
+import cx.ath.mancel01.dependencyshot.test.aop.v2.ResultSingleton;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -32,7 +33,7 @@ import org.junit.Test;
 public class AOPTest {
 
     @Test
-    public void testAOPV2Binder() throws Exception {
+    public void testAllTogether() throws Exception {
 
         DSInjector injector = DependencyShot.getInjector(new AOPBinder() {
             @Override
@@ -40,21 +41,30 @@ public class AOPTest {
                 bind(Service.class).to(HelloService.class);
 
                 cut(HelloService.class).with(HelloInterceptor.class);
-                cut("cx*.HelloService").with(ClassPatternInterceptor.class);
-                cut("cx.ath.*.HelloS*.hell*()").with(MethodPatternInterceptor.class);
+                cut("cx*.all.HelloService").with(ClassPatternInterceptor.class);
+                cut("cx.ath.*.all.HelloS*.hell*()").with(MethodPatternInterceptor.class);
             }
         });
 
         Service service = injector.getInstance(Service.class);
-
+        ResultSingleton result = injector.getInstance(ResultSingleton.class);
+        
         service.hello();
+        Assert.assertTrue(result.getBeforeCall() == 4);
+        Assert.assertTrue(result.getAfterCall() == 4);
         service.hello();
+        Assert.assertTrue(result.getBeforeCall() == 8);
+        Assert.assertTrue(result.getAfterCall() == 8);
         service.something();
+        Assert.assertTrue(result.getBeforeCall() == 12);
+        Assert.assertTrue(result.getAfterCall() == 12);
         service.goodbye();
+        Assert.assertTrue(result.getBeforeCall() == 12);
+        Assert.assertTrue(result.getAfterCall() == 12);
     }
 
     @Test
-    public void testPackagesMatcher() throws Exception {
+    public void testSimplePackagesMatcher() throws Exception {
         Assert.assertTrue(PatternHelper.
                 matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
                                "cx.*"));
@@ -82,7 +92,10 @@ public class AOPTest {
         Assert.assertTrue(PatternHelper.
                 matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc", 
                                "cx.ath.mancel01.project.package1.sub1.Truc"));
+    }
 
+    @Test
+    public void testComplexPackagesMatcher() throws Exception {
         Assert.assertTrue(PatternHelper.
                 matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
                                "cx.ath.mancel01.*.package1.sub1.Truc"));
@@ -110,5 +123,30 @@ public class AOPTest {
         Assert.assertTrue(PatternHelper.
                 matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
                                "cx.ath.mancel01.project.package1.sub1.Tr*"));
+    }
+
+    @Test
+    public void testFalsePackagesMatcher() throws Exception {
+        Assert.assertFalse(PatternHelper.
+                matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
+                               "cx.ath.mancel01.project.package1.sub1.Tr*k"));
+        Assert.assertFalse(PatternHelper.
+                matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
+                               "cx.*.*.*.*.*.*k"));
+        Assert.assertFalse(PatternHelper.
+                matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
+                               "cx.*.*.*.*.*.*.Truc"));
+        Assert.assertFalse(PatternHelper.
+                matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
+                               "*.*.*.*.*.*.*.Truc"));
+        Assert.assertFalse(PatternHelper.
+                matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
+                               "cx.ath.*2.project.package1.*.Truc"));
+        Assert.assertFalse(PatternHelper.
+                matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
+                               "cx.ath.mancel01.projet.package1.sub1.Truc"));
+        Assert.assertFalse(PatternHelper.
+                matchWithClass("cx.ath.mancel01.project.package1.sub1.Truc",
+                               "*.*.ath.mancel01.project.package1.sub1.Truc"));
     }
 }

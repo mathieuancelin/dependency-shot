@@ -15,30 +15,14 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.aop.v2;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import org.aopalliance.intercept.MethodInterceptor;
-import org.aopalliance.intercept.MethodInvocation;
+package cx.ath.mancel01.dependencyshot.test.aop.v2.all;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
-@Singleton
-public class HelloInterceptor implements MethodInterceptor {
-
-    @Inject
-    private ResultSingleton singleton;
-
-    @Override
-    public Object invoke(MethodInvocation mi) throws Throwable {
-        try {
-            singleton.incrementBeforeCall();
-            return mi.proceed();
-        } finally {
-            singleton.incrementAfterCall();
-        }
-    }
+public interface Service {
+    void hello();
+    void something();
+    void goodbye();
 }
