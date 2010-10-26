@@ -17,11 +17,14 @@
 
 package cx.ath.mancel01.dependencyshot.test.aop.v2;
 
+import cx.ath.mancel01.dependencyshot.DependencyShot;
+import cx.ath.mancel01.dependencyshot.aop.v2.AOPBinder;
+import cx.ath.mancel01.dependencyshot.aop.v2.MethodInterceptorWrapper;
 import cx.ath.mancel01.dependencyshot.aop.v2.MethodInvocationHandler;
 import cx.ath.mancel01.dependencyshot.aop.v2.ProxyHelper;
+import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import java.util.ArrayList;
 import java.util.List;
-import org.aopalliance.intercept.MethodInterceptor;
 import org.junit.Test;
 
 /**
@@ -32,18 +35,21 @@ import org.junit.Test;
 public class AOPTest {
 
     @Test
-    public void testAOPV2() {
-        List<MethodInterceptor> interceptors = new ArrayList<MethodInterceptor>();
-        interceptors.add(new HelloInterceptor());
-        interceptors.add(new HelloInterceptor());
-        interceptors.add(new HelloInterceptor());
-        Service service = new HelloService();
-        MethodInvocationHandler handler = new MethodInvocationHandler(
-                interceptors, Service.class, HelloService.class, service);
-        Service aopService =ProxyHelper.createProxy(
-                Service.class, HelloService.class, service, handler);
-        aopService.hello();
-        aopService.hello();
-        aopService.goodbye();
+    public void testAOPV2Binder() throws Exception {
+
+        DSInjector injector = DependencyShot.getInjector(new AOPBinder() {
+            @Override
+            public void configureBindings() {
+                bind(Service.class).to(HelloService.class);
+                cut(HelloService.class).with(HelloInterceptor.class);
+            }
+        });
+
+        Service service = injector.getInstance(Service.class);
+
+        service.hello();
+        service.hello();
+        service.something();
+        service.goodbye();
     }
 }

@@ -15,14 +15,14 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.test.aop.v2;
+package cx.ath.mancel01.dependencyshot.aop.v2;
+
+import org.aopalliance.intercept.MethodInterceptor;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
-public interface Service {
-    void hello();
-    void something();
-    void goodbye();
+public interface Cut {
+    void with(Class<? extends MethodInterceptor>... interceptors);
 }

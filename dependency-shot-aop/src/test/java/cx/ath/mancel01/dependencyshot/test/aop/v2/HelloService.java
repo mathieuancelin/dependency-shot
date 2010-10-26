@@ -17,7 +17,8 @@
 
 package cx.ath.mancel01.dependencyshot.test.aop.v2;
 
-import cx.ath.mancel01.dependencyshot.aop.v2.ExcludeInterceptors;
+import cx.ath.mancel01.dependencyshot.aop.v2.annotation.ExcludeInterceptors;
+import cx.ath.mancel01.dependencyshot.aop.v2.annotation.Interceptors;
 
 /**
  *
@@ -27,13 +28,19 @@ public class HelloService implements Service {
 
     @Override
     public void hello() {
-        System.out.println("Hello World!");
+        System.out.println("----------> Hello World!");
     }
 
     @ExcludeInterceptors
     @Override
     public void goodbye() {
-        System.out.println("Goodbye!");
+        System.out.println("----------> Goodbye!");
+    }
+
+    @Override
+    @Interceptors(SomethingInterceptor.class)
+    public void something() {
+        System.out.println("----------> something");
     }
 
 }

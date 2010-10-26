@@ -558,4 +558,8 @@ public class InjectorImpl implements DSInjector {
     public EventManagerImpl getEventManager() {
         return eventManager;
     }
+
+    public List<Binder> getBinders() {
+        return binders;
+    }
 }

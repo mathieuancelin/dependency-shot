@@ -17,12 +17,24 @@
 
 package cx.ath.mancel01.dependencyshot.test.aop.v2;
 
+import javax.inject.Singleton;
+import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
+
 /**
  *
  * @author Mathieu ANCELIN
  */
-public interface Service {
-    void hello();
-    void something();
-    void goodbye();
+@Singleton
+public class SomethingInterceptor implements MethodInterceptor {
+
+    @Override
+    public Object invoke(MethodInvocation mi) throws Throwable {
+        try {
+            System.out.println("before doing something");
+            return mi.proceed();
+        } finally {
+            System.out.println("after doing something");
+        }
+    }
 }

@@ -17,12 +17,12 @@
 
 package cx.ath.mancel01.dependencyshot.aop.v2;
 
+import cx.ath.mancel01.dependencyshot.aop.v2.annotation.ExcludeInterceptors;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import javassist.util.proxy.MethodFilter;
 import javassist.util.proxy.MethodHandler;
-import org.aopalliance.intercept.MethodInterceptor;
 
 /**
  *
@@ -30,7 +30,7 @@ import org.aopalliance.intercept.MethodInterceptor;
  */
 public class MethodInvocationHandler<T> implements MethodFilter, MethodHandler {
 
-    private final List<MethodInterceptor> interceptors;
+    private final List<MethodInterceptorWrapper> interceptors;
 
     private final Class<T> from;
 
@@ -41,12 +41,20 @@ public class MethodInvocationHandler<T> implements MethodFilter, MethodHandler {
     private final ConcurrentHashMap<Method, Boolean> areMethodHandled =
             new ConcurrentHashMap<Method, Boolean>();
 
-    public MethodInvocationHandler(List<MethodInterceptor> interceptors,
+    public MethodInvocationHandler(List<MethodInterceptorWrapper> interceptors,
             Class<T> from, Class<? extends T> to, Object interceptedBean) {
         this.interceptors = interceptors;
         this.from = from;
         this.to = to;
         this.interceptedBean = interceptedBean;
+    }
+
+    public Class<? extends T> getTo() {
+        return to;
+    }
+
+    public Class<T> getFrom() {
+        return from;
     }
 
     @Override
@@ -73,8 +81,13 @@ public class MethodInvocationHandler<T> implements MethodFilter, MethodHandler {
 
     @Override
     public Object invoke(Object self, Method method, Method procced, Object[] args) throws Throwable {
-        MethodJoinpoint joinpoint = new MethodJoinpoint(method, args,
-                interceptors.iterator(), interceptedBean, this);
+        MethodJoinpoint joinpoint =
+                new MethodJoinpoint(
+                method,
+                args,
+                interceptors.iterator(), 
+                interceptedBean,
+                this);
         return joinpoint.proceed();
     }
 }

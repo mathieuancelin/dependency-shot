@@ -21,14 +21,17 @@ import javassist.util.proxy.ProxyFactory;
 import javassist.util.proxy.ProxyObject;
 
 /**
+ * Helper for proxy creation.
  *
  * @author Mathieu ANCELIN
  */
 public class ProxyHelper {
 
-    public static <T> T createProxy(Class<T> from, Class<? extends T> to,
+    public static <T> T createProxy(
             Object bean, MethodInvocationHandler handler) {
         ProxyFactory fact = new ProxyFactory();
+        Class<T> from = handler.getFrom();
+        Class<? extends T> to = handler.getTo();
         if (from.isInterface()) {
             fact.setInterfaces(new Class[] {from});
         } 
@@ -39,8 +42,7 @@ public class ProxyHelper {
         try {
             scopedObject = (T) newBeanClass.cast(newBeanClass.newInstance());
         } catch (Exception ex) {
-            throw new IllegalStateException("Impossible de créer un proxy pour l'objet "
-                    + from + " dans le scope");
+            throw new IllegalStateException("Unable to create proxy for object " + from.getSimpleName(), ex);
         }
         ((ProxyObject) scopedObject).setHandler(handler);
         return scopedObject;

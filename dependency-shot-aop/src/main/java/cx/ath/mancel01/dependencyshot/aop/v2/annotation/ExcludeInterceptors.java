@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.aop.v2;
+package cx.ath.mancel01.dependencyshot.aop.v2.annotation;
 
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.ElementType;

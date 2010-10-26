@@ -20,7 +20,6 @@ package cx.ath.mancel01.dependencyshot.aop.v2;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Method;
 import java.util.Iterator;
-import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
 /**
@@ -35,13 +34,14 @@ public class MethodJoinpoint implements MethodInvocation {
 
     private final Object interceptedBean;
 
-    private final Iterator<MethodInterceptor> interceptor;
+    private final Iterator<MethodInterceptorWrapper> interceptor;
 
     private final MethodInvocationHandler staticPart;
 
     public MethodJoinpoint(Method method, Object[] arguments,
-            Iterator<MethodInterceptor> interceptor, 
-            Object interceptedBean, MethodInvocationHandler staticPart) {
+            Iterator<MethodInterceptorWrapper> interceptor,
+            Object interceptedBean, 
+            MethodInvocationHandler staticPart) {
         this.method = method;
         this.arguments = arguments;
         this.interceptor = interceptor;
@@ -62,7 +62,15 @@ public class MethodJoinpoint implements MethodInvocation {
     @Override
     public Object proceed() throws Throwable {
         if (interceptor.hasNext()) {
-            return interceptor.next().invoke(this);
+            MethodInterceptorWrapper wrap = interceptor.next();
+            if (!wrap.canBeAppliedOn(method)) {
+                if (interceptor.hasNext()) {
+                    wrap = interceptor.next();
+                } else {
+                    return method.invoke(interceptedBean, arguments);
+                }
+            }
+            return wrap.invoke(this);
         } else {
             return method.invoke(interceptedBean, arguments);
         }
@@ -77,5 +85,4 @@ public class MethodJoinpoint implements MethodInvocation {
     public AccessibleObject getStaticPart() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
 }

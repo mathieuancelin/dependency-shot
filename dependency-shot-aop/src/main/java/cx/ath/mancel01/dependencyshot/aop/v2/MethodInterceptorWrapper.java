@@ -18,6 +18,8 @@
 package cx.ath.mancel01.dependencyshot.aop.v2;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
@@ -29,12 +31,22 @@ public class MethodInterceptorWrapper implements MethodInterceptor {
 
     private final MethodInterceptor interceptor;
 
+    private Collection<Method> interceptedMethods = new ArrayList<Method>();
+
     public MethodInterceptorWrapper(MethodInterceptor interceptor) {
         this.interceptor = interceptor;
     }
 
-    public boolean matches(Method method, Class from, Class to) {
-        return true; // todo change this
+    public boolean canBeAppliedOn(Method method) {
+        if (interceptedMethods.isEmpty()) {
+            return true;
+        } else {
+            return interceptedMethods.contains(method);
+        }
+    }
+
+    public void addInterceptedMethod(Method method) {
+        this.interceptedMethods.add(method);
     }
 
     @Override

@@ -17,6 +17,7 @@
 
 package cx.ath.mancel01.dependencyshot.test.aop.v2;
 
+import javax.inject.Singleton;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
@@ -24,15 +25,16 @@ import org.aopalliance.intercept.MethodInvocation;
  *
  * @author Mathieu ANCELIN
  */
+@Singleton
 public class HelloInterceptor implements MethodInterceptor {
 
     @Override
     public Object invoke(MethodInvocation mi) throws Throwable {
         try {
-            System.out.println("avant");
+            System.out.println("before");
             return mi.proceed();
         } finally {
-            System.out.println("après");
+            System.out.println("after");
         }
     }
 }
