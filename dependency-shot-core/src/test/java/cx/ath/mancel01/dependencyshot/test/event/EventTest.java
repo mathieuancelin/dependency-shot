@@ -29,44 +29,50 @@ import org.junit.Test;
  *
  * @author mathieuancelin
  */
-public class EventTest { 
+public class EventTest {
+
+    public static final int NBR = 40;
 
     @Test
     public void broadcast() throws Exception {
         DSInjector injector = DependencyShot.getInjector();
-        EventManagerImpl mgmt = injector.getInstance(EventManagerImpl.class);
         MyEvent event = injector.getInstance(MyEvent.class);
         MyEvent2 event2 = injector.getInstance(MyEvent2.class);
         MyEvent3 event3 = injector.getInstance(MyEvent3.class);
         MyListener listener = injector.getInstance(MyListener.class);
         MyListener2 listener2 = injector.getInstance(MyListener2.class);
         MyListener3 listener3 = injector.getInstance(MyListener3.class);
-        for(int i = 0; i < 20; i++)
+        for(int i = 0; i < NBR; i++)
             event.fire();
-        for(int i = 0; i < 20; i++)
+        for(int i = 0; i < NBR; i++)
             event2.fire();
-        for(int i = 0; i < 20; i++)
+        for(int i = 0; i < NBR; i++)
             event3.fire();
-        mgmt.getExec().awaitTermination(2, TimeUnit.SECONDS);
+
+        Assert.assertTrue(listener.getLatch().await(10, TimeUnit.SECONDS));
+        Assert.assertTrue(listener2.getLatch().await(10, TimeUnit.SECONDS));
+        Assert.assertTrue(listener3.getLatch().await(10, TimeUnit.SECONDS));
+
         System.out.println("listener 1 : " + listener.getCalls() + " events received ...");
         System.out.println("listener 2 : " + listener2.getCalls() + " events received ...");
         System.out.println("listener 3 : " + listener3.getCalls() + " events received ...");
-        Assert.assertTrue(listener.getCalls() == 20);
-        Assert.assertTrue(listener2.getCalls() == 20);
-        Assert.assertTrue(listener3.getCalls() == 20);
+        Assert.assertTrue(listener.getCalls() == NBR);
+        Assert.assertTrue(listener2.getCalls() == NBR);
+        Assert.assertTrue(listener3.getCalls() == NBR);
     }
 
     @Test
     public void broadcastEvent() throws Exception {
         DSInjector injector = DependencyShot.getInjector();
-        EventManagerImpl mgmt = injector.getInstance(EventManagerImpl.class);
         Event<CustomEvent> event = injector.getInstance(Event.class);
         CustomEventListener listener = injector.getInstance(CustomEventListener.class);
-        for(int i = 0; i < 20; i++)
+        for(int i = 0; i < NBR; i++)
             event.fire(new CustomEvent());
-        mgmt.getExec().awaitTermination(2, TimeUnit.SECONDS);
+        
+        Assert.assertTrue(listener.getLatch().await(10, TimeUnit.SECONDS));
+
         System.out.println("listener 1 : " + listener.getCalls() + " events received ...");
-        Assert.assertTrue(listener.getCalls() == 20);
+        Assert.assertTrue(listener.getCalls() == NBR);
     }
 
 }

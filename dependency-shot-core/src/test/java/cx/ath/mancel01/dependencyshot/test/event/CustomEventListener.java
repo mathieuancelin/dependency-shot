@@ -18,6 +18,7 @@
 package cx.ath.mancel01.dependencyshot.test.event;
 
 import cx.ath.mancel01.dependencyshot.api.event.EventListener;
+import java.util.concurrent.CountDownLatch;
 import javax.inject.Singleton;
 
 /**
@@ -29,6 +30,8 @@ public class CustomEventListener implements EventListener<CustomEvent> {
 
     private int calls = 0;
 
+    private CountDownLatch latch = new CountDownLatch(EventTest.NBR);
+
     public int getCalls() {
         return calls;
     }
@@ -36,6 +39,11 @@ public class CustomEventListener implements EventListener<CustomEvent> {
     @Override
     public void onEvent(CustomEvent evt) {
         calls++;
+        latch.countDown();
+    }
+
+    public CountDownLatch getLatch() {
+        return latch;
     }
 
 }
