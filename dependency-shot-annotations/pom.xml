@@ -16,10 +16,25 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
+                    <compilerArgument>-proc:none</compilerArgument>
                     <source>1.6</source>
                     <target>1.6</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>run-annotation-processor-only</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                        <configuration>
+                            <showWarnings>true</showWarnings>
+                            <verbose>true</verbose>
+                            <compilerArgument>-proc:only</compilerArgument>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -48,11 +63,6 @@
             <artifactId>dependency-shot-core</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
-            <version>0.9.5-RC2</version>
-        </dependency>
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -65,11 +75,4 @@
             <comments>A business-friendly OSS license</comments>
         </license>
     </licenses>
-    <repositories>
-        <repository>
-            <id>reflections-repo</id>
-            <name>Reflections Maven2 Repository</name>
-            <url>http://reflections.googlecode.com/svn/repo</url>
-        </repository>
-    </repositories>
 </project>

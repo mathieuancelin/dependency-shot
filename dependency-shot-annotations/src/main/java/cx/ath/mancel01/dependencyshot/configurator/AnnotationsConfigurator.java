@@ -26,20 +26,13 @@ import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.ConfigurationHandler;
 import cx.ath.mancel01.dependencyshot.spi.PluginsLoader;
 import java.lang.annotation.Annotation;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.ManagedBean;
 import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Qualifier;
-import javax.inject.Singleton;
-import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
-import org.reflections.scanners.TypeAnnotationsScanner;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
 
 /**
  * Configurator based on full annotations.
@@ -57,13 +50,13 @@ public class AnnotationsConfigurator extends ConfigurationHandler {
     @Override
     public final InjectorImpl getInjector(Stage stage, Object... params) {
         Binder binder = new AnnotationBinder();
-        Reflections reflections = new Reflections(new ConfigurationBuilder()
-                .setUrls(ClasspathHelper.getUrlsForPackagePrefix(packagePrefix))
-                .setScanners(new TypeAnnotationsScanner(), new SubTypesScanner()));
-        Set<Class<?>> components = new HashSet<Class<?>>();
-        components.addAll(reflections.getTypesAnnotatedWith(ManagedBean.class));
-        components.addAll(reflections.getTypesAnnotatedWith(Singleton.class));
-        components.addAll(reflections.getTypesAnnotatedWith(Named.class));
+
+        Collection<Class<?>> components = new ArrayList<Class<?>>();
+        
+        components.addAll(DSAnnotatedLoader.loadManagedBeans(packagePrefix));
+        components.addAll(DSAnnotatedLoader.loadSingletons(packagePrefix));
+        components.addAll(DSAnnotatedLoader.loadNamed(packagePrefix));
+
         for (Class<?> clazz : components) {
             String name = null;
             Named named = clazz.getAnnotation(Named.class);
