@@ -17,8 +17,6 @@
 
 package cx.ath.mancel01.dependencyshot.dynamic;
 
-import cx.ath.mancel01.dependencyshot.dynamic.Dynamic;
-
 /**
  *
  * @author mathieu

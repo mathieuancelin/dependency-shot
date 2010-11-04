@@ -17,8 +17,12 @@
 
 package cx.ath.mancel01.dependencyshot.dynamic;
 
+import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
 import cx.ath.mancel01.dependencyshot.graph.Binder;
+import cx.ath.mancel01.dependencyshot.graph.Binding;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,9 +40,33 @@ public abstract class DynamicBinder extends Binder {
             Field fTo = Binder.class.getDeclaredField("to");
             fTo.setAccessible(true);
             fTo.set(this, DynamicImplementation.class);
-            fTo.setAccessible(true);
+            fTo.setAccessible(false);   
         } catch (Exception ex) {
             logger.log(Level.SEVERE, "Unable to bind dynamically the class " + from.getName(), ex);
+        }
+        validate(from);
+    }
+
+    private void validate(Class<?> dynamic) {
+        ArrayList<Class<?>> errors = new ArrayList<Class<?>>();
+        Collection<Binding<?>> registered = this.getBindings().keySet();
+        for (Binding binding : registered) {
+            if (binding.getFrom() != null && binding.getTo() != null 
+                    && dynamic.equals(binding.getFrom())
+                    && !binding.getTo().equals(DynamicImplementation.class)) {
+                errors.add(binding.getFrom());
+            }
+        }
+        if (!errors.isEmpty()) {
+            StringBuilder builder = new StringBuilder();
+            builder.append("The following classes are both declared for dynamic injection and static injection.");
+            builder.append("\nIt can't append !\n");
+            for (Class<?> clazz : errors) {
+                builder.append("  ");
+                builder.append(clazz.getName());
+                builder.append("\n");
+            }
+            throw new DSIllegalStateException(builder.toString());
         }
     }
 }

@@ -19,6 +19,7 @@ package cx.ath.mancel01.dependencyshot.dynamic;
 
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
+import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -33,29 +34,42 @@ public class DynamicTest {
     public static final String CASH = "cash";
 
     @Test
-    public void hello() {
-
-        DSInjector injector = DependencyShot.getInjector(new DynamicBinder() {
+    public void dynamic() {
+        DynamicBinder binder = new DynamicBinder() {
             @Override
             public void configureBindings() {
                 bindDynamically(PaymentService.class);
-                //bind(PaymentService.class).to(CashServiceImpl.class);
             }
-        });
-        ServiceRegistry.getInstance().registerService(PaymentService.class, PayPalServiceImpl.class);
-        ServiceRegistry.getInstance().registerService(PaymentService.class, CreditCardServiceImpl.class);
+        };
+        DSInjector injector = DependencyShot.getInjector(binder);
+        ServiceRegistry.getInstance().registerService(PaymentService.class,
+                PayPalServiceImpl.class);
+        ServiceRegistry.getInstance().registerService(PaymentService.class,
+                CreditCardServiceImpl.class);
         PaymentService service = injector.
                 getInstance(PaymentService.class);
         Assert.assertEquals(PAYPAL, service.pay(123));
         ServiceRegistry.getInstance().unregisterService(PayPalServiceImpl.class);
         Assert.assertEquals(CREDITCARD, service.pay(123));
-        ServiceRegistry.getInstance().registerService(PaymentService.class, PayPalServiceImpl.class);
+        ServiceRegistry.getInstance().registerService(PaymentService.class,
+                PayPalServiceImpl.class);
         Assert.assertEquals(CREDITCARD, service.pay(123));
         ServiceRegistry.getInstance().swap(PayPalServiceImpl.class);
         Assert.assertEquals(PAYPAL, service.pay(123));
         ServiceRegistry.getInstance().swap(CashServiceImpl.class);
         Assert.assertEquals(CASH, service.pay(123));
+    }
 
+    @Test(expected=DSIllegalStateException.class)
+    public void fail() {
+        DynamicBinder binder = new DynamicBinder() {
+            @Override
+            public void configureBindings() {
+                bind(PaymentService.class).to(CashServiceImpl.class);
+                bindDynamically(PaymentService.class);
+            }
+        };
+        DSInjector injector = DependencyShot.getInjector(binder);
     }
 
 }
