@@ -20,7 +20,6 @@ package cx.ath.mancel01.dependencyshot.test.event;
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import cx.ath.mancel01.dependencyshot.api.event.Event;
-import cx.ath.mancel01.dependencyshot.event.EventManagerImpl;
 import java.util.concurrent.TimeUnit;
 import org.junit.Assert;
 import org.junit.Test;
