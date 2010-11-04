@@ -15,17 +15,12 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.dynamic.v2;
+package cx.ath.mancel01.dependencyshot.dynamic;
 
 /**
- *
+ * Dummy class to provide fake dynamic binding.
+ * 
  * @author mathieu
  */
-public class CashServiceImpl implements PaymentService {
-
-    @Override
-    public void pay(double price) {
-        System.out.println("pay " + price + " with cash");
-    }
-
-}
+@Dynamic
+public class DynamicImplementation {}

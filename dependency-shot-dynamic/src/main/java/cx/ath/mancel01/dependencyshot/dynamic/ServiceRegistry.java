@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009-2010 mathieu.
+ *  Copyright 2010 mathieu.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,61 +17,94 @@
 
 package cx.ath.mancel01.dependencyshot.dynamic;
 
-import cx.ath.mancel01.dependencyshot.exceptions.DSException;
-import cx.ath.mancel01.dependencyshot.graph.Binding;
-import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Registry for dynamic services
  *
- * @author Mathieu ANCELIN
+ * @author mathieu
  */
 public class ServiceRegistry {
 
-    private static final Logger logger = Logger.getLogger(ServiceRegistry.class.getSimpleName());
+    private final static ServiceRegistry INSTANCE =
+            new ServiceRegistry();
 
-    private Map<Binding, DynamicService> dynamicServices;
+    private ConcurrentHashMap<Class<?>, ArrayList<Class<?>>> services =
+            new ConcurrentHashMap<Class<?>, ArrayList<Class<?>>>();
 
-    private ServiceProxyFactory factory;
-
-    public ServiceRegistry() {
-        dynamicServices = new HashMap<Binding, DynamicService>();
-        factory = new ServiceProxyFactory();
+    private ServiceRegistry() {
     }
 
-    public final Object addService(Binding binding, Object instance, InjectorImpl injector) {
-        if (!dynamicServices.containsKey(binding)) {
-            DynamicService service = new DynamicService(binding, instance, injector);
-            dynamicServices.put(binding, service);
-            return factory.getProxyInstance(service);
-        } else {
-            logger.info("Registry already contains " + binding.toString());
-            return factory.getProxyInstance(dynamicServices.get(binding));
+    public static ServiceRegistry getInstance() {
+        return INSTANCE;
+    }
+
+    public void registerService(Class<?> from, Class<?> to) {
+        services.putIfAbsent(from, new ArrayList<Class<?>>());
+        ArrayList<Class<?>> classes = services.get(from);
+        if (!classes.contains(to)) {
+            synchronized(classes) {
+                classes.add(to);
+            }
         }
+    }
+
+    public void swap(Class<?> to) {
+        for (Class from : to.getInterfaces()) {
+            ArrayList<Class<?>> classes = services.get(from);
+            if (classes.contains(to)) {
+                int index = classes.indexOf(to);
+                Class<?> old = classes.set(0, to);
+                classes.set(index, old);
+            } else {
+                registerServiceAndSwap(from, to);
+            }
+        }
+    }
+
+    public void registerServiceAndSwap(Class<?> from, Class<?> to) {
+        services.putIfAbsent(from, new ArrayList<Class<?>>());
+        ArrayList<Class<?>> classes = services.get(from);
+        if (!classes.contains(to)) {
+            synchronized(classes) {
+                classes.add(0, to);
+            }
+        }
+    }
+
+    public void unregisterService(Class<?> to) {
+        for (Class from : to.getInterfaces()) {
+            services.get(from).remove(to);
+        }
+    }
+
+    public Class<?> lookup(Class<?> from) {
+        return services.get(from).get(0);
     }
     
-    public final Object getService(Binding binding) {
-        if (dynamicServices.containsKey(binding)) {
-            return factory.getProxyInstance(dynamicServices.get(binding));
-        }
-        throw new DSException("Can't find service with binding " + binding.toString());
+    public Collection<Class<?>> multipleLookup(Class<?> from) {
+        return services.get(from);
     }
 
-    public final void removeService(Binding binding) {
-        if (dynamicServices.containsKey(binding)) {
-            dynamicServices.remove(binding);
-        } else {
-            logger.info("Registry doesn't contains " + binding.toString());
-        }
+    public Map<Class<?>, ArrayList<Class<?>>> getServices() {
+        return services;
     }
 
-    public final void changeServiceImpl(Binding binding, Class newImpl) {
-        if (dynamicServices.containsKey(binding)) {
-            dynamicServices.get(binding).changeImpl(newImpl);
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        for (Class<?> clazz : services.keySet()) {
+            builder.append(clazz.getName());
+            List<Class<?>> classes = services.get(clazz);
+            for (Class<?> service : classes) {
+                builder.append("\n      => ");
+                builder.append(service.getName());
+            }
+            builder.append("\n\n");
         }
-        throw new DSException("Can't find service with binding " + binding.toString());
+        return builder.toString();
     }
 }

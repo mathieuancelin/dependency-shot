@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009-2010 mathieu.
+ *  Copyright 2010 mathieu.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,19 +17,19 @@
 
 package cx.ath.mancel01.dependencyshot.dynamic;
 
-import java.lang.reflect.Proxy;
+import cx.ath.mancel01.dependencyshot.dynamic.Dynamic;
 
 /**
- * Factory for dynamic services proxies
- * 
- * @author Mathieu ANCELIN
+ *
+ * @author mathieu
  */
-public class ServiceProxyFactory {
+@Dynamic
+public class PayPalServiceImpl implements PaymentService {
 
-    public final Object getProxyInstance(DynamicService service) {
-        ServiceProxy proxy = new ServiceProxy(service);
-        return Proxy.newProxyInstance(
-                Thread.currentThread().getContextClassLoader(),
-                new Class[]{service.getInterface()}, proxy);
+    @Override
+    public String pay(double price) {
+        System.out.println("pay " + price + " with paypal");
+        return DynamicTest.PAYPAL;
     }
+
 }

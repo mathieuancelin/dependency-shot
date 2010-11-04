@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009-2010 mathieu.
+ *  Copyright 2010 mathieu.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,8 +19,15 @@ package cx.ath.mancel01.dependencyshot.dynamic;
 
 /**
  *
- * @author Mathieu ANCELIN
+ * @author mathieu
  */
-public enum Type {
-    IMPL_CHANGED
+@Dynamic
+public class CreditCardServiceImpl implements PaymentService {
+
+    @Override
+    public String pay(double price) {
+        System.out.println("pay " + price + " with credit card");
+        return DynamicTest.CREDITCARD;
+    }
+
 }

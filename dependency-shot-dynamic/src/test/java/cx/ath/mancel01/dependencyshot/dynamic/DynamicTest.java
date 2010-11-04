@@ -15,14 +15,11 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.dynamic.v2;
+package cx.ath.mancel01.dependencyshot.dynamic;
 
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -31,24 +28,9 @@ import org.junit.Test;
  */
 public class DynamicTest {
 
-    public DynamicTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
+    public static final String PAYPAL = "paypal";
+    public static final String CREDITCARD = "card";
+    public static final String CASH = "cash";
 
     @Test
     public void hello() {
@@ -64,15 +46,15 @@ public class DynamicTest {
         ServiceRegistry.getInstance().registerService(PaymentService.class, CreditCardServiceImpl.class);
         PaymentService service = injector.
                 getInstance(PaymentService.class);
-        service.pay(123);
+        Assert.assertEquals(PAYPAL, service.pay(123));
         ServiceRegistry.getInstance().unregisterService(PayPalServiceImpl.class);
-        service.pay(123);
+        Assert.assertEquals(CREDITCARD, service.pay(123));
         ServiceRegistry.getInstance().registerService(PaymentService.class, PayPalServiceImpl.class);
-        service.pay(123);
+        Assert.assertEquals(CREDITCARD, service.pay(123));
         ServiceRegistry.getInstance().swap(PayPalServiceImpl.class);
-        service.pay(123);
+        Assert.assertEquals(PAYPAL, service.pay(123));
         ServiceRegistry.getInstance().swap(CashServiceImpl.class);
-        service.pay(123);
+        Assert.assertEquals(CASH, service.pay(123));
 
     }
 

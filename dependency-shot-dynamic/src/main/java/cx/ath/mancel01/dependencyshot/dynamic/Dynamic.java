@@ -1,5 +1,5 @@
 /*
- *  Copyright 2010 mathieu.
+ *  Copyright 2010 mathieuancelin.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,18 +15,18 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.dynamic.v2;
+package cx.ath.mancel01.dependencyshot.dynamic;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import javax.inject.Scope;
 
 /**
  *
- * @author mathieu
+ * @author Mathieu ANCELIN
  */
-@Dynamic
-public class PayPalServiceImpl implements PaymentService {
-
-    @Override
-    public void pay(double price) {
-        System.out.println("pay " + price + " with paypal");
-    }
-
-}
+@Retention(value = RetentionPolicy.RUNTIME)
+@Documented
+@Scope
+public @interface Dynamic {}

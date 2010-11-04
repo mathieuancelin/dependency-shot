@@ -15,12 +15,19 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.dynamic.v2;
+package cx.ath.mancel01.dependencyshot.dynamic;
 
 /**
  *
  * @author mathieu
  */
-public interface PaymentService {
-    void pay(double price);
+@Dynamic
+public class CashServiceImpl implements PaymentService {
+
+    @Override
+    public String pay(double price) {
+        System.out.println("pay " + price + " with cash");
+        return DynamicTest.CASH;
+    }
+
 }
