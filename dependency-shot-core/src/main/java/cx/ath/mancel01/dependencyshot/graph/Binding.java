@@ -250,12 +250,12 @@ public class Binding<T> {
                     if (scopeHandler == null)
                         scopeHandler =
                             new ScopeInvocationHandler(injector.getScopeHandler(scope),
-                                from, to, injector);
+                                from, to, point, injector);
                     result = (T) Proxy.newProxyInstance(
                             Thread.currentThread().getContextClassLoader(),
                             new Class[]{from}, scopeHandler);
                 } else {
-                    result = (T) injector.getScopeHandler(scope).getScopedInstance(from, to, injector);
+                    result = (T) injector.getScopeHandler(scope).getScopedInstance(from, to, point, injector);
                 }
             } else {
                 throw new DSIllegalStateException("The scope " + scopedInstanceStore.getClass().getSimpleName()

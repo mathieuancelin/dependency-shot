@@ -17,6 +17,7 @@
 
 package cx.ath.mancel01.dependencyshot.spi;
 
+import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import java.lang.annotation.Annotation;
 
@@ -29,7 +30,8 @@ public abstract class CustomScopeHandler {
 
     public abstract Class<? extends Annotation> getScope();
 
-    public abstract <T> T getScopedInstance(Class<T> from, Class<? extends T> to, InjectorImpl injector);
+    public abstract <T> T getScopedInstance(Class<T> from, Class<? extends T> to, 
+            InjectionPoint p, InjectorImpl injector);
 
     public abstract void reset();
 

@@ -17,6 +17,7 @@
 
 package cx.ath.mancel01.dependencyshot.scope.singleton;
 
+import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
 import java.lang.annotation.Annotation;
@@ -45,7 +46,8 @@ public class SingletonScope extends CustomScopeHandler {
     }
 
     @Override
-    public <T> T getScopedInstance(Class<T> interf, Class<? extends T> clazz, InjectorImpl injector) {
+    public <T> T getScopedInstance(Class<T> interf, Class<? extends T> clazz,
+            InjectionPoint p, InjectorImpl injector) {
         // check if the singleton is present in the singleton context
         T result = clazz.cast(singletonContext.get(clazz));
         // if not, create one

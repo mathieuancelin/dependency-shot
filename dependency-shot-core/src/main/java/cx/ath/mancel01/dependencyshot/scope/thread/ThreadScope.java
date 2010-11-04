@@ -17,6 +17,7 @@
 
 package cx.ath.mancel01.dependencyshot.scope.thread;
 
+import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
 import java.lang.annotation.Annotation;
@@ -48,7 +49,8 @@ public class ThreadScope extends CustomScopeHandler {
     }
 
     @Override
-    public <T> T getScopedInstance(Class<T> interf, Class<? extends T> clazz, InjectorImpl injector) {
+    public <T> T getScopedInstance(Class<T> interf, Class<? extends T> clazz,
+            InjectionPoint p, InjectorImpl injector) {
         if (!interf.isInterface()) {
             logger.warning(new StringBuilder()
                     .append("ThreadScope can't be applied on objects without interfaces. ")

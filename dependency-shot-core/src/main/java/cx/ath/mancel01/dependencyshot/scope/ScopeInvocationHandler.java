@@ -17,6 +17,7 @@
 
 package cx.ath.mancel01.dependencyshot.scope;
 
+import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
 import java.lang.reflect.InvocationHandler;
@@ -32,18 +33,20 @@ public class ScopeInvocationHandler implements InvocationHandler {
     private final Class interf;
     private final Class clazz;
     private final InjectorImpl injector;
+    private final InjectionPoint point;
 
     public ScopeInvocationHandler(CustomScopeHandler handler,
-            Class interf, Class clazz, InjectorImpl injector) {
+            Class interf, Class clazz, InjectionPoint p, InjectorImpl injector) {
         this.handler = handler;
         this.interf = interf;
         this.clazz = clazz;
         this.injector = injector;
+        this.point = p;
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        return method.invoke(handler.getScopedInstance(interf, clazz, injector), args);
+        return method.invoke(handler.getScopedInstance(interf, clazz, point, injector), args);
     }
 
 }
