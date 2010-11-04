@@ -20,7 +20,7 @@ import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.event.EventListener;
 import cx.ath.mancel01.dependencyshot.graph.Binding;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
-import cx.ath.mancel01.dependencyshot.scope.simple.Newable;
+import cx.ath.mancel01.dependencyshot.scope.simple.Dependent;
 import cx.ath.mancel01.dependencyshot.scope.simple.SimpleScope;
 import cx.ath.mancel01.dependencyshot.scope.singleton.SingletonScope;
 import cx.ath.mancel01.dependencyshot.scope.thread.ThreadScope;
@@ -238,7 +238,7 @@ public final class PluginsLoader {
             CustomScopeHandler handler = handlersIterator.next();
             handlers.put(handler.getScope(), handler);
         }
-        handlers.put(Newable.class, new SimpleScope());
+        handlers.put(Dependent.class, new SimpleScope());
         handlers.put(Singleton.class, new SingletonScope());
         handlers.put(ThreadScoped.class, new ThreadScope());
         return handlers;

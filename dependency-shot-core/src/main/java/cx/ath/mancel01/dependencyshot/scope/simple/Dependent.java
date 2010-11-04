@@ -29,6 +29,6 @@ import javax.inject.Scope;
 @Retention(value = RetentionPolicy.RUNTIME)
 @Documented
 @Scope
-public @interface Newable {
+public @interface Dependent {
 
 }

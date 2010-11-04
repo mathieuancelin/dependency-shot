@@ -29,7 +29,7 @@ public class SimpleScope extends CustomScopeHandler {
 
     @Override
     public Class<? extends Annotation> getScope() {
-        return Newable.class;
+        return Dependent.class;
     }
 
     @Override
