@@ -17,6 +17,7 @@
 
 package cx.ath.mancel01.dependencyshot.dynamic;
 
+import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -43,6 +44,9 @@ public class ServiceRegistry {
     }
 
     public void registerService(Class<?> from, Class<?> to) {
+        if(!to.isAnnotationPresent(Dynamic.class)) {
+            throw new DSIllegalStateException("You can't register non dynamic implementation for a service");
+        }
         services.putIfAbsent(from, new ArrayList<Class<?>>());
         ArrayList<Class<?>> classes = services.get(from);
         if (!classes.contains(to)) {
@@ -53,6 +57,9 @@ public class ServiceRegistry {
     }
 
     public void swap(Class<?> to) {
+        if(!to.isAnnotationPresent(Dynamic.class)) {
+            throw new DSIllegalStateException("You can't register non dynamic implementation for a service");
+        }
         for (Class from : to.getInterfaces()) {
             ArrayList<Class<?>> classes = services.get(from);
             if (classes.contains(to)) {
@@ -66,6 +73,9 @@ public class ServiceRegistry {
     }
 
     public void registerServiceAndSwap(Class<?> from, Class<?> to) {
+        if(!to.isAnnotationPresent(Dynamic.class)) {
+            throw new DSIllegalStateException("You can't register non dynamic implementation for a service");
+        }
         services.putIfAbsent(from, new ArrayList<Class<?>>());
         ArrayList<Class<?>> classes = services.get(from);
         if (!classes.contains(to)) {

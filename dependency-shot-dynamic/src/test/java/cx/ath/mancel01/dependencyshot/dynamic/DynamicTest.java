@@ -42,22 +42,26 @@ public class DynamicTest {
             }
         };
         DSInjector injector = DependencyShot.getInjector(binder);
-        ServiceRegistry.getInstance().registerService(PaymentService.class,
+        ServiceRegistry registry = injector.getInstance(ServiceRegistry.class);
+
+        
+        registry.registerService(PaymentService.class,
                 PayPalServiceImpl.class);
-        ServiceRegistry.getInstance().registerService(PaymentService.class,
+        registry.registerService(PaymentService.class,
                 CreditCardServiceImpl.class);
         PaymentService service = injector.
                 getInstance(PaymentService.class);
         Assert.assertEquals(PAYPAL, service.pay(123));
-        ServiceRegistry.getInstance().unregisterService(PayPalServiceImpl.class);
+        registry.unregisterService(PayPalServiceImpl.class);
         Assert.assertEquals(CREDITCARD, service.pay(123));
-        ServiceRegistry.getInstance().registerService(PaymentService.class,
+        registry.registerService(PaymentService.class,
                 PayPalServiceImpl.class);
         Assert.assertEquals(CREDITCARD, service.pay(123));
-        ServiceRegistry.getInstance().swap(PayPalServiceImpl.class);
+        registry.swap(PayPalServiceImpl.class);
         Assert.assertEquals(PAYPAL, service.pay(123));
-        ServiceRegistry.getInstance().swap(CashServiceImpl.class);
+        registry.swap(CashServiceImpl.class);
         Assert.assertEquals(CASH, service.pay(123));
+        service.toString();
     }
 
     @Test(expected=DSIllegalStateException.class)
@@ -71,5 +75,4 @@ public class DynamicTest {
         };
         DSInjector injector = DependencyShot.getInjector(binder);
     }
-
 }
