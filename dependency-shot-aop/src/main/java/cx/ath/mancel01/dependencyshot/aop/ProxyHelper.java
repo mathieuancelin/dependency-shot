@@ -42,7 +42,6 @@ public class ProxyHelper {
         try {
             scopedObject = (T) newBeanClass.cast(newBeanClass.newInstance());
         } catch (Exception ex) {
-            ex.printStackTrace();
             throw new IllegalStateException("Unable to create proxy for object " + from.getSimpleName(), ex);
         }
         ((ProxyObject) scopedObject).setHandler(handler);
