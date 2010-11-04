@@ -98,23 +98,13 @@ public class InjectorImpl implements DSInjector {
     private List<Class> circularClasses;
     private Map<Class<?>, Object> circularConstructorArgumentsInstances;
     private Map<Class<? extends Annotation>, CustomScopeHandler> scopeHandlers;
+    private List<Class<?>> staticInjection;
 
     /**
      * The constructor.
      */
     public InjectorImpl(PluginsLoader loader) {
-        binders = new ArrayList();
-        singletonContext = new HashMap<Class<?>, Object>();
-        instanciatedClasses = new HashMap<Class<?>, Object>();
-        circularConstructorArgumentsInstances = new HashMap<Class<?>, Object>();
-        circularClasses = new ArrayList<Class>();
-        classHandler = new ClassHandler();
-        constructorHandler = new ConstructorHandler();
-        this.loader = loader;
-        loader.loadPlugins(this);
-        scopeHandlers = loader.getScopeHandlers();
-        eventManager = new EventManagerImpl();
-        eventManager.registerListeners(loader.getEventListeners());
+        initialize(loader, Stage.NONE);
     }
 
     /**
@@ -123,6 +113,10 @@ public class InjectorImpl implements DSInjector {
      * @param stage of the injector.
      */
     public InjectorImpl(PluginsLoader loader, Stage stage) {
+        initialize(loader, stage);
+    }
+
+    private void initialize(PluginsLoader loader, Stage stage) {
         binders = new ArrayList();
         singletonContext = new HashMap<Class<?>, Object>();
         instanciatedClasses = new HashMap<Class<?>, Object>();
