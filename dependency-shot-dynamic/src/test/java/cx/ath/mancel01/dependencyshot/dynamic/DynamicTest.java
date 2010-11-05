@@ -49,18 +49,25 @@ public class DynamicTest {
                 PayPalServiceImpl.class);
         registry.registerService(PaymentService.class,
                 CreditCardServiceImpl.class);
+
         PaymentService service = injector.
                 getInstance(PaymentService.class);
+
         Assert.assertEquals(PAYPAL, service.pay(123));
+
         registry.unregisterService(PayPalServiceImpl.class);
         Assert.assertEquals(CREDITCARD, service.pay(123));
+
         registry.registerService(PaymentService.class,
                 PayPalServiceImpl.class);
         Assert.assertEquals(CREDITCARD, service.pay(123));
+
         registry.swap(PayPalServiceImpl.class);
         Assert.assertEquals(PAYPAL, service.pay(123));
+
         registry.swap(CashServiceImpl.class);
         Assert.assertEquals(CASH, service.pay(123));
+        
         service.toString();
     }
 

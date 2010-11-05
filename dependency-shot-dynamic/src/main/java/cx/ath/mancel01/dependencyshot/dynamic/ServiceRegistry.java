@@ -18,6 +18,7 @@
 package cx.ath.mancel01.dependencyshot.dynamic;
 
 import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
+import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -36,8 +37,7 @@ public class ServiceRegistry {
     private ConcurrentHashMap<Class<?>, ArrayList<Class<?>>> services =
             new ConcurrentHashMap<Class<?>, ArrayList<Class<?>>>();
 
-    private ServiceRegistry() {
-    }
+    private ServiceRegistry() {}
 
     public static ServiceRegistry getInstance() {
         return INSTANCE;
@@ -91,11 +91,23 @@ public class ServiceRegistry {
         }
     }
 
-    public Class<?> lookup(Class<?> from) {
+    public Class<?> getContract(Class<?> from) {
         return services.get(from).get(0);
     }
+
+    public Object lookup(Class<?> from, DynamicProxy proxy) {
+        return proxy.getInjector().getUnscopedInstance(services.get(from).get(0));
+    }
     
-    public Collection<Class<?>> multipleLookup(Class<?> from) {
+    public Collection<Object> multipleLookup(Class<?> from, DynamicProxy proxy) {
+        Collection<Object> objects = new ArrayList<Object>();
+        for (Class<?> clazz : services.get(from)) {
+            objects.add(proxy.getInjector().getUnscopedInstance(clazz));
+        }
+        return objects;
+    }
+
+    public Collection<Class<?>> multipleContractsLookup(Class<?> from) {
         return services.get(from);
     }
 

@@ -52,6 +52,14 @@ public class DynamicProxy<T> implements MethodFilter, MethodHandler {
         return from;
     }
 
+    public InjectionPoint getPoint() {
+        return point;
+    }
+
+    public InjectorImpl getInjector() {
+        return injector;
+    }
+
     @Override
     public boolean isHandled(Method method) {
         return true;
@@ -59,8 +67,7 @@ public class DynamicProxy<T> implements MethodFilter, MethodHandler {
 
     @Override
     public Object invoke(Object self, Method method, Method proceed, Object[] args) throws Throwable {
-        Class<?> clazz = registry.lookup(from);
-        actualService = injector.getUnscopedInstance(clazz);
+        actualService = registry.lookup(from, this);
         return method.invoke(actualService, args);
     }
 }
