@@ -18,8 +18,10 @@
 package cx.ath.mancel01.dependencyshot.dynamic;
 
 import cx.ath.mancel01.dependencyshot.DependencyShot;
+import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
+import cx.ath.mancel01.dependencyshot.graph.Binder;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -37,7 +39,7 @@ public class DynamicTest {
     public void dynamic() {
         DynamicBinder binder = new DynamicBinder() {
             @Override
-            public void configureBindings() {
+            public void configure() {
                 bindDynamically(PaymentService.class);
             }
         };
@@ -75,11 +77,44 @@ public class DynamicTest {
     public void fail() {
         DynamicBinder binder = new DynamicBinder() {
             @Override
-            public void configureBindings() {
+            public void configure() {
                 bind(PaymentService.class).to(CashServiceImpl.class);
                 bindDynamically(PaymentService.class);
             }
         };
+        DSInjector injector = DependencyShot.getInjector(binder);
+    }
+
+    @Test
+    public void decorator() {
+        DSBinder binder1 = new Binder() {
+            @Override
+            public void configureBindings() {
+                bind(PaymentService.class).named(CASH).to(CashServiceImpl.class);
+            }
+        };
+
+        DSBinder binder2 = new Binder() {
+            @Override
+            public void configureBindings() {
+                bind(PaymentService.class).named(CREDITCARD).to(CreditCardServiceImpl.class);
+            }
+        };
+
+        DSBinder binder3 = new Binder() {
+            @Override
+            public void configureBindings() {
+                bind(PaymentService.class).named(PAYPAL).to(PayPalServiceImpl.class);
+            }
+        };
+        
+        DynamicBinder binder = new DynamicBinder(binder1, binder2, binder3) {
+            @Override
+            public void configure() {
+                
+            }
+        };
+
         DSInjector injector = DependencyShot.getInjector(binder);
     }
 }

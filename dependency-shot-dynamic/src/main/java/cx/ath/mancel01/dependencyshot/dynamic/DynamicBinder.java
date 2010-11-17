@@ -17,12 +17,17 @@
 
 package cx.ath.mancel01.dependencyshot.dynamic;
 
+import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
 import cx.ath.mancel01.dependencyshot.graph.Binder;
+import cx.ath.mancel01.dependencyshot.graph.BinderAccessor;
 import cx.ath.mancel01.dependencyshot.graph.Binding;
+import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,6 +38,27 @@ import java.util.logging.Logger;
 public abstract class DynamicBinder extends Binder {
 
     private static final Logger logger = Logger.getLogger(DynamicBinder.class.getName());
+
+    private List<DSBinder> delegateBinders = new ArrayList<DSBinder>();
+
+    public DynamicBinder() {
+    }
+
+    public DynamicBinder(DSBinder... binders) {
+        delegateBinders.addAll(Arrays.asList(binders));
+    }
+
+    @Override
+    public final void configureBindings() {
+        for (DSBinder binder: delegateBinders) {
+            BinderAccessor.setInjector((Binder) binder, (InjectorImpl) injector());
+            binder.configureBindings();
+            BinderAccessor.configureLastBinding((Binder) binder);
+        }
+        configure();
+    }
+
+    public abstract void configure();
 
     public void bindDynamically(Class<?> from) {
         try {
