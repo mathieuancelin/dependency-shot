@@ -38,7 +38,7 @@ public class AOPTest {
     public void testBindersOnClasses() throws Exception {
         DSInjector injector = DependencyShot.getInjector(new AOPBinder() {
             @Override
-            public void configureBindings() {
+            public void configure() {
                 bind(Service.class).to(HelloService.class);
                 cut("cx.ath.mancel01.*.patternclass.HelloService").with(HelloInterceptor.class);
             }
@@ -64,7 +64,7 @@ public class AOPTest {
     public void testBindersOnClasses2() throws Exception {
         DSInjector injector = DependencyShot.getInjector(new AOPBinder() {
             @Override
-            public void configureBindings() {
+            public void configure() {
                 bind(Service.class).to(HelloService.class);
                 cut("*.patternclass.HelloService").with(HelloInterceptor.class);
             }
@@ -90,7 +90,7 @@ public class AOPTest {
     public void testBindersOnClasses3() throws Exception {
         DSInjector injector = DependencyShot.getInjector(new AOPBinder() {
             @Override
-            public void configureBindings() {
+            public void configure() {
                 bind(Service.class).to(HelloService.class);
                 cut("*.patternclass.*Service").with(HelloInterceptor.class);
             }
@@ -116,7 +116,7 @@ public class AOPTest {
     public void testBindersOnClasses4() throws Exception {
         DSInjector injector = DependencyShot.getInjector(new AOPBinder() {
             @Override
-            public void configureBindings() {
+            public void configure() {
                 bind(Service.class).to(HelloService.class);
                 cut("cx.ath.mancel01.*.patternclass.H*S*").with(HelloInterceptor.class);
             }

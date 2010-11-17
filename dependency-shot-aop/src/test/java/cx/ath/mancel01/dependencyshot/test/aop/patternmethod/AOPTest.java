@@ -38,7 +38,7 @@ public class AOPTest {
     public void testAnnotationsOnMethods() throws Exception {
         DSInjector injector = DependencyShot.getInjector(new AOPBinder() {
             @Override
-            public void configureBindings() {
+            public void configure() {
                 bind(Service.class).to(HelloService.class);
                 cut("*.patternmethod.HelloService.hello()").with(HelloInterceptor.class);
                 cut("*.patternmethod.HelloService.good*()").with(HelloInterceptor.class);

@@ -16,7 +16,9 @@
  */
 package cx.ath.mancel01.dependencyshot.aop;
 
+import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.graph.Binder;
+import cx.ath.mancel01.dependencyshot.graph.BinderAccessor;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -37,6 +39,27 @@ public abstract class AOPBinder extends Binder {
             new HashMap<Class<?>, ArrayList<Class<? extends MethodInterceptor>>>();
     private Map<String, ArrayList<Class<? extends MethodInterceptor>>> stringAdvices =
             new HashMap<String, ArrayList<Class<? extends MethodInterceptor>>>();
+
+    private List<DSBinder> delegateBinders = new ArrayList<DSBinder>();
+
+    public AOPBinder() {
+    }
+
+    public AOPBinder(DSBinder... binders) {
+        delegateBinders.addAll(Arrays.asList(binders));
+    }
+
+    @Override
+    public final void configureBindings() {
+        for (DSBinder binder: delegateBinders) {
+            BinderAccessor.setInjector((Binder) binder, (InjectorImpl) injector());
+            binder.configureBindings();
+            BinderAccessor.configureLastBinding((Binder) binder);
+        }
+        configure();
+    }
+
+    public abstract void configure();
     
     public final CutBinder cut(Class<?>... classes) {
         return new CutBinder(this, null, Arrays.asList(classes));

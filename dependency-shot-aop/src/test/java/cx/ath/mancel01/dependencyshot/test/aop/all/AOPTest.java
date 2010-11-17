@@ -38,7 +38,7 @@ public class AOPTest {
 
         DSInjector injector = DependencyShot.getInjector(new AOPBinder() {
             @Override
-            public void configureBindings() {
+            public void configure() {
                 bind(Service.class).to(HelloService.class);
 
                 cut(HelloService.class).with(HelloInterceptor.class);
