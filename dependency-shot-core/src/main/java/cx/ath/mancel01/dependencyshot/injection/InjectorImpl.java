@@ -140,7 +140,7 @@ public class InjectorImpl implements DSInjector {
             for (Binder binder : binders) {
                 binder.configureBindings();
                 //binder.configureLastBinding();
-                BinderAccessor.configureLastBinding(binder, this);
+                BinderAccessor.configureLastBinding(binder);
                 if (binder.isEmpty()) {
                     Logger.getLogger(InjectorImpl.class.getName()).
                             log(Level.SEVERE, "Ooops, no bindings presents, "

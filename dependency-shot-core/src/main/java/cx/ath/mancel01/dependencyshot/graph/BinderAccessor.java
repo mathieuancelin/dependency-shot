@@ -29,7 +29,7 @@ public class BinderAccessor {
         binder.setInjector(injector);
     }
 
-    public static void configureLastBinding(Binder binder, InjectorImpl injector) {
+    public static void configureLastBinding(Binder binder) {
         binder.configureLastBinding();
     }
 
