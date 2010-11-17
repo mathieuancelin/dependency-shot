@@ -28,7 +28,6 @@ import javax.inject.Inject;
  */
 public class EventImpl<T> implements Event<T>{
 
-
     @Inject
     private EventManager manager;
 
@@ -39,5 +38,4 @@ public class EventImpl<T> implements Event<T>{
         }
         manager.fireEvent(event);
     }
-
 }

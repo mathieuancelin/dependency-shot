@@ -37,7 +37,7 @@ public class DynamicScope extends CustomScopeHandler {
     public <T> T getScopedInstance(Class<T> interf, Class<? extends T> clazz, 
             InjectionPoint point, InjectorImpl injector) {
         DynamicProxy proxy = new DynamicProxy(interf, point,
-                injector, ServiceRegistry.getInstance());
+                injector, injector.getInstance(ServiceRegistry.class));
         return (T) ProxyHelper.createProxy(proxy);
     }
 

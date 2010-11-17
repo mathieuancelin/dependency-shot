@@ -17,6 +17,7 @@
 
 package cx.ath.mancel01.dependencyshot.dynamic;
 
+import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import java.util.ArrayList;
@@ -24,24 +25,21 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  *
  * @author mathieu
  */
+@Singleton
 public class ServiceRegistry {
 
-    private final static ServiceRegistry INSTANCE =
-            new ServiceRegistry();
+    @Inject
+    private DSInjector injector;
 
     private ConcurrentHashMap<Class<?>, ArrayList<Class<?>>> services =
             new ConcurrentHashMap<Class<?>, ArrayList<Class<?>>>();
-
-    private ServiceRegistry() {}
-
-    public static ServiceRegistry getInstance() {
-        return INSTANCE;
-    }
 
     public void registerService(Class<?> from, Class<?> to) {
         if(!to.isAnnotationPresent(Dynamic.class)) {
@@ -95,14 +93,14 @@ public class ServiceRegistry {
         return services.get(from).get(0);
     }
 
-    public Object lookup(Class<?> from, DynamicProxy proxy) {
-        return proxy.getInjector().getUnscopedInstance(services.get(from).get(0));
+    public Object lookup(Class<?> from) {
+        return ((InjectorImpl)injector).getUnscopedInstance(services.get(from).get(0));
     }
     
-    public Collection<Object> multipleLookup(Class<?> from, DynamicProxy proxy) {
+    public Collection<Object> multipleLookup(Class<?> from) {
         Collection<Object> objects = new ArrayList<Object>();
         for (Class<?> clazz : services.get(from)) {
-            objects.add(proxy.getInjector().getUnscopedInstance(clazz));
+            objects.add(((InjectorImpl)injector).getUnscopedInstance(clazz));
         }
         return objects;
     }

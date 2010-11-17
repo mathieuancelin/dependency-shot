@@ -67,7 +67,7 @@ public class DynamicProxy<T> implements MethodFilter, MethodHandler {
 
     @Override
     public Object invoke(Object self, Method method, Method proceed, Object[] args) throws Throwable {
-        actualService = registry.lookup(from, this);
+        actualService = registry.lookup(from);
         return method.invoke(actualService, args);
     }
 }
