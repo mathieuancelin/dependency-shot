@@ -14,7 +14,6 @@
  *  limitations under the License.
  *  under the License.
  */
-
 package cx.ath.mancel01.dependencyshot.test;
 
 import cx.ath.mancel01.dependencyshot.graph.Binder;
@@ -36,7 +35,7 @@ import org.atinject.tck.auto.accessories.SpareTire;
  */
 public class TCKFluentBinder extends Binder {
 
-    @Override 
+    @Override
     public void configureBindings() {
         bind(Car.class).to(Convertible.class);
         bind(Seat.class).annotatedWith(Drivers.class).to(DriversSeat.class);
@@ -46,10 +45,10 @@ public class TCKFluentBinder extends Binder {
             @Inject
             private SpareTire tire;
 
-  			@Override
-  			public Tire get() {
+            @Override
+            public Tire get() {
                 return (Tire) tire;
             }
-  		});
+        });
     }
 }
