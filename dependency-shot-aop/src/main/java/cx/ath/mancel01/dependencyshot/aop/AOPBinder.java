@@ -17,6 +17,7 @@
 package cx.ath.mancel01.dependencyshot.aop;
 
 import cx.ath.mancel01.dependencyshot.api.DSBinder;
+import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
 import cx.ath.mancel01.dependencyshot.graph.Binder;
 import cx.ath.mancel01.dependencyshot.graph.BinderAccessor;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
@@ -39,6 +40,7 @@ public abstract class AOPBinder extends Binder {
             new HashMap<Class<?>, ArrayList<Class<? extends MethodInterceptor>>>();
     private Map<String, ArrayList<Class<? extends MethodInterceptor>>> stringAdvices =
             new HashMap<String, ArrayList<Class<? extends MethodInterceptor>>>();
+    private Map<Class<?>, Class<?>> decoratedClasses = new HashMap<Class<?>, Class<?>>();
 
     private List<DSBinder> delegateBinders = new ArrayList<DSBinder>();
 
@@ -60,6 +62,30 @@ public abstract class AOPBinder extends Binder {
     }
 
     public abstract void configure();
+
+    public final <T> DecoratedBinder<T> decorate(Class<T> decorated) {
+        if (!decorated.isInterface()) { // TODO : find common interface only
+            throw new DSIllegalStateException("You can only decorate interfaces.");
+        }
+        return new DecoratedBinder<T>(this, decorated);
+    }
+
+    public final void registerDecorator(Class<?>... decorators) {
+        for (Class<?> clazz : decorators) {
+            for (Class<?> interf : clazz.getInterfaces()) {
+                with(interf, clazz);
+            }
+        }
+    }
+
+    <T> void with(Class<T> decorated, Class<?> decorator) {
+        if (decoratedClasses.containsKey(decorated))
+            System.out.println(decorated.getSimpleName()
+                    + " is already decorated with " 
+                    + decoratedClasses.get(decorated).getName()
+                    + ". Override with " + decorator.getName());
+        decoratedClasses.put(decorated, decorator);
+    }
     
     public final CutBinder cut(Class<?>... classes) {
         return new CutBinder(this, null, Arrays.asList(classes));
@@ -90,6 +116,10 @@ public abstract class AOPBinder extends Binder {
 
     Map<Class<?>, ArrayList<Class<? extends MethodInterceptor>>> getAdvices() {
         return advices;
+    }
+
+    Map<Class<?>, Class<?>> getDecoratedClasses() {
+        return decoratedClasses;
     }
 
     List<MethodInterceptorWrapper> getInterceptors(Class<?> clazz, InjectorImpl injector) {
