@@ -86,7 +86,7 @@ public class DynamicTest {
     }
 
     @Test
-    public void decorator() {
+    public void binderMixin() {
         DSBinder binder1 = new Binder() {
             @Override
             public void configureBindings() {
