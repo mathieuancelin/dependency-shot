@@ -222,6 +222,10 @@ public class Binding<T> {
         this.to = to;
     }
 
+    public Provider<T> getProvider() {
+        return provider;
+    }
+
     public final T getInstance(InjectorImpl injector, InjectionPoint point) {
         return getInstance(injector, point, true);
     }
@@ -313,6 +317,37 @@ public class Binding<T> {
      */
     @Override
     public final boolean equals(Object obj) {
+//        if (this == obj) {
+//            return true;
+//        }
+//        if (obj == null) {
+//            return false;
+//        }
+//        if (getClass() != obj.getClass()) {
+//            return false;
+//        }
+//        Binding<?> other = (Binding<?>) obj;
+//        if (from == null) {
+//            if (other.from != null) {
+//                return false;
+//            }
+//        } else if (!from.equals(other.from)) {
+//            return false;
+//        }
+//        if (name == null) {
+//            if (other.name != null) {
+//                return false;
+//            }
+//        } else if (!name.equals(other.name)) {
+//            return false;
+//        }
+//        if (qualifier == null) {
+//            if (other.qualifier != null) {
+//                return false;
+//            }
+//        } else if (!qualifier.equals(other.qualifier)) {
+//            return false;
+//        }
         if (this == obj) {
             return true;
         }
@@ -327,7 +362,7 @@ public class Binding<T> {
             if (other.from != null) {
                 return false;
             }
-        } else if (!from.equals(other.from)) {
+        } else if (!from.getName().equals(other.from.getName())) {
             return false;
         }
         if (name == null) {
@@ -341,7 +376,7 @@ public class Binding<T> {
             if (other.qualifier != null) {
                 return false;
             }
-        } else if (!qualifier.equals(other.qualifier)) {
+        } else if (!qualifier.getName().equals(other.qualifier.getName())) {
             return false;
         }
         return true;
@@ -353,8 +388,11 @@ public class Binding<T> {
     @Override
     public final int hashCode() {
         int hash = HASH;
-        hash = HASH_KEY * hash + (this.from != null ? this.from.hashCode() : 0);
-        hash = HASH_KEY * hash + (this.qualifier != null ? this.qualifier.hashCode() : 0);
+//        hash = HASH_KEY * hash + (this.from != null ? this.from.hashCode() : 0);
+//        hash = HASH_KEY * hash + (this.qualifier != null ? this.qualifier.hashCode() : 0);
+//        hash = HASH_KEY * hash + (this.name != null ? this.name.hashCode() : 0);
+        hash = HASH_KEY * hash + (this.from != null ? this.from.getName().hashCode() : 0);
+        hash = HASH_KEY * hash + (this.qualifier != null ? this.qualifier.getName().hashCode() : 0);
         hash = HASH_KEY * hash + (this.name != null ? this.name.hashCode() : 0);
         return hash;
     }
