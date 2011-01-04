@@ -17,6 +17,9 @@
 package cx.ath.mancel01.dependencyshot.util;
 
 import java.lang.annotation.Annotation;
+import java.util.Set;
+import javax.inject.Named;
+import javax.inject.Qualifier;
 import javax.inject.Scope;
 import javax.inject.Singleton;
 
@@ -42,5 +45,25 @@ public class ReflectionUtil {
             }
         }
         return scope;
+    }
+
+    public static Annotation getQualifier(Set<Annotation> annotations) {
+        Annotation annotation = null;
+        for (Annotation anno : annotations) {
+            if ((anno.annotationType().isAnnotationPresent(Qualifier.class))) {
+                annotation = anno;
+            }
+        }
+        return annotation;
+    }
+
+    public static Named getNamed(Set<Annotation> annotations) {
+        Named annotation = null;
+        for (Annotation anno : annotations) {
+            if ((anno.annotationType().equals(Named.class))) {
+                annotation = (Named) anno;
+            }
+        }
+        return annotation;
     }
 }
