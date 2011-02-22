@@ -22,11 +22,8 @@ import cx.ath.mancel01.dependencyshot.spi.ImplementationValidator;
 import cx.ath.mancel01.dependencyshot.spi.InstanceHandler;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 
 /**
  * Handler for managedbean management.
@@ -66,29 +63,6 @@ public final class ManagedBeanHandler extends InstanceHandler {
             injectors.add(injector);
             injector.registerShutdownHook();
         }
-        registerManagedBeanJNDI(instance);
         return instance;
-    }
-
-    private void registerManagedBeanJNDI(Object instance) {
-        if (System.getProperty(Context.INITIAL_CONTEXT_FACTORY) != null) {
-            try {
-                Class clazz = instance.getClass();
-                if (clazz.isAnnotationPresent(ManagedBean.class)) {
-                    ManagedBean annotation = (ManagedBean) clazz.getAnnotation(ManagedBean.class);
-                    String name = clazz.getName();
-                    if (!annotation.value().equals("")) {
-                        name = annotation.value();
-                    }
-                    name += "_" + instance.hashCode(); // Remove that
-                    Context context = new InitialContext();
-                    if (context.lookup(name) != null) {
-                        context.bind(name, instance);
-                    }
-                }
-            } catch (Exception ex) {
-                logger.log(Level.SEVERE, null, ex);
-            }
-        }
     }
 }
