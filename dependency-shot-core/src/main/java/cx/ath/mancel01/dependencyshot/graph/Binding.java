@@ -283,9 +283,9 @@ public class Binding<T> {
             }
         }
         if (!nullable) {
-            for (InstanceLifecycleHandler handler : injector.getLoader().getLifecycleHandlers()) {
-                handler.handlePostConstruct(result);
-            }
+//            for (InstanceLifecycleHandler handler : injector.getLoader().getLifecycleHandlers()) {
+//                handler.handlePostConstruct(result);
+//            }
             for (InstanceHandler handler : injector.getLoader().getInstanceHandlers()) {
                 result = (T) handler.handleInstance(result, from, injector, point);
             }

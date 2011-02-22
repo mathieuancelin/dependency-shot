@@ -101,6 +101,8 @@ public class InjectorImpl implements DSInjector {
     private Map<Class<?>, Object> circularConstructorArgumentsInstances;
     private Map<Class<? extends Annotation>, CustomScopeHandler> scopeHandlers;
     private List<Class<?>> staticInjection;
+    private Class<?> firstInjectedClass;
+    private List<Object> postContructObjects;
 
     /**
      * The constructor.
@@ -120,6 +122,7 @@ public class InjectorImpl implements DSInjector {
 
     private void initialize(PluginsLoader loader, Stage stage) {
         binders = new ArrayList();
+        postContructObjects = new ArrayList<Object>();
         singletonContext = new HashMap<Class<?>, Object>();
         instanciatedClasses = new HashMap<Class<?>, Object>();
         circularConstructorArgumentsInstances = new HashMap<Class<?>, Object>();
@@ -337,6 +340,9 @@ public class InjectorImpl implements DSInjector {
     public final <T> T createInstance(Class<T> c) {
         // manage circular dependencies
         synchronized (this) {
+            if (firstInjectedClass == null) {
+                firstInjectedClass = c;
+            }
             if(allowLazyStaticInjection && !staticInjection.contains(c)) {
                 staticInjection.add(c);
                 injectStatics(c);
@@ -356,6 +362,17 @@ public class InjectorImpl implements DSInjector {
                         if (circularClasses.size() > 0) {
                             circularConstructorArgumentsInstances.put(c, result);
                         }
+                    }
+                    if (c.equals(firstInjectedClass)) {
+                        firstInjectedClass = null;
+                        for (InstanceLifecycleHandler handler : loader.getLifecycleHandlers()) {
+                            handler.handlePostConstruct(result);for (Object o : postContructObjects) {
+                                handler.handlePostConstruct(o);
+                            }
+                        }
+                        postContructObjects.clear();
+                    } else {
+                        postContructObjects.add(result);
                     }
                     return result;
                 } catch (Exception e) {
@@ -379,7 +396,20 @@ public class InjectorImpl implements DSInjector {
                         throw new DSException("Can't proxy circular dependencies without interface.");
                     }
                     try {
-                        return (T) instanciatedClasses.get(c);
+                        Object result = (T) instanciatedClasses.get(c);
+                        if (c.equals(firstInjectedClass)) {
+                            firstInjectedClass = null;
+                            for (InstanceLifecycleHandler handler : loader.getLifecycleHandlers()) {
+                                handler.handlePostConstruct(result);
+                                for (Object o : postContructObjects) {
+                                    handler.handlePostConstruct(o);
+                                }
+                            }
+                            postContructObjects.clear();
+                        } else {
+                            postContructObjects.add(result);
+                        }
+                        return (T) result;
                     } finally {
                         circularClasses.remove(c);
                     }
