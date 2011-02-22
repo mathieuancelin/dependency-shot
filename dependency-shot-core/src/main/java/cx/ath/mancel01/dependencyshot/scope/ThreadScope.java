@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.scope.thread;
+package cx.ath.mancel01.dependencyshot.scope;
 
 import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
@@ -59,7 +59,7 @@ public class ThreadScope extends CustomScopeHandler {
                     .append(".java").toString());
             return injector.createInstance(clazz);
         }
-        ThreadScopeProxy proxy = new ThreadScopeProxy(threadLocalinstances, clazz, injector);
+        RequestScopeProxy proxy = new RequestScopeProxy(threadLocalinstances, clazz, injector);
         return (T) Proxy.newProxyInstance(
                     Thread.currentThread().getContextClassLoader(),
                     new Class[]{interf}, proxy);

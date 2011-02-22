@@ -15,10 +15,9 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.scope.request;
+package cx.ath.mancel01.dependencyshot.scope;
 
 import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
-import cx.ath.mancel01.dependencyshot.scope.thread.*;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
 import java.lang.annotation.Annotation;
@@ -46,7 +45,7 @@ public class RequestScope extends CustomScopeHandler {
 
     @Override
     public Class<? extends Annotation> getScope() {
-        return ThreadScoped.class;
+        return RequestScoped.class;
     }
 
     @Override

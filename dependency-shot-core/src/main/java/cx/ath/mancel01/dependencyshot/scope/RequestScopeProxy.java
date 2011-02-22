@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.scope.session;
+package cx.ath.mancel01.dependencyshot.scope;
 
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import java.lang.reflect.InvocationHandler;
@@ -26,7 +26,7 @@ import java.util.Map;
  *
  * @author mathieuancelin
  */
-public class SessionScopeProxy implements InvocationHandler {
+public class RequestScopeProxy implements InvocationHandler {
 
     private final ThreadLocal<Map<Class<?>, Object>> threadLocalinstances;
 
@@ -34,7 +34,7 @@ public class SessionScopeProxy implements InvocationHandler {
 
     private final InjectorImpl injector;
 
-    public <T> SessionScopeProxy(ThreadLocal<Map<Class<?>, Object>> threadLocalinstances, Class<? extends T> clazz, InjectorImpl injector) {
+    public <T> RequestScopeProxy(ThreadLocal<Map<Class<?>, Object>> threadLocalinstances, Class<? extends T> clazz, InjectorImpl injector) {
         this.threadLocalinstances = threadLocalinstances;
         this.clazz = clazz;
         this.injector = injector;

@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.scope.pool;
+package cx.ath.mancel01.dependencyshot.scope;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -29,6 +29,6 @@ import javax.inject.Scope;
 @Retention(value = RetentionPolicy.RUNTIME)
 @Documented
 @Scope
-public @interface PoolScoped {
+public @interface RequestScoped {
 
 }

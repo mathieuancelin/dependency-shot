@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.scope.simple;
+package cx.ath.mancel01.dependencyshot.scope;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
