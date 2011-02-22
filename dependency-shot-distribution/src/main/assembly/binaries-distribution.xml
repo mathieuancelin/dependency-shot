@@ -13,6 +13,8 @@
                 <include>cx.ath.mancel01:dependency-shot-lifecycle</include>
                 <include>cx.ath.mancel01:dependency-shot-utils</include>
                 <include>javax.inject:javax.inject</include>
+                <include>aopalliance:aopalliance</include>
+                <include>javassist:javassist</include>
             </includes>
         </dependencySet>
     </dependencySets>
