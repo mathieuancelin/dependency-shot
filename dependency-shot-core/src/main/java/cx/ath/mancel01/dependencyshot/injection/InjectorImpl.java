@@ -67,6 +67,7 @@ import javax.inject.Qualifier;
 public class InjectorImpl implements DSInjector {
 
     private boolean allowCircularDependencies = true;
+    private boolean allowLazyStaticInjection = false;
     
     private static final Logger logger = Logger.getLogger(InjectorImpl.class.getSimpleName());
     /**
@@ -123,6 +124,7 @@ public class InjectorImpl implements DSInjector {
         instanciatedClasses = new HashMap<Class<?>, Object>();
         circularConstructorArgumentsInstances = new HashMap<Class<?>, Object>();
         circularClasses = new ArrayList<Class>();
+        staticInjection = new ArrayList<Class<?>>();
         this.stage = stage;
         classHandler = new ClassHandler();
         constructorHandler = new ConstructorHandler();
@@ -335,6 +337,10 @@ public class InjectorImpl implements DSInjector {
     public final <T> T createInstance(Class<T> c) {
         // manage circular dependencies
         synchronized (this) {
+            if(allowLazyStaticInjection && !staticInjection.contains(c)) {
+                staticInjection.add(c);
+                injectStatics(c);
+            }
             if (!instanciatedClasses.containsKey(c)) {
                 try {
                     instanciatedClasses.put(c, null);
@@ -535,6 +541,14 @@ public class InjectorImpl implements DSInjector {
     @Override
     public boolean areCircularDependenciesAllowed() {
         return allowCircularDependencies;
+    }
+
+    public void allowLazyStaticInjection(boolean allowLazyStaticInjection) {
+        this.allowLazyStaticInjection = allowLazyStaticInjection;
+    }
+
+    public boolean isLazyStaticInjectionAllowed() {
+        return allowLazyStaticInjection;
     }
 
     public PluginsLoader getLoader() {

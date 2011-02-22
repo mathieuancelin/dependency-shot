@@ -76,4 +76,8 @@ public interface DSInjector {
 
     void registerEventListener(EventListener<? extends Event> listener);
 
+    void allowLazyStaticInjection(boolean allowLazyStaticInjection);
+
+    boolean isLazyStaticInjectionAllowed();
+
 }
