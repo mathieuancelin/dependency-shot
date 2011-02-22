@@ -39,6 +39,7 @@ public class CircularTest {
         Exception ex = null;
         try {
             DSInjector injector = DependencyShot.getInjector();
+            injector.allowCircularDependencies(false);
             BillingService service = injector.getInstance(BillingService.class);
             service.chargeAccountFor(123);
             assertTrue(service.getAccount().getMoney() == (100000 - 123));
@@ -82,6 +83,7 @@ public class CircularTest {
     public void testCyclicMethod() {
         boolean isCyclic = false;
         DSInjector injector = DependencyShot.getInjector();
+        injector.allowCircularDependencies(false);
         try {
             MethodA a = injector.getInstance(MethodA.class);
         } catch (Exception e ) {
@@ -102,6 +104,7 @@ public class CircularTest {
     public void testCyclicConstructor() {
         boolean isCyclic = false;
         DSInjector injector = DependencyShot.getInjector();
+        injector.allowCircularDependencies(false);
         try {
             ConstructorA a = injector.getInstance(ConstructorA.class);
         } catch (Exception e ) {
@@ -128,6 +131,7 @@ public class CircularTest {
                         bind(InterfaceB.class).to(ConstructorB.class);
                     }
                 });
+        injector.allowCircularDependencies(false);
         InterfaceA a = null;
         try {
             a = injector.getInstance(InterfaceA.class);
@@ -153,6 +157,7 @@ public class CircularTest {
     public void testCyclicField() {
         boolean isCyclic = false;
         DSInjector injector = DependencyShot.getInjector();
+        injector.allowCircularDependencies(false);
         try {
             FieldA a = injector.getInstance(FieldA.class);
         } catch (Exception e ) {

@@ -66,7 +66,8 @@ import javax.inject.Qualifier;
  */
 public class InjectorImpl implements DSInjector {
 
-    private boolean allowCircularDependencies = false;
+    private boolean allowCircularDependencies = true;
+    
     private static final Logger logger = Logger.getLogger(InjectorImpl.class.getSimpleName());
     /**
      * Binders linked to the project.
