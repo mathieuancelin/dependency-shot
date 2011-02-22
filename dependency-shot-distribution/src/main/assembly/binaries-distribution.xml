@@ -10,6 +10,7 @@
                 <include>cx.ath.mancel01:dependency-shot-api</include>
                 <include>cx.ath.mancel01:dependency-shot-aop</include>
                 <include>cx.ath.mancel01:dependency-shot-core</include>
+                <include>cx.ath.mancel01:dependency-shot-dynamic</include>
                 <include>cx.ath.mancel01:dependency-shot-lifecycle</include>
                 <include>cx.ath.mancel01:dependency-shot-utils</include>
                 <include>javax.inject:javax.inject</include>
