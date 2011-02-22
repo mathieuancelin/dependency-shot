@@ -498,9 +498,7 @@ public class InjectorImpl implements DSInjector {
      */
     public void triggerLifecycleDestroyCallbacks() {
         for (InstanceLifecycleHandler handler : loader.getLifecycleHandlers()) {
-            for (Object o : handler.getManagedInstances()) {
-                handler.handlePreDestroy(o);
-            }
+            handler.cleanupAll();
         }
     }
 
@@ -543,10 +541,12 @@ public class InjectorImpl implements DSInjector {
         return allowCircularDependencies;
     }
 
+    @Override
     public void allowLazyStaticInjection(boolean allowLazyStaticInjection) {
         this.allowLazyStaticInjection = allowLazyStaticInjection;
     }
 
+    @Override
     public boolean isLazyStaticInjectionAllowed() {
         return allowLazyStaticInjection;
     }

@@ -21,10 +21,13 @@ import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PreDestroy;
 
 /**
  * Like singleton scope handler but in a thread (ie. one singleton per thread)
@@ -67,6 +70,7 @@ public class RequestScope extends CustomScopeHandler {
 
     @Override
     public void reset() {
+        invokePreDestroy(threadLocalinstances.get());
         threadLocalinstances.get().clear();
     }
 
@@ -78,5 +82,31 @@ public class RequestScope extends CustomScopeHandler {
     @Override
     public boolean isBeanValid(Class from, Class to) {
         return from.isInterface();
+    }
+
+    public static void invokePreDestroy(Object o) {
+        Class clazz = o.getClass();
+        for (Method method : clazz.getDeclaredMethods()) {
+            if (method.isAnnotationPresent(PreDestroy.class)) {
+                Class<?>[] parameterTypes = method.getParameterTypes();
+                Object[] parameters = new Object[parameterTypes.length];
+                boolean accessible = method.isAccessible();
+                // set a private method as public method to invoke it
+                if (!accessible) {
+                    method.setAccessible(true);
+                }
+                // invocation of the method with rights parameters
+                try {
+                    method.invoke(o, parameters);
+                } catch (Exception ex) {
+                    logger.log(Level.SEVERE, null, ex);
+                } finally {
+                    // if method was private, then put it private back
+                    if (!accessible) {
+                        method.setAccessible(accessible);
+                    }
+                }
+            }
+        }
     }
 }

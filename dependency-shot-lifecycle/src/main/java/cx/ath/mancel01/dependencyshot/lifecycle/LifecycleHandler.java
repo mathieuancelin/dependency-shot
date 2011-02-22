@@ -63,6 +63,28 @@ public final class LifecycleHandler  extends InstanceLifecycleHandler {
         return managedInstances;
     }
 
+    @Override
+    public void cleanupAll() {
+        for (Object instance : managedInstances) {
+            if (instance != null) {
+                invokePreDestroy(instance);
+            }
+        }
+        managedInstances.clear();
+    }
+
+    @Override
+    public void cleanupSome(Collection<?> instances) {
+        for (Object instance : instances) {
+            if (managedInstances.contains(instance)) {
+                if (instance != null) {
+                    invokePreDestroy(instance);
+                    managedInstances.remove(instance);
+                }
+            }
+        }
+    }
+
     /**
      * Method that handle PostConstrut annotated methods.
      *

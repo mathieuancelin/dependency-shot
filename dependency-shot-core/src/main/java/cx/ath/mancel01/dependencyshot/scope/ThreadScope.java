@@ -67,6 +67,7 @@ public class ThreadScope extends CustomScopeHandler {
 
     @Override
     public void reset() {
+        RequestScope.invokePreDestroy(threadLocalinstances.get());
         threadLocalinstances.get().clear();
     }
 

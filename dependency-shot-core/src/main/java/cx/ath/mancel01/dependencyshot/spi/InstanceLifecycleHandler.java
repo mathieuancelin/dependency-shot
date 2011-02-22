@@ -66,4 +66,7 @@ public abstract class InstanceLifecycleHandler {
             preDestroy(instance);
         }
     }
+
+    public abstract void cleanupAll();
+    public abstract void cleanupSome(Collection<?> instances);
 }
