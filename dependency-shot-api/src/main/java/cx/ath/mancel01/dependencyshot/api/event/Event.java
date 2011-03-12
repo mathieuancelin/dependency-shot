@@ -26,4 +26,6 @@ public interface Event<T> {
 
     void fire(T event);
 
+    void fireAsync(T event);
+
 }

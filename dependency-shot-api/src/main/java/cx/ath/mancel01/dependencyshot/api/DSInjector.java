@@ -74,7 +74,7 @@ public interface DSInjector {
      */
     void registerShutdownHook();
 
-    void registerEventListener(EventListener<? extends Event> listener);
+    void registerEventListener(Class listener);
 
     void allowLazyStaticInjection(boolean allowLazyStaticInjection);
 

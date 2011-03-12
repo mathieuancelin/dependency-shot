@@ -1,5 +1,5 @@
 /*
- *  Copyright 2010 mathieuancelin.
+ *  Copyright 2011 mathieuancelin.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,14 +17,16 @@
 
 package cx.ath.mancel01.dependencyshot.api.event;
 
-/**
- *
- * @author Mathieu ANCELIN
- */
-public interface EventManager {
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-    <T> void fireEvent(T evt);
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-    <T> void fireAsyncEvent(T evt);
-    
+@Target(PARAMETER)
+@Retention(RUNTIME)
+@Documented
+public @interface Observes{
+
 }

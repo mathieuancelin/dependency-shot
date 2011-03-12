@@ -54,4 +54,11 @@ public abstract class AutoEvent {
         }
         manager.fireEvent(this);
     }
+
+    public void fireAsync() {
+        if (manager == null) {
+            throw new RuntimeException("You should inject the event in order to call fire on it.");
+        }
+        manager.fireAsyncEvent(this);
+    }
 }

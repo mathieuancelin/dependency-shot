@@ -135,7 +135,10 @@ public class InjectorImpl implements DSInjector {
         loader.loadPlugins(this);
         scopeHandlers = loader.getScopeHandlers();
         eventManager = new EventManagerImpl();
-        eventManager.registerListeners(loader.getEventListeners());
+        eventManager.setInjector(this);
+        for (EventListener listener : loader.getEventListeners()) {
+            eventManager.registerListener(listener.getClass());
+        }
     }
 
     /**
@@ -519,7 +522,7 @@ public class InjectorImpl implements DSInjector {
     }
 
     @Override
-    public final void registerEventListener(EventListener<? extends Event> listener) {
+    public final void registerEventListener(Class listener) {
         eventManager.registerListener(listener);
     }
 
@@ -601,4 +604,8 @@ public class InjectorImpl implements DSInjector {
     public List<Binder> getBinders() {
         return binders;
     }
+
+    public Map<Class<? extends Annotation>, CustomScopeHandler> getScopeHandlers() {
+        return scopeHandlers;
+    }  
 }

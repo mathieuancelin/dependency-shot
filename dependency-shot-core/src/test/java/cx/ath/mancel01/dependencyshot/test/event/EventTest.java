@@ -20,6 +20,7 @@ package cx.ath.mancel01.dependencyshot.test.event;
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import cx.ath.mancel01.dependencyshot.api.event.Event;
+import cx.ath.mancel01.dependencyshot.graph.Binder;
 import java.util.concurrent.TimeUnit;
 import org.junit.Assert;
 import org.junit.Test;
@@ -34,7 +35,19 @@ public class EventTest {
 
     @Test
     public void broadcast() throws Exception {
-        DSInjector injector = DependencyShot.getInjector();
+        DSInjector injector = DependencyShot.getInjector(new Binder() {
+
+            @Override
+            public void configureBindings() {
+                bind(MyEvent.class);
+                bind(MyEvent2.class);
+                bind(MyEvent3.class);
+                registerEventListener(MyListener.class);
+                registerEventListener(MyListener2.class);
+                registerEventListener(MyListener3.class);
+            }
+
+        });
         MyEvent event = injector.getInstance(MyEvent.class);
         MyEvent2 event2 = injector.getInstance(MyEvent2.class);
         MyEvent3 event3 = injector.getInstance(MyEvent3.class);
@@ -62,7 +75,15 @@ public class EventTest {
 
     @Test
     public void broadcastEvent() throws Exception {
-        DSInjector injector = DependencyShot.getInjector();
+        DSInjector injector = DependencyShot.getInjector(new Binder() {
+
+            @Override
+            public void configureBindings() {
+                bind(MyEvent.class);
+                registerEventListener(CustomEventListener.class);
+            }
+
+        });
         Event<CustomEvent> event = injector.getInstance(Event.class);
         CustomEventListener listener = injector.getInstance(CustomEventListener.class);
         for(int i = 0; i < NBR; i++)
@@ -74,4 +95,34 @@ public class EventTest {
         Assert.assertTrue(listener.getCalls() == NBR);
     }
 
+    @Test
+    public void broadcastEventToObservers() throws Exception {
+        DSInjector injector = DependencyShot.getInjector(new Binder() {
+
+            @Override
+            public void configureBindings() {
+                bind(Event1.class);
+                bind(Event2.class);
+                registerEventListener(ObservesListener.class);
+            }
+
+        });
+        Event<Event1> event1 = injector.getInstance(Event.class);
+        Event<Event2> event2 = injector.getInstance(Event.class);
+        ObservesListener listener = injector.getInstance(ObservesListener.class);
+        for(int i = 0; i < NBR; i++) {
+            event1.fire(new Event1());
+        }
+        for(int i = 0; i < NBR; i++) {
+            event2.fire(new Event2());
+        }
+
+        Assert.assertTrue(listener.getLatchEvent1().await(10, TimeUnit.SECONDS));
+        Assert.assertTrue(listener.getLatchEvent2().await(10, TimeUnit.SECONDS));
+
+        System.out.println("listener 1 events 1 : " + listener.getCallsEvent1() + " events received ...");
+        System.out.println("listener 1 events 2 : " + listener.getCallsEvent2() + " events received ...");
+        Assert.assertTrue(listener.getCallsEvent1() == NBR);
+        Assert.assertTrue(listener.getCallsEvent2() == NBR);
+    }
 }

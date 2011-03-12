@@ -1,5 +1,5 @@
 /*
- *  Copyright 2010 mathieuancelin.
+ *  Copyright 2011 mathieuancelin.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,16 +15,12 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.api.event;
+package cx.ath.mancel01.dependencyshot.test.event;
 
 /**
  *
- * @author Mathieu ANCELIN
+ * @author mathieuancelin
  */
-public interface EventManager {
+public class Event1 {
 
-    <T> void fireEvent(T evt);
-
-    <T> void fireAsyncEvent(T evt);
-    
 }

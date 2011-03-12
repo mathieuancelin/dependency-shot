@@ -273,7 +273,7 @@ public abstract class Binder implements DSBinder {
         ((InjectorImpl) binderInjector).getScopeHandlers().put(handler.getScope(), handler);
     }
 
-    public final void registerEventListener(EventListener<? extends Event> listener) {
+    public final void registerEventListener(Class<?> listener) {
         ((InjectorImpl) binderInjector).getEventManager().registerListener(listener);
     }
 

@@ -38,4 +38,12 @@ public class EventImpl<T> implements Event<T>{
         }
         manager.fireEvent(event);
     }
+
+    @Override
+    public void fireAsync(T event) {
+        if (manager == null) {
+            throw new DSException("You should inject the event in order to call fire on it.");
+        }
+        manager.fireAsyncEvent(event);
+    }
 }
