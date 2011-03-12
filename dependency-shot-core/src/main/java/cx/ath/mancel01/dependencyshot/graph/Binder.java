@@ -270,7 +270,7 @@ public abstract class Binder implements DSBinder {
     }
 
     public final void registerScope(CustomScopeHandler handler) {
-
+        ((InjectorImpl) binderInjector).getScopeHandlers().put(handler.getScope(), handler);
     }
 
     public final void registerEventListener(EventListener<? extends Event> listener) {
