@@ -29,7 +29,6 @@ import cx.ath.mancel01.dependencyshot.injection.util.InstanceProvider;
 import cx.ath.mancel01.dependencyshot.scope.ScopeInvocationHandler;
 import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
 import cx.ath.mancel01.dependencyshot.spi.InstanceHandler;
-import cx.ath.mancel01.dependencyshot.spi.InstanceLifecycleHandler;
 import cx.ath.mancel01.dependencyshot.util.ReflectionUtil;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
@@ -289,9 +288,9 @@ public class Binding<T> {
             for (InstanceHandler handler : injector.getLoader().getInstanceHandlers()) {
                 result = (T) handler.handleInstance(result, from, injector, point);
             }
-            if (EventListener.class.isAssignableFrom(result.getClass())) {
-                injector.registerEventListener((EventListener) result);
-            }
+//            if (EventListener.class.isAssignableFrom(result.getClass())) {
+//                injector.registerEventListener((EventListener) result);
+//            }
         }
         return result;
     }
