@@ -21,8 +21,26 @@ package cx.ath.mancel01.dependencyshot.event;
  *
  * @author Mathieu ANCELIN
  */
-public class InjectionStartedEvent extends AutoEvent {
+public class InjectionStartedEvent {
 
+    public long timestamp;
 
+    private Class beanType;
+
+    public InjectionStartedEvent() {
+        timestamp = System.currentTimeMillis();
+    }
+
+    public Class getBeanType() {
+        return beanType;
+    }
+
+    public void setBeanType(Class beanType) {
+        this.beanType = beanType;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
 
 }

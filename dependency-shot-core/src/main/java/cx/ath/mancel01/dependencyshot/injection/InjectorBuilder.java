@@ -17,6 +17,7 @@
 package cx.ath.mancel01.dependencyshot.injection;
 
 import cx.ath.mancel01.dependencyshot.api.Stage;
+import cx.ath.mancel01.dependencyshot.event.InjectorStartedEvent;
 import cx.ath.mancel01.dependencyshot.graph.Binder;
 import cx.ath.mancel01.dependencyshot.spi.PluginsLoader;
 
@@ -44,6 +45,7 @@ public final class InjectorBuilder {
             injector.addBinder(binder);
         }
         injector.configureBinders();
+        injector.getInstance(InjectorStartedEvent.class).fire();
         return injector;
     }
     /**
@@ -57,6 +59,7 @@ public final class InjectorBuilder {
         injector.resetBinders();
         injector.addBinder(binder);
         injector.configureBinders();
+        injector.getInstance(InjectorStartedEvent.class).fire();
         return injector;
     }
 }

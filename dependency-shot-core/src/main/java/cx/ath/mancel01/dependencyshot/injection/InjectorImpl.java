@@ -26,6 +26,8 @@ import cx.ath.mancel01.dependencyshot.api.event.EventListener;
 import cx.ath.mancel01.dependencyshot.api.event.EventManager;
 import cx.ath.mancel01.dependencyshot.event.EventImpl;
 import cx.ath.mancel01.dependencyshot.event.EventManagerImpl;
+import cx.ath.mancel01.dependencyshot.event.InjectionStartedEvent;
+import cx.ath.mancel01.dependencyshot.event.InjectionStoppedEvent;
 import cx.ath.mancel01.dependencyshot.exceptions.DSCyclicDependencyDetectedException;
 import cx.ath.mancel01.dependencyshot.exceptions.DSException;
 import cx.ath.mancel01.dependencyshot.graph.Binder;
@@ -107,7 +109,7 @@ public class InjectorImpl implements DSInjector {
     /**
      * The constructor.
      */
-    public InjectorImpl(PluginsLoader loader) {
+    InjectorImpl(PluginsLoader loader) {
         initialize(loader, Stage.NONE);
     }
 
@@ -116,7 +118,7 @@ public class InjectorImpl implements DSInjector {
      *
      * @param stage of the injector.
      */
-    public InjectorImpl(PluginsLoader loader, Stage stage) {
+    InjectorImpl(PluginsLoader loader, Stage stage) {
         initialize(loader, stage);
     }
 
@@ -260,12 +262,12 @@ public class InjectorImpl implements DSInjector {
     }
 
     public final <T> T getInstance(Class<T> c, boolean scoped) {
-        long start = System.currentTimeMillis();
-        try {
+        long startTime = System.currentTimeMillis();
+        try {           
             return getInstance(c, null, null, scoped);
         } finally {
             if (DependencyShot.DEBUG) {
-                logger.info(new StringBuilder().append("Time elapsed for injection : ").append(System.currentTimeMillis() - start).append(" ms.").toString());
+                logger.info(new StringBuilder().append("Time elapsed for injection : ").append(System.currentTimeMillis() - startTime).append(" ms.").toString());
             }
         }
     }
@@ -279,9 +281,18 @@ public class InjectorImpl implements DSInjector {
      * @return instance of c
      */
     private <T> T getInstance(Class<T> c, Annotation qualifier, InjectionPoint point, boolean scoped) {
+        InjectionStartedEvent start = new InjectionStartedEvent();
+        InjectionStoppedEvent stop = new InjectionStoppedEvent();
+        start.setBeanType(c);
+        stop.setBeanType(c);
+        eventManager.fireAsyncEvent(start);
+
         Binding<T> binding = getBinding(c, qualifier);
         actualFromClass = binding.getFrom();
-        return binding.getInstance(this, point, scoped);
+        T instance = binding.getInstance(this, point, scoped);
+        
+        stop.setBeanInstance(instance);
+        return instance;
     }
 
     /**
@@ -322,14 +333,23 @@ public class InjectorImpl implements DSInjector {
      * @return singleton instance of c
      */
     public final <T> T getSingleton(Class<T> c) {
+
         // check if the singleton is present in the singleton context
         T result = c.cast(singletonContext.get(c));
         // if not, create one
         if (result == null) {
+            InjectionStartedEvent start = new InjectionStartedEvent();
+            InjectionStoppedEvent stop = new InjectionStoppedEvent();
+            start.setBeanType(c);
+            stop.setBeanType(c);
+            eventManager.fireAsyncEvent(start);
+
             result = createInstance(c);
             singletonContext.put(c, result);
+            
+            stop.setBeanInstance(result);
+            eventManager.fireAsyncEvent(stop);
         }
-        System.out.println(((Object) result).toString());
         return result;
     }
 
@@ -435,11 +455,18 @@ public class InjectorImpl implements DSInjector {
      */
     @Override
     public final <T> T injectInstance(T instance) {
+        InjectionStartedEvent start = new InjectionStartedEvent();
+        InjectionStoppedEvent stop = new InjectionStoppedEvent();
+        start.setBeanType(instance.getClass());
+        stop.setBeanType(instance.getClass());
+        stop.setBeanInstance(instance);
+        eventManager.fireAsyncEvent(start);
         try {
             T result = instance;
             // and inject it !!
             classHandler.classInjection(result,
                     instance.getClass(), new ArrayList<Method>(), false, this);
+            eventManager.fireAsyncEvent(stop);
             return result;
         } catch (Exception e) {
             throw new DSException(e);
@@ -453,12 +480,19 @@ public class InjectorImpl implements DSInjector {
      */
     @Override
     public final void injectStatics(Class<?> c) {
+        InjectionStartedEvent start = new InjectionStartedEvent();
+        InjectionStoppedEvent stop = new InjectionStoppedEvent();
+        start.setBeanType(c);
+        stop.setBeanType(c);
+        stop.setBeanInstance(c);
+        eventManager.fireAsyncEvent(start);
         try {
             List<Method> emptyList = Collections.emptyList();
             classHandler.classInjection(null, c, emptyList, true, this);
         } catch (Exception e) {
             throw new DSException("Could not inject static members for " + c, e);
         }
+        eventManager.fireAsyncEvent(stop);
     }
 
     /**

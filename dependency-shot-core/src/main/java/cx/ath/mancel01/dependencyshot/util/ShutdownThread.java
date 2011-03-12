@@ -17,6 +17,7 @@
 
 package cx.ath.mancel01.dependencyshot.util;
 
+import cx.ath.mancel01.dependencyshot.event.InjectorStoppedEvent;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 
 /**
@@ -34,6 +35,6 @@ public class ShutdownThread extends Thread {
     @Override
     public void run() {
         injector.triggerLifecycleDestroyCallbacks();
+        injector.getInstance(InjectorStoppedEvent.class).fire();
     }
-
 }

@@ -18,6 +18,7 @@
 package cx.ath.mancel01.dependencyshot.event;
 
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
+import javax.inject.Inject;
 
 /**
  *
@@ -25,14 +26,10 @@ import cx.ath.mancel01.dependencyshot.api.DSInjector;
  */
 public class InjectorStoppedEvent extends AutoEvent {
 
+    @Inject
     private DSInjector injector;
-
-    public InjectorStoppedEvent(DSInjector injector) {
-        this.injector = injector;
-    }
 
     public DSInjector getInjector() {
         return injector;
-    }
-    
+    }    
 }
