@@ -20,8 +20,7 @@ import cx.ath.mancel01.dependencyshot.injection.util.InstanceProvider;
 import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import cx.ath.mancel01.dependencyshot.api.Stage;
-import cx.ath.mancel01.dependencyshot.api.event.Event;
-import cx.ath.mancel01.dependencyshot.api.event.EventListener;
+import cx.ath.mancel01.dependencyshot.exceptions.ExceptionManager;
 import cx.ath.mancel01.dependencyshot.graph.builder.FluentBinder;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
@@ -111,6 +110,7 @@ public abstract class Binder implements DSBinder {
         }
         Binding<?> old = bindings.put(binding, binding);
         if (old != null) {
+            ExceptionManager.makeException(IllegalArgumentException.class, binding + " overwrites " + old).throwManaged();
             throw new IllegalArgumentException(binding + " overwrites " + old);
         }
     }

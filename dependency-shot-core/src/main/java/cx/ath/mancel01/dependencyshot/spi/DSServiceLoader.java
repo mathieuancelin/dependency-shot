@@ -17,6 +17,7 @@
 package cx.ath.mancel01.dependencyshot.spi;
 
 import cx.ath.mancel01.dependencyshot.exceptions.DSException;
+import cx.ath.mancel01.dependencyshot.exceptions.ExceptionManager;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -52,6 +53,7 @@ public class DSServiceLoader<T extends Object> implements Iterable<T> {
             return new DSServiceLoader(interf, loadFromServices(interf));
         } catch (Exception ex) {
             logger.log(Level.SEVERE, null, ex);
+            ExceptionManager.makeException("Error while loading services : ", ex).throwManaged();
             throw new DSException("Error while loading services : ", ex);
         }
     }

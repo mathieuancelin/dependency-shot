@@ -18,6 +18,7 @@
 package cx.ath.mancel01.dependencyshot.event;
 
 import cx.ath.mancel01.dependencyshot.api.event.EventManager;
+import cx.ath.mancel01.dependencyshot.exceptions.ExceptionManager;
 import java.util.UUID;
 import javax.inject.Inject;
 
@@ -50,6 +51,7 @@ public abstract class AutoEvent {
 
     public void fire() {
         if (manager == null) {
+            ExceptionManager.makeException("You should inject the event in order to call fire on it.").throwManaged();
             throw new RuntimeException("You should inject the event in order to call fire on it.");
         }
         manager.fireEvent(this);
@@ -57,6 +59,7 @@ public abstract class AutoEvent {
 
     public void fireAsync() {
         if (manager == null) {
+            ExceptionManager.makeException("You should inject the event in order to call fire on it.").throwManaged();
             throw new RuntimeException("You should inject the event in order to call fire on it.");
         }
         manager.fireAsyncEvent(this);

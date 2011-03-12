@@ -18,6 +18,7 @@
 package cx.ath.mancel01.dependencyshot.injection.handlers;
 
 import cx.ath.mancel01.dependencyshot.exceptions.DSException;
+import cx.ath.mancel01.dependencyshot.exceptions.ExceptionManager;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -92,6 +93,7 @@ public final class ConstructorHandler {
 				}
 			}
 		}
+                ExceptionManager.makeException("Could not find @Inject constructor for " + c).throwManaged();
 		throw new DSException("Could not find @Inject constructor for " + c);
 	}
 }

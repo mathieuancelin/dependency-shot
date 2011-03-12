@@ -20,8 +20,8 @@ import cx.ath.mancel01.dependencyshot.api.DslConstants;
 import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
 import cx.ath.mancel01.dependencyshot.api.Nullable;
 import cx.ath.mancel01.dependencyshot.api.Stage;
-import cx.ath.mancel01.dependencyshot.api.event.EventListener;
 import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
+import cx.ath.mancel01.dependencyshot.exceptions.ExceptionManager;
 import cx.ath.mancel01.dependencyshot.exceptions.NullInjectionException;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.injection.util.EnhancedProvider;
@@ -261,6 +261,8 @@ public class Binding<T> {
                     result = (T) injector.getScopeHandler(scope).getScopedInstance(from, to, point, injector);
                 }
             } else {
+                ExceptionManager.makeException(DSIllegalStateException.class, "The scope " + scopedInstanceStore.getClass().getSimpleName()
+                        + " is invalid. Can't perform injection.").throwManaged();
                 throw new DSIllegalStateException("The scope " + scopedInstanceStore.getClass().getSimpleName()
                         + " is invalid. Can't perform injection.");
             }
@@ -278,6 +280,8 @@ public class Binding<T> {
                 }
             }
             if (!nullable) {
+                ExceptionManager.makeException(NullInjectionException.class,
+                        "Could not get a " + to + ". Can't inject object with null value. For that use @Nullable annotation.").throwManaged();
                 throw new NullInjectionException("Could not get a " + to + ". Can't inject object with null value. For that use @Nullable annotation.");
             }
         }

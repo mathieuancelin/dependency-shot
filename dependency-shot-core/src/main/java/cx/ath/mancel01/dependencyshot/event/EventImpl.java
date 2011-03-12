@@ -20,6 +20,7 @@ package cx.ath.mancel01.dependencyshot.event;
 import cx.ath.mancel01.dependencyshot.api.event.Event;
 import cx.ath.mancel01.dependencyshot.api.event.EventManager;
 import cx.ath.mancel01.dependencyshot.exceptions.DSException;
+import cx.ath.mancel01.dependencyshot.exceptions.ExceptionManager;
 import javax.inject.Inject;
 
 /**
@@ -34,6 +35,7 @@ public class EventImpl<T> implements Event<T>{
     @Override
     public void fire(T event) {
         if (manager == null) {
+            ExceptionManager.makeException("You should inject the event in order to call fire on it.").throwManaged();
             throw new DSException("You should inject the event in order to call fire on it.");
         }
         manager.fireEvent(event);
@@ -42,6 +44,7 @@ public class EventImpl<T> implements Event<T>{
     @Override
     public void fireAsync(T event) {
         if (manager == null) {
+            ExceptionManager.makeException("You should inject the event in order to call fire on it.").throwManaged();
             throw new DSException("You should inject the event in order to call fire on it.");
         }
         manager.fireAsyncEvent(event);

@@ -30,6 +30,8 @@ import cx.ath.mancel01.dependencyshot.event.InjectionStartedEvent;
 import cx.ath.mancel01.dependencyshot.event.InjectionStoppedEvent;
 import cx.ath.mancel01.dependencyshot.exceptions.DSCyclicDependencyDetectedException;
 import cx.ath.mancel01.dependencyshot.exceptions.DSException;
+import cx.ath.mancel01.dependencyshot.exceptions.ExceptionManagedException;
+import cx.ath.mancel01.dependencyshot.exceptions.ExceptionManager;
 import cx.ath.mancel01.dependencyshot.graph.Binder;
 import cx.ath.mancel01.dependencyshot.graph.BinderAccessor;
 import cx.ath.mancel01.dependencyshot.graph.Binding;
@@ -156,6 +158,7 @@ public class InjectorImpl implements DSInjector {
                     Logger.getLogger(InjectorImpl.class.getName()).
                             log(Level.SEVERE, "Ooops, no bindings presents, "
                             + "can't inject your app ...");
+                    ExceptionManager.makeException("No bindings loaded").throwManaged();
                     throw new DSException("No bindings loaded");
                 }
             }
@@ -267,7 +270,8 @@ public class InjectorImpl implements DSInjector {
             return getInstance(c, null, null, scoped);
         } finally {
             if (DependencyShot.DEBUG) {
-                logger.info(new StringBuilder().append("Time elapsed for injection : ").append(System.currentTimeMillis() - startTime).append(" ms.").toString());
+                logger.info(new StringBuilder().append("Time elapsed for injection : ")
+                        .append(System.currentTimeMillis() - startTime).append(" ms.").toString());
             }
         }
     }
@@ -320,6 +324,8 @@ public class InjectorImpl implements DSInjector {
             if (b != null) {
                 return b;
             }
+            ExceptionManager.makeException(IllegalStateException.class,
+                    "No binding for " + c + " and " + annotation).throwManaged();
             throw new IllegalStateException("No binding for " + c + " and " + annotation);
         }
         //throw new IllegalStateException("No binding for " + c + " and " + annotation);
@@ -399,6 +405,7 @@ public class InjectorImpl implements DSInjector {
                     }
                     return result;
                 } catch (Exception e) {
+                    ExceptionManager.makeException(e).throwManaged();
                     throw new DSException(e);
                 }
             } else {
@@ -416,6 +423,7 @@ public class InjectorImpl implements DSInjector {
                         instanciatedClasses.put(c, instance);
                     }
                     if (!actualFromClass.isInterface() && instanciatedClasses.get(c) == null) {
+                        ExceptionManager.makeException("Can't proxy circular dependencies without interface.").throwManaged();
                         throw new DSException("Can't proxy circular dependencies without interface.");
                     }
                     try {
@@ -437,6 +445,8 @@ public class InjectorImpl implements DSInjector {
                         circularClasses.remove(c);
                     }
                 } else {
+                    ExceptionManager.makeException(DSCyclicDependencyDetectedException.class,
+                            "Circular dependency detected on " + c.getName()).throwManaged();
                     throw new DSCyclicDependencyDetectedException(
                             "Circular dependency detected on " + c.getName());
                 }
@@ -469,6 +479,7 @@ public class InjectorImpl implements DSInjector {
             eventManager.fireAsyncEvent(stop);
             return result;
         } catch (Exception e) {
+            ExceptionManager.makeException(e).throwManaged();
             throw new DSException(e);
         }
     }
@@ -490,6 +501,10 @@ public class InjectorImpl implements DSInjector {
             List<Method> emptyList = Collections.emptyList();
             classHandler.classInjection(null, c, emptyList, true, this);
         } catch (Exception e) {
+            if (e instanceof ExceptionManagedException) {
+                ExceptionManager.makeException(e).throwManaged();
+            }
+            ExceptionManager.makeException("Could not inject static members for " + c, e).throwManaged();
             throw new DSException("Could not inject static members for " + c, e);
         }
         eventManager.fireAsyncEvent(stop);
