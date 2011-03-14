@@ -64,12 +64,13 @@ public class AopInstanceHandler extends InstanceHandler{
                 interceptors.addAll(((AOPBinder) binder).getInterceptors(clazz, injector));
             }
         }
+        Object aopInstance = decorateInstance(instance, interf, injector, point);
         if (interceptors.isEmpty()) {
-            return decorateInstance(instance, interf, injector, point);
+            return aopInstance;
         } else  {
             MethodInvocationHandler handler = new MethodInvocationHandler(
-                    interceptors, interf, clazz, instance); // TODO decorate here too
-            return ProxyHelper.createProxy(instance, handler);
+                    interceptors, interf, clazz, aopInstance); // TODO decorate here too
+            return ProxyHelper.createProxy(aopInstance, handler);
         }
     }
 

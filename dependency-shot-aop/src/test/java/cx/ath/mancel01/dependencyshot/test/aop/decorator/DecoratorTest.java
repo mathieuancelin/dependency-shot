@@ -20,6 +20,7 @@ package cx.ath.mancel01.dependencyshot.test.aop.decorator;
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.aop.AOPBinder;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -41,7 +42,11 @@ public class DecoratorTest {
         });
         injector.allowCircularDependencies(true);
         Service service = injector.getInstance(Service.class);
+        ServiceDecorator dec = injector.getInstance(ServiceDecorator.class);
+        PaymentService impl = injector.getInstance(PaymentService.class);
         service.pay(123.5);
+        Assert.assertTrue(dec.calls == 1);
+        Assert.assertTrue(impl.calls == 1);
     }
 
     @Test
@@ -55,6 +60,10 @@ public class DecoratorTest {
         });
         injector.allowCircularDependencies(true);
         Service service = injector.getInstance(Service.class);
+        ServiceDecorator dec = injector.getInstance(ServiceDecorator.class);
+        PaymentService impl = injector.getInstance(PaymentService.class);
         service.pay(123.5);
+        Assert.assertTrue(dec.calls == 1);
+        Assert.assertTrue(impl.calls == 1);
     }
 }

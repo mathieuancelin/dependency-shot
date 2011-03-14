@@ -17,14 +17,20 @@
 
 package cx.ath.mancel01.dependencyshot.test.aop.decorator;
 
+import javax.inject.Singleton;
+
 /**
  *
  * @author mathieu
  */
+@Singleton
 public class PaymentService implements Service {
+
+    public int calls = 0;
 
     @Override
     public void pay(double price) {
+        calls++;
         System.out.println("Paying " + price + " ...");
     }
 
