@@ -30,7 +30,7 @@ public class ScanningTest {
 
     @Test
     public void testScanning() {
-        AnnotationsConfigurator conf = (AnnotationsConfigurator) DependencyShot.getSpecificConfigurator();
+        AnnotationsConfigurator conf = DependencyShot.getSpecificConfigurator(AnnotationsConfigurator.class);
         conf.setPackagePrefix("com.exemple");
         conf.setShowBindings(true);
         final DSInjector injector = conf.getInjector();
@@ -38,7 +38,7 @@ public class ScanningTest {
 
     @Test
     public void testScanningWithoutPrefix() {
-        AnnotationsConfigurator conf = (AnnotationsConfigurator) DependencyShot.getSpecificConfigurator();
+        AnnotationsConfigurator conf = DependencyShot.getSpecificConfigurator(AnnotationsConfigurator.class);
         conf.setShowBindings(true);
         final DSInjector injector = conf.getInjector();
     }

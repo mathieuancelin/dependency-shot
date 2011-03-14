@@ -30,7 +30,7 @@ public class DslTest {
 
     @Test
     public void testDsl() {
-        DSInjector injector = DependencyShot.getSpecificConfigurator()
+        DSInjector injector = DependencyShot.getSpecificConfigurator(DslConfigurator.class)
                 .getInjector("src/main/resources/dsl.groovy");
         BasicClient client = injector.getInstance(BasicClient.class);
         client.go();
@@ -41,7 +41,7 @@ public class DslTest {
 
     @Test
     public void testDsl2() {
-        DSInjector injector = DependencyShot.getSpecificConfigurator()
+        DSInjector injector = DependencyShot.getSpecificConfigurator(DslConfigurator.class)
                 .getInjector("src/main/resources/dsl2.groovy");
         BasicClient client = injector.getInstance(BasicClient.class);
         client.go();

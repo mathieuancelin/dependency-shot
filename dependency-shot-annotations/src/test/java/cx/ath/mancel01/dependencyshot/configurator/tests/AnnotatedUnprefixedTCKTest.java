@@ -33,7 +33,7 @@ import org.atinject.tck.auto.Car;
 public class AnnotatedUnprefixedTCKTest extends TestSuite {
     
     public static Test suite() {
-        AnnotationsConfigurator conf = (AnnotationsConfigurator) DependencyShot.getSpecificConfigurator();
+        AnnotationsConfigurator conf = DependencyShot.getSpecificConfigurator(AnnotationsConfigurator.class);
         conf.setShowBindings(true);
         final DSInjector injector = conf.getInjector();
   		Car car = injector.getInstance(Car.class);

@@ -19,6 +19,7 @@ package cx.ath.mancel01.dependencyshot.dsl.tck;
 
 import cx.ath.mancel01.dependencyshot.DependencyShot;
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
+import cx.ath.mancel01.dependencyshot.dsl.DslConfigurator;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.atinject.tck.Tck;
@@ -32,7 +33,7 @@ import org.atinject.tck.auto.Car;
 public class TCKGroovyTest extends TestSuite {
     
     public static Test suite() {
-        DSInjector injector = DependencyShot.getSpecificConfigurator()
+        DSInjector injector = DependencyShot.getSpecificConfigurator(DslConfigurator.class)
                 .getInjector("src/main/resources/tck2.groovy");
   		Car car = injector.getInstance(Car.class);
   		return Tck.testsFor(car, false, true);

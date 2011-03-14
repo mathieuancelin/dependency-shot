@@ -122,4 +122,23 @@ public final class DependencyShot {
         }
         return null;
     }
+
+        /**
+     * Allow user to manipulate a configurator extension point.
+     *
+     * @return a SPI configurationHandler.
+     */
+    public static <T extends ConfigurationHandler> T getSpecificConfigurator(Class<T> confHandler) {
+        PluginsLoader loader = new PluginsLoader();
+        loader.loadFirstPlugins();
+        List<T> handlers = (List<T>)
+                loader.getConfigurationHandlers();
+        for (T handler : handlers) {
+            if (handler.getClass().equals(confHandler)) {
+                return handler;
+            }
+        }
+        throw new RuntimeException("Can't find a specific configuration handler for : "
+                + confHandler.getSimpleName());
+    }
 }
