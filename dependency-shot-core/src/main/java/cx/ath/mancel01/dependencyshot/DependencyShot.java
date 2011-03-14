@@ -24,7 +24,10 @@ import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.injection.InjectorBuilder;
 import cx.ath.mancel01.dependencyshot.spi.ConfigurationHandler;
 import cx.ath.mancel01.dependencyshot.spi.PluginsLoader;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -101,29 +104,25 @@ public final class DependencyShot {
         }
     }
     /**
-     * Allow user to manipulate a configurator extension point.
+     * Allow user to manipulate configurators extension points.
      *
      * @return a SPI configurationHandler.
      */
-    public static ConfigurationHandler getSpecificConfigurator() {
+    public static <T extends ConfigurationHandler> Collection<T> getSpecificConfigurators(Class<T> confHandler) {
+        List<T> configurators = new ArrayList<T>();
         PluginsLoader loader = new PluginsLoader();
         loader.loadFirstPlugins();
-        List<ConfigurationHandler> handlers = (List<ConfigurationHandler>)
+        List<T> handlers = (List<T>)
                 loader.getConfigurationHandlers();
-        if (handlers.size() > 1) {
-            logger.warning("There are more than one configurator plugin in the classpath.");
-            logger.warning(new StringBuilder()
-                    .append("The plugin : ")
-                    .append(handlers.get(0).getClass().getSimpleName())
-                    .append(" is used for this session."). toString());
+        for (T handler : handlers) {
+            if (handler.getClass().equals(confHandler)) {
+                configurators.add(handler);
+            }
         }
-        if (handlers.size() > 0) {
-            return handlers.get(0);
-        }
-        return null;
+        return configurators;
     }
 
-        /**
+    /**
      * Allow user to manipulate a configurator extension point.
      *
      * @return a SPI configurationHandler.
@@ -140,5 +139,18 @@ public final class DependencyShot {
         }
         throw new RuntimeException("Can't find a specific configuration handler for : "
                 + confHandler.getSimpleName());
+    }
+
+    /**
+     * Allow user to manipulate configurators extension points.
+     *
+     * @return a SPI configurationHandler.
+     */
+    public static <T extends ConfigurationHandler> Collection<T> getSpecificConfigurators() {
+        PluginsLoader loader = new PluginsLoader();
+        loader.loadFirstPlugins();
+        List<T> handlers = (List<T>)
+                loader.getConfigurationHandlers();
+        return Collections.unmodifiableCollection(handlers);
     }
 }
