@@ -143,11 +143,6 @@ public class AnnotationsConfigurator extends ConfigurationHandler {
     }
 
     @Override
-    public final Object getDelegate() {
-        return this;
-    }
-
-    @Override
     public final boolean isAutoEnabled() {
         return true;
     }

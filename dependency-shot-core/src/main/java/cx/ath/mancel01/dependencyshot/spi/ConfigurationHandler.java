@@ -41,10 +41,6 @@ public abstract class ConfigurationHandler {
      */
     public abstract InjectorImpl getInjector(Stage stage);
     /**
-     * @return the instance of the actual spi configurator.
-     */
-    public abstract Object getDelegate();
-    /**
      * @return if this configurator auto load its configuration.
      */
     public abstract boolean isAutoEnabled();

@@ -61,14 +61,6 @@ public class DslConfigurator extends ConfigurationHandler {
      * {@inheritDoc}
      */
     @Override
-    public Object getDelegate() {
-        return this; 
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public boolean isAutoEnabled() {
         return false;
     }
