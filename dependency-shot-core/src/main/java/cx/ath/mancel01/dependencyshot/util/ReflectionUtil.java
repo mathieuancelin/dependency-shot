@@ -17,6 +17,8 @@
 package cx.ath.mancel01.dependencyshot.util;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Proxy;
 import java.util.Set;
 import javax.inject.Named;
 import javax.inject.Qualifier;
@@ -65,5 +67,11 @@ public class ReflectionUtil {
             }
         }
         return annotation;
+    }
+
+    public static Object getProxyFor(InvocationHandler handler, Class... interfaces) {
+         return Proxy.newProxyInstance(
+                ReflectionUtil.class.getClassLoader(),
+                interfaces, handler);
     }
 }
