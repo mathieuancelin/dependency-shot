@@ -59,7 +59,8 @@ public class DSServiceLoader<T extends Object> implements Iterable<T> {
     }
 
     private static <T> Collection<T> loadFromServices(Class<T> interf) throws Exception {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        ClassLoader classLoader = DSServiceLoader.class.getClassLoader();
+        //Thread.currentThread().getContextClassLoader();
         Enumeration<URL> e = classLoader.getResources("META-INF/services/" + interf.getName());
         Collection<T> services = new ArrayList<T>();
         while (e.hasMoreElements()) {

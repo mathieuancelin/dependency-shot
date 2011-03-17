@@ -417,9 +417,10 @@ public class InjectorImpl implements DSInjector {
                         proxy.setInjector(this);
                         proxy.setClazz(c);
                         proxy.setCircularConstructorArgumentsInstances(circularConstructorArgumentsInstances);
-                        T instance = (T) Proxy.newProxyInstance(
-                                Thread.currentThread().getContextClassLoader(),
-                                new Class[]{actualFromClass}, proxy);
+                        T instance = (T) ReflectionUtil.getProxyFor(proxy, actualFromClass);
+                                //Proxy.newProxyInstance(
+                                //Thread.currentThread().getContextClassLoader(),
+                                //new Class[]{actualFromClass}, proxy);
                         instanciatedClasses.put(c, instance);
                     }
                     if (!actualFromClass.isInterface() && instanciatedClasses.get(c) == null) {

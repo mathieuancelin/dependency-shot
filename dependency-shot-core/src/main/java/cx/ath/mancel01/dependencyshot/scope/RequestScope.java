@@ -20,6 +20,7 @@ package cx.ath.mancel01.dependencyshot.scope;
 import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
+import cx.ath.mancel01.dependencyshot.util.ReflectionUtil;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -63,9 +64,7 @@ public class RequestScope extends CustomScopeHandler {
             return injector.createInstance(clazz);
         }
         RequestScopeProxy proxy = new RequestScopeProxy(threadLocalinstances, clazz, injector);
-        return (T) Proxy.newProxyInstance(
-                    Thread.currentThread().getContextClassLoader(),
-                    new Class[]{interf}, proxy);
+        return (T) ReflectionUtil.getProxyFor(proxy, interf);
     }
 
     @Override

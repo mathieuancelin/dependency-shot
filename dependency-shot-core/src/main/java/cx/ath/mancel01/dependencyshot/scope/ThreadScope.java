@@ -20,8 +20,8 @@ package cx.ath.mancel01.dependencyshot.scope;
 import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
+import cx.ath.mancel01.dependencyshot.util.ReflectionUtil;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -60,9 +60,7 @@ public class ThreadScope extends CustomScopeHandler {
             return injector.createInstance(clazz);
         }
         RequestScopeProxy proxy = new RequestScopeProxy(threadLocalinstances, clazz, injector);
-        return (T) Proxy.newProxyInstance(
-                    Thread.currentThread().getContextClassLoader(),
-                    new Class[]{interf}, proxy);
+        return (T) ReflectionUtil.getProxyFor(proxy, interf);
     }
 
     @Override

@@ -254,9 +254,10 @@ public class Binding<T> {
                         scopeHandler =
                             new ScopeInvocationHandler(injector.getScopeHandler(scope),
                                 from, to, point, injector);
-                    result = (T) Proxy.newProxyInstance(
-                            Thread.currentThread().getContextClassLoader(),
-                            new Class[]{from}, scopeHandler);
+                    result = (T) ReflectionUtil.getProxyFor(scopeHandler, from);
+                            //Proxy.newProxyInstance(
+                            //Thread.currentThread().getContextClassLoader(),
+                            //new Class[]{from}, scopeHandler);
                 } else {
                     result = (T) injector.getScopeHandler(scope).getScopedInstance(from, to, point, injector);
                 }

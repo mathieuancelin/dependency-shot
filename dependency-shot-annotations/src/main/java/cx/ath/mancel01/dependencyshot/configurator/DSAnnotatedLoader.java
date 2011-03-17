@@ -49,7 +49,8 @@ public class DSAnnotatedLoader {
     private static Collection<Class<?>> load(String filename, String packagePrefix) {
         Collection<Class<?>> services = new ArrayList<Class<?>>();
         try {
-            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+            ClassLoader classLoader = DSAnnotatedLoader.class.getClassLoader();
+                    //Thread.currentThread().getContextClassLoader();
             Enumeration<URL> e = classLoader.getResources(filename);
             while (e.hasMoreElements()) {
                 URL url = e.nextElement();
