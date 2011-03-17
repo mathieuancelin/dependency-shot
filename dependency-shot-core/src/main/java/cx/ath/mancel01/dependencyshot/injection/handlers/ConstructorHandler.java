@@ -16,9 +16,9 @@
  */
 package cx.ath.mancel01.dependencyshot.injection.handlers;
 
-import cx.ath.mancel01.dependencyshot.exceptions.DSException;
 import cx.ath.mancel01.dependencyshot.exceptions.ExceptionManager;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
+import cx.ath.mancel01.dependencyshot.util.ReflectionUtil;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -75,20 +75,7 @@ public final class ConstructorHandler {
                     arguments[j] = injector.getProviderOrInstance((Class<?>) parameterTypes[j], genericParameterTypes[j],
                             parameterAnnotations[j], constructor);
                 }
-                boolean accessible = constructor.isAccessible();
-                // if the constructor is private, then put it public for newinstance creation
-                if (!accessible) {
-                    constructor.setAccessible(true);
-                }
-                // create new instance with the constructor
-                try {
-                    return c.cast(constructor.newInstance(arguments));
-                } finally {
-                    // if constructor was private, then put it private back
-                    if (!accessible) {
-                        constructor.setAccessible(accessible);
-                    }
-                }
+                return ReflectionUtil.invokeConstructor(constructor, c, arguments);
             }
         }
         ExceptionManager

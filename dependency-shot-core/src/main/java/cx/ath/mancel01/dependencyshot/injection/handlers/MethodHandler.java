@@ -17,6 +17,7 @@
 package cx.ath.mancel01.dependencyshot.injection.handlers;
 
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
+import cx.ath.mancel01.dependencyshot.util.ReflectionUtil;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -66,7 +67,7 @@ public final class MethodHandler {
             Inject annotation = method.getAnnotation(Inject.class);
             // check if method is injectable and if you can inject static methods and if method is overriden
             if (annotation != null && (staticInjection == Modifier.isStatic(method.getModifiers()))
-                    && !isOverridden(method, maybeOverrides)) {
+                    && !ReflectionUtil.isOverridden(method, maybeOverrides)) {
                 Class<?>[] parameterTypes = method.getParameterTypes();
                 Type[] genericParameterTypes = method.getGenericParameterTypes();
                 Annotation[][] parameterAnnotations = method.getParameterAnnotations();
@@ -78,87 +79,8 @@ public final class MethodHandler {
                             parameterAnnotations[j],
                             method);
                 }
-                boolean accessible = method.isAccessible();
-                // set a private method as public method to invoke it
-                if (!accessible) {
-                    method.setAccessible(true);
-                }
-                // invocation of the method with rights parameters
-                try {
-                    method.invoke(instance, parameters);
-                } finally {
-                    // if method was private, then put it private back
-                    if (!accessible) {
-                        method.setAccessible(accessible);
-                    }
-                }
+                ReflectionUtil.invokeMethod(method, instance, parameters);
             }
         }
-    }
-
-    /**
-     * Check if a method is overridden by another one contained in a list.
-     *
-     * @param method method to check.
-     * @param maybeOverrides methods that can overrides method.
-     * @return if the method is overridden.
-     */
-    private static boolean isOverridden(Method method, List<Method> maybeOverrides) {
-        for (Method candidate : maybeOverrides) {
-            if (isOverridden(method, candidate)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Check if a method is overriden by another one.
-     *
-     * @param method method to check.
-     * @param candidate method to check against.
-     * @return if the method is overridden.
-     */
-    private static boolean isOverridden(Method method, Method candidate) {
-        // check f names are the same
-        if (!method.getName().equals(candidate.getName())) {
-            return false;
-        }
-        int modifiers = candidate.getModifiers();
-        // check if candidate is private
-        boolean isPrivate = Modifier.isPrivate(modifiers);
-        if (isPrivate) {
-            return false;
-        }
-        // check if candidate is static
-        boolean isStatic = Modifier.isStatic(modifiers);
-        if (isStatic) {
-            return false;
-        }
-        boolean isDefault = !isPrivate
-                && !Modifier.isPublic(modifiers)
-                && !Modifier.isProtected(modifiers);
-        boolean samePackage =
-                method.getDeclaringClass().getPackage()
-                == candidate.getDeclaringClass().getPackage();
-        if (isDefault && !samePackage) {
-            return false;
-        }
-        // check if parameters are the same
-        Class<?>[] methodParameters = method.getParameterTypes();
-        Class<?>[] candidateParameters = candidate.getParameterTypes();
-        // check numbers of parameters
-        if (methodParameters.length != candidateParameters.length) {
-            return false;
-        }
-        // check types of parameters
-        for (int i = 0; i < methodParameters.length; i++) {
-            Class<?> class1 = methodParameters[i];
-            Class<?> class2 = candidateParameters[i];
-            if (!class1.equals(class2)) {
-                return false;
-            }
-        }
-        return true;
     }
 }

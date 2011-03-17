@@ -19,6 +19,7 @@ package cx.ath.mancel01.dependencyshot.injection.handlers;
 import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
 import cx.ath.mancel01.dependencyshot.exceptions.ExceptionManager;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
+import cx.ath.mancel01.dependencyshot.util.ReflectionUtil;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
@@ -73,19 +74,7 @@ public final class FieldsHandler {
                 // get an instance of the field (simple instance or provided one
                 Object injectedObject = injector.getProviderOrInstance(type, genericType,
                         field.getAnnotations(), field);
-                boolean accessible = field.isAccessible();
-                // if field is private then put it private for injectedObject setting
-                if (!accessible) {
-                    field.setAccessible(true);
-                }
-                try {
-                    field.set(instance, injectedObject);
-                } finally {
-                    // if the field was private, then put it private back
-                    if (!accessible) {
-                        field.setAccessible(accessible);
-                    }
-                }
+                ReflectionUtil.setField(field, instance, injectedObject);
             }
         }
     }

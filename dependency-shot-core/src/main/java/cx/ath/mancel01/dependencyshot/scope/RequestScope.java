@@ -22,6 +22,7 @@ import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
 import cx.ath.mancel01.dependencyshot.util.ReflectionUtil;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -88,21 +89,10 @@ public class RequestScope extends CustomScopeHandler {
             if (method.isAnnotationPresent(PreDestroy.class)) {
                 Class<?>[] parameterTypes = method.getParameterTypes();
                 Object[] parameters = new Object[parameterTypes.length];
-                boolean accessible = method.isAccessible();
-                // set a private method as public method to invoke it
-                if (!accessible) {
-                    method.setAccessible(true);
-                }
-                // invocation of the method with rights parameters
                 try {
-                    method.invoke(o, parameters);
+                    ReflectionUtil.invokeMethod(method, o, parameters);
                 } catch (Exception ex) {
                     logger.log(Level.SEVERE, null, ex);
-                } finally {
-                    // if method was private, then put it private back
-                    if (!accessible) {
-                        method.setAccessible(accessible);
-                    }
                 }
             }
         }
