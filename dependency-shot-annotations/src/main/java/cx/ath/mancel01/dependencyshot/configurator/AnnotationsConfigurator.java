@@ -48,7 +48,7 @@ public class AnnotationsConfigurator extends ConfigurationHandler {
     private boolean showBindings = false;
 
     @Override
-    public final InjectorImpl getInjector(Stage stage, Object... params) {
+    public final InjectorImpl getInjector(Stage stage) {
         Binder binder = new AnnotationBinder();
 
         Collection<Class<?>> components = new ArrayList<Class<?>>();
@@ -152,11 +152,13 @@ public class AnnotationsConfigurator extends ConfigurationHandler {
         return true;
     }
 
-    public final void setPackagePrefix(String packagePrefix) {
+    public final AnnotationsConfigurator withPackagePrefix(String packagePrefix) {
         this.packagePrefix = packagePrefix;
+        return this;
     }
 
-    public final void setShowBindings(boolean showBindings) {
+    public final AnnotationsConfigurator showBindings(boolean showBindings) {
         this.showBindings = showBindings;
+        return this;
     }
 }

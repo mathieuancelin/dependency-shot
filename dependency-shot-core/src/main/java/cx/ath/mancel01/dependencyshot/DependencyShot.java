@@ -108,7 +108,7 @@ public final class DependencyShot {
      *
      * @return a SPI configurationHandler.
      */
-    public static <T extends ConfigurationHandler> Collection<T> getSpecificConfigurators(Class<T> confHandler) {
+    public static <T extends ConfigurationHandler> Collection<T> configurators(Class<T> confHandler) {
         List<T> configurators = new ArrayList<T>();
         PluginsLoader loader = new PluginsLoader();
         loader.loadFirstPlugins();
@@ -127,7 +127,7 @@ public final class DependencyShot {
      *
      * @return a SPI configurationHandler.
      */
-    public static <T extends ConfigurationHandler> T getSpecificConfigurator(Class<T> confHandler) {
+    public static <T extends ConfigurationHandler> T configurator(Class<T> confHandler) {
         PluginsLoader loader = new PluginsLoader();
         loader.loadFirstPlugins();
         List<T> handlers = (List<T>)
@@ -146,7 +146,7 @@ public final class DependencyShot {
      *
      * @return a SPI configurationHandler.
      */
-    public static <T extends ConfigurationHandler> Collection<T> getSpecificConfigurators() {
+    public static <T extends ConfigurationHandler> Collection<T> configurators() {
         PluginsLoader loader = new PluginsLoader();
         loader.loadFirstPlugins();
         List<T> handlers = (List<T>)

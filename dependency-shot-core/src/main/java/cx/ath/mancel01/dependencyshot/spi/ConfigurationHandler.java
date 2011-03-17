@@ -31,15 +31,15 @@ public abstract class ConfigurationHandler {
      * @param binders configuration binders.
      * @return the configurated injector.
      */
-    public InjectorImpl getInjector(final Object... params) {
-        return getInjector(null, params);
+    public InjectorImpl getInjector() {
+        return getInjector(null);
     }
     /**
      * Get an injector from configuration binders.
      * @param binders configuration binders.
      * @return the configurated injector.
      */
-    public abstract InjectorImpl getInjector(Stage stage, final Object... params);
+    public abstract InjectorImpl getInjector(Stage stage);
     /**
      * @return the instance of the actual spi configurator.
      */

@@ -33,8 +33,10 @@ import org.atinject.tck.auto.Car;
 public class TCKGroovyTest extends TestSuite {
     
     public static Test suite() {
-        DSInjector injector = DependencyShot.getSpecificConfigurator(DslConfigurator.class)
-                .getInjector("src/main/resources/tck2.groovy");
+        DSInjector injector = DependencyShot
+                .configurator(DslConfigurator.class)
+                .binder("src/main/resources/tck2.groovy")
+                .getInjector();
   		Car car = injector.getInstance(Car.class);
   		return Tck.testsFor(car, false, true);
     }

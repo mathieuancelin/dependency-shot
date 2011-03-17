@@ -36,8 +36,10 @@ import org.atinject.tck.auto.accessories.SpareTire;
 public class TCKFluentStaticTest extends TestSuite {
     
     public static Test suite() {
-        DSInjector injector = DependencyShot.getSpecificConfigurator(DslConfigurator.class)
-                .getInjector("src/main/resources/tck.groovy");
+        DSInjector injector = DependencyShot
+                .configurator(DslConfigurator.class)
+                .binder("src/main/resources/tck.groovy")
+                .getInjector();
         injector.injectStatics(Convertible.class);
         injector.injectStatics(Tire.class);
         injector.injectStatics(SpareTire.class);

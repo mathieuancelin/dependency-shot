@@ -25,6 +25,7 @@ import cx.ath.mancel01.dependencyshot.spi.ConfigurationHandler;
 import cx.ath.mancel01.dependencyshot.spi.PluginsLoader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -35,21 +36,23 @@ import java.util.logging.Logger;
 public class DslConfigurator extends ConfigurationHandler {
 
     private static final Logger logger = Logger.getLogger(DslConfigurator.class.getSimpleName());
+
+    private List<String> binderFiles = new ArrayList<String>();
+
+    public DslConfigurator binder(String path) {
+        binderFiles.add(path);
+        return this;
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public InjectorImpl getInjector(Stage stage, Object... params) {
+    public InjectorImpl getInjector(Stage stage) {
         Collection<Binder> binders = new ArrayList<Binder>();
-        if (params.length > 0) {
-            for (Object o : params) {
-                try {
-                    DslRunner runner = new cx.ath.mancel01.dependencyshot.dsl.Runner();
-                    binders.add(runner.getBindings((String) o));
-                } catch (Exception ex) {
-                    logger.severe(ex.getLocalizedMessage());
-                }
-            }
+        for (String path : binderFiles) {
+            DslRunner runner = new cx.ath.mancel01.dependencyshot.dsl.Runner();
+            binders.add(runner.getBindings(path));
         }
         return InjectorBuilder.makeInjector(binders, new PluginsLoader(), stage);
     }
