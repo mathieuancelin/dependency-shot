@@ -18,6 +18,9 @@
 package cx.ath.mancel01.dependencyshot.scope;
 
 import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
+import cx.ath.mancel01.dependencyshot.api.event.EventManager;
+import cx.ath.mancel01.dependencyshot.event.InjectionStartedEvent;
+import cx.ath.mancel01.dependencyshot.event.InjectionStoppedEvent;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
 import java.lang.annotation.Annotation;
@@ -36,6 +39,8 @@ public class SingletonScope extends CustomScopeHandler {
      */
     private Map<Class<?>, Object> singletonContext;
 
+    private EventManager eventManager;
+
     public SingletonScope() {
         singletonContext = new HashMap<Class<?>, Object>();
     }
@@ -48,12 +53,24 @@ public class SingletonScope extends CustomScopeHandler {
     @Override
     public <T> T getScopedInstance(Class<T> interf, Class<? extends T> clazz,
             InjectionPoint p, InjectorImpl injector) {
+        if (eventManager == null) {
+            eventManager = injector.getInstance(EventManager.class);
+        }
         // check if the singleton is present in the singleton context
         T result = clazz.cast(singletonContext.get(clazz));
         // if not, create one
         if (result == null) {
+            InjectionStartedEvent start = new InjectionStartedEvent();
+            InjectionStoppedEvent stop = new InjectionStoppedEvent();
+            start.setBeanType(interf);
+            stop.setBeanType(interf);
+            eventManager.fireAsyncEvent(start);
+
             result = injector.createInstance(clazz);
             singletonContext.put(clazz, result);
+
+            stop.setBeanInstance(result);
+            eventManager.fireAsyncEvent(stop);
         }
         return result;
     }
