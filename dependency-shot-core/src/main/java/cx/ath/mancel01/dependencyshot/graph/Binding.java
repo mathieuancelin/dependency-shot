@@ -134,7 +134,7 @@ public class Binding<T> {
             ExceptionManager
                     .makeException(DSIllegalStateException.class, "A binding must contains a 'from' class.")
                     .throwManaged();
-            throw new RuntimeException(); // should never append
+            throw new RuntimeException(); // should never happen
         }
         if (params.containsKey(DslConstants.TO)) {
             this.to = (Class<? extends T>) params.get(DslConstants.TO);
@@ -266,7 +266,7 @@ public class Binding<T> {
                             "The scope " + scopedInstanceStore.getClass().getSimpleName()
                             + " is invalid. Can't perform injection.")
                         .throwManaged();
-                throw new RuntimeException(); // should never append
+                throw new RuntimeException(); // should never happen
             }
         } else {
             result = (T) injector.createInstance(to);
@@ -288,7 +288,7 @@ public class Binding<T> {
                             + to
                             + ". Can't inject object with null value. For that use @Nullable annotation.")
                         .throwManaged();
-                throw new RuntimeException(); // should never append
+                throw new RuntimeException(); // should never happen
             }
         }
         if (!nullable) {

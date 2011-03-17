@@ -93,6 +93,6 @@ public final class CircularConstructorHandler {
         ExceptionManager
                 .makeException("Could not find @Inject constructor for " + c)
                 .throwManaged();
-        throw new RuntimeException(); // should never append
+        throw new RuntimeException(); // should never happen
     }
 }

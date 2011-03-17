@@ -160,7 +160,7 @@ public class InjectorImpl implements DSInjector {
                     ExceptionManager
                             .makeException("No bindings loaded")
                             .throwManaged();
-                    throw new RuntimeException(); // should never append
+                    throw new RuntimeException(); // should never happen
                 }
             }
         }
@@ -329,7 +329,7 @@ public class InjectorImpl implements DSInjector {
                     .makeException(IllegalStateException.class,
                         "No binding for " + c + " and " + annotation)
                     .throwManaged();
-            throw new RuntimeException(); // should never append
+            throw new RuntimeException(); // should never happen
         }
         //throw new IllegalStateException("No binding for " + c + " and " + annotation);
     }
@@ -427,7 +427,7 @@ public class InjectorImpl implements DSInjector {
                         ExceptionManager
                                 .makeException("Can't proxy circular dependencies without interface.")
                                 .throwManaged();
-                        throw new RuntimeException(); // should never append
+                        throw new RuntimeException(); // should never happen
                     }
                     try {
                         Object result = (T) instanciatedClasses.get(c);
@@ -452,7 +452,7 @@ public class InjectorImpl implements DSInjector {
                             .makeException(DSCyclicDependencyDetectedException.class,
                                 "Circular dependency detected on " + c.getName())
                             .throwManaged();
-                    throw new RuntimeException(); // should never append
+                    throw new RuntimeException(); // should never happen
                 }
             }
         }
@@ -511,7 +511,7 @@ public class InjectorImpl implements DSInjector {
             ExceptionManager
                     .makeException("Could not inject static members for " + c, e)
                     .throwManaged();
-            throw new RuntimeException(); // should never append
+            throw new RuntimeException(); // should never happen
         }
         eventManager.fireAsyncEvent(stop);
     }

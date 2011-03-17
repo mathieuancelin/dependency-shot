@@ -54,7 +54,7 @@ public abstract class AutoEvent {
             ExceptionManager
                     .makeException("You should inject the event in order to call fire on it.")
                     .throwManaged();
-            throw new RuntimeException();
+            throw new RuntimeException(); // should never happen
         }
         manager.fireEvent(this);
     }

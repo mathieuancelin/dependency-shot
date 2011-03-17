@@ -66,7 +66,7 @@ public final class FieldsHandler {
                     ExceptionManager
                             .makeException("Cannot inject final field")
                             .throwManaged();
-                    throw new RuntimeException(); // should never append
+                    throw new RuntimeException(); // should never happen
                 }
                 Class<?> type = field.getType();
                 Type genericType = field.getGenericType();

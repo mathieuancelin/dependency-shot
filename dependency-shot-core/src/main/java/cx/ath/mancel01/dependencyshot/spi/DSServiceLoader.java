@@ -56,7 +56,7 @@ public class DSServiceLoader<T extends Object> implements Iterable<T> {
             ExceptionManager
                     .makeException("Error while loading services : ", ex)
                     .throwManaged();
-            throw new RuntimeException(); // should never append
+            throw new RuntimeException(); // should never happen
         }
     }
 

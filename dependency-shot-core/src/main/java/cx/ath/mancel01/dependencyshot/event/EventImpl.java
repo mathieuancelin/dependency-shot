@@ -38,7 +38,7 @@ public class EventImpl<T> implements Event<T>{
             ExceptionManager
                     .makeException("You should inject the event in order to call fire on it.")
                     .throwManaged();
-            throw new RuntimeException(); // should never append
+            throw new RuntimeException(); // should never happen
         }
         manager.fireEvent(event);
     }
@@ -49,7 +49,7 @@ public class EventImpl<T> implements Event<T>{
             ExceptionManager
                     .makeException("You should inject the event in order to call fire on it.")
                     .throwManaged();
-            throw new RuntimeException(); // should never append
+            throw new RuntimeException(); // should never happen
         }
         manager.fireAsyncEvent(event);
     }

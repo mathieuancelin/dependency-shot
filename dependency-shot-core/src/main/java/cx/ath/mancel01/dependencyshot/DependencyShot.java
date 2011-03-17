@@ -140,7 +140,7 @@ public final class DependencyShot {
         }
         ExceptionManager.makeException("Can't find a specific configuration handler for : "
                 + confHandler.getSimpleName()).throwManaged();
-        throw new RuntimeException(); // should never append
+        throw new RuntimeException(); // should never happen
     }
 
     /**
