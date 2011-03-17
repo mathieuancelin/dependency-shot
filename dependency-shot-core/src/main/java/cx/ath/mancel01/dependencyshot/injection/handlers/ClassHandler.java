@@ -14,7 +14,6 @@
  *  limitations under the License.
  *  under the License.
  */
-
 package cx.ath.mancel01.dependencyshot.injection.handlers;
 
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
@@ -35,8 +34,9 @@ public final class ClassHandler {
     private static final Logger logger = Logger.getLogger(ClassHandler.class.getSimpleName());
 
     private FieldsHandler fieldsHandler;
-
+    
     private MethodHandler methodHandler;
+
     /**
      * Constructor.
      */
@@ -64,20 +64,20 @@ public final class ClassHandler {
             List<Method> maybeOverrides,
             boolean staticInjection,
             InjectorImpl injector) throws IllegalAccessException,
-                                          InvocationTargetException {
-		Class<?> superclass = c.getSuperclass();
+            InvocationTargetException {
+        Class<?> superclass = c.getSuperclass();
         // check if c has a superclass and if we can inject static stuff
-		if (superclass != null && !staticInjection) {
+        if (superclass != null && !staticInjection) {
             // get possible overridden method
-			List<Method> overideMethodOfTheClass = new ArrayList<Method>(maybeOverrides);
+            List<Method> overideMethodOfTheClass = new ArrayList<Method>(maybeOverrides);
             // and add methods of the class
-			overideMethodOfTheClass.addAll(Arrays.asList(c.getDeclaredMethods()));
+            overideMethodOfTheClass.addAll(Arrays.asList(c.getDeclaredMethods()));
             // inject the superclass stuff in the instance
-			classInjection(instance, superclass, overideMethodOfTheClass, staticInjection, injector);
-		}
+            classInjection(instance, superclass, overideMethodOfTheClass, staticInjection, injector);
+        }
         // inject fields of the instance
-		fieldsHandler.fieldsInjection(instance, c, staticInjection, injector);
+        fieldsHandler.fieldsInjection(instance, c, staticInjection, injector);
         // inject methods of the instance
-		methodHandler.methodsInjection(instance, c, maybeOverrides, staticInjection, injector);
-	}
+        methodHandler.methodsInjection(instance, c, maybeOverrides, staticInjection, injector);
+    }
 }

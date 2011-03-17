@@ -38,7 +38,9 @@ public final class MethodHandler {
     /**
      * Constructor.
      */
-    public MethodHandler() {}
+    public MethodHandler() {
+    }
+
     /**
      * Inject all injectable methods of an object.
      * 
@@ -56,11 +58,11 @@ public final class MethodHandler {
             List<Method> maybeOverrides,
             boolean staticInjection,
             InjectorImpl injector) throws IllegalAccessException,
-                                          InvocationTargetException {
-        
+            InvocationTargetException {
+
         Method[] methodsOfTheClass = c.getDeclaredMethods();
         // for each method of the class
-        for(Method method : methodsOfTheClass) {
+        for (Method method : methodsOfTheClass) {
             Inject annotation = method.getAnnotation(Inject.class);
             // check if method is injectable and if you can inject static methods and if method is overriden
             if (annotation != null && (staticInjection == Modifier.isStatic(method.getModifiers()))
@@ -102,13 +104,13 @@ public final class MethodHandler {
      * @return if the method is overridden.
      */
     private static boolean isOverridden(Method method, List<Method> maybeOverrides) {
-		for (Method candidate : maybeOverrides) {
-			if (isOverridden(method, candidate)) {
-				return true;
-			}
-		}
-		return false;
-	}
+        for (Method candidate : maybeOverrides) {
+            if (isOverridden(method, candidate)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * Check if a method is overriden by another one.
@@ -117,46 +119,46 @@ public final class MethodHandler {
      * @param candidate method to check against.
      * @return if the method is overridden.
      */
-	private static boolean isOverridden(Method method, Method candidate) {
+    private static boolean isOverridden(Method method, Method candidate) {
         // check f names are the same
-		if (!method.getName().equals(candidate.getName())) {
-			return false;
-		}
-		int modifiers = candidate.getModifiers();
+        if (!method.getName().equals(candidate.getName())) {
+            return false;
+        }
+        int modifiers = candidate.getModifiers();
         // check if candidate is private
-		boolean isPrivate = Modifier.isPrivate(modifiers);
-		if (isPrivate) {
-			return false;
-		}
+        boolean isPrivate = Modifier.isPrivate(modifiers);
+        if (isPrivate) {
+            return false;
+        }
         // check if candidate is static
-		boolean isStatic = Modifier.isStatic(modifiers);
-		if (isStatic) {
-			return false;
-		}
-		boolean isDefault = !isPrivate && 
-                            !Modifier.isPublic(modifiers) &&
-                            !Modifier.isProtected(modifiers);
-		boolean samePackage = 
-                method.getDeclaringClass().getPackage() ==
-                candidate.getDeclaringClass().getPackage();
-		if (isDefault && !samePackage) {
-			return false;
-		}
+        boolean isStatic = Modifier.isStatic(modifiers);
+        if (isStatic) {
+            return false;
+        }
+        boolean isDefault = !isPrivate
+                && !Modifier.isPublic(modifiers)
+                && !Modifier.isProtected(modifiers);
+        boolean samePackage =
+                method.getDeclaringClass().getPackage()
+                == candidate.getDeclaringClass().getPackage();
+        if (isDefault && !samePackage) {
+            return false;
+        }
         // check if parameters are the same
-		Class<?>[] methodParameters = method.getParameterTypes();
-		Class<?>[] candidateParameters = candidate.getParameterTypes();
+        Class<?>[] methodParameters = method.getParameterTypes();
+        Class<?>[] candidateParameters = candidate.getParameterTypes();
         // check numbers of parameters
-		if (methodParameters.length != candidateParameters.length) {
-			return false;
-		}
+        if (methodParameters.length != candidateParameters.length) {
+            return false;
+        }
         // check types of parameters
-		for (int i = 0; i < methodParameters.length; i++) {
-			Class<?> class1 = methodParameters[i];
-			Class<?> class2 = candidateParameters[i];
-			if (!class1.equals(class2)) {
-				return false;
-			}
-		}
-		return true;
-	}
+        for (int i = 0; i < methodParameters.length; i++) {
+            Class<?> class1 = methodParameters[i];
+            Class<?> class2 = candidateParameters[i];
+            if (!class1.equals(class2)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

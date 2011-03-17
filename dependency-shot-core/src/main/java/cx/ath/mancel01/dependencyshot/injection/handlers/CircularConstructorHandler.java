@@ -14,7 +14,6 @@
  *  limitations under the License.
  *  under the License.
  */
-
 package cx.ath.mancel01.dependencyshot.injection.handlers;
 
 import cx.ath.mancel01.dependencyshot.exceptions.DSException;
@@ -40,7 +39,8 @@ public final class CircularConstructorHandler {
     /**
      * Constructor.
      */
-    public CircularConstructorHandler() {}
+    public CircularConstructorHandler() {
+    }
 
     /**
      * Return an instance of an object by constructor invocation.
@@ -55,44 +55,42 @@ public final class CircularConstructorHandler {
      */
     public <T> T getConstructedInstance(Class<T> c, Map<Class<?>, Object> possibleInstances)
             throws InstantiationException,
-                   IllegalAccessException,
-                   InvocationTargetException {
+            IllegalAccessException,
+            InvocationTargetException {
         // get constructors defined in the class c
-		Constructor<?>[] constructorsOfTheClass = c.getDeclaredConstructors();
-		for(Constructor<?> constructor : constructorsOfTheClass) { 
-			Inject annotation = constructor.getAnnotation(Inject.class);
-			Class<?>[] parameterTypes = constructor.getParameterTypes();
-			Type[] genericParameterTypes = constructor.getGenericParameterTypes();
-            boolean isDefaultConstructor = (
-                                                constructorsOfTheClass.length == 1 &&
-                                                parameterTypes.length == 0 &&
-                                                Modifier.isPublic(constructor.getModifiers())
-                                            );
+        Constructor<?>[] constructorsOfTheClass = c.getDeclaredConstructors();
+        for (Constructor<?> constructor : constructorsOfTheClass) {
+            Inject annotation = constructor.getAnnotation(Inject.class);
+            Class<?>[] parameterTypes = constructor.getParameterTypes();
+            Type[] genericParameterTypes = constructor.getGenericParameterTypes();
+            boolean isDefaultConstructor = (constructorsOfTheClass.length == 1
+                    && parameterTypes.length == 0
+                    && Modifier.isPublic(constructor.getModifiers()));
             // check if constructor is injectable or if it's a default constructor
-			if (annotation != null || isDefaultConstructor) {
-				Object[] arguments = new Object[parameterTypes.length];
-				Annotation[][] parameterAnnotations = constructor.getParameterAnnotations();
+            if (annotation != null || isDefaultConstructor) {
+                Object[] arguments = new Object[parameterTypes.length];
+                Annotation[][] parameterAnnotations = constructor.getParameterAnnotations();
                 // inject each parameters with a simple instance or a provided one
-				for (int j = 0; j < parameterTypes.length; j++) {
-					arguments[j] = possibleInstances.get((Class<?>) parameterTypes[j]);
-				}
-				boolean accessible = constructor.isAccessible();
+                for (int j = 0; j < parameterTypes.length; j++) {
+                    arguments[j] = possibleInstances.get((Class<?>) parameterTypes[j]);
+                }
+                boolean accessible = constructor.isAccessible();
                 // if the constructor is private, then put it public for newinstance creation
-				if (!accessible) {
-					constructor.setAccessible(true);
-				}
+                if (!accessible) {
+                    constructor.setAccessible(true);
+                }
                 // create new instance with the constructor
-				try {
-					return c.cast(constructor.newInstance(arguments));
-				} finally {
+                try {
+                    return c.cast(constructor.newInstance(arguments));
+                } finally {
                     // if constructor was private, then put it private back
-					if (!accessible) {
-						constructor.setAccessible(accessible);
-					}
-				}
-			}
-		}
-                ExceptionManager.makeException("Could not find @Inject constructor for " + c).throwManaged();
-		throw new DSException("Could not find @Inject constructor for " + c);
-	}
+                    if (!accessible) {
+                        constructor.setAccessible(accessible);
+                    }
+                }
+            }
+        }
+        ExceptionManager.makeException("Could not find @Inject constructor for " + c).throwManaged();
+        throw new DSException("Could not find @Inject constructor for " + c);
+    }
 }

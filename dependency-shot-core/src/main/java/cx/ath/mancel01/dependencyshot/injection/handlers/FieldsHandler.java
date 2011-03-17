@@ -14,7 +14,6 @@
  *  limitations under the License.
  *  under the License.
  */
-
 package cx.ath.mancel01.dependencyshot.injection.handlers;
 
 import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
@@ -37,7 +36,9 @@ public final class FieldsHandler {
     /**
      * Constructor.
      */
-    public FieldsHandler() {}
+    public FieldsHandler() {
+    }
+
     /**
      * Inject every fields of an object.
      * 
@@ -51,36 +52,36 @@ public final class FieldsHandler {
     public <T> void fieldsInjection(T instance, Class<?> c,
             boolean staticInjection,
             InjectorImpl injector) throws IllegalAccessException {
-		Field[] fieldsOfTheClass = c.getDeclaredFields();
+        Field[] fieldsOfTheClass = c.getDeclaredFields();
         // for each declared fields
-		for(Field field : fieldsOfTheClass) {
-			Inject annotation = field.getAnnotation(Inject.class);
+        for (Field field : fieldsOfTheClass) {
+            Inject annotation = field.getAnnotation(Inject.class);
             // check if field is injectable and if you can inject static fields
-			if (annotation != null &&
-                    (staticInjection == Modifier.isStatic(field.getModifiers()))) {
+            if (annotation != null
+                    && (staticInjection == Modifier.isStatic(field.getModifiers()))) {
                 // check if the field is not final
-				if (Modifier.isFinal(field.getModifiers())) {
-					throw new DSIllegalStateException("Cannot inject final field: " + field);
-				}
-				Class<?> type = field.getType();
-				Type genericType = field.getGenericType();
+                if (Modifier.isFinal(field.getModifiers())) {
+                    throw new DSIllegalStateException("Cannot inject final field: " + field);
+                }
+                Class<?> type = field.getType();
+                Type genericType = field.getGenericType();
                 // get an instance of the field (simple instance or provided one
-				Object injectedObject = injector.getProviderOrInstance(type, genericType, 
+                Object injectedObject = injector.getProviderOrInstance(type, genericType,
                         field.getAnnotations(), field);
-				boolean accessible = field.isAccessible();
+                boolean accessible = field.isAccessible();
                 // if field is private then put it private for injectedObject setting
-				if (!accessible) {
-					field.setAccessible(true);
-				}
-				try {
-					field.set(instance, injectedObject);
-				} finally {
+                if (!accessible) {
+                    field.setAccessible(true);
+                }
+                try {
+                    field.set(instance, injectedObject);
+                } finally {
                     // if the field was private, then put it private back
-					if (!accessible) {
-						field.setAccessible(accessible);
-					}
-				}
-			}
-		}
-	}
+                    if (!accessible) {
+                        field.setAccessible(accessible);
+                    }
+                }
+            }
+        }
+    }
 }
