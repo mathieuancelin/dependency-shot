@@ -19,6 +19,7 @@ package cx.ath.mancel01.dependencyshot;
 
 import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.api.Stage;
+import cx.ath.mancel01.dependencyshot.exceptions.ExceptionManager;
 import cx.ath.mancel01.dependencyshot.graph.Binder;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.injection.InjectorBuilder;
@@ -137,8 +138,9 @@ public final class DependencyShot {
                 return handler;
             }
         }
-        throw new RuntimeException("Can't find a specific configuration handler for : "
-                + confHandler.getSimpleName());
+        ExceptionManager.makeException("Can't find a specific configuration handler for : "
+                + confHandler.getSimpleName()).throwManaged();
+        throw new RuntimeException(); // should never append
     }
 
     /**

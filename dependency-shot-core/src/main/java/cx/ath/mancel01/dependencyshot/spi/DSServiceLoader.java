@@ -53,14 +53,15 @@ public class DSServiceLoader<T extends Object> implements Iterable<T> {
             return new DSServiceLoader(interf, loadFromServices(interf));
         } catch (Exception ex) {
             logger.log(Level.SEVERE, null, ex);
-            ExceptionManager.makeException("Error while loading services : ", ex).throwManaged();
-            throw new DSException("Error while loading services : ", ex);
+            ExceptionManager
+                    .makeException("Error while loading services : ", ex)
+                    .throwManaged();
+            throw new RuntimeException(); // should never append
         }
     }
 
     private static <T> Collection<T> loadFromServices(Class<T> interf) throws Exception {
         ClassLoader classLoader = DSServiceLoader.class.getClassLoader();
-        //Thread.currentThread().getContextClassLoader();
         Enumeration<URL> e = classLoader.getResources("META-INF/services/" + interf.getName());
         Collection<T> services = new ArrayList<T>();
         while (e.hasMoreElements()) {

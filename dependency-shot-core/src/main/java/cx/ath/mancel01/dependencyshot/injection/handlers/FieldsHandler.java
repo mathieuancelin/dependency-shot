@@ -17,10 +17,12 @@
 package cx.ath.mancel01.dependencyshot.injection.handlers;
 
 import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
+import cx.ath.mancel01.dependencyshot.exceptions.ExceptionManager;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
+import java.util.logging.ErrorManager;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 
@@ -61,7 +63,10 @@ public final class FieldsHandler {
                     && (staticInjection == Modifier.isStatic(field.getModifiers()))) {
                 // check if the field is not final
                 if (Modifier.isFinal(field.getModifiers())) {
-                    throw new DSIllegalStateException("Cannot inject final field: " + field);
+                    ExceptionManager
+                            .makeException("Cannot inject final field")
+                            .throwManaged();
+                    throw new RuntimeException(); // should never append
                 }
                 Class<?> type = field.getType();
                 Type genericType = field.getGenericType();

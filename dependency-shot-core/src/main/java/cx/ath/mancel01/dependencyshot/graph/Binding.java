@@ -31,7 +31,6 @@ import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
 import cx.ath.mancel01.dependencyshot.spi.InstanceHandler;
 import cx.ath.mancel01.dependencyshot.util.ReflectionUtil;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.util.Map;
 import javax.inject.Named;
@@ -132,7 +131,10 @@ public class Binding<T> {
             this.from = (Class<T>) params.get(DslConstants.FROM);
             this.to = (Class<T>) params.get(DslConstants.FROM);
         } else {
-            throw new DSIllegalStateException("A binding must contains a 'from' class.");
+            ExceptionManager
+                    .makeException(DSIllegalStateException.class, "A binding must contains a 'from' class.")
+                    .throwManaged();
+            throw new RuntimeException(); // should never append
         }
         if (params.containsKey(DslConstants.TO)) {
             this.to = (Class<? extends T>) params.get(DslConstants.TO);
@@ -255,17 +257,16 @@ public class Binding<T> {
                             new ScopeInvocationHandler(injector.getScopeHandler(scope),
                                 from, to, point, injector);
                     result = (T) ReflectionUtil.getProxyFor(scopeHandler, from);
-                            //Proxy.newProxyInstance(
-                            //Thread.currentThread().getContextClassLoader(),
-                            //new Class[]{from}, scopeHandler);
                 } else {
                     result = (T) injector.getScopeHandler(scope).getScopedInstance(from, to, point, injector);
                 }
             } else {
-                ExceptionManager.makeException(DSIllegalStateException.class, "The scope " + scopedInstanceStore.getClass().getSimpleName()
-                        + " is invalid. Can't perform injection.").throwManaged();
-                throw new DSIllegalStateException("The scope " + scopedInstanceStore.getClass().getSimpleName()
-                        + " is invalid. Can't perform injection.");
+                ExceptionManager
+                        .makeException(DSIllegalStateException.class,
+                            "The scope " + scopedInstanceStore.getClass().getSimpleName()
+                            + " is invalid. Can't perform injection.")
+                        .throwManaged();
+                throw new RuntimeException(); // should never append
             }
         } else {
             result = (T) injector.createInstance(to);
@@ -281,9 +282,13 @@ public class Binding<T> {
                 }
             }
             if (!nullable) {
-                ExceptionManager.makeException(NullInjectionException.class,
-                        "Could not get a " + to + ". Can't inject object with null value. For that use @Nullable annotation.").throwManaged();
-                throw new NullInjectionException("Could not get a " + to + ". Can't inject object with null value. For that use @Nullable annotation.");
+                ExceptionManager
+                        .makeException(NullInjectionException.class,
+                            "Could not get a "
+                            + to
+                            + ". Can't inject object with null value. For that use @Nullable annotation.")
+                        .throwManaged();
+                throw new RuntimeException(); // should never append
             }
         }
         if (!nullable) {

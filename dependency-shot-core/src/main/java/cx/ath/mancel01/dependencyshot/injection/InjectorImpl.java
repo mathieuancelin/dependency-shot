@@ -48,7 +48,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -158,8 +157,10 @@ public class InjectorImpl implements DSInjector {
                     Logger.getLogger(InjectorImpl.class.getName()).
                             log(Level.SEVERE, "Ooops, no bindings presents, "
                             + "can't inject your app ...");
-                    ExceptionManager.makeException("No bindings loaded").throwManaged();
-                    throw new DSException("No bindings loaded");
+                    ExceptionManager
+                            .makeException("No bindings loaded")
+                            .throwManaged();
+                    throw new RuntimeException(); // should never append
                 }
             }
         }
@@ -324,9 +325,11 @@ public class InjectorImpl implements DSInjector {
             if (b != null) {
                 return b;
             }
-            ExceptionManager.makeException(IllegalStateException.class,
-                    "No binding for " + c + " and " + annotation).throwManaged();
-            throw new IllegalStateException("No binding for " + c + " and " + annotation);
+            ExceptionManager
+                    .makeException(IllegalStateException.class,
+                        "No binding for " + c + " and " + annotation)
+                    .throwManaged();
+            throw new RuntimeException(); // should never append
         }
         //throw new IllegalStateException("No binding for " + c + " and " + annotation);
     }
@@ -418,14 +421,13 @@ public class InjectorImpl implements DSInjector {
                         proxy.setClazz(c);
                         proxy.setCircularConstructorArgumentsInstances(circularConstructorArgumentsInstances);
                         T instance = (T) ReflectionUtil.getProxyFor(proxy, actualFromClass);
-                                //Proxy.newProxyInstance(
-                                //Thread.currentThread().getContextClassLoader(),
-                                //new Class[]{actualFromClass}, proxy);
                         instanciatedClasses.put(c, instance);
                     }
                     if (!actualFromClass.isInterface() && instanciatedClasses.get(c) == null) {
-                        ExceptionManager.makeException("Can't proxy circular dependencies without interface.").throwManaged();
-                        throw new DSException("Can't proxy circular dependencies without interface.");
+                        ExceptionManager
+                                .makeException("Can't proxy circular dependencies without interface.")
+                                .throwManaged();
+                        throw new RuntimeException(); // should never append
                     }
                     try {
                         Object result = (T) instanciatedClasses.get(c);
@@ -446,10 +448,11 @@ public class InjectorImpl implements DSInjector {
                         circularClasses.remove(c);
                     }
                 } else {
-                    ExceptionManager.makeException(DSCyclicDependencyDetectedException.class,
-                            "Circular dependency detected on " + c.getName()).throwManaged();
-                    throw new DSCyclicDependencyDetectedException(
-                            "Circular dependency detected on " + c.getName());
+                    ExceptionManager
+                            .makeException(DSCyclicDependencyDetectedException.class,
+                                "Circular dependency detected on " + c.getName())
+                            .throwManaged();
+                    throw new RuntimeException(); // should never append
                 }
             }
         }
@@ -505,8 +508,10 @@ public class InjectorImpl implements DSInjector {
             if (e instanceof ExceptionManagedException) {
                 ExceptionManager.makeException(e).throwManaged();
             }
-            ExceptionManager.makeException("Could not inject static members for " + c, e).throwManaged();
-            throw new DSException("Could not inject static members for " + c, e);
+            ExceptionManager
+                    .makeException("Could not inject static members for " + c, e)
+                    .throwManaged();
+            throw new RuntimeException(); // should never append
         }
         eventManager.fireAsyncEvent(stop);
     }

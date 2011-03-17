@@ -91,7 +91,9 @@ public final class ConstructorHandler {
                 }
             }
         }
-        ExceptionManager.makeException("Could not find @Inject constructor for " + c).throwManaged();
-        throw new DSException("Could not find @Inject constructor for " + c);
+        ExceptionManager
+                .makeException("Could not find @Inject constructor for " + c)
+                .throwManaged();
+        throw new RuntimeException(); // should never append
     }
 }

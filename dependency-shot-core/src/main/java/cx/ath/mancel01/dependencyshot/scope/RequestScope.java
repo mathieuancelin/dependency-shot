@@ -23,7 +23,6 @@ import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
 import cx.ath.mancel01.dependencyshot.util.ReflectionUtil;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;

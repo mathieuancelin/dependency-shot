@@ -51,16 +51,20 @@ public abstract class AutoEvent {
 
     public void fire() {
         if (manager == null) {
-            ExceptionManager.makeException("You should inject the event in order to call fire on it.").throwManaged();
-            throw new RuntimeException("You should inject the event in order to call fire on it.");
+            ExceptionManager
+                    .makeException("You should inject the event in order to call fire on it.")
+                    .throwManaged();
+            throw new RuntimeException();
         }
         manager.fireEvent(this);
     }
 
     public void fireAsync() {
         if (manager == null) {
-            ExceptionManager.makeException("You should inject the event in order to call fire on it.").throwManaged();
-            throw new RuntimeException("You should inject the event in order to call fire on it.");
+            ExceptionManager
+                    .makeException("You should inject the event in order to call fire on it.")
+                    .throwManaged();
+            throw new RuntimeException();
         }
         manager.fireAsyncEvent(this);
     }
