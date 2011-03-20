@@ -618,7 +618,7 @@ public class InjectorImpl implements DSInjector {
      * @return the stage of the injector.
      */
     @Override
-    public final Stage getStage() {
+    public final Stage stage() {
         return stage;
     }
 
@@ -629,7 +629,7 @@ public class InjectorImpl implements DSInjector {
     }
 
     @Override
-    public boolean areCircularDependenciesAllowed() {
+    public boolean circularDependenciesAllowed() {
         return allowCircularDependencies;
     }
 
@@ -640,7 +640,7 @@ public class InjectorImpl implements DSInjector {
     }
 
     @Override
-    public boolean isLazyStaticInjectionAllowed() {
+    public boolean lazyStaticInjectionAllowed() {
         return allowLazyStaticInjection;
     }
 

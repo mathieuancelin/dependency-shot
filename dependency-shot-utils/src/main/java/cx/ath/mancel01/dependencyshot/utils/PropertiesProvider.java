@@ -42,7 +42,7 @@ public class PropertiesProvider implements EnhancedProvider {
     private PropertiesProvider() { }
 
     public PropertiesProvider(DSInjector injector) {
-        this.stage = injector.getStage();
+        this.stage = injector.stage();
     }
 
     @Override

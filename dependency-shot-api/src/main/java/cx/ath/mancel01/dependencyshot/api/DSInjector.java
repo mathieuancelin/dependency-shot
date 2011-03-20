@@ -70,14 +70,14 @@ public interface DSInjector {
     /**
      * @return the actual stage of the injector.
      */
-    Stage getStage();
+    Stage stage();
 
     /**
      * @return if circular dependencies are allowed by the injector
      */
-    boolean areCircularDependenciesAllowed();
+    boolean circularDependenciesAllowed();
 
-    boolean isLazyStaticInjectionAllowed();
+    boolean lazyStaticInjectionAllowed();
 
     void fire(Object event);
 

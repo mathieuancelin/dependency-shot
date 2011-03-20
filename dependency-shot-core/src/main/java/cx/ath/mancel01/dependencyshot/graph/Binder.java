@@ -124,8 +124,8 @@ public abstract class Binder implements DSBinder {
         addBindingToBinder(
                 new Binding(this.annotation, this.named,
                 this.from, this.to, this.provider, this.stage));
-        if (binderInjector.getStage() != null) {
-            if (binderInjector.getStage().equals(this.stage)) {
+        if (binderInjector.stage() != null) {
+            if (binderInjector.stage().equals(this.stage)) {
                 addBindingToBinder(
                         new Binding(this.annotation, this.named,
                         this.from, this.to, this.provider, this.stage));
@@ -165,8 +165,8 @@ public abstract class Binder implements DSBinder {
      * @return the actual binder.
      */
     public final <T> FluentBinder<T> bind(Class<T> from) {
-        if (binderInjector.getStage() != null) {
-            if (binderInjector.getStage().equals(this.stage)) {
+        if (binderInjector.stage() != null) {
+            if (binderInjector.stage().equals(this.stage)) {
                 addBindingToBinder(
                         new Binding<T>(this.annotation, this.named,
                         this.from, this.to, this.provider, this.stage));
