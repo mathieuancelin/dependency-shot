@@ -17,15 +17,36 @@
 
 package cx.ath.mancel01.dependencyshot.api;
 
-import cx.ath.mancel01.dependencyshot.api.event.Event;
-import cx.ath.mancel01.dependencyshot.api.event.EventListener;
-
 /**
  * Injector interface.
  * 
  * @author Mathieu ANCELIN
  */
 public interface DSInjector {
+
+    /**
+     * Inject the static members of c.
+     * 
+     * @param c the class to inject.
+     */
+    DSInjector injectStatics(Class<?> c);
+
+    /**
+     * Enable or not the circular dependencies in the injector.
+     *
+     * @param allowCircularDependencies new value for circular dependencies.
+     */
+    DSInjector allowCircularDependencies(boolean allowCircularDependencies);
+
+    /**
+     * Register a shutdown hook to shutdown container when JVM stop.
+     */
+    DSInjector registerShutdownHook();
+
+    DSInjector registerEventListener(Class listener);
+
+    DSInjector allowLazyStaticInjection(boolean allowLazyStaticInjection);
+
     /**
      * Get a instance of c.
      *
@@ -34,13 +55,7 @@ public interface DSInjector {
      * @return an instance of c.
      */
     <T> T getInstance(Class<T> c);
-    /**
-     * Inject the static members of c.
-     * 
-     * @param c the class to inject.
-     */
-    void injectStatics(Class<?> c);
-
+    
     /**
      * Injection on an instance.
      * WARNING : Constructor injection doesn't work
@@ -51,33 +66,20 @@ public interface DSInjector {
      * @return injected instance
      */
     <T> T injectInstance(T instance);
-
+    
     /**
      * @return the actual stage of the injector.
      */
     Stage getStage();
 
     /**
-     * Enable or not the circular dependencies in the injector.
-     *
-     * @param allowCircularDependencies new value for circular dependencies.
-     */
-    void allowCircularDependencies(boolean allowCircularDependencies);
-
-    /**
      * @return if circular dependencies are allowed by the injector
      */
     boolean areCircularDependenciesAllowed();
 
-    /**
-     * Register a shutdown hook to shutdown container when JVM stop.
-     */
-    void registerShutdownHook();
-
-    void registerEventListener(Class listener);
-
-    void allowLazyStaticInjection(boolean allowLazyStaticInjection);
-
     boolean isLazyStaticInjectionAllowed();
 
+    void fire(Object event);
+
+    void fireAsync(Object event);
 }

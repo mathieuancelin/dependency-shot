@@ -494,7 +494,7 @@ public class InjectorImpl implements DSInjector {
      * @param c the class to inject.
      */
     @Override
-    public final void injectStatics(Class<?> c) {
+    public final DSInjector injectStatics(Class<?> c) {
         InjectionStartedEvent start = new InjectionStartedEvent();
         InjectionStoppedEvent stop = new InjectionStoppedEvent();
         start.setBeanType(c);
@@ -514,6 +514,7 @@ public class InjectorImpl implements DSInjector {
             throw new RuntimeException(); // should never happen
         }
         eventManager.fireAsyncEvent(stop);
+        return this;
     }
 
     /**
@@ -570,15 +571,17 @@ public class InjectorImpl implements DSInjector {
      * Register a shutdown hook to shutdown container when JVM stop.
      */
     @Override
-    public final void registerShutdownHook() {
+    public final DSInjector registerShutdownHook() {
         ShutdownThread thread = new ShutdownThread();
         thread.setInjector(this);
         Runtime.getRuntime().addShutdownHook(thread);
+        return this;
     }
 
     @Override
-    public final void registerEventListener(Class listener) {
+    public final DSInjector registerEventListener(Class listener) {
         eventManager.registerListener(listener);
+        return this;
     }
 
     /**
@@ -620,8 +623,9 @@ public class InjectorImpl implements DSInjector {
     }
 
     @Override
-    public void allowCircularDependencies(boolean allowCircularDependencies) {
+    public DSInjector allowCircularDependencies(boolean allowCircularDependencies) {
         this.allowCircularDependencies = allowCircularDependencies;
+        return this;
     }
 
     @Override
@@ -630,8 +634,9 @@ public class InjectorImpl implements DSInjector {
     }
 
     @Override
-    public void allowLazyStaticInjection(boolean allowLazyStaticInjection) {
+    public DSInjector allowLazyStaticInjection(boolean allowLazyStaticInjection) {
         this.allowLazyStaticInjection = allowLazyStaticInjection;
+        return this;
     }
 
     @Override
@@ -662,5 +667,26 @@ public class InjectorImpl implements DSInjector {
 
     public Map<Class<? extends Annotation>, CustomScopeHandler> getScopeHandlers() {
         return scopeHandlers;
-    }  
+    }
+
+    @Override
+    public void fire(Object event) {
+        eventManager.fireEvent(event);
+    }
+
+    @Override
+    public void fireAsync(Object event) {
+        eventManager.fireEvent(event);
+    }
+
+    public DSInjector registerScope(Class<? extends CustomScopeHandler> scope) {
+        try {
+            CustomScopeHandler handler = scope.newInstance();
+            scopeHandlers.put(handler.getScope(), handler);
+            return this;
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, null, ex);
+            return this;
+        }
+    }
 }
