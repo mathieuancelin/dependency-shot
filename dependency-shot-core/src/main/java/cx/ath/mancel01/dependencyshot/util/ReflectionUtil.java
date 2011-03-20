@@ -24,7 +24,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.inject.Named;
 import javax.inject.Qualifier;
@@ -36,43 +38,61 @@ import javax.inject.Singleton;
  * @author mathieuancelin
  */
 public class ReflectionUtil {
+    
+    private static final Map<Class<?>, Boolean> singletons = 
+            new HashMap<Class<?>, Boolean>();
+
+    private static final Map<Class<?>, Class<? extends Annotation>> scopes =
+            new HashMap<Class<?>, Class<? extends Annotation>>();
+
+    private static final Map<Class<? extends Annotation>, Boolean> qualifiers =
+            new HashMap<Class<? extends Annotation>, Boolean>();
+
+    private static final Map<Class<? extends Annotation>, Named> nameds =
+            new HashMap<Class<? extends Annotation>, Named>();
 
     public static boolean isSingleton(Class<?> clazz) {
-        if (clazz.isAnnotationPresent(Singleton.class)) {
-            return true;
+        if (!singletons.containsKey(clazz)) {
+            singletons.put(clazz, clazz.isAnnotationPresent(Singleton.class));
         }
-        return false;
+        return singletons.get(clazz);
     }
 
-    public static Class<? extends Annotation> getScope(Class clazz) {
-        Annotation[] annotations = clazz.getAnnotations();
-        Class<? extends Annotation> scope = null;
-        for (Annotation anno : annotations) {
-            if ((anno.annotationType().isAnnotationPresent(Scope.class))) {
-                scope = anno.annotationType();
+    public static Class<? extends Annotation> getScope(Class<?> clazz) {
+        if (!scopes.containsKey(clazz)) {
+            Annotation[] annotations = clazz.getAnnotations();
+            for (Annotation anno : annotations) {
+                if ((anno.annotationType().isAnnotationPresent(Scope.class))) {
+                    scopes.put(clazz, anno.annotationType());
+                }
             }
         }
-        return scope;
+        return scopes.get(clazz);
     }
 
     public static Annotation getQualifier(Set<Annotation> annotations) {
-        Annotation annotation = null;
         for (Annotation anno : annotations) {
-            if ((anno.annotationType().isAnnotationPresent(Qualifier.class))) {
-                annotation = anno;
+            Class<? extends Annotation> type = anno.annotationType();
+            if (!qualifiers.containsKey(type)) {
+                qualifiers.put(type, type.isAnnotationPresent(Qualifier.class));
+            }
+            if (qualifiers.get(type)) {
+                return anno;
             }
         }
-        return annotation;
+        return null;
     }
 
     public static Named getNamed(Set<Annotation> annotations) {
-        Named annotation = null;
         for (Annotation anno : annotations) {
-            if ((anno.annotationType().equals(Named.class))) {
-                annotation = (Named) anno;
+            Class<? extends Annotation> type = anno.annotationType();
+            if (!nameds.containsKey(type)) {
+                if (type.isAnnotationPresent(Named.class))
+                nameds.put(type, type.getAnnotation(Named.class));
             }
+            return nameds.get(type);
         }
-        return annotation;
+        return null;
     }
 
     public static Object getProxyFor(InvocationHandler handler, Class... interfaces) {
