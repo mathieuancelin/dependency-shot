@@ -157,10 +157,9 @@ public class InjectorImpl implements DSInjector {
                     Logger.getLogger(InjectorImpl.class.getName()).
                             log(Level.SEVERE, "Ooops, no bindings presents, "
                             + "can't inject your app ...");
-                    ExceptionManager
+                    throw ExceptionManager
                             .makeException("No bindings loaded")
-                            .throwManaged();
-                    throw new RuntimeException(); // should never happen
+                            .get();
                 }
             }
         }
@@ -325,11 +324,10 @@ public class InjectorImpl implements DSInjector {
             if (b != null) {
                 return b;
             }
-            ExceptionManager
+            throw ExceptionManager
                     .makeException(IllegalStateException.class,
                         "No binding for " + c + " and " + annotation)
-                    .throwManaged();
-            throw new RuntimeException(); // should never happen
+                    .get();
         }
         //throw new IllegalStateException("No binding for " + c + " and " + annotation);
     }
@@ -408,8 +406,7 @@ public class InjectorImpl implements DSInjector {
                     }
                     return result;
                 } catch (Exception e) {
-                    ExceptionManager.makeException(e).throwManaged();
-                    throw new DSException(e);
+                    throw ExceptionManager.makeException(e).get();
                 }
             } else {
                 if (allowCircularDependencies || ReflectionUtil.isSingleton(c)) {
@@ -424,10 +421,9 @@ public class InjectorImpl implements DSInjector {
                         instanciatedClasses.put(c, instance);
                     }
                     if (!actualFromClass.isInterface() && instanciatedClasses.get(c) == null) {
-                        ExceptionManager
+                        throw ExceptionManager
                                 .makeException("Can't proxy circular dependencies without interface.")
-                                .throwManaged();
-                        throw new RuntimeException(); // should never happen
+                                .get();
                     }
                     try {
                         Object result = (T) instanciatedClasses.get(c);
@@ -448,11 +444,10 @@ public class InjectorImpl implements DSInjector {
                         circularClasses.remove(c);
                     }
                 } else {
-                    ExceptionManager
+                    throw ExceptionManager
                             .makeException(DSCyclicDependencyDetectedException.class,
                                 "Circular dependency detected on " + c.getName())
-                            .throwManaged();
-                    throw new RuntimeException(); // should never happen
+                            .get();
                 }
             }
         }
@@ -483,8 +478,7 @@ public class InjectorImpl implements DSInjector {
             eventManager.fireAsyncEvent(stop);
             return result;
         } catch (Exception e) {
-            ExceptionManager.makeException(e).throwManaged();
-            throw new DSException(e);
+            throw ExceptionManager.makeException(e).get();
         }
     }
 
@@ -506,12 +500,11 @@ public class InjectorImpl implements DSInjector {
             classHandler.classInjection(null, c, emptyList, true, this);
         } catch (Exception e) {
             if (e instanceof ExceptionManagedException) {
-                ExceptionManager.makeException(e).throwManaged();
+                throw ExceptionManager.makeException(e).get();
             }
-            ExceptionManager
+            throw ExceptionManager
                     .makeException("Could not inject static members for " + c, e)
-                    .throwManaged();
-            throw new RuntimeException(); // should never happen
+                    .get();
         }
         eventManager.fireAsyncEvent(stop);
         return this;

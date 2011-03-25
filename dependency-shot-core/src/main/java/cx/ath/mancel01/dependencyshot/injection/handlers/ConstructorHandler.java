@@ -78,9 +78,8 @@ public final class ConstructorHandler {
                 return ReflectionUtil.invokeConstructor(constructor, c, arguments);
             }
         }
-        ExceptionManager
+        throw ExceptionManager
                 .makeException("Could not find @Inject constructor for " + c)
-                .throwManaged();
-        throw new RuntimeException(); // should never happen
+                .get();
     }
 }

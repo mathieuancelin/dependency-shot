@@ -62,10 +62,9 @@ public final class FieldsHandler {
                     && (staticInjection == Modifier.isStatic(field.getModifiers()))) {
                 // check if the field is not final
                 if (Modifier.isFinal(field.getModifiers())) {
-                    ExceptionManager
+                    throw ExceptionManager
                             .makeException("Cannot inject final field")
-                            .throwManaged();
-                    throw new RuntimeException(); // should never happen
+                            .get();
                 }
                 Class<?> type = field.getType();
                 Type genericType = field.getGenericType();

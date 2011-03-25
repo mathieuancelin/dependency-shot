@@ -110,10 +110,9 @@ public abstract class Binder implements DSBinder {
         }
         Binding<?> old = bindings.put(binding, binding);
         if (old != null) {
-            ExceptionManager
+            throw ExceptionManager
                     .makeException(IllegalArgumentException.class, binding + " overwrites " + old)
-                    .throwManaged();
-            throw new RuntimeException(); // should never happen
+                    .get();
         }
     }
 

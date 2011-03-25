@@ -52,10 +52,9 @@ public class DSServiceLoader<T extends Object> implements Iterable<T> {
             return new DSServiceLoader(interf, loadFromServices(interf));
         } catch (Exception ex) {
             logger.log(Level.SEVERE, null, ex);
-            ExceptionManager
+            throw ExceptionManager
                     .makeException("Error while loading services : ", ex)
-                    .throwManaged();
-            throw new RuntimeException(); // should never happen
+                    .get();
         }
     }
 

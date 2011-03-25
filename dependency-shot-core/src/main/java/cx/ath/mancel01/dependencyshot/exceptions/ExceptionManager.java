@@ -78,8 +78,12 @@ public class ExceptionManager {
             uuid = UUID.randomUUID().toString();
         }
 
-        public void throwManaged() throws RuntimeException {
-            throw new ExceptionManagedException(this);
+//        public void throwManaged() throws RuntimeException {
+//            throw new ExceptionManagedException(this);
+//        }
+
+        public ExceptionManagedException get() {
+            return new ExceptionManagedException(this);
         }
 
         public void setT(Throwable t) {

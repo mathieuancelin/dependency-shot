@@ -34,10 +34,9 @@ public class EventImpl<T> implements Event<T>{
     @Override
     public void fire(T event) {
         if (manager == null) {
-            ExceptionManager
+            throw ExceptionManager
                     .makeException("You should inject the event in order to call fire on it.")
-                    .throwManaged();
-            throw new RuntimeException(); // should never happen
+                    .get();
         }
         manager.fireEvent(event);
     }
@@ -45,10 +44,9 @@ public class EventImpl<T> implements Event<T>{
     @Override
     public void fireAsync(T event) {
         if (manager == null) {
-            ExceptionManager
+            throw ExceptionManager
                     .makeException("You should inject the event in order to call fire on it.")
-                    .throwManaged();
-            throw new RuntimeException(); // should never happen
+                    .get();
         }
         manager.fireAsyncEvent(event);
     }

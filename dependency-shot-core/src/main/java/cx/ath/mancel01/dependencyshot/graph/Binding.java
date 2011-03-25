@@ -131,10 +131,9 @@ public class Binding<T> {
             this.from = (Class<T>) params.get(DslConstants.FROM);
             this.to = (Class<T>) params.get(DslConstants.FROM);
         } else {
-            ExceptionManager
+            throw ExceptionManager
                     .makeException(DSIllegalStateException.class, "A binding must contains a 'from' class.")
-                    .throwManaged();
-            throw new RuntimeException(); // should never happen
+                    .get();
         }
         if (params.containsKey(DslConstants.TO)) {
             this.to = (Class<? extends T>) params.get(DslConstants.TO);
@@ -261,12 +260,11 @@ public class Binding<T> {
                     result = (T) injector.getScopeHandler(scope).getScopedInstance(from, to, point, injector);
                 }
             } else {
-                ExceptionManager
+                throw ExceptionManager
                         .makeException(DSIllegalStateException.class,
                             "The scope " + scopedInstanceStore.getClass().getSimpleName()
                             + " is invalid. Can't perform injection.")
-                        .throwManaged();
-                throw new RuntimeException(); // should never happen
+                        .get();
             }
         } else {
             result = (T) injector.createInstance(to);
@@ -282,13 +280,12 @@ public class Binding<T> {
                 }
             }
             if (!nullable) {
-                ExceptionManager
+                throw ExceptionManager
                         .makeException(NullInjectionException.class,
                             "Could not get a "
                             + to
                             + ". Can't inject object with null value. For that use @Nullable annotation.")
-                        .throwManaged();
-                throw new RuntimeException(); // should never happen
+                        .get();
             }
         }
         if (!nullable) {
