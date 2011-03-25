@@ -16,14 +16,12 @@
  */
 package cx.ath.mancel01.dependencyshot.injection.handlers;
 
-import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
 import cx.ath.mancel01.dependencyshot.exceptions.ExceptionManager;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.util.ReflectionUtil;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
-import java.util.logging.ErrorManager;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 

@@ -19,7 +19,6 @@ package cx.ath.mancel01.dependencyshot.event;
 
 import cx.ath.mancel01.dependencyshot.api.event.Event;
 import cx.ath.mancel01.dependencyshot.api.event.EventManager;
-import cx.ath.mancel01.dependencyshot.exceptions.DSException;
 import cx.ath.mancel01.dependencyshot.exceptions.ExceptionManager;
 import javax.inject.Inject;
 

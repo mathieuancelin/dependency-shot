@@ -16,7 +16,6 @@
  */
 package cx.ath.mancel01.dependencyshot.spi;
 
-import cx.ath.mancel01.dependencyshot.exceptions.DSException;
 import cx.ath.mancel01.dependencyshot.exceptions.ExceptionManager;
 import java.io.BufferedReader;
 import java.io.InputStream;
