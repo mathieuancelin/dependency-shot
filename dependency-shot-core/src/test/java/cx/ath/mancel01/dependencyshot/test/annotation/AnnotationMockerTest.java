@@ -37,10 +37,10 @@ public class AnnotationMockerTest {
     static final String hello = "Hello";
     static final String kevin = "Kevin";
     static final String mathieu = "Mathieu";
-    static final String ns = "www.serli.com";
+    static final String ns = "www.test.com";
     static final String service = "Service";
     static final String port = "PortType";
-    static final String wsdl = "www.serli.com?wsdl";
+    static final String wsdl = "www.test.com?wsdl";
     static final String itf = "MyInterface";
 
     @Test
