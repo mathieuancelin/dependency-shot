@@ -24,12 +24,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Annotation mock to create fake runtime annotations.
  *
  * @author mathieuancelin
  */
 public class AnnotationMocker {
 
-    private static AnnotationMockImpl mock;
+    private static ThreadLocal<AnnotationMockImpl> mock =
+            new ThreadLocal<AnnotationMockImpl>();
+
+    private AnnotationMocker() {
+    }
 
     public static <Z extends Annotation> AnnotationMockSet<Z> forAnnotation(Class<Z> annotation) {
         return AnnotationMockImpl.newMock(annotation);
@@ -40,7 +45,7 @@ public class AnnotationMocker {
 
             @Override
             public void with(T value) {
-                mock.withObject(value);
+                mock.get().withObject(value);
             }
         };
     }
@@ -75,14 +80,8 @@ public class AnnotationMocker {
         }
 
         @Override
-        public AnnotationMockWith<T> set(Method method) {
-            this.method = method;
-            return this;
-        }
-
-        @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            mock = this;
+            mock.set(this);
             this.method = method;
             if (method.getName().equals("toString")) {
                 StringBuilder builder = new StringBuilder();
@@ -101,25 +100,10 @@ public class AnnotationMocker {
                     return values.get(method.getName());
                 } else {
                     try {
-                        Object value = anno.getMethod(method.getName()).getDefaultValue();
-                        if (value != null) {
-                            return value;
-                        }
-                    } catch (Exception e) {
-
-                    }
-                    return null;
-                    //throw new RuntimeException("Method " + method.getName() + "isn't set ...");
+                        return anno.getMethod(method.getName()).getDefaultValue();
+                    } catch (Exception e) { return null; }
                 }
             }
-        }
-
-        @Override
-        public T make() {
-            return (T) Proxy.newProxyInstance(
-                    getClass().getClassLoader(),
-                    new Class[]{anno},
-                    this);
         }
 
         @Override
@@ -136,6 +120,7 @@ public class AnnotationMocker {
                 throw new RuntimeException("Field is not set ...");
             }
             method = null;
+            mock.remove();
             return this;
         }
 
@@ -260,22 +245,19 @@ public class AnnotationMocker {
         }
     }
 
+    public static interface GenericAnnotationMockWith<T> {
+
+        void with(T value);
+    }
+
     public static interface AnnotationMock<T> {
 
-        T make();
-        
         T mock();
     }
 
     public static interface AnnotationMockSet<T> extends AnnotationMock<T> {
 
-        AnnotationMockWith<T> set(Method method);
-
         AnnotationMockWith<T> set(String method);
-    }
-
-    public static interface GenericAnnotationMockWith<T> {
-        void with(T value);
     }
 
     public static interface AnnotationMockWith<T> extends AnnotationMock<T> {

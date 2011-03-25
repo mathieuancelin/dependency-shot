@@ -29,10 +29,6 @@ import javax.jws.WebService;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- *
- * @author mathieuancelin
- */
 public class AnnotationMockerTest {
     static final String hello = "Hello";
     static final String kevin = "Kevin";
@@ -48,13 +44,13 @@ public class AnnotationMockerTest {
         
         Named named = AnnotationMocker.forAnnotation(Named.class)
                 .set("value").with(hello)
-                .make();
+                .mock();
         Named mockNamed = AnnotationMocker.forAnnotation(Named.class).mock();
         set(mockNamed.value()).with(kevin);
 
         MyNamed myNamed1 = AnnotationMocker.forAnnotation(MyNamed.class).mock();
         set(myNamed1.ok()).with(Boolean.FALSE);
-        MyNamed myNamed2 = AnnotationMocker.forAnnotation(MyNamed.class).make();
+        MyNamed myNamed2 = AnnotationMocker.forAnnotation(MyNamed.class).mock();
 
         WebService ws = AnnotationMocker.forAnnotation(WebService.class)
                 .set("name").with(hello)
@@ -63,7 +59,7 @@ public class AnnotationMockerTest {
                 .set("portName").with(port)
                 .set("wsdlLocation").with(wsdl)
                 .set("endpointInterface").with(itf)
-                .make();
+                .mock();
         
         Assert.assertEquals(hello, ws.name());
         Assert.assertEquals(ns, ws.targetNamespace());
