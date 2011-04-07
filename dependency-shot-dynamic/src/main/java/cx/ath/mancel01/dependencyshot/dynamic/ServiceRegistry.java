@@ -1,5 +1,5 @@
 /*
- *  Copyright 2010 mathieu.
+ *  Copyright 2011 mathieuancelin.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,114 +17,35 @@
 
 package cx.ath.mancel01.dependencyshot.dynamic;
 
-import cx.ath.mancel01.dependencyshot.api.DSInjector;
-import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
-import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 /**
  *
- * @author mathieu
+ * @author mathieuancelin
  */
-@Singleton
-public class ServiceRegistry {
+public interface ServiceRegistry {
 
-    @Inject
-    private DSInjector injector;
+    public void addServiceListener(Class<?> listener);
 
-    private ConcurrentHashMap<Class<?>, ArrayList<Class<?>>> services =
-            new ConcurrentHashMap<Class<?>, ArrayList<Class<?>>>();
+    public void removeServiceListener(Class<?> listener);
 
-    public void registerService(Class<?> from, Class<?> to) {
-        if(!to.isAnnotationPresent(Dynamic.class)) {
-            throw new DSIllegalStateException("You can't register non dynamic implementation for a service");
-        }
-        services.putIfAbsent(from, new ArrayList<Class<?>>());
-        ArrayList<Class<?>> classes = services.get(from);
-        if (!classes.contains(to)) {
-            synchronized(classes) {
-                classes.add(to);
-            }
-        }
-    }
+    public <T> ServiceRegistration registerService(Class<T> clazz,  Class<? extends T> service);
 
-    public void swap(Class<?> to) {
-        if(!to.isAnnotationPresent(Dynamic.class)) {
-            throw new DSIllegalStateException("You can't register non dynamic implementation for a service");
-        }
-        for (Class from : to.getInterfaces()) {
-            ArrayList<Class<?>> classes = services.get(from);
-            if (classes.contains(to)) {
-                int index = classes.indexOf(to);
-                Class<?> old = classes.set(0, to);
-                classes.set(index, old);
-            } else {
-                registerServiceAndSwap(from, to);
-            }
-        }
-    }
+    public <T> ServiceRegistration registerService(Class<T> clazz,  T service);
 
-    public void registerServiceAndSwap(Class<?> from, Class<?> to) {
-        if(!to.isAnnotationPresent(Dynamic.class)) {
-            throw new DSIllegalStateException("You can't register non dynamic implementation for a service");
-        }
-        services.putIfAbsent(from, new ArrayList<Class<?>>());
-        ArrayList<Class<?>> classes = services.get(from);
-        if (!classes.contains(to)) {
-            synchronized(classes) {
-                classes.add(0, to);
-            }
-        }
-    }
+    public <T> ServiceRegistration registerService(Class<T>[] clazzes,  Class<? extends T> service);
 
-    public void unregisterService(Class<?> to) {
-        for (Class from : to.getInterfaces()) {
-            services.get(from).remove(to);
-        }
-    }
+    public <T> ServiceRegistration registerService(Class<T>[] clazzes,  T service);
 
-    public Class<?> getContract(Class<?> from) {
-        return services.get(from).get(0);
-    }
+    public <T> T getService(Class<T> contract);
 
-    public Object lookup(Class<?> from) {
-        return ((InjectorImpl)injector).getUnscopedInstance(services.get(from).get(0));
-    }
-    
-    public Collection<Object> multipleLookup(Class<?> from) {
-        Collection<Object> objects = new ArrayList<Object>();
-        for (Class<?> clazz : services.get(from)) {
-            objects.add(((InjectorImpl)injector).getUnscopedInstance(clazz));
-        }
-        return objects;
-    }
+    public <T> Iterable<T> getServices(Class<T> contract);
 
-    public Collection<Class<?>> multipleContractsLookup(Class<?> from) {
-        return services.get(from);
-    }
+//    public <T> boolean ungetService(T service);
+//
+//    public <T> boolean ungetServices(Collection<T> services);
+//
+//    public Map<Class<?>, Collection<Class<?>>> getAvailableServices();
 
-    public Map<Class<?>, ArrayList<Class<?>>> getServices() {
-        return services;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        for (Class<?> clazz : services.keySet()) {
-            builder.append(clazz.getName());
-            List<Class<?>> classes = services.get(clazz);
-            for (Class<?> service : classes) {
-                builder.append("\n      => ");
-                builder.append(service.getName());
-            }
-            builder.append("\n\n");
-        }
-        return builder.toString();
+    public static interface ServiceRegistration {
+        void unregister();
     }
 }

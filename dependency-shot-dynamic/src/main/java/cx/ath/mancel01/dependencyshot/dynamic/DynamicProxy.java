@@ -19,6 +19,7 @@ package cx.ath.mancel01.dependencyshot.dynamic;
 
 import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import javassist.util.proxy.MethodFilter;
 import javassist.util.proxy.MethodHandler;
@@ -27,7 +28,7 @@ import javassist.util.proxy.MethodHandler;
  *
  * @author Mathieu ANCELIN
  */
-public class DynamicProxy<T> implements MethodFilter, MethodHandler {
+public class DynamicProxy<T> implements MethodFilter, MethodHandler, InvocationHandler {
 
     private final Class<T> from;
 
@@ -35,13 +36,13 @@ public class DynamicProxy<T> implements MethodFilter, MethodHandler {
 
     private final InjectorImpl injector;
 
-    private final ServiceRegistry registry;
+    private final ServiceRegistryImpl registry;
 
     private Object actualService;
 
     public DynamicProxy(
             Class<T> from, InjectionPoint point,
-            InjectorImpl injector, ServiceRegistry registry) {
+            InjectorImpl injector, ServiceRegistryImpl registry) {
         this.from = from;
         this.injector= injector;
         this.registry = registry;
@@ -67,7 +68,13 @@ public class DynamicProxy<T> implements MethodFilter, MethodHandler {
 
     @Override
     public Object invoke(Object self, Method method, Method proceed, Object[] args) throws Throwable {
-        actualService = registry.lookup(from);
+        actualService = registry.getService(from);
+        return method.invoke(actualService, args);
+    }
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        actualService = registry.getService(from);
         return method.invoke(actualService, args);
     }
 }

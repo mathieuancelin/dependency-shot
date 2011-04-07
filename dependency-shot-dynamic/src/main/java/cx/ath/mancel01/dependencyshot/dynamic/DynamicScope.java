@@ -21,6 +21,7 @@ import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Proxy;
 
 /**
  *
@@ -37,8 +38,9 @@ public class DynamicScope extends CustomScopeHandler {
     public <T> T getScopedInstance(Class<T> interf, Class<? extends T> clazz, 
             InjectionPoint point, InjectorImpl injector) {
         DynamicProxy proxy = new DynamicProxy(interf, point,
-                injector, injector.getInstance(ServiceRegistry.class));
-        return (T) ProxyHelper.createProxy(proxy);
+                injector, injector.getInstance(ServiceRegistryImpl.class));
+        return (T) Proxy.newProxyInstance(getClass().getClassLoader(), new Class[] {interf}, proxy);
+        //return (T) ProxyHelper.createProxy(proxy);
     }
 
     @Override

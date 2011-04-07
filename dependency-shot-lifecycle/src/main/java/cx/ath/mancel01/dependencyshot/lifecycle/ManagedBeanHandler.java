@@ -23,7 +23,6 @@ import cx.ath.mancel01.dependencyshot.spi.InstanceHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-import javax.annotation.ManagedBean;
 
 /**
  * Handler for managedbean management.
@@ -44,7 +43,7 @@ public final class ManagedBeanHandler extends InstanceHandler {
     }
 
     public static boolean isManagedBean(Class clazz) {
-        return clazz.isAnnotationPresent(ManagedBean.class);
+        return true;
     }
 
     @Override

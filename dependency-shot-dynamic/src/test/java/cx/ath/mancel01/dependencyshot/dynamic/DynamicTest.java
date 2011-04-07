@@ -44,10 +44,10 @@ public class DynamicTest {
             }
         };
         DSInjector injector = DependencyShot.getInjector(binder);
-        ServiceRegistry registry = injector.getInstance(ServiceRegistry.class);
+        ServiceRegistryImpl registry = injector.getInstance(ServiceRegistryImpl.class);
 
         
-        registry.registerService(PaymentService.class,
+        ServiceRegistry.ServiceRegistration reg = registry.registerService(PaymentService.class,
                 PayPalServiceImpl.class);
         registry.registerService(PaymentService.class,
                 CreditCardServiceImpl.class);
@@ -57,7 +57,7 @@ public class DynamicTest {
 
         Assert.assertEquals(PAYPAL, service.pay(123));
 
-        registry.unregisterService(PayPalServiceImpl.class);
+        reg.unregister();
         Assert.assertEquals(CREDITCARD, service.pay(123));
 
         registry.registerService(PaymentService.class,
