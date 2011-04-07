@@ -26,7 +26,7 @@ import java.lang.annotation.Annotation;
  *
  * @author Mathieu ANCELIN
  */
-public class SimpleScope extends CustomScopeHandler {
+public class DependentScope extends CustomScopeHandler {
 
     @Override
     public Class<? extends Annotation> getScope() {
