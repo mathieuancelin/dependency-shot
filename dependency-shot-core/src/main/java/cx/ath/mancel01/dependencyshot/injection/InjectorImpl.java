@@ -29,7 +29,6 @@ import cx.ath.mancel01.dependencyshot.event.EventManagerImpl;
 import cx.ath.mancel01.dependencyshot.event.InjectionStartedEvent;
 import cx.ath.mancel01.dependencyshot.event.InjectionStoppedEvent;
 import cx.ath.mancel01.dependencyshot.exceptions.DSCyclicDependencyDetectedException;
-import cx.ath.mancel01.dependencyshot.exceptions.DSException;
 import cx.ath.mancel01.dependencyshot.exceptions.ExceptionManagedException;
 import cx.ath.mancel01.dependencyshot.exceptions.ExceptionManager;
 import cx.ath.mancel01.dependencyshot.graph.Binder;
@@ -38,7 +37,7 @@ import cx.ath.mancel01.dependencyshot.graph.Binding;
 import cx.ath.mancel01.dependencyshot.injection.handlers.ClassHandler;
 import cx.ath.mancel01.dependencyshot.injection.handlers.ConstructorHandler;
 import cx.ath.mancel01.dependencyshot.injection.util.InstanceProvider;
-import cx.ath.mancel01.dependencyshot.scope.SimpleScope;
+import cx.ath.mancel01.dependencyshot.scope.DependentScope;
 import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
 import cx.ath.mancel01.dependencyshot.spi.InstanceLifecycleHandler;
 import cx.ath.mancel01.dependencyshot.spi.PluginsLoader;
@@ -646,7 +645,7 @@ public class InjectorImpl implements DSInjector {
         if (handler != null) {
             return scopeHandlers.get(clazz);
         } else {
-            return new SimpleScope();
+            return new DependentScope();
         }
     }
 
