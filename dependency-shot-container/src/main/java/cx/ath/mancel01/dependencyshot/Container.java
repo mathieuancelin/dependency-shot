@@ -60,9 +60,9 @@ public class Container {
         return injector.getInstance(clazz);
     }
 
-    public <T> T getInstance(String elName) {
+    public Object getInstance(String elName) {
         // TODO ; getInstance on @Named
-        return injector.getInstance(null);
+        return injector.getInstance(Object.class);
     }
 
     public <T> T injectInstance(T object) {
@@ -88,6 +88,7 @@ public class Container {
         for (String resource : resources) {
             if (resource.endsWith("beans.xml")) {
                 // TODO : parse it and extract informations about special classes
+                // TODO : register interceptors
             }
         }
         for (String className : classesNames) {
@@ -96,7 +97,7 @@ public class Container {
         }
         for (Class<?> clazz : classes) {
             // TODO : register producers beans (methods and fields)
-            // TODO : register interceptors
+            
         }
         for (Class<?> clazz : classes) {
             registerComponent(clazz, newInjector, binder);
@@ -140,20 +141,23 @@ public class Container {
     private Collection<Binding> getBindingsFor(Class<?> clazz) {
         // TODO : register for interfaces and supertypes
         // TODO : check for producers
+        return null;
     }
 
     private Collection<Binding> getQualifiedBindingsFor(Class<?> clazz, Annotation qualifier) {
         // TODO : register for interfaces and supertypes
         // TODO : check for producers
+        return null;
     }
 
     private Collection<Binding> getNamedBindingsFor(Class<?> clazz, Annotation named) {
         // TODO : register for interfaces and supertypes
         // TODO : check for producers
+        return null;
     }
 
     private Collection<Annotation> getQualifiers(Class<?> clazz) {
         // TODO : check for stereotypes
-        ReflectionUtil.
+        return null;
     }
 }

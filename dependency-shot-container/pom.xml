@@ -78,6 +78,12 @@
             <version>1.0-SP4</version>
         </dependency>
     </dependencies>
+    <repositories>
+        <repository>
+            <id>JBoss</id>
+            <url>http://repository.jboss.org/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
