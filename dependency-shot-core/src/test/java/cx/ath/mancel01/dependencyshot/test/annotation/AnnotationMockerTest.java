@@ -44,13 +44,13 @@ public class AnnotationMockerTest {
         
         Named named = AnnotationMocker.forAnnotation(Named.class)
                 .set("value").with(hello)
-                .mock();
-        Named mockNamed = AnnotationMocker.forAnnotation(Named.class).mock();
+                .make();
+        Named mockNamed = AnnotationMocker.forAnnotation(Named.class).make();
         set(mockNamed.value()).with(kevin);
 
-        MyNamed myNamed1 = AnnotationMocker.forAnnotation(MyNamed.class).mock();
+        MyNamed myNamed1 = AnnotationMocker.forAnnotation(MyNamed.class).make();
         set(myNamed1.ok()).with(Boolean.FALSE);
-        MyNamed myNamed2 = AnnotationMocker.forAnnotation(MyNamed.class).mock();
+        MyNamed myNamed2 = AnnotationMocker.forAnnotation(MyNamed.class).make();
 
         WebService ws = AnnotationMocker.forAnnotation(WebService.class)
                 .set("name").with(hello)
@@ -59,7 +59,7 @@ public class AnnotationMockerTest {
                 .set("portName").with(port)
                 .set("wsdlLocation").with(wsdl)
                 .set("endpointInterface").with(itf)
-                .mock();
+                .make();
         
         Assert.assertEquals(hello, ws.name());
         Assert.assertEquals(ns, ws.targetNamespace());

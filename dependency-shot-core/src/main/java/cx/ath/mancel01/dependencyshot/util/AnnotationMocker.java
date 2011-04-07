@@ -65,7 +65,7 @@ public class AnnotationMocker {
             this.anno = anno;
         }
 
-        public static <S extends Annotation> AnnotationMockImpl<S> newMock(Class<S> anno) {
+        static <S extends Annotation> AnnotationMockImpl<S> newMock(Class<S> anno) {
             return new AnnotationMockImpl<S>(anno);
         }
 
@@ -107,7 +107,7 @@ public class AnnotationMocker {
         }
 
         @Override
-        public T mock() {
+        public T make() {
             return (T) Proxy.newProxyInstance(
                     getClass().getClassLoader(),
                     new Class[]{anno}, this);
@@ -252,7 +252,7 @@ public class AnnotationMocker {
 
     public static interface AnnotationMock<T> {
 
-        T mock();
+        T make();
     }
 
     public static interface AnnotationMockSet<T> extends AnnotationMock<T> {
