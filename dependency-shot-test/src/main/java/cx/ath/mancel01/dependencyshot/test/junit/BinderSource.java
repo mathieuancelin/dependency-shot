@@ -17,19 +17,13 @@
 
 package cx.ath.mancel01.dependencyshot.test.junit;
 
-import cx.ath.mancel01.dependencyshot.graph.Binder;
 import java.lang.annotation.*;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
-/**
- *
- */
 @Documented
 @Retention (RUNTIME)
-@Target(TYPE)
-public @interface ConfigureWith {
-    Class<? extends Binder>[] value();
-    boolean staging() default false;
-    boolean allowCircularDependencies() default false;
+@Target(METHOD)
+public @interface BinderSource {
+    boolean testStaging() default false;
 }

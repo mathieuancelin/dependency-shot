@@ -17,10 +17,11 @@
 
 package cx.ath.mancel01.dependencyshot.test;
 
-import cx.ath.mancel01.dependencyshot.test.junit.ConfigureWith;
-import cx.ath.mancel01.dependencyshot.test.junit.DependencyShotRunner;
+import org.junit.Test;
+import cx.ath.mancel01.dependencyshot.graph.Binder;
+import cx.ath.mancel01.dependencyshot.test.junit.BinderSource;
+import cx.ath.mancel01.dependencyshot.test.junit.DependencyShot;
 import javax.inject.Inject;
-import junit.framework.Test;
 import junit.framework.TestResult;
 import org.atinject.tck.Tck;
 import org.atinject.tck.auto.Car;
@@ -32,16 +33,20 @@ import static junit.framework.Assert.assertTrue;
  * 
  * @author Mathieu ANCELIN
  */
-@RunWith(DependencyShotRunner.class)
-@ConfigureWith(TCKFluentBinder.class)
+@RunWith(DependencyShot.class)
 public class TCKFluentTest {
+
+    @BinderSource
+    public static Binder getBinder() {
+        return new TCKFluentBinder();
+    }
 
     @Inject
     private Car car;
 
-    @org.junit.Test
+    @Test
     public void passTCK() {
-  		Test test = Tck.testsFor(car, false, true);
+  	junit.framework.Test test = Tck.testsFor(car, false, true);
         TestResult result = new TestResult();
         result.startTest(test);
         assertTrue(result.wasSuccessful());
