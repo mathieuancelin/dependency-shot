@@ -62,4 +62,15 @@ public final class InjectorBuilder {
         injector.getInstance(InjectorStartedEvent.class).fire();
         return injector;
     }
+
+    /**
+     * Create an injector 
+     * @param binder the only binder.
+     * @return the configured injector.
+     */
+    public static InjectorImpl makeInjector(PluginsLoader loader, Stage stage) {
+        InjectorImpl injector = new InjectorImpl(loader, stage);
+        injector.resetBinders();
+        return injector;
+    }
 }
