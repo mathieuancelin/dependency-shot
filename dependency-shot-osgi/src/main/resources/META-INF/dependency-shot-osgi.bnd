@@ -1,0 +1,12 @@
+Embed-Dependency *; scope=compile; inline=true;
+
+-exportcontents javax.inject; \
+                javax.annotation; \
+                cx.ath.mancel01.dependencyshot.api; \
+                cx.ath.mancel01.dependencyshot.api.event; \
+                cx.ath.mancel01.dependencyshot.*; \
+                javassist.*; 
+
+Import-Package javax.annotation;
+Bundle-Activator cx.ath.mancel01.dependencyshot.dynamic.DependencyShotActivator
+DynamicImport-Package *
