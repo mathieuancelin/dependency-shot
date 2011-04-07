@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.dynamic;
+package cx.ath.mancel01.dependencyshot.dynamic.scope;
 
 import javassist.util.proxy.ProxyFactory;
 import javassist.util.proxy.ProxyObject;

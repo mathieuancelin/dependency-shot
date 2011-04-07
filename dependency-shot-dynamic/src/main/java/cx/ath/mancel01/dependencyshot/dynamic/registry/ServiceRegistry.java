@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.dynamic;
+package cx.ath.mancel01.dependencyshot.dynamic.registry;
 
 /**
  *
@@ -27,11 +27,11 @@ public interface ServiceRegistry {
 
     public void removeServiceListener(Class<?> listener);
 
-    public <T> ServiceRegistration registerService(Class<T> clazz,  Class<? extends T> service);
+    public <T> ServiceRegistration registerService(Class<T> clazz,  Class<?> service);
 
     public <T> ServiceRegistration registerService(Class<T> clazz,  T service);
 
-    public <T> ServiceRegistration registerService(Class<T>[] clazzes,  Class<? extends T> service);
+    public <T> ServiceRegistration registerService(Class<T>[] clazzes,  Class<?> service);
 
     public <T> ServiceRegistration registerService(Class<T>[] clazzes,  T service);
 

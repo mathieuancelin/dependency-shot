@@ -15,8 +15,9 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.dynamic;
+package cx.ath.mancel01.dependencyshot.dynamic.scope;
 
+import cx.ath.mancel01.dependencyshot.dynamic.registry.ServiceRegistry;
 import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import java.lang.reflect.InvocationHandler;
@@ -36,13 +37,13 @@ public class DynamicProxy<T> implements MethodFilter, MethodHandler, InvocationH
 
     private final InjectorImpl injector;
 
-    private final ServiceRegistryImpl registry;
+    private final ServiceRegistry registry;
 
     private Object actualService;
 
     public DynamicProxy(
             Class<T> from, InjectionPoint point,
-            InjectorImpl injector, ServiceRegistryImpl registry) {
+            InjectorImpl injector, ServiceRegistry registry) {
         this.from = from;
         this.injector= injector;
         this.registry = registry;

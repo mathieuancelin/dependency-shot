@@ -14,14 +14,17 @@
  *  limitations under the License.
  *  under the License.
  */
-package cx.ath.mancel01.dependencyshot.dynamic;
+package cx.ath.mancel01.dependencyshot.dynamic.config;
 
 import cx.ath.mancel01.dependencyshot.DependencyShot;
+import cx.ath.mancel01.dependencyshot.api.DSBinder;
 import cx.ath.mancel01.dependencyshot.api.Stage;
+import cx.ath.mancel01.dependencyshot.dynamic.registry.OSGiServiceRegistryImpl;
+import cx.ath.mancel01.dependencyshot.dynamic.registry.ServiceRegistry;
+import cx.ath.mancel01.dependencyshot.dynamic.registry.ServiceRegistryProvider;
 import cx.ath.mancel01.dependencyshot.graph.Binder;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.ConfigurationHandler;
-import javax.inject.Inject;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -32,8 +35,6 @@ public class OSGiConfigurator extends ConfigurationHandler {
 
     private BundleContext context;
     private Binder binder;
-
-    @Inject @OSGi
     private ServiceRegistry registry;
 
     @Override
@@ -48,7 +49,10 @@ public class OSGiConfigurator extends ConfigurationHandler {
         } else {
             injector = DependencyShot.getInjector(binder);
         }
-        injector.injectInstance(this);
+        ServiceRegistryProvider.OSGiEnvHolder holder = 
+                injector.getInstance(ServiceRegistryProvider.OSGiEnvHolder.class);
+        holder.setOsgi(true);
+        registry = injector.getInstance(ServiceRegistry.class);
         if (registry == null) {
             throw new IllegalStateException("Injection for bundle context failed.");
         }
@@ -61,8 +65,8 @@ public class OSGiConfigurator extends ConfigurationHandler {
         return false;
     }
 
-    public OSGiConfigurator withBinder(Binder binder) {
-        this.binder = binder;
+    public OSGiConfigurator withBinder(DSBinder binder) {
+        this.binder = (Binder) binder;
         return this;
     }
 

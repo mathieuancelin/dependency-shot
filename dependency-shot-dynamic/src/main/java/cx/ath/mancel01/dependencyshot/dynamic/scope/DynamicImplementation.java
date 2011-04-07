@@ -15,7 +15,9 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.dynamic;
+package cx.ath.mancel01.dependencyshot.dynamic.scope;
+
+import cx.ath.mancel01.dependencyshot.dynamic.Dynamic;
 
 /**
  * Dummy class to provide fake dynamic binding.

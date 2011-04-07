@@ -15,9 +15,11 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.dynamic;
+package cx.ath.mancel01.dependencyshot.dynamic.scope;
 
+import cx.ath.mancel01.dependencyshot.dynamic.registry.ServiceRegistry;
 import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
+import cx.ath.mancel01.dependencyshot.dynamic.Dynamic;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
 import java.lang.annotation.Annotation;
@@ -37,9 +39,12 @@ public class DynamicScope extends CustomScopeHandler {
     @Override
     public <T> T getScopedInstance(Class<T> interf, Class<? extends T> clazz, 
             InjectionPoint point, InjectorImpl injector) {
+
         DynamicProxy proxy = new DynamicProxy(interf, point,
-                injector, injector.getInstance(ServiceRegistryImpl.class));
-        return (T) Proxy.newProxyInstance(getClass().getClassLoader(), new Class[] {interf}, proxy);
+                injector, injector.getInstance(ServiceRegistry.class));
+        
+        return (T) Proxy.newProxyInstance(
+                getClass().getClassLoader(), new Class[] {interf}, proxy);
         //return (T) ProxyHelper.createProxy(proxy);
     }
 

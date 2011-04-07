@@ -1,5 +1,5 @@
 /*
- *  Copyright 2009-2010 Mathieu ANCELIN.
+ *  Copyright 2011 mathieuancelin.
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,18 +15,20 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.dynamic;
+package cx.ath.mancel01.dependencyshot.dynamic.config;
+
+import static java.lang.annotation.ElementType.TYPE;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import javax.inject.Qualifier;
+import java.lang.annotation.Target;
 
 /**
  *
- * @author Mathieu ANCELIN
+ * @author mathieuancelin
  */
+@Target({ TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-@Qualifier
-public @interface Internal {
-
+public @interface Publish {
+    public Class[] contracts() default {};
 }

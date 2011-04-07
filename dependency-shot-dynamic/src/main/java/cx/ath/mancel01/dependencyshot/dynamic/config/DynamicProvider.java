@@ -15,8 +15,10 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.dynamic;
+package cx.ath.mancel01.dependencyshot.dynamic.config;
 
+import cx.ath.mancel01.dependencyshot.dynamic.registry.ServiceRegistry;
+import cx.ath.mancel01.dependencyshot.dynamic.registry.ServiceRegistryProvider;
 import cx.ath.mancel01.dependencyshot.graph.Binding;
 import cx.ath.mancel01.dependencyshot.graph.BindingBuilder;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
@@ -38,14 +40,11 @@ public class DynamicProvider extends BindingsProvider {
         bindings.add(BindingBuilder
                 .prepareBindingThat()
                 .bind(ServiceRegistry.class)
-                .annotatedWith(Internal.class)
-                .to(ServiceRegistryImpl.class)
+                .providedBy(new ServiceRegistryProvider())
                 .build());
         bindings.add(BindingBuilder
                 .prepareBindingThat()
-                .bind(ServiceRegistry.class)
-                .annotatedWith(OSGi.class)
-                .to(OSGiServiceRegistryImpl.class)
+                .bind(ServiceRegistryProvider.OSGiEnvHolder.class)
                 .build());
 
         return bindings;

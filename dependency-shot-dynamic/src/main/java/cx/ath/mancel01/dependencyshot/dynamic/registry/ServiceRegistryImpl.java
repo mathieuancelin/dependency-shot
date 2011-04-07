@@ -15,10 +15,11 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.dynamic;
+package cx.ath.mancel01.dependencyshot.dynamic.registry;
 
 import cx.ath.mancel01.dependencyshot.api.DSInjector;
 import cx.ath.mancel01.dependencyshot.api.event.EventManager;
+import cx.ath.mancel01.dependencyshot.dynamic.Dynamic;
 import cx.ath.mancel01.dependencyshot.event.EventManagerImpl;
 import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
@@ -73,7 +74,7 @@ public class ServiceRegistryImpl implements ServiceRegistry {
     }
 
     @Override
-    public <T> ServiceRegistration registerService(Class<T> clazz, Class<? extends T> service) {
+    public <T> ServiceRegistration registerService(Class<T> clazz, Class<?> service) {
         if(!service.isAnnotationPresent(Dynamic.class)) {
             throw new DSIllegalStateException("You can't register non dynamic implementation for a service");
         }
@@ -95,7 +96,7 @@ public class ServiceRegistryImpl implements ServiceRegistry {
     }
 
     @Override
-    public <T> ServiceRegistration registerService(Class<T>[] clazzes, Class<? extends T> service) {
+    public <T> ServiceRegistration registerService(Class<T>[] clazzes, Class<?> service) {
         for (Class<T> clazz : clazzes) {
             registerService(clazz, service);
         }

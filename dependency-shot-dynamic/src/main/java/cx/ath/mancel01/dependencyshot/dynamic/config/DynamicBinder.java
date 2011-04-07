@@ -15,9 +15,10 @@
  *  under the License.
  */
 
-package cx.ath.mancel01.dependencyshot.dynamic;
+package cx.ath.mancel01.dependencyshot.dynamic.config;
 
 import cx.ath.mancel01.dependencyshot.api.DSBinder;
+import cx.ath.mancel01.dependencyshot.dynamic.scope.DynamicImplementation;
 import cx.ath.mancel01.dependencyshot.exceptions.DSIllegalStateException;
 import cx.ath.mancel01.dependencyshot.graph.Binder;
 import cx.ath.mancel01.dependencyshot.graph.BinderAccessor;
@@ -40,6 +41,8 @@ public abstract class DynamicBinder extends Binder {
     private static final Logger logger = Logger.getLogger(DynamicBinder.class.getName());
 
     private List<DSBinder> delegateBinders = new ArrayList<DSBinder>();
+
+    private boolean isOSGi = false;
 
     public DynamicBinder() {
     }
