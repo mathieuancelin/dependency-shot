@@ -15,7 +15,7 @@
     	<module>swing</module>
     	<module>swing2</module>
     	<module>web</module>
-    	<module>webfwk</module>
+		<module>osgi</module>
     	<module>command-runner</module>
     </modules>
 </project>

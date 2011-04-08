@@ -1,0 +1,3 @@
+DynamicImport-Package *
+Dependency-Shot-Enabled : true
+Dynamic-Binder : com.sample.osgi.paint.triangle.TriangleBinder
