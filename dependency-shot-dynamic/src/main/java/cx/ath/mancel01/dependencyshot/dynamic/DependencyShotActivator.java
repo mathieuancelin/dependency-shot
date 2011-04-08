@@ -27,6 +27,7 @@ import cx.ath.mancel01.dependencyshot.dynamic.event.BundleContainerShutdown;
 import cx.ath.mancel01.dependencyshot.dynamic.event.ServiceArrival;
 import cx.ath.mancel01.dependencyshot.dynamic.event.ServiceChanged;
 import cx.ath.mancel01.dependencyshot.dynamic.event.ServiceDeparture;
+import cx.ath.mancel01.dependencyshot.dynamic.integration.BundleContextHolder;
 import cx.ath.mancel01.dependencyshot.dynamic.registry.ServiceRegistry;
 import cx.ath.mancel01.dependencyshot.event.InjectorStoppedEvent;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
@@ -179,6 +180,7 @@ public class DependencyShotActivator implements BundleActivator,
                 } catch (ClassNotFoundException ex) {
                 }
             }
+            injector.getInstance(BundleContextHolder.class).setContext(bundle.getBundleContext());
             injector.fire(new BundleContainerInitialized(bundle.getBundleContext()));
             injectors.put(bundle.getBundleId(), injector);
         }

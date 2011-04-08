@@ -75,9 +75,9 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 
     @Override
     public <T> ServiceRegistration registerService(Class<T> clazz, Class<?> service) {
-        if(!service.isAnnotationPresent(Dynamic.class)) {
-            throw new DSIllegalStateException("You can't register non dynamic implementation for a service");
-        }
+//        if(!service.isAnnotationPresent(Dynamic.class)) {
+//            throw new DSIllegalStateException("You can't register non dynamic implementation for a service");
+//        }
         services.putIfAbsent(clazz, new ArrayList<Class<?>>());
         ArrayList<Class<?>> classes = (ArrayList<Class<?>>) services.get(clazz);
         if (!classes.contains(service)) {
@@ -144,9 +144,9 @@ public class ServiceRegistryImpl implements ServiceRegistry {
     }
 
     public void registerServiceAndSwap(Class<?> from, Class<?> to) {
-        if(!to.isAnnotationPresent(Dynamic.class)) {
-            throw new DSIllegalStateException("You can't register non dynamic implementation for a service");
-        }
+//        if(!to.isAnnotationPresent(Dynamic.class)) {
+//            throw new DSIllegalStateException("You can't register non dynamic implementation for a service");
+//        }
         services.putIfAbsent(from, new ArrayList<Class<?>>());
         ArrayList<Class<?>> classes = (ArrayList<Class<?>>) services.get(from);
         if (!classes.contains(to)) {

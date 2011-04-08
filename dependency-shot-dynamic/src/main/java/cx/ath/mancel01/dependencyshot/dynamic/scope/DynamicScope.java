@@ -20,16 +20,21 @@ package cx.ath.mancel01.dependencyshot.dynamic.scope;
 import cx.ath.mancel01.dependencyshot.dynamic.registry.ServiceRegistry;
 import cx.ath.mancel01.dependencyshot.api.InjectionPoint;
 import cx.ath.mancel01.dependencyshot.dynamic.Dynamic;
+import cx.ath.mancel01.dependencyshot.dynamic.integration.DynamicServiceHandler;
+import cx.ath.mancel01.dependencyshot.dynamic.registry.ServiceRegistryProvider.OSGiEnvHolder;
 import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.CustomScopeHandler;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
+import org.osgi.framework.BundleContext;
 
 /**
  *
  * @author Mathieu ANCELIN
  */
 public class DynamicScope extends CustomScopeHandler {
+
+    private OSGiEnvHolder holder;
 
     @Override
     public Class<? extends Annotation> getScope() {
@@ -39,13 +44,20 @@ public class DynamicScope extends CustomScopeHandler {
     @Override
     public <T> T getScopedInstance(Class<T> interf, Class<? extends T> clazz, 
             InjectionPoint point, InjectorImpl injector) {
-
-        DynamicProxy proxy = new DynamicProxy(interf, point,
-                injector, injector.getInstance(ServiceRegistry.class));
-        
-        return (T) Proxy.newProxyInstance(
-                getClass().getClassLoader(), new Class[] {interf}, proxy);
-        //return (T) ProxyHelper.createProxy(proxy);
+        if (holder == null) {
+            holder = injector.getInstance(OSGiEnvHolder.class);
+        }
+        if (holder.isOsgi()) {
+            DynamicServiceHandler handler = new DynamicServiceHandler(interf.getName()
+                    , injector.getInstance(BundleContext.class));
+            return (T) Proxy.newProxyInstance(
+                    getClass().getClassLoader(), new Class[] {interf}, handler);
+        } else {
+            DynamicProxy proxy = new DynamicProxy(interf, point,
+                    injector, injector.getInstance(ServiceRegistry.class));
+            return (T) Proxy.newProxyInstance(
+                    getClass().getClassLoader(), new Class[] {interf}, proxy);
+        }
     }
 
     @Override

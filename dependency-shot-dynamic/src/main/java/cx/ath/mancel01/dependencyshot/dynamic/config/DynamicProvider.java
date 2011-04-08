@@ -17,6 +17,13 @@
 
 package cx.ath.mancel01.dependencyshot.dynamic.config;
 
+import cx.ath.mancel01.dependencyshot.dynamic.integration.Registrations;
+import cx.ath.mancel01.dependencyshot.dynamic.integration.Service;
+import cx.ath.mancel01.dependencyshot.dynamic.integration.Services;
+import cx.ath.mancel01.dependencyshot.dynamic.integration.ServicesProducer.ContextProvider;
+import cx.ath.mancel01.dependencyshot.dynamic.integration.ServicesProducer.OSGiServiceProvider;
+import cx.ath.mancel01.dependencyshot.dynamic.integration.ServicesProducer.OSGiServicesProvider;
+import cx.ath.mancel01.dependencyshot.dynamic.integration.ServicesProducer.RegistrationsProvider;
 import cx.ath.mancel01.dependencyshot.dynamic.registry.ServiceRegistry;
 import cx.ath.mancel01.dependencyshot.dynamic.registry.ServiceRegistryProvider;
 import cx.ath.mancel01.dependencyshot.graph.Binding;
@@ -25,6 +32,7 @@ import cx.ath.mancel01.dependencyshot.injection.InjectorImpl;
 import cx.ath.mancel01.dependencyshot.spi.BindingsProvider;
 import java.util.ArrayList;
 import java.util.Collection;
+import org.osgi.framework.BundleContext;
 
 /**
  *
@@ -42,9 +50,34 @@ public class DynamicProvider extends BindingsProvider {
                 .bind(ServiceRegistry.class)
                 .providedBy(new ServiceRegistryProvider())
                 .build());
+        
         bindings.add(BindingBuilder
                 .prepareBindingThat()
                 .bind(ServiceRegistryProvider.OSGiEnvHolder.class)
+                .build());
+
+        bindings.add(BindingBuilder
+                .prepareBindingThat()
+                .bind(BundleContext.class)
+                .providedBy(new ContextProvider())
+                .build());
+
+        bindings.add(BindingBuilder
+                .prepareBindingThat()
+                .bind(Services.class)
+                .providedBy(new OSGiServicesProvider())
+                .build());
+
+        bindings.add(BindingBuilder
+                .prepareBindingThat()
+                .bind(Service.class)
+                .providedBy(new OSGiServiceProvider())
+                .build());
+
+        bindings.add(BindingBuilder
+                .prepareBindingThat()
+                .bind(Registrations.class)
+                .providedBy(new RegistrationsProvider())
                 .build());
 
         return bindings;
