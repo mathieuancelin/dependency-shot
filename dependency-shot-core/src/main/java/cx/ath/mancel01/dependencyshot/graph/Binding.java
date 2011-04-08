@@ -242,7 +242,8 @@ public class Binding<T> {
         Class<? extends Annotation> scope = ReflectionUtil.getScope(to);
         if (provider != null) {
             provider = injector.injectInstance(provider);
-            if (isImplementingEnhancedProvider(provider.getClass().getGenericInterfaces())) {
+            //if (isImplementingEnhancedProvider(provider.getClass().getGenericInterfaces())) {
+            if (isImplementingEnhancedProvider(provider.getClass())) {
                 result = (T) ((EnhancedProvider) provider).enhancedGet(point);
             } else {
                 result = provider.get();
@@ -300,6 +301,10 @@ public class Binding<T> {
 //            }
         }
         return result;
+    }
+
+    private boolean isImplementingEnhancedProvider(Class<?> clazz) {
+        return EnhancedProvider.class.isAssignableFrom(clazz);
     }
 
     /**
